@@ -27,6 +27,7 @@ const register = (app: Application, config: any) => {
       delete props._locals;
       delete props.cache;
 
+      let html: string = '<!DOCTYPE html>';
       const pagePath = getPagePath(file, config);
       const page = resolve(cwd, config.buildDir, config.viewsDir, pagePath);
 
@@ -37,11 +38,13 @@ const register = (app: Application, config: any) => {
         let Page = require(page);
         Page = Page.default || Page;
 
-        return cb(null, renderToString(
+        html += renderToString(
           <Html script={pagePath.replace('.jsx', '.js')}>
             <Page {...props} />
           </Html>
-        ));
+        );
+
+        return cb(null, html);
       } catch (e) {
         return cb(e);
       }
