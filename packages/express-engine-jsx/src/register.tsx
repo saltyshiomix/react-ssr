@@ -1,4 +1,4 @@
-import { readFile, readFileSync, outputFileSync, existsSync, remove } from 'fs-extra';
+import { readFileSync, outputFileSync, existsSync, remove } from 'fs-extra';
 import { sep, resolve } from 'path';
 import express, { Application } from 'express';
 import template from 'art-template';
@@ -27,9 +27,9 @@ const register = async (app: Application, config: Config): Promise<void> => {
     await remove(buildDir);
   }
 
-  app.engine(ENGINE, (file: string, options: any, cb: (err: any, content?: string) => void) => {
-    readFile(file, async (err, content) => {
-      if (err) return cb(err);
+  app.engine(ENGINE, async (file: string, options: any, cb: (err: any, content?: string) => void) => {
+    try {
+      const content: Buffer = readFileSync(file);
 
       // HACK: delete unnecessary server options
       const props: any = options;
@@ -51,26 +51,25 @@ const register = async (app: Application, config: Config): Promise<void> => {
         return cb(null, readFileSync(cache).toString());
       }
 
-      try {
-        await outputFileSync(page, template.render(content.toString(), props));
-        await build(page, config, props);
+      await outputFileSync(page, template.render(content.toString(), props));
+      await build(page, config, props);
 
-        let Page = require(page);
-        Page = Page.default || Page;
+      let Page = require(page);
+      Page = Page.default || Page;
 
-        html += renderToString(
-          <Html script={pagePath.replace('.jsx', '.js')}>
-            <Page {...props} />
-          </Html>
-        );
+      html += renderToString(
+        <Html script={pagePath.replace('.jsx', '.js')}>
+          <Page {...props} />
+        </Html>
+      );
 
-        await outputFileSync(cache, html);
+      await outputFileSync(cache, html);
 
-        return cb(null, html);
-      } catch (e) {
-        return cb(e);
-      }
-    })
+      return cb(null, html);
+
+    } catch (e) {
+      return cb(e);
+    }
   });
 
   app.set('views', resolve(cwd, viewsDir));
