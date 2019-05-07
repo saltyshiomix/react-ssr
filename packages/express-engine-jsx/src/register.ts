@@ -10,8 +10,6 @@ import { getPagePath } from './utils';
 import buildPage from './build-page';
 
 const ENGINE: string = 'jsx';
-
-const isProd: boolean = process.env.NODE_ENV === 'production';
 const cwd: string = process.cwd();
 
 const register = async (app: Application, config: Config): Promise<void> => {
@@ -20,9 +18,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
   const buildDir: string = config.buildDir as string;
   const viewsDir: string = config.viewsDir as string;
 
-  if (!isProd) {
-    await remove(buildDir);
-  }
+  await remove(buildDir);
 
   app.engine(ENGINE, async (file: string, options: any, cb: (err: any, content?: string) => void) => {
     try {
