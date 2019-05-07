@@ -50,11 +50,6 @@ const register = async (app: Application, config: Config): Promise<void> => {
       const page: string = resolve(cwd, buildDir, viewsDir, pagePath);
       const cache: string = resolve(cwd, buildDir, viewsDir, pagePath.replace('.jsx', '.html'));
 
-      if (isProd) {
-        // TODO: throw error if not built
-        return cb(null, readFileSync(cache).toString());
-      }
-
       if (existsSync(cache)) {
         return cb(null, readFileSync(cache).toString());
       }
