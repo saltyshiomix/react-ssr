@@ -1,4 +1,4 @@
-import { readFile, outputFileSync } from 'fs-extra';
+import { readFile, readFileSync, outputFileSync, existsSync } from 'fs-extra';
 import { sep, resolve } from 'path';
 import express, { Application } from 'express';
 import template from 'art-template';
@@ -30,6 +30,11 @@ const register = (app: Application, config: any) => {
       let html: string = '<!DOCTYPE html>';
       const pagePath = getPagePath(file, config);
       const page = resolve(cwd, config.buildDir, config.viewsDir, pagePath);
+      const cache: string = resolve(cwd, config.buildDir, config.viewsDir, pagePath.replace('.jsx', '.html'));
+
+      if (existsSync(cache)) {
+        return cb(null, readFileSync(cache).toString());
+      }
 
       try {
         await outputFileSync(page, template.render(content.toString(), props));
@@ -43,6 +48,8 @@ const register = (app: Application, config: any) => {
             <Page {...props} />
           </Html>
         );
+
+        await outputFileSync(cache, html);
 
         return cb(null, html);
       } catch (e) {
