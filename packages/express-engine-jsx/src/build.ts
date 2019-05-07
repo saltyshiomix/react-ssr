@@ -8,9 +8,9 @@ import babel from 'rollup-plugin-babel';
 import commonjs from 'rollup-plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 
-const isProd = process.env.NODE_ENV === 'production';
-const extensions = ['.js', '.jsx'];
-const plugins = [
+const isProd: boolean = process.env.NODE_ENV === 'production';
+const extensions: string[] = ['.js', '.jsx'];
+const plugins: rollup.Plugin[] = [
   replace({
     'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
   }),
@@ -28,13 +28,13 @@ const plugins = [
   (isProd && terser()),
 ];
 
-const build = async (page: string, config: any, props: any) => {
-  const filename = basename(page);
-  const input = page.replace('.jsx', '.page.jsx');
+const build = async (page: string, config: any, props: any): Promise<void> => {
+  const filename: string = basename(page);
+  const input: string = page.replace('.jsx', '.page.jsx');
 
   await outputFileSync(input, template(join(__dirname, 'client.jsx'), { page: `./${filename}`, props }));
 
-  const bundle = await rollup.rollup({
+  const bundle: rollup.RollupBuild = await rollup.rollup({
     input,
     plugins,
   });

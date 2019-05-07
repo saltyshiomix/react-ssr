@@ -7,16 +7,16 @@ import { renderToString } from 'react-dom/server';
 import Html from './html';
 import build from './build';
 
-const ENGINE = 'jsx';
+const ENGINE: string = 'jsx';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
-const cwd = process.cwd();
+const cwd: string = process.cwd();
 
-const getPagePath = (file: string, config: any) => {
+const getPagePath = (file: string, config: any): string => {
   return file.split(sep + config.viewsDir + sep)[1];
 };
 
-const register = async (app: Application, config: any) => {
+const register = async (app: Application, config: any): Promise<void> => {
   require('@babel/register')();
 
   if (!isProd) {
@@ -28,14 +28,14 @@ const register = async (app: Application, config: any) => {
       if (err) return cb(err);
 
       // HACK: delete unnecessary server options
-      const props = options;
+      const props: any = options;
       delete props.settings;
       delete props._locals;
       delete props.cache;
 
       let html: string = '<!DOCTYPE html>';
-      const pagePath = getPagePath(file, config);
-      const page = resolve(cwd, config.buildDir, config.viewsDir, pagePath);
+      const pagePath: string = getPagePath(file, config);
+      const page: string = resolve(cwd, config.buildDir, config.viewsDir, pagePath);
       const cache: string = resolve(cwd, config.buildDir, config.viewsDir, pagePath.replace('.jsx', '.html'));
 
       if (isProd) {
