@@ -3,9 +3,49 @@
 
 ## How to use
 
+Install it:
+
 ```bash
-$ npm install --save @react-ssr/express @react-ssr/express-engine-jsx
+$ npm install --save @react-ssr/express @react-ssr/express-engine-jsx express react react-dom
 ```
+
+and populate files below:
+
+**`./.babelrc`**
+
+```json
+{
+  "presets": [
+    "@react-ssr/express-engine-jsx/babel"
+  ]
+}
+```
+
+**`./server.js`**
+
+```js
+const { ReactSsrExpress } = require('@react-ssr/express');
+
+const ssr = new ReactSsrExpress;
+const app = ssr.getApp();
+
+app.get('/', (req, res) => {
+  const user = { name: 'World' };
+  res.render('index', { user });
+});
+
+app.listen(3000, () => {
+  console.log('> Ready on http://localhost:3000');
+});
+```
+
+**`./views/index.react.jsx`**
+
+```jsx
+export default () => 'Hello {{user.name}}!';
+```
+
+And you'll see `Hello World!` in `http://localhost:3000`.
 
 ## Packages
 
