@@ -27,15 +27,15 @@ const buildPage = async (file: string, config: Config, props: any): Promise<stri
 
   const cwd: string = process.cwd();
   const buildDir: string = config.buildDir as string;
-  const viewsDir: string = config.viewsDir as string;
+  const ssrDir: string = '_react-ssr';
   const pagePath: string = getPagePath(file, config);
 
-  const cache: string = resolve(cwd, buildDir, viewsDir, pagePath.replace('.jsx', '.html'));
+  const cache: string = resolve(cwd, buildDir, ssrDir, pagePath.replace('.jsx', '.html'));
   if (existsSync(cache)) {
     return readFileSync(cache).toString();
   }
 
-  const page: string = resolve(cwd, buildDir, viewsDir, pagePath);
+  const page: string = resolve(cwd, buildDir, ssrDir, pagePath);
   const input: string = page.replace('.jsx', '.page.jsx');
 
   try {
@@ -43,7 +43,7 @@ const buildPage = async (file: string, config: Config, props: any): Promise<stri
     await outputFileSync(input, template(resolve(__dirname, 'client.jsx'), { page: basename(page).replace('.jsx', ''), props }));
 
     await (await rollup(input)).write({
-      file: input.replace(sep + config.viewsDir + sep, sep + '_react-ssr' + sep).replace('.page.jsx', '.js'),
+      file: input.replace(sep + config.viewsDir + sep, sep + ssrDir + sep).replace('.page.jsx', '.js'),
       format: 'iife',
       name: 'ReactSsrExpress',
     });
