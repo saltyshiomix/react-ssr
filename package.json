@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "name": "react-ssr",
+  "devDependencies": {
+    "lerna": "^3.13.4"
+  }
+}
