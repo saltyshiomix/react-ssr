@@ -27,11 +27,11 @@ const plugins = [
   (isProd && terser()),
 ];
 
-const build = async (page: string, config: any) => {
+const build = async (page: string, config: any, props: any) => {
   const rollup = require('rollup');
   const filename = basename(page);
   const input = page.replace('.jsx', '.client.jsx');
-  await outputFileSync(input, template(join(__dirname, 'client.react.jsx'), { page: `./${filename}` }));
+  await outputFileSync(input, template(join(__dirname, 'client.react.jsx'), { page: `./${filename}`, props }));
 
   const bundle = await rollup.rollup({
     input,

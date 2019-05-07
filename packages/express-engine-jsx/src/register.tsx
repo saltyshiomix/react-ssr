@@ -25,14 +25,14 @@ const register = (app: Application, config: any) => {
       const page = resolve(cwd, config.buildDir, config.viewsDir, pagePath);
 
       await outputFileSync(page, template.render(content.toString(), options));
-      await build(page, config);
+      await build(page, config, options);
 
       let Component = require(page);
       Component = Component.default || Component;
 
       return cb(null, renderToString(
         <Html title={ENGINE_NAME} scriptName={pagePath.replace('.jsx', '.js')}>
-          <Component />
+          <Component {...options} />
         </Html>
       ));
     })
