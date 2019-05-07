@@ -38,7 +38,7 @@ const register = (app: Application, config: any) => {
         Page = Page.default || Page;
 
         return cb(null, renderToString(
-          <Html title={ENGINE_NAME} script={pagePath.replace('.jsx', '.js')}>
+          <Html script={pagePath.replace('.jsx', '.js')}>
             <Page {...props} />
           </Html>
         ));
