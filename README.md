@@ -9,7 +9,17 @@ Install it:
 $ npm install --save @react-ssr/express @react-ssr/express-engine-jsx express react react-dom
 ```
 
-and populate files below:
+and add a script to your package.json like this:
+
+```json
+{
+  "scripts": {
+    "start": "node server.js"
+  }
+}
+```
+
+Populate below files inside your project:
 
 **`./.babelrc`**
 
@@ -45,7 +55,9 @@ app.listen(3000, () => {
 export default () => 'Hello {{user.name}}!';
 ```
 
-Open `http://localhost:3000` and you'll see `Hello World!`.
+and then just run `npm start` and go to `http://localhost:3000`.
+
+You'll see `Hello World!`.
 
 ## Packages
 
