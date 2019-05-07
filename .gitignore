@@ -1,4 +1,16 @@
 node_modules
-build
-.build
+
+# nits
 .DS_Store
+
+# examples
+.build
+
+# packages
+packages/express/build
+packages/express-engine-jsx/build.js
+packages/express-engine-jsx/build.d.ts
+packages/express-engine-jsx/html.js
+packages/express-engine-jsx/html.d.ts
+packages/express-engine-jsx/register.js
+packages/express-engine-jsx/register.d.ts
