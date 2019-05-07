@@ -30,17 +30,21 @@ const register = (app: Application, config: any) => {
       const pagePath = getPagePath(file, config);
       const page = resolve(cwd, config.buildDir, config.viewsDir, pagePath);
 
-      await outputFileSync(page, template.render(content.toString(), props));
-      await build(page, config, props);
+      try {
+        await outputFileSync(page, template.render(content.toString(), props));
+        await build(page, config, props);
 
-      let Component = require(page);
-      Component = Component.default || Component;
+        let Component = require(page);
+        Component = Component.default || Component;
 
-      return cb(null, renderToString(
-        <Html title={ENGINE_NAME} script={pagePath.replace('.jsx', '.js')}>
-          <Component {...props} />
-        </Html>
-      ));
+        return cb(null, renderToString(
+          <Html title={ENGINE_NAME} script={pagePath.replace('.jsx', '.js')}>
+            <Component {...props} />
+          </Html>
+        ));
+      } catch (e) {
+        return cb(e);
+      }
     })
   });
 
