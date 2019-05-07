@@ -38,7 +38,5 @@ const config = (input) => {
 };
 
 export default [
-  config('src/build.ts'),
-  config('src/html.tsx'),
   config('src/register.tsx'),
 ];

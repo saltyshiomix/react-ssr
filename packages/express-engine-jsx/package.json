@@ -24,11 +24,7 @@
   "main": "register.js",
   "files": [
     "babel.js",
-    "build.js",
-    "build.d.ts",
     "client.jsx",
-    "html.js",
-    "html.d.ts",
     "register.js",
     "register.d.ts"
   ],
