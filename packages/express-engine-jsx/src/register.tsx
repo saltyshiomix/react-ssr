@@ -21,18 +21,24 @@ const register = (app: Application, config: any) => {
     readFile(file, async (err, content) => {
       if (err) return cb(err);
 
+      // HACK: delete unnecessary server options
+      const props = options;
+      delete props.settings;
+      delete props._locals;
+      delete props.cache;
+
       const pagePath = getPagePath(file, config);
       const page = resolve(cwd, config.buildDir, config.viewsDir, pagePath);
 
-      await outputFileSync(page, template.render(content.toString(), options));
-      await build(page, config, options);
+      await outputFileSync(page, template.render(content.toString(), props));
+      await build(page, config, props);
 
       let Component = require(page);
       Component = Component.default || Component;
 
       return cb(null, renderToString(
         <Html title={ENGINE_NAME} script={pagePath.replace('.jsx', '.js')}>
-          <Component {...options} />
+          <Component {...props} />
         </Html>
       ));
     })
