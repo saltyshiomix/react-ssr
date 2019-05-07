@@ -1,10 +1,18 @@
-import { readFileSync, outputFileSync, existsSync, remove } from 'fs-extra';
-import { sep, resolve } from 'path';
-import express, { Application } from 'express';
+import {
+  remove,
+  existsSync,
+  readFileSync,
+  outputFileSync,
+} from 'fs-extra';
+import {
+  sep,
+  resolve,
+} from 'path';
 import template from 'art-template';
+import express, { Application } from 'express';
+import { Config } from '@react-ssr/express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { Config } from '@react-ssr/express';
 import Html from './html';
 import build from './build';
 

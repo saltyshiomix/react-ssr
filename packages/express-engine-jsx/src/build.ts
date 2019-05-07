@@ -1,5 +1,9 @@
 import { outputFileSync } from 'fs-extra';
-import { sep, basename, join } from 'path';
+import {
+  sep,
+  basename,
+  join,
+} from 'path';
 import template from 'art-template';
 import rollup from 'rollup';
 import replace from 'rollup-plugin-replace';
