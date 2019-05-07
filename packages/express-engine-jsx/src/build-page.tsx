@@ -15,7 +15,10 @@ import { renderToString } from 'react-dom/server';
 import { Config } from '@react-ssr/express';
 import Html from './html';
 import rollup from './rollup';
-import { getPagePath } from './utils';
+
+const getPagePath = (file: string, config: Config): string => {
+  return file.split(sep + config.viewsDir + sep)[1];
+};
 
 const buildPage = async (file: string, config: Config, props: any): Promise<string> => {
   let html: string = '<!DOCTYPE html>';
@@ -35,7 +38,7 @@ const buildPage = async (file: string, config: Config, props: any): Promise<stri
 
   try {
     await outputFileSync(page, template(file, props));
-    await outputFileSync(input, template(resolve(__dirname, 'client.jsx'), { page: `./${basename(page)}`, props }));
+    await outputFileSync(input, template(resolve(__dirname, 'client.jsx'), { page: basename(page).replace('.jsx', ''), props }));
 
     await (await rollup(input)).write({
       file: input.replace(sep + config.viewsDir + sep, sep + '_react-ssr' + sep).replace('.page.jsx', '.js'),

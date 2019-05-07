@@ -1,12 +1,7 @@
-import {
-  remove,
-  existsSync,
-  readFileSync,
-} from 'fs-extra';
+import { remove } from 'fs-extra';
 import { resolve } from 'path';
 import express, { Application } from 'express';
 import { Config } from '@react-ssr/express';
-import { getPagePath } from './utils';
 import buildPage from './build-page';
 
 const register = async (app: Application, config: Config): Promise<void> => {
@@ -27,13 +22,6 @@ const register = async (app: Application, config: Config): Promise<void> => {
       delete props.settings;
       delete props._locals;
       delete props.cache;
-
-      const pagePath: string = getPagePath(file, config);
-      const cache: string = resolve(cwd, buildDir, viewsDir, pagePath.replace('.jsx', '.html'));
-
-      if (existsSync(cache)) {
-        return cb(null, readFileSync(cache).toString());
-      }
 
       return cb(null, await buildPage(file, config, props));
 
