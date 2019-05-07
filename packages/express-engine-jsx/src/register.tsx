@@ -7,7 +7,7 @@ import { renderToString } from 'react-dom/server';
 import Html from './html';
 import build from './build';
 
-const ENGINE_NAME = 'jsx';
+const ENGINE = 'jsx';
 const cwd = process.cwd();
 
 const getPagePath = (file: string, config: any) => {
@@ -17,7 +17,7 @@ const getPagePath = (file: string, config: any) => {
 const register = (app: Application, config: any) => {
   require('@babel/register')();
 
-  app.engine(ENGINE_NAME, (file: string, options: any, cb: (err: any, content?: string) => void) => {
+  app.engine(ENGINE, (file: string, options: any, cb: (err: any, content?: string) => void) => {
     readFile(file, async (err, content) => {
       if (err) return cb(err);
 
@@ -52,7 +52,7 @@ const register = (app: Application, config: any) => {
   });
 
   app.set('views', resolve(cwd, config.viewsDir));
-  app.set('view engine', ENGINE_NAME);
+  app.set('view engine', ENGINE);
 
   app.use(express.static(config.buildDir));
 };
