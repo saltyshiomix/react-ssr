@@ -14,7 +14,7 @@ import { Config } from '@react-ssr/express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import Html from './html';
-import build from './build';
+import buildPage from './build-page';
 
 const ENGINE: string = 'jsx';
 
@@ -55,7 +55,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
       }
 
       await outputFileSync(page, template.render(content.toString(), props));
-      await build(page, config, props);
+      await buildPage(page, config, props);
 
       let Page = require(page);
       Page = Page.default || Page;

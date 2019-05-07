@@ -33,7 +33,7 @@ const plugins: rollup.Plugin[] = [
   (isProd && terser()),
 ];
 
-const build = async (page: string, config: Config, props: any): Promise<void> => {
+const buildPage = async (page: string, config: Config, props: any): Promise<void> => {
   const filename: string = basename(page);
   const input: string = page.replace('.jsx', '.page.jsx');
 
@@ -53,4 +53,4 @@ const build = async (page: string, config: Config, props: any): Promise<void> =>
   });
 };
 
-export default build;
+export default buildPage;
