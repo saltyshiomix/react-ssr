@@ -1,6 +1,7 @@
 import { outputFileSync } from 'fs-extra';
 import { sep, basename, join } from 'path';
 import template from 'art-template';
+import rollup from 'rollup';
 import replace from 'rollup-plugin-replace';
 import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
@@ -28,7 +29,6 @@ const plugins = [
 ];
 
 const build = async (page: string, config: any, props: any) => {
-  const rollup = require('rollup');
   const filename = basename(page);
   const input = page.replace('.jsx', '.page.jsx');
 
@@ -43,7 +43,6 @@ const build = async (page: string, config: any, props: any) => {
     file: input.replace(sep + config.viewsDir + sep, sep + '_react-ssr' + sep).replace('.page.jsx', '.js'),
     format: 'iife',
     name: 'ReactSsr',
-    plugins,
   });
 };
 
