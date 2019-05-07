@@ -25,9 +25,12 @@
   "files": [
     "babel.js",
     "build.js",
+    "build.d.ts",
     "client.react.jsx",
     "html.js",
-    "register.js"
+    "html.d.ts",
+    "register.js",
+    "register.d.ts"
   ],
   "scripts": {
     "build": "run-p build:src build:types",
