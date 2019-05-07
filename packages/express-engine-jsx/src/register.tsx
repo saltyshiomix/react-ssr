@@ -31,7 +31,7 @@ const register = (app: Application, config: any) => {
       Component = Component.default || Component;
 
       return cb(null, renderToString(
-        <Html title={ENGINE_NAME} scriptName={pagePath.replace('.jsx', '.js')}>
+        <Html title={ENGINE_NAME} script={pagePath.replace('.jsx', '.js')}>
           <Component {...options} />
         </Html>
       ));

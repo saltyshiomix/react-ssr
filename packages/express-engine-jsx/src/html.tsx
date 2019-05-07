@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 interface HtmlProps {
   children: ReactNode;
   title: string;
-  scriptName: string;
+  script: string;
 }
 
 const Html = (props: HtmlProps) => {
@@ -14,7 +14,7 @@ const Html = (props: HtmlProps) => {
       </head>
       <body>
         <div id="app">{props.children}</div>
-        <script src={`/_react-ssr/${props.scriptName}`}></script>
+        <script src={`/_react-ssr/${props.script}`}></script>
       </body>
     </html>
   );
