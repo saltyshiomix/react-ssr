@@ -42,7 +42,7 @@ const build = async (page: string, config: any, props: any) => {
   await bundle.write({
     file: input.replace(sep + config.viewsDir + sep, sep + '_react-ssr' + sep).replace('.page.jsx', '.js'),
     format: 'iife',
-    name: 'ReactSsr',
+    name: 'ReactSsrExpress',
   });
 };
 
