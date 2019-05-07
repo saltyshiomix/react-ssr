@@ -28,7 +28,7 @@
   "scripts": {
     "build": "rimraf build && run-p build:src build:types",
     "build:src": "rollup -c",
-    "build:types": "tsc --emitDeclarationOnly",
+    "build:types": "tsc --emitDeclarationOnly --outDir build",
     "build:release": "cross-env NODE_ENV=production npm run build",
     "prepublishOnly": "npm run build:release"
   },
