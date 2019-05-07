@@ -15,6 +15,8 @@ const getPagePath = (file: string, config: any) => {
 };
 
 const register = (app: Application, config: any) => {
+  require('@babel/register')();
+
   app.engine(ENGINE_NAME, (file: string, options: any, cb: (err: any, content?: string) => void) => {
     readFile(file, async (err, content) => {
       if (err) return cb(err);

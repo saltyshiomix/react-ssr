@@ -47,6 +47,7 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.4.4",
     "@babel/runtime-corejs2": "^7.4.4",
     "art-template": "^4.13.2",
     "babel-plugin-react-require": "^3.1.1",
