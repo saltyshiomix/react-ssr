@@ -1,4 +1,4 @@
-import { readFile, readFileSync, outputFileSync, existsSync } from 'fs-extra';
+import { readFile, readFileSync, outputFileSync, existsSync, remove } from 'fs-extra';
 import { sep, resolve } from 'path';
 import express, { Application } from 'express';
 import template from 'art-template';
@@ -8,14 +8,20 @@ import Html from './html';
 import build from './build';
 
 const ENGINE = 'jsx';
+
+const isProd: boolean = process.env.NODE_ENV === 'production';
 const cwd = process.cwd();
 
 const getPagePath = (file: string, config: any) => {
   return file.split(sep + config.viewsDir + sep)[1];
 };
 
-const register = (app: Application, config: any) => {
+const register = async (app: Application, config: any) => {
   require('@babel/register')();
+
+  if (!isProd) {
+    await remove(config.buildDir);
+  }
 
   app.engine(ENGINE, (file: string, options: any, cb: (err: any, content?: string) => void) => {
     readFile(file, async (err, content) => {
@@ -31,6 +37,11 @@ const register = (app: Application, config: any) => {
       const pagePath = getPagePath(file, config);
       const page = resolve(cwd, config.buildDir, config.viewsDir, pagePath);
       const cache: string = resolve(cwd, config.buildDir, config.viewsDir, pagePath.replace('.jsx', '.html'));
+
+      if (isProd) {
+        // TODO: throw error if not built
+        return cb(null, readFileSync(cache).toString());
+      }
 
       if (existsSync(cache)) {
         return cb(null, readFileSync(cache).toString());
