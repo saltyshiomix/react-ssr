@@ -16,6 +16,8 @@ import { Config } from '@react-ssr/express';
 import Html from './html';
 import rollup from './rollup';
 
+template.defaults.minimize = false;
+
 const getPagePath = (file: string, config: Config): string => {
   return file.split(sep + config.viewsDir + sep)[1];
 };
