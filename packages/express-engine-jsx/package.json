@@ -1,0 +1,77 @@
+{
+  "name": "@react-ssr/express-engine-jsx",
+  "version": "0.0.0",
+  "description": "React SSR with ease",
+  "repository": "git@github.com:classiii/react-ssr.git",
+  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/classiii/react-ssr/tree/master/packages/express-engine-jsx",
+  "keywords": [
+    "react",
+    "reactjs",
+    "react.js",
+    "express",
+    "expressjs",
+    "ssr"
+  ],
+  "bugs": {
+    "url": "https://github.com/classiii/react-ssr/issues",
+    "email": "shiono.yoshihide@gmail.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "register.js",
+  "files": [
+    "babel.js",
+    "build.js",
+    "client.react.jsx",
+    "html.js",
+    "register.js"
+  ],
+  "scripts": {
+    "build": "run-p build:src build:types",
+    "build:src": "rollup -c",
+    "build:types": "tsc --emitDeclarationOnly --outDir .",
+    "build:release": "cross-env NODE_ENV=production npm run build",
+    "prepublishOnly": "npm run build:release"
+  },
+  "dependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/runtime-corejs2": "^7.4.4",
+    "art-template": "^4.13.2",
+    "babel-plugin-react-require": "^3.1.1",
+    "fs-extra": "^7.0.1",
+    "rollup": "^1.11.3",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-terser": "^4.0.4"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/express": "^4.16.1",
+    "@types/fs-extra": "^5.1.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.8.16",
+    "@types/react-dom": "^16.8.4",
+    "express": "^4.16.4",
+    "npm-run-all": "^4.1.5",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "rollup-plugin-auto-external": "^2.0.0",
+    "typescript": "^3.4.5"
+  },
+  "peerDependencies": {
+    "express": "^4",
+    "react": "^16",
+    "react-dom": "^16"
+  }
+}
