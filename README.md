@@ -49,15 +49,26 @@ app.listen(3000, () => {
 });
 ```
 
-**`./views/index.react.jsx`**
+**`./views/index.jsx`**
 
 ```jsx
-export default () => 'Hello {{user.name}}!';
+import React from 'react';
+
+export default class extends React.Component {
+  render() {
+    return `Hello ${this.props.user.name}!`;
+  }
+}
 ```
 
 and then just run `npm start` and go to `http://localhost:3000`.
 
 You'll see `Hello World!`.
+
+## Features
+
+- Pass server data to the client `this.props`
+- Server Side Rendering
 
 ## Packages
 
