@@ -34,12 +34,12 @@ const register = (app: Application, config: any) => {
         await outputFileSync(page, template.render(content.toString(), props));
         await build(page, config, props);
 
-        let Component = require(page);
-        Component = Component.default || Component;
+        let Page = require(page);
+        Page = Page.default || Page;
 
         return cb(null, renderToString(
           <Html title={ENGINE_NAME} script={pagePath.replace('.jsx', '.js')}>
-            <Component {...props} />
+            <Page {...props} />
           </Html>
         ));
       } catch (e) {
