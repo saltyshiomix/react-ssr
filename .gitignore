@@ -8,7 +8,4 @@ node_modules
 
 # packages
 packages/express/build
-packages/express-engine-jsx/build.d.ts
-packages/express-engine-jsx/html.d.ts
 packages/express-engine-jsx/register.js
-packages/express-engine-jsx/register.d.ts
