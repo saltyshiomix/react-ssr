@@ -45,7 +45,7 @@ app.listen(3000, () => {
 export default () => 'Hello {{user.name}}!';
 ```
 
-And you'll see `Hello World!` in `http://localhost:3000`.
+Open `http://localhost:3000` and you'll see `Hello World!`.
 
 ## Packages
 
