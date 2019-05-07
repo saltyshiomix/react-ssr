@@ -4,6 +4,7 @@ import express, { Application } from 'express';
 import template from 'art-template';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { Config } from '@react-ssr/express';
 import Html from './html';
 import build from './build';
 
@@ -12,15 +13,18 @@ const ENGINE: string = 'jsx';
 const isProd: boolean = process.env.NODE_ENV === 'production';
 const cwd: string = process.cwd();
 
-const getPagePath = (file: string, config: any): string => {
+const getPagePath = (file: string, config: Config): string => {
   return file.split(sep + config.viewsDir + sep)[1];
 };
 
-const register = async (app: Application, config: any): Promise<void> => {
+const register = async (app: Application, config: Config): Promise<void> => {
   require('@babel/register')();
 
+  const buildDir: string = config.buildDir as string;
+  const viewsDir: string = config.viewsDir as string;
+
   if (!isProd) {
-    await remove(config.buildDir);
+    await remove(buildDir);
   }
 
   app.engine(ENGINE, (file: string, options: any, cb: (err: any, content?: string) => void) => {
@@ -35,8 +39,8 @@ const register = async (app: Application, config: any): Promise<void> => {
 
       let html: string = '<!DOCTYPE html>';
       const pagePath: string = getPagePath(file, config);
-      const page: string = resolve(cwd, config.buildDir, config.viewsDir, pagePath);
-      const cache: string = resolve(cwd, config.buildDir, config.viewsDir, pagePath.replace('.jsx', '.html'));
+      const page: string = resolve(cwd, buildDir, viewsDir, pagePath);
+      const cache: string = resolve(cwd, buildDir, viewsDir, pagePath.replace('.jsx', '.html'));
 
       if (isProd) {
         // TODO: throw error if not built
@@ -69,10 +73,10 @@ const register = async (app: Application, config: any): Promise<void> => {
     })
   });
 
-  app.set('views', resolve(cwd, config.viewsDir));
+  app.set('views', resolve(cwd, viewsDir));
   app.set('view engine', ENGINE);
 
-  app.use(express.static(config.buildDir));
+  app.use(express.static(buildDir));
 };
 
 export default register;

@@ -756,6 +756,11 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@react-ssr/express@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@react-ssr/express/-/express-0.0.10.tgz#d7b7452b7e99d37c1165229229b7d6bdf401a664"
+  integrity sha512-dP8YP9pfxfQ9mRNiUhWfc6hmzqnPeGLgDDE5ZL6/9+QMeMzQo7bIfYV75kfNd1mMtA1ZY+WSzZ1q7VS+eeEl5Q==
+
 "@types/body-parser@*":
   version "1.17.0"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.17.0.tgz#9f5c9d9bd04bb54be32d5eb9fc0d8c974e6cf58c"

@@ -7,6 +7,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import commonjs from 'rollup-plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
+import { Config } from '@react-ssr/express';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
 const extensions: string[] = ['.js', '.jsx'];
@@ -28,7 +29,7 @@ const plugins: rollup.Plugin[] = [
   (isProd && terser()),
 ];
 
-const build = async (page: string, config: any, props: any): Promise<void> => {
+const build = async (page: string, config: Config, props: any): Promise<void> => {
   const filename: string = basename(page);
   const input: string = page.replace('.jsx', '.page.jsx');
 
