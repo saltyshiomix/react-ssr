@@ -7,11 +7,11 @@ import { renderToString } from 'react-dom/server';
 import Html from './html';
 import build from './build';
 
-const ENGINE_NAME = 'react.jsx';
+const ENGINE_NAME = 'jsx';
 const cwd = process.cwd();
 
 const getPagePath = (file: string, config: any) => {
-  return file.split(sep + config.viewsDir + sep)[1].replace('.react.jsx', '.jsx');
+  return file.split(sep + config.viewsDir + sep)[1];
 };
 
 const register = (app: Application, config: any) => {

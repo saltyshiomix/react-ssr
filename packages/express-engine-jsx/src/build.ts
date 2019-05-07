@@ -30,8 +30,9 @@ const plugins = [
 const build = async (page: string, config: any, props: any) => {
   const rollup = require('rollup');
   const filename = basename(page);
-  const input = page.replace('.jsx', '.client.jsx');
-  await outputFileSync(input, template(join(__dirname, 'client.react.jsx'), { page: `./${filename}`, props }));
+  const input = page.replace('.jsx', '.page.jsx');
+
+  await outputFileSync(input, template(join(__dirname, 'client.jsx'), { page: `./${filename}`, props }));
 
   const bundle = await rollup.rollup({
     input,
@@ -39,7 +40,7 @@ const build = async (page: string, config: any, props: any) => {
   });
 
   await bundle.write({
-    file: input.replace(sep + config.viewsDir + sep, sep + '_react-ssr' + sep).replace('.client.jsx', '.js'),
+    file: input.replace(sep + config.viewsDir + sep, sep + '_react-ssr' + sep).replace('.page.jsx', '.js'),
     format: 'iife',
     name: 'ReactSsr',
     plugins,
