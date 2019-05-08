@@ -22,7 +22,7 @@ const getPagePath = (file: string, config: Config): string => {
   return file.split(sep + config.viewsDir + sep)[1];
 };
 
-const buildPage = async (file: string, config: Config, props: any): Promise<string> => {
+const build = async (file: string, config: Config, props: any): Promise<string> => {
   let html: string = '<!DOCTYPE html>';
 
   const cwd: string = process.cwd();
@@ -68,4 +68,4 @@ const buildPage = async (file: string, config: Config, props: any): Promise<stri
   }
 };
 
-export default buildPage;
+export default build;

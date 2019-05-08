@@ -2,7 +2,7 @@ import { remove } from 'fs-extra';
 import { resolve } from 'path';
 import express, { Application } from 'express';
 import { Config } from '@react-ssr/express';
-import buildPage from './build-page';
+import build from './build';
 
 const register = async (app: Application, config: Config): Promise<void> => {
   const ENGINE: string = 'jsx';
@@ -23,7 +23,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
       delete props._locals;
       delete props.cache;
 
-      return cb(null, await buildPage(file, config, props));
+      return cb(null, await build(file, config, props));
 
     } catch (e) {
       return cb(e);
