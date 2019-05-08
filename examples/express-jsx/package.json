@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "name": "react-express-next",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server",
+    "start:prod": "cross-env NODE_ENV=production node server"
+  },
+  "dependencies": {
+    "@react-ssr/express": "latest",
+    "@react-ssr/express-engine-jsx": "latest",
+    "express": "^4.16.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.1"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0"
+  }
+}

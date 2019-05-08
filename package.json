@@ -1,7 +1,12 @@
 {
   "private": true,
   "name": "react-ssr",
+  "scripts": {
+    "dev": "node dev"
+  },
   "devDependencies": {
+    "chalk": "^2.4.2",
+    "fs-extra": "^7.0.1",
     "lerna": "^3.13.4"
   }
 }

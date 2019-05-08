@@ -4,7 +4,7 @@ node_modules
 .DS_Store
 
 # examples
-.build
+workspace
 
 # packages
 packages/express/build
