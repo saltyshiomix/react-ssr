@@ -29,12 +29,12 @@ export class ReactSsrExpress {
     return this.app;
   }
 
-  listen(port: number, hostname: string, backlog: number, callback?: Function): import('http').Server;
-  listen(port: number, hostname: string, callback?: Function): import('http').Server;
-  listen(port: number, callback?: Function): import('http').Server;
-  listen(path: string, callback?: Function): import('http').Server;
-  listen(handle: any, listeningListener?: Function): import('http').Server;
-  listen(port: any, hostname?: any, backlog?: any, callback?: any) {
+  private listen(port: number, hostname: string, backlog: number, callback?: Function): import('http').Server;
+  private listen(port: number, hostname: string, callback?: Function): import('http').Server;
+  private listen(port: number, callback?: Function): import('http').Server;
+  private listen(path: string, callback?: Function): import('http').Server;
+  private listen(handle: any, listeningListener?: Function): import('http').Server;
+  private listen(port: any, hostname?: any, backlog?: any, callback?: any) {
     for (let i = 0; i < this.app._router.stack.length; i++) {
       const r = this.app._router.stack[i];
       console.log(r);
