@@ -35,9 +35,11 @@ export class ReactSsrExpress {
   private listen(path: string, callback?: Function): import('http').Server;
   private listen(handle: any, listeningListener?: Function): import('http').Server;
   private listen(port: any, hostname?: any, backlog?: any, callback?: any) {
-    for (let i = 0; i < this.app._router.stack.length; i++) {
-      const r = this.app._router.stack[i];
-      console.log(r);
+    if (this.app._router) {
+      for (let i = 0; i < this.app._router.stack.length; i++) {
+        const r = this.app._router.stack[i];
+        console.log(r);
+      }
     }
     return this.app.listen(port, hostname, backlog, callback);
   }
