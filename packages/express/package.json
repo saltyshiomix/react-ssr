@@ -2,10 +2,10 @@
   "name": "@react-ssr/express",
   "version": "0.1.0",
   "description": "React SSR with ease",
-  "repository": "git@github.com:classiii/react-ssr.git",
+  "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/classiii/react-ssr/tree/master/packages/express",
+  "homepage": "https://github.com/saltyshiomix/react-ssr/tree/master/packages/express",
   "keywords": [
     "react",
     "reactjs",
@@ -15,7 +15,7 @@
     "ssr"
   ],
   "bugs": {
-    "url": "https://github.com/classiii/react-ssr/issues",
+    "url": "https://github.com/saltyshiomix/react-ssr/issues",
     "email": "shiono.yoshihide@gmail.com"
   },
   "publishConfig": {
