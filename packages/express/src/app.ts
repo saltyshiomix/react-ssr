@@ -5,8 +5,12 @@ export class ReactSsrExpress {
   private readonly app: Application;
   private readonly config: Config;
 
+  private readonly originalListen: any;
+
   constructor(config: Config = {}) {
     this.app = express();
+    this.originalListen = this.app.listen;
+
     this.config = {
       ...(new Config),
       ...config,
@@ -41,6 +45,6 @@ export class ReactSsrExpress {
         console.log(r);
       }
     }
-    return this.app.listen(port, hostname, backlog, callback);
+    return this.originalListen(port, hostname, backlog, callback);
   }
 }
