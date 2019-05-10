@@ -31,8 +31,8 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
         'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
       }),
       virtual({
-        [`${dir}/react-ssr-page`]: page,
-        [`${dir}/react-ssr-props`]: propsString,
+        [`${dir}/react-ssr-page.js`]: page,
+        [`${dir}/react-ssr-props.js`]: propsString,
       }),
       nodeResolve({
         extensions,
