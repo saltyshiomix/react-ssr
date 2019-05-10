@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { basename } from 'path';
 import {
   rollup,
   RollupBuild,
@@ -20,6 +21,9 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
   console.log(page);
   console.log(propsString);
 
+  const dir: string = basename(file);
+  console.log(dir);
+
   return await rollup({
     input,
     plugins: [
@@ -27,8 +31,8 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
         'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
       }),
       virtual({
-        'react-ssr-page': page,
-        'react-ssr-props': propsString,
+        [`${dir}/react-ssr-page`]: page,
+        [`${dir}/react-ssr-props`]: propsString,
       }),
       nodeResolve({
         extensions,
