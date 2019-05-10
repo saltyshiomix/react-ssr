@@ -13,6 +13,8 @@ const isProd: boolean = process.env.NODE_ENV === 'production';
 const extensions: string[] = ['.js', '.jsx'];
 
 export default async (input: string, page: any, props: any): Promise<RollupBuild> => {
+  console.log(page);
+  console.log(props);
   return await rollup({
     input,
     plugins: [
