@@ -28,9 +28,11 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
         'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
       }),
       hypothetical({
-        [input]: readFileSync(input).toString(),
-        [`${__dirname}/react-ssr-page.js`]: page,
-        [`${__dirname}/react-ssr-props.js`]: propsString,
+        files: {
+          [input]: readFileSync(input).toString(),
+          [`${__dirname}/react-ssr-page.js`]: page,
+          [`${__dirname}/react-ssr-props.js`]: propsString,
+        },
       }),
       nodeResolve({
         extensions,
