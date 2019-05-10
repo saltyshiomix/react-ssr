@@ -28,12 +28,11 @@ const build = async (file: string, config: Config, props: any): Promise<string> 
     return readFileSync(cache).toString();
   }
 
-  const page: string = resolve(cwd, buildDir, ssrDir, pagePath);
   let Page: any;
   let html: string = '<!DOCTYPE html>';
 
   try {
-    Page = require(page);
+    Page = require(file);
     Page = Page.default || Page;
 
     html += renderToString(
@@ -47,7 +46,7 @@ const build = async (file: string, config: Config, props: any): Promise<string> 
   } finally {
     await outputFileSync(cache, html);
     await (await rollup(resolve(__dirname, 'client.jsx'), Page, props)).write({
-      file: page.replace('.jsx', '.js'),
+      file: resolve(cwd, buildDir, ssrDir, pagePath.replace('.jsx', '.js')),
       format: 'iife',
       name: 'ReactSsrExpress',
     });
