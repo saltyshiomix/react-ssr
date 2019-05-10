@@ -1,23 +1,30 @@
 import {
+  remove,
   existsSync,
   readFileSync,
   outputFileSync,
 } from 'fs-extra';
 import {
   sep,
+  basename,
   resolve,
 } from 'path';
+import template from 'art-template';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Config } from '@react-ssr/express';
 import Html from './html';
 import rollup from './rollup';
 
+template.defaults.minimize = false;
+
 const getPagePath = (file: string, config: Config): string => {
   return file.split(sep + config.viewsDir + sep)[1];
 };
 
 const build = async (file: string, config: Config, props: any): Promise<string> => {
+  let html: string = '<!DOCTYPE html>';
+
   const cwd: string = process.cwd();
   const buildDir: string = config.buildDir as string;
   const ssrDir: string = '_react-ssr';
@@ -28,11 +35,20 @@ const build = async (file: string, config: Config, props: any): Promise<string> 
     return readFileSync(cache).toString();
   }
 
-  let Page: any;
-  let html: string = '<!DOCTYPE html>';
+  const page: string = resolve(cwd, buildDir, ssrDir, pagePath);
+  const input: string = page.replace('.jsx', '.page.jsx');
 
   try {
-    Page = require(file);
+    await outputFileSync(page, template(file, props));
+    await outputFileSync(input, template(resolve(__dirname, 'client.jsx'), { page: basename(page).replace('.jsx', ''), props }));
+
+    await (await rollup(input)).write({
+      file: input.replace('.page.jsx', '.js'),
+      format: 'iife',
+      name: 'ReactSsrExpress',
+    });
+
+    let Page = require(page);
     Page = Page.default || Page;
 
     html += renderToString(
@@ -44,12 +60,10 @@ const build = async (file: string, config: Config, props: any): Promise<string> 
     return html;
 
   } finally {
-    await (await rollup(resolve(__dirname, 'client.jsx'), file, props)).write({
-      file: resolve(cwd, buildDir, ssrDir, pagePath.replace('.jsx', '.js')),
-      format: 'iife',
-      name: 'ReactSsrExpress',
-    });
     await outputFileSync(cache, html);
+
+    await remove(page);
+    await remove(input);
   }
 };
 
