@@ -32,7 +32,7 @@ export default async (input: string, file: any, props: any): Promise<RollupBuild
         include: /node_modules/,
       }),
       virtual({
-        'react-ssr-page': readFileSync(file),
+        'react-ssr-page': readFileSync(file).toString(),
         'react-ssr-props': `export default ${JSON.stringify(props)}`,
       }),
       (isProd && terser()),
