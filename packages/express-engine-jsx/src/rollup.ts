@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import {
   rollup,
   RollupBuild,
@@ -15,6 +16,7 @@ const isProd: boolean = process.env.NODE_ENV === 'production';
 const extensions: string[] = ['.js', '.jsx'];
 
 export default async (input: string, file: string, props: any): Promise<RollupBuild> => {
+  const cwd: string = process.cwd();
   const page: string = readFileSync(file).toString();
   const propsString: string = `export default ${JSON.stringify(props)}`
 
@@ -45,8 +47,8 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
           './test.js': readFileSync(input).toString(),
           './react-ssr-page.js': page,
           './react-ssr-props.js': propsString,
-          'react': require('react'),
-          'react-dom': require('react-dom'),
+          [resolve(cwd, 'node_modules/react/index.js')]: readFileSync(resolve(cwd, 'node_modules/react/index.js')).toString(),
+          [resolve(cwd, 'node_modules/react-dom/index.js')]: readFileSync(resolve(cwd, 'node_modules/react-dom/index.js')).toString(),
         },
       }),
       (isProd && terser()),
