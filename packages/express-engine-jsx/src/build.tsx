@@ -45,7 +45,7 @@ const build = async (file: string, config: Config, props: any): Promise<string> 
 
   } finally {
     await outputFileSync(cache, html);
-    await (await rollup(resolve(__dirname, 'client.jsx'), Page, props)).write({
+    await (await rollup(resolve(__dirname, 'client.jsx'), file, props)).write({
       file: resolve(cwd, buildDir, ssrDir, pagePath.replace('.jsx', '.js')),
       format: 'iife',
       name: 'ReactSsrExpress',

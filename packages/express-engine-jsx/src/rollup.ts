@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 import {
   rollup,
   RollupBuild,
@@ -12,9 +13,7 @@ import { terser } from 'rollup-plugin-terser';
 const isProd: boolean = process.env.NODE_ENV === 'production';
 const extensions: string[] = ['.js', '.jsx'];
 
-export default async (input: string, page: any, props: any): Promise<RollupBuild> => {
-  console.log(page);
-  console.log(props);
+export default async (input: string, file: any, props: any): Promise<RollupBuild> => {
   return await rollup({
     input,
     plugins: [
@@ -33,8 +32,8 @@ export default async (input: string, page: any, props: any): Promise<RollupBuild
         include: /node_modules/,
       }),
       virtual({
-        'react-ssr-page': `export default ${page}`,
-        'react-ssr-props': `export default ${props}`,
+        'react-ssr-page': readFileSync(file),
+        'react-ssr-props': `export default ${JSON.stringify(props)}`,
       }),
       (isProd && terser()),
     ],
