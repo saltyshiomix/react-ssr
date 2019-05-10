@@ -16,6 +16,10 @@ const extensions: string[] = ['.js', '.jsx'];
 export default async (input: string, file: string, props: any): Promise<RollupBuild> => {
   const page: string = readFileSync(file).toString();
   const propsString: string = `export default ${JSON.stringify(props)}`
+
+  console.log(page);
+  console.log(propsString);
+
   return await rollup({
     input,
     plugins: [
