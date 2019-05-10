@@ -6,8 +6,8 @@ import {
 import replace from 'rollup-plugin-replace';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
-import commonjs from 'rollup-plugin-commonjs';
-// import virtual from 'rollup-plugin-virtual';
+// import commonjs from 'rollup-plugin-commonjs';
+import virtual from 'rollup-plugin-virtual';
 import hypothetical from 'rollup-plugin-hypothetical';
 import { terser } from 'rollup-plugin-terser';
 
@@ -27,13 +27,18 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
       replace({
         'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
       }),
-      hypothetical({
-        files: {
-          [input]: readFileSync(input).toString(),
-          [`${__dirname}/react-ssr-page.js`]: page,
-          [`${__dirname}/react-ssr-props.js`]: propsString,
-        },
+      virtual({
+        [input]: readFileSync(input).toString(),
+        [`${__dirname}/react-ssr-page.js`]: page,
+        [`${__dirname}/react-ssr-props.js`]: propsString,
       }),
+      // hypothetical({
+      //   files: {
+      //     [input]: readFileSync(input).toString(),
+      //     [`${__dirname}/react-ssr-page.js`]: page,
+      //     [`${__dirname}/react-ssr-props.js`]: propsString,
+      //   },
+      // }),
       nodeResolve({
         extensions,
       }),
