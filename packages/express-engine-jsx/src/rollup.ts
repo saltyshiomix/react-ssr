@@ -45,6 +45,8 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
           './test.js': readFileSync(input).toString(),
           './react-ssr-page.js': page,
           './react-ssr-props.js': propsString,
+          'react': require('react'),
+          'react-dom': require('react-dom'),
         },
       }),
       (isProd && terser()),
