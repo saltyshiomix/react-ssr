@@ -22,13 +22,13 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
   console.log(propsString);
 
   return await rollup({
-    input: './a.js',
+    input,
     plugins: [
       replace({
         'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
       }),
       virtual({
-        './a.js': readFileSync(input).toString(),
+        [input]: readFileSync(input).toString(),
         './react-ssr-page.js': page,
         './react-ssr-props.js': propsString,
       }),
