@@ -756,10 +756,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@react-ssr/express@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@react-ssr/express/-/express-0.1.5.tgz#72b9a287624c1289c6b4a9dc5601e2927b34664d"
-  integrity sha512-CQH0UikEjQCpbCoYvSCUx7uCGB4c1TA4tAmLC8nq+N+xtjKVD1U20OSTQ6PuCGzofvh/YJcyOATBxyAwBRTi1A==
+"@react-ssr/express@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@react-ssr/express/-/express-0.1.6.tgz#24031fbd2e178e8882a7008e76f0b6f392b10428"
+  integrity sha512-rE53E2xfjgjI6BIwmCxzPnnIX6vMXgbmtrcHs7Gitjs6WgKQxZBcwXmrlVQgt2XDr9G/c3zOhvdmRyl+5ad2ew==
 
 "@types/body-parser@*":
   version "1.17.0"
@@ -2213,6 +2213,11 @@ rollup-plugin-commonjs@^9.3.4:
     magic-string "^0.25.2"
     resolve "^1.10.0"
     rollup-pluginutils "^2.6.0"
+
+rollup-plugin-hypothetical@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-hypothetical/-/rollup-plugin-hypothetical-2.1.0.tgz#7fec9a865ed7d0eac14ca6ee2b2c4088acdb1955"
+  integrity sha512-MlxPQTkMtiRUtyhIJ7FpBvTzWtar8eFBA+V7/J6Deg9fSgIIHwL6bJKK1Wl1uWSWtOrWhOmtsMwb9F6aagP/Pg==
 
 rollup-plugin-node-resolve@^4.2.3:
   version "4.2.3"
