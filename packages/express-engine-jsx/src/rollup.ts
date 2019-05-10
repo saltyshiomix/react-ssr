@@ -26,6 +26,10 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
       replace({
         'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
       }),
+      virtual({
+        'react-ssr-page': page,
+        'react-ssr-props': propsString,
+      }),
       nodeResolve({
         extensions,
       }),
@@ -36,10 +40,6 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
       }),
       commonjs({
         include: /node_modules/,
-      }),
-      virtual({
-        'react-ssr-page': page,
-        'react-ssr-props': propsString,
       }),
       (isProd && terser()),
     ],
