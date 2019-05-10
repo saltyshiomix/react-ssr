@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { basename } from 'path';
+import { dirname } from 'path';
 import {
   rollup,
   RollupBuild,
@@ -21,7 +21,7 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
   console.log(page);
   console.log(propsString);
 
-  const dir: string = basename(file);
+  const dir: string = dirname(file);
   console.log(dir);
 
   return await rollup({
