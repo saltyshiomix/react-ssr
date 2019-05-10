@@ -42,7 +42,7 @@ export default async (input: string, file: string, props: any): Promise<RollupBu
       }),
       hypothetical({
         files: {
-          './a.js': readFileSync(input).toString(),
+          './test.js': readFileSync(input).toString(),
           './react-ssr-page.js': page,
           './react-ssr-props.js': propsString,
         },
