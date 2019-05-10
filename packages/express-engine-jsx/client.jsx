@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Page from './{{page}}';
-
-const props = JSON.parse('{{@props | JSON.stringify}}');
+import Page from 'react-ssr-page';
+import props from 'react-ssr-props';
 
 ReactDOM.hydrate(<Page {...props} />, document.getElementById('app'));
