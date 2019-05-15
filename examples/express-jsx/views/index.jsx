@@ -15,7 +15,7 @@ export default class extends React.Component {
       <React.Fragment>
         <Helmet>
           <meta charSet="utf-8" />
-          <title>react-ssr-next</title>
+          <title>The example of @react-ssr/express with jsx</title>
         </Helmet>
         <div>
           <p>Hello {this.props.user.name}!</p>
