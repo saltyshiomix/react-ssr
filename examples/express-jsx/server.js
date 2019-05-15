@@ -1,7 +1,6 @@
 const { ReactSsrExpress } = require('@react-ssr/express');
 
-const ssr = new ReactSsrExpress;
-const app = ssr.getApp();
+const app = ReactSsrExpress();
 
 app.get('/', (req, res) => {
   const user = { name: 'World' };
