@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "react-express-next",
+  "name": "express-jsx",
   "license": "MIT",
   "scripts": {
     "start": "node server",
