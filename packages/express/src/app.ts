@@ -19,5 +19,11 @@ export function ReactSsrExpress(config: Config = {}) {
 
   require(`@react-ssr/express-engine-${config.engine}`)(app, config);
 
+  const _listen = app.listen;
+  app.listen = (...args: any[]) => {
+    console.log('fired');
+    return _listen(args);
+  };
+
   return app;
 }

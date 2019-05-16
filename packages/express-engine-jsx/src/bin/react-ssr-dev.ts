@@ -31,28 +31,28 @@ async function dev() {
 
   await delay(300);
 
-  const app = module.exports.__REACT_SSR_EXPRESS__;
+  // const app = module.exports.__REACT_SSR_EXPRESS__;
 
-  app.listen(8888, async () => {
-    const url = (route) => `http://localhost:8888${route}`;
+  // app.listen(8888, async () => {
+  //   const url = (route) => `http://localhost:8888${route}`;
 
-    spinner.create(`Building '/'`);
-    await got(url('/'));
+  //   spinner.create(`Building '/'`);
+  //   await got(url('/'));
 
-    spinner.create(`Building '/' (test 2)`);
-    await got(url('/'));
+  //   spinner.create(`Building '/' (test 2)`);
+  //   await got(url('/'));
 
-    spinner.create(`Building '/' (test 3)`);
-    await got(url('/'));
+  //   spinner.create(`Building '/' (test 3)`);
+  //   await got(url('/'));
 
-    spinner.clear('Success!');
+  //   spinner.clear('Success!');
 
-    if (proc) {
-      proc.kill();
-    }
+  //   if (proc) {
+  //     proc.kill();
+  //   }
 
-    proc = serve(server, true);
-  });
+  //   proc = serve(server, true);
+  // });
 }
 
 dev();
