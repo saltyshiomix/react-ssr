@@ -13,8 +13,7 @@ const buildSync = async (route: string) => {
     await got(`http://localhost:8888${route}`);
     done = true;
   } catch (e) {
-    spinner.fail(e.response.body);
-    process.exit(1);
+    // nop
   }
 
   while (true) {
@@ -29,14 +28,12 @@ const buildStaticPages = async (app: Application) => {
   let done: boolean = false;
 
   const server = app.listen(8888, async () => {
-    const routes: string[] = [];
     for (let i = 0; i < app._router.stack.length; i++) {
       const r = app._router.stack[i];
       if (r.route && r.route.path) {
         if (r.route.methods.get) {
           await buildSync(r.route.path);
         }
-        routes.push(r.route.path);
       }
     }
     done = true;
