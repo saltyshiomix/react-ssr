@@ -28,7 +28,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
       return cb(null, await render(file, config, props));
 
     } catch (e) {
-      return cb(e);
+      // return cb(e);
     }
   });
 
