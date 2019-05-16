@@ -38,6 +38,7 @@ const startProcess = async () => {
     if (code === 0) {
       completed = true;
     }
+    process.exit(0);
   });
   proc.on('error', (err) => {
     console.log(chalk.red(err));
@@ -49,16 +50,18 @@ const startProcess = async () => {
 process.env.NODE_ENV = args['--mode'];
 process.env.REACT_SSR = 'BUILD';
 
-const p = startProcess();
+startProcess();
 
-const wrapper = () => {
-  if (p) {
-    p.kill();
-  }
-};
-process.on('SIGINT', wrapper);
-process.on('SIGTERM', wrapper);
-process.on('exit', wrapper);
+// const p = startProcess();
+
+// const wrapper = () => {
+//   if (p) {
+//     p.kill();
+//   }
+// };
+// process.on('SIGINT', wrapper);
+// process.on('SIGTERM', wrapper);
+// process.on('exit', wrapper);
 
 (async () => {
   while (true) {
