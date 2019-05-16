@@ -22,7 +22,7 @@
     "access": "public"
   },
   "bin": {
-    "build": "bin/build.js"
+    "react-ssr-build": "bin/build.js"
   },
   "main": "build/index.js",
   "files": [
