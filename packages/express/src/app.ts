@@ -43,24 +43,25 @@ export function ReactSsrExpress(config: Config = {}) {
   //     }
   //   }
   // };
-
-  app.listen = (...args: any[]) => {
-    if (args.length === 0) {
-      throw new Error('1 - 4 arguments must be specified.');
+  for (let i = 0; i < app._router.stack.length; i++) {
+    const r = app._router.stack[i];
+    if (r.route && r.route.path) {
+      console.log(r.route.path);
     }
+  }
 
-    for (let i = 0; i < app._router.stack.length; i++) {
-      const r = app._router.stack[i];
-      if (r.route && r.route.path) {
-        console.log(r);
-      }
-    }
+  // app.listen = (...args: any[]) => {
+  //   if (args.length === 0) {
+  //     throw new Error('1 - 4 arguments must be specified.');
+  //   }
 
-    const [port, ...rest] = args;
-    // spinner.clear(`> Ready on http://localhost:${port}`);
+    
 
-    return _listen(port, ...rest);
-  };
+  //   const [port, ...rest] = args;
+  //   // spinner.clear(`> Ready on http://localhost:${port}`);
+
+  //   return _listen(port, ...rest);
+  // };
 
   return app;
 }
