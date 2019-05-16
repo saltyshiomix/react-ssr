@@ -17,7 +17,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
     await remove(buildDir);
   }
 
-  app.engine(ENGINE, async (file: string, options: any, cb: (err: any, content?: string) => void) => {
+  const renderFile = async (file: string, options: any, cb: (err: any, content?: string) => void) => {
     try {
       // HACK: delete unnecessary server options
       const props: any = options;
@@ -30,7 +30,10 @@ const register = async (app: Application, config: Config): Promise<void> => {
     } catch (e) {
       // return cb(e);
     }
-  });
+  };
+
+  exports.__express = renderFile;
+  app.engine(ENGINE, renderFile);
 
   app.set('views', resolve(cwd, viewsDir));
   app.set('view engine', ENGINE);
