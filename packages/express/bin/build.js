@@ -32,7 +32,7 @@ const cwd  = process.cwd();
 const server = resolve(cwd, args._[0]);
 
 const startProcess = async () => {
-  const proc = spawn('node', [server], { cwd, stdio: 'ignore' });
+  const proc = spawn('node', [server], { cwd, stdio: 'inherit' });
   proc.on('close', (code, signal) => {
     if (code !== null) {
       process.exit(code);
