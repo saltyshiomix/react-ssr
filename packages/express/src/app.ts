@@ -22,7 +22,7 @@ export function ReactSsrExpress(config: Config = {}) {
   const _listen = app.listen;
   app.listen = (...args: any[]) => {
     console.log('fired');
-    return _listen(args);
+    return _listen([...args]);
   };
 
   return app;
