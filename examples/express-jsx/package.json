@@ -3,10 +3,8 @@
   "name": "express-jsx",
   "license": "MIT",
   "scripts": {
-    "build:development": "build server.js --mode development",
-    "build:production": "build server.js --mode production",
-    "start": "npm run build:development && node server.js",
-    "start:prod": "npm run build:production && cross-env NODE_ENV=production node server.js"
+    "start": "build server.js --mode development && node server.js",
+    "start:prod": "build server.js --mode production && cross-env NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@react-ssr/express": "latest",

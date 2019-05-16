@@ -28,13 +28,11 @@ const register = async (app: Application, config: Config): Promise<void> => {
       return cb(null, await render(file, config, props));
 
     } catch (e) {
-      // return cb(e);
+      return cb(e);
     }
   };
 
-  exports.__express = renderFile;
   app.engine(ENGINE, renderFile);
-
   app.set('views', resolve(cwd, viewsDir));
   app.set('view engine', ENGINE);
 

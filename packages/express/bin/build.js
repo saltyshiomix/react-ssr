@@ -40,9 +40,6 @@ const startProcess = async () => {
     }
     process.exit(0);
   });
-  proc.on('error', (err) => {
-    // ignore
-  });
   return proc;
 };
 
@@ -56,6 +53,6 @@ startProcess();
     if (completed) {
       break;
     }
-    await delay(300);
+    await delay(50);
   }
 })();
