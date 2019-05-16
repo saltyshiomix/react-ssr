@@ -1,5 +1,16 @@
 import express, { Application } from 'express';
+import delay from 'delay';
+import got from 'got';
 import { Config } from './config';
+import * as spinner from './spinner';
+
+let built: boolean = false;
+
+async function waitUntilBuilt() {
+  while (!built) {
+    await delay(300);
+  }
+}
 
 export function ReactSsrExpress(config: Config = {}) {
   const app: Application = express();
@@ -21,13 +32,34 @@ export function ReactSsrExpress(config: Config = {}) {
 
   const _listen = app.listen;
   app.listen = (...args: any[]) => {
-    console.log('fired');
-
     if (args.length === 0) {
       throw new Error('1 - 4 arguments must be specified.');
     }
 
+    const server = _listen(8888, async () => {
+      const url = (route: string) => `http://localhost:8888${route}`;
+
+      console.log(app._router);
+
+      spinner.create(`Building '/'`);
+      await got(url('/'));
+
+      spinner.create(`Building '/' (test 2)`);
+      await got(url('/'));
+
+      spinner.create(`Building '/' (test 3)`);
+      await got(url('/'));
+
+      built = true;
+    });
+
+    waitUntilBuilt();
+
+    server.close();
+
     const [port, ...rest] = args;
+    spinner.clear(`> Ready on http://localhost:${port}`);
+
     return _listen(port, ...rest);
   };
 

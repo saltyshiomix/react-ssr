@@ -9,5 +9,3 @@ workspace
 # packages
 packages/express/build
 packages/express-engine-jsx/register.js
-packages/express-engine-jsx/react-ssr.js
-packages/express-engine-jsx/react-ssr-dev.js

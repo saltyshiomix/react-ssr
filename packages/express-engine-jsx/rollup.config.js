@@ -33,18 +33,10 @@ const config = (input) => {
     ],
     external: [
       'react-dom/server',
-      'ora',
-      'chalk',
-      'arg',
-      'cross-spawn',
-      'delay',
-      'got',
     ],
   };
 };
 
 export default [
   config('src/register.ts'),
-  config('src/bin/react-ssr.ts'),
-  config('src/bin/react-ssr-dev.ts'),
 ];

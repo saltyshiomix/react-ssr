@@ -1,8 +1,8 @@
 import ora from 'ora';
-import chalk from 'chalk';
+const chalk = require('chalk');
 
 const cache: any = {};
-const isTTY: boolean = process.env.CI ? false : process.stdout.isTTY;
+const isTTY: boolean = (process.env.CI ? false : process.stdout.isTTY) as boolean;
 
 export function create(text: string) {
   if (!isTTY) {
