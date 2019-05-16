@@ -22,7 +22,13 @@ export function ReactSsrExpress(config: Config = {}) {
   const _listen = app.listen;
   app.listen = (...args: any[]) => {
     console.log('fired');
-    return _listen([...args]);
+
+    if (args.length === 0) {
+      throw new Error('1 - 4 arguments must be specified.');
+    }
+
+    const [port, ...rest] = args;
+    return _listen(port, ...rest);
   };
 
   return app;
