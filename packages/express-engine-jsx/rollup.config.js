@@ -6,31 +6,45 @@ import { terser } from 'rollup-plugin-terser';
 
 const extensions = ['.js', '.ts', '.tsx'];
 
-export default {
-  input: 'src/register.ts',
-  output: {
-    dir: '.',
-    format: 'cjs',
-  },
-  plugins: [
-    external(),
-    resolve({
-      extensions,
-    }),
-    babel({
-      extensions,
-      exclude: /node_modules/,
-    }),
-    commonjs({
-      namedExports: {
-        'node_modules/react-dom/server.js': [
-          'renderToString',
-        ],
-      },
-    }),
-    (process.env.NODE_ENV === 'production' && terser()),
-  ],
-  external: [
-    'react-dom/server',
-  ],
+const config = (input) => {
+  return {
+    input,
+    output: {
+      dir: '.',
+      format: 'cjs',
+    },
+    plugins: [
+      external(),
+      resolve({
+        extensions,
+      }),
+      babel({
+        extensions,
+        exclude: /node_modules/,
+      }),
+      commonjs({
+        namedExports: {
+          'node_modules/react-dom/server.js': [
+            'renderToString',
+          ],
+        },
+      }),
+      (process.env.NODE_ENV === 'production' && terser()),
+    ],
+    external: [
+      'react-dom/server',
+      'ora',
+      'chalk',
+      'arg',
+      'cross-spawn',
+      'delay',
+      'got',
+    ],
+  };
 };
+
+export default [
+  config('src/register.ts'),
+  config('src/bin/react-ssr.ts'),
+  config('src/bin/react-ssr-dev.ts'),
+];

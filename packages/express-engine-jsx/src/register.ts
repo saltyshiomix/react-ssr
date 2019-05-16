@@ -34,6 +34,8 @@ const register = async (app: Application, config: Config): Promise<void> => {
   app.set('view engine', ENGINE);
 
   app.use(express.static(buildDir));
+
+  module.exports.__REACT_SSR_EXPRESS__ = app;
 };
 
 export default register;
