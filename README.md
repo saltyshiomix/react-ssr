@@ -14,7 +14,8 @@ and add a script to your package.json like this:
 ```json
 {
   "scripts": {
-    "start": "node server.js"
+    "build": "react-ssr-build server.js --mode development",
+    "start": "npm run build && node server.js"
   }
 }
 ```
