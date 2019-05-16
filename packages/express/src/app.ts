@@ -25,6 +25,8 @@ const buildSync = async (route: string) => {
 };
 
 const buildStaticPages = async (app: Application) => {
+  await delay(50);
+
   let done: boolean = false;
 
   const server = app.listen(8888, async () => {
