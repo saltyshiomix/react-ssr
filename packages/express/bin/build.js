@@ -50,13 +50,17 @@ const startProcess = async () => {
 process.env.NODE_ENV = args['--mode'];
 process.env.REACT_SSR = 'BUILD';
 
-startProcess();
+try {
+  startProcess();
 
-(async () => {
-  while (true) {
-    if (completed) {
-      break;
+  (async () => {
+    while (true) {
+      if (completed) {
+        break;
+      }
+      await delay(300);
     }
-    await delay(300);
-  }
-})();
+  })();
+} catch (ignore) {
+  // nop
+}
