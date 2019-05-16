@@ -41,8 +41,7 @@ const startProcess = async () => {
     process.exit(0);
   });
   proc.on('error', (err) => {
-    console.log(chalk.red(err));
-    process.exit(1);
+    // ignore
   });
   return proc;
 };
@@ -50,17 +49,13 @@ const startProcess = async () => {
 process.env.NODE_ENV = args['--mode'];
 process.env.REACT_SSR = 'BUILD';
 
-try {
-  startProcess();
+startProcess();
 
-  (async () => {
-    while (true) {
-      if (completed) {
-        break;
-      }
-      await delay(300);
+(async () => {
+  while (true) {
+    if (completed) {
+      break;
     }
-  })();
-} catch (ignore) {
-  // nop
-}
+    await delay(300);
+  }
+})();
