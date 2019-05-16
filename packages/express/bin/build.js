@@ -52,17 +52,6 @@ process.env.REACT_SSR = 'BUILD';
 
 startProcess();
 
-// const p = startProcess();
-
-// const wrapper = () => {
-//   if (p) {
-//     p.kill();
-//   }
-// };
-// process.on('SIGINT', wrapper);
-// process.on('SIGTERM', wrapper);
-// process.on('exit', wrapper);
-
 (async () => {
   while (true) {
     if (completed) {
