@@ -75,7 +75,6 @@ export function ReactSsrExpress(config: Config = {}) {
 
   if (process.env.REACT_SSR === 'BUILD') {
     buildStaticPages(app);
-    return;
   }
 
   return app;
