@@ -28,7 +28,7 @@ const buildStaticPages = async (app: Application) => {
   let done: boolean = false;
 
   const server = app.listen(8888, async () => {
-    await delay(50);
+    await delay(150); // wait until .jsx|.tsx view engine is registered
     for (let i = 0; i < app._router.stack.length; i++) {
       const r = app._router.stack[i];
       if (r.route && r.route.path) {
