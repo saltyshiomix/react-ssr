@@ -3,8 +3,8 @@
   "name": "express-jsx",
   "license": "MIT",
   "scripts": {
-    "start": "node server",
-    "start:prod": "cross-env NODE_ENV=production node server"
+    "start": "react-ssr server.js",
+    "start:prod": "cross-env NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@react-ssr/express": "latest",

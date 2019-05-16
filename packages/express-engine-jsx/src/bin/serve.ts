@@ -3,7 +3,8 @@ import spawn from 'cross-spawn';
 export default function serve(server: string, showConsole: boolean) {
   const proc = spawn('node', [server], {
     cwd: process.cwd(),
-    stdio: showConsole ? 'inherit' : 'ignore',
+    // stdio: showConsole ? 'inherit' : 'ignore',
+    stdio: 'inherit',
   });
 
   proc.on('close', (code: number, signal: string) => {
