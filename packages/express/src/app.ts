@@ -1,3 +1,4 @@
+import { Server } from 'http';
 import express, { Application } from 'express';
 import delay from 'delay';
 import got from 'got';
@@ -51,6 +52,7 @@ const buildStaticPages = async (app: Application) => {
   server.close();
 
   spinner.clear('All static pages are generated!');
+  console.log('');
 
   process.exit(0);
 };
@@ -75,6 +77,12 @@ export function ReactSsrExpress(config: Config = {}) {
 
   if (process.env.REACT_SSR === 'BUILD') {
     buildStaticPages(app);
+
+    // disable app.listen()
+    app.listen = (): Server => {
+      process.exit(0);
+      return new Server;
+    };
   }
 
   return app;
