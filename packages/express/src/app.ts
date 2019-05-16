@@ -22,7 +22,7 @@ export function ReactSsrExpress(config: Config = {}) {
 
   require(`@react-ssr/express-engine-${config.engine}`)(app, config);
 
-  const _listen = app.listen;
+  // const _listen = app.listen;
 
   // const buildSync = async (route: string) => {
   //   let done: boolean = false;
