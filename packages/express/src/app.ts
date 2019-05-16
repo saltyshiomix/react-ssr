@@ -13,7 +13,8 @@ const buildSync = async (route: string) => {
     await got(`http://localhost:8888${route}`);
     done = true;
   } catch (e) {
-    // nop
+    spinner.fail(`Not found "${route}"!`);
+    process.exit(1);
   }
 
   while (true) {
