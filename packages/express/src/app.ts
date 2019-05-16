@@ -79,10 +79,7 @@ export function ReactSsrExpress(config: Config = {}) {
     buildStaticPages(app);
 
     // disable app.listen()
-    app.listen = (): Server => {
-      process.exit(0);
-      return new Server;
-    };
+    app.listen = (): Server => new Server;
   }
 
   return app;
