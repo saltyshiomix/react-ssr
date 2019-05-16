@@ -28,22 +28,16 @@ if (!args._[0]) {
   process.exit(1);
 }
 
+let completed = false;
 const cwd  = process.cwd();
 const server = resolve(cwd, args._[0]);
 
 const startProcess = async () => {
   const proc = spawn('node', [server], { cwd, stdio: 'inherit' });
-  proc.on('close', (code, signal) => {
-    if (code !== null) {
-      process.exit(code);
+  proc.on('exit', (code) => {
+    if (code === 0) {
+      completed = true;
     }
-    if (signal) {
-      if (signal === 'SIGKILL') {
-        process.exit(137);
-      }
-      process.exit(1);
-    }
-    process.exit(0);
   });
   proc.on('error', (err) => {
     console.log(chalk.red(err));
@@ -52,25 +46,23 @@ const startProcess = async () => {
   return proc;
 };
 
-let proc;
+process.env.NODE_ENV = args['--mode'];
+process.env.REACT_SSR = 'BUILD';
+
+const p = startProcess();
+
 const wrapper = () => {
-  if (proc) {
-    proc.kill();
+  if (p) {
+    p.kill();
   }
 };
-
 process.on('SIGINT', wrapper);
 process.on('SIGTERM', wrapper);
 process.on('exit', wrapper);
 
-process.env.NODE_ENV = args['--mode'];
-process.env.REACT_SSR_STATUS = 'STARTED';
-
-proc = startProcess();
-
 (async () => {
   while (true) {
-    if (process.env.REACT_SSR_STATUS === 'COMPLETED') {
+    if (completed) {
       break;
     }
     await delay(300);

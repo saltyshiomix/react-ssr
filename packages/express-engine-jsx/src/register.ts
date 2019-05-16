@@ -13,7 +13,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
   const buildDir: string = config.buildDir as string;
   const viewsDir: string = config.viewsDir as string;
 
-  if (process.env.REACT_SSR_STATUS === 'STARTED') {
+  if (process.env.REACT_SSR === 'BUILD') {
     await remove(buildDir);
   }
 

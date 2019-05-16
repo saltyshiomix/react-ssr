@@ -50,8 +50,9 @@ const buildStaticPages = async (app: Application) => {
 
   server.close();
 
-  process.env.REACT_SSR_STATUS = 'COMPLETED';
   spinner.clear('All static pages are generated!');
+
+  process.exit(0);
 };
 
 export function ReactSsrExpress(config: Config = {}) {
@@ -72,7 +73,7 @@ export function ReactSsrExpress(config: Config = {}) {
 
   require(`@react-ssr/express-engine-${config.engine}`)(app, config);
 
-  if (process.env.REACT_SSR_STATUS === 'STARTED') {
+  if (process.env.REACT_SSR === 'BUILD') {
     buildStaticPages(app);
   }
 
