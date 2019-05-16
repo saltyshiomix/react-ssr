@@ -51,7 +51,7 @@ export function ReactSsrExpress(config: Config = {}) {
 
     for (let i = 0; i < app._router.stack.length; i++) {
       const r = app._router.stack[i];
-      if (r.path) {
+      if (r.route && r.route.path) {
         console.log(r);
       }
     }
