@@ -33,8 +33,8 @@
     "react-ssr-dev.js"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "build:release": "cross-env NODE_ENV=production rollup -c",
+    "build": "rollup -c && node shebang.js",
+    "build:release": "cross-env NODE_ENV=production npm run build",
     "prepublishOnly": "npm run build:release"
   },
   "dependencies": {
