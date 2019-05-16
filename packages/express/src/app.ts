@@ -49,7 +49,12 @@ export function ReactSsrExpress(config: Config = {}) {
       throw new Error('1 - 4 arguments must be specified.');
     }
 
-    console.log(app._router);
+    for (let i = 0; i < app._router.stack.length; i++) {
+      const r = app._router.stack[i];
+      if (r.path) {
+        console.log(r);
+      }
+    }
 
     const [port, ...rest] = args;
     // spinner.clear(`> Ready on http://localhost:${port}`);
