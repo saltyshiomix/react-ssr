@@ -1,3 +1,4 @@
+import { remove } from 'fs-extra';
 import { resolve } from 'path';
 import express, { Application } from 'express';
 import { Config } from '@react-ssr/express';
@@ -11,6 +12,10 @@ const register = async (app: Application, config: Config): Promise<void> => {
   const cwd: string = process.cwd();
   const buildDir: string = config.buildDir as string;
   const viewsDir: string = config.viewsDir as string;
+
+  if (process.env.REACT_SSR_STATUS === 'STARTED') {
+    await remove(buildDir);
+  }
 
   app.engine(ENGINE, async (file: string, options: any, cb: (err: any, content?: string) => void) => {
     try {

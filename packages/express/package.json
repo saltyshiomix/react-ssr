@@ -21,8 +21,12 @@
   "publishConfig": {
     "access": "public"
   },
+  "bin": {
+    "build": "bin/build.js"
+  },
   "main": "build/index.js",
   "files": [
+    "bin",
     "build"
   ],
   "scripts": {
@@ -31,6 +35,14 @@
     "build:types": "tsc --emitDeclarationOnly --outDir build",
     "build:release": "cross-env NODE_ENV=production npm run build",
     "prepublishOnly": "npm run build:release"
+  },
+  "dependencies": {
+    "arg": "^4.1.0",
+    "chalk": "^2.4.2",
+    "cross-spawn": "^6.0.5",
+    "delay": "^4.2.0",
+    "got": "^9.6.0",
+    "ora": "^3.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
@@ -53,10 +65,5 @@
   },
   "peerDependencies": {
     "express": "^4"
-  },
-  "dependencies": {
-    "delay": "^4.2.0",
-    "got": "^9.6.0",
-    "ora": "^3.4.0"
   }
 }
