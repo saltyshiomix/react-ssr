@@ -10,7 +10,7 @@ const Html = (props: HtmlProps) => {
     <html>
       <body>
         <div id="app">{props.children}</div>
-        <script src={`/_react-ssr/${props.script}`}></script>
+        <script src={`/${props.script}`}></script>
       </body>
     </html>
   );
