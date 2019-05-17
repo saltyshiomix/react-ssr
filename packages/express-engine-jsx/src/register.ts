@@ -5,10 +5,9 @@ import { Config } from '@react-ssr/express';
 import render from './render';
 
 const register = async (app: Application, config: Config): Promise<void> => {
-  const ENGINE: string = 'jsx';
-
   require('@babel/register')();
 
+  const ENGINE: string = 'jsx';
   const cwd: string = process.cwd();
   const buildDir: string = config.buildDir as string;
   const viewsDir: string = config.viewsDir as string;
@@ -35,7 +34,6 @@ const register = async (app: Application, config: Config): Promise<void> => {
   app.engine(ENGINE, renderFile);
   app.set('views', resolve(cwd, viewsDir));
   app.set('view engine', ENGINE);
-
   app.use(express.static(buildDir));
 };
 
