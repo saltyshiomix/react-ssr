@@ -21,7 +21,7 @@ const buildSync = async (route: string) => {
     if (done) {
       break;
     }
-    await delay(50);
+    await delay(30);
   }
 };
 
@@ -45,7 +45,7 @@ const buildStaticPages = async (app: Application) => {
     if (done) {
       break;
     }
-    await delay(50);
+    await delay(30);
   }
 
   server.close();
