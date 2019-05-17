@@ -1,4 +1,4 @@
-import ora from 'ora';
+const ora = require('ora');
 const chalk = require('chalk');
 
 const cache: any = {};
