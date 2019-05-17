@@ -89,6 +89,17 @@ WIP.
   - [ ] Contributing guilds
 - [ ] develop packages
   - [x] lerna monorepo development
-  - [ ] @react-ssr/express
-  - [ ] @react-ssr/express-engine-jsx
+  - [x] @react-ssr/express
+  - [x] @react-ssr/express-engine-jsx
   - [ ] @react-ssr/express-engine-tsx
+  - [ ] @react-ssr/fastify
+  - [ ] @react-ssr/nest
+
+## Development
+
+```bash
+$ git clone https://github.com/saltyshiomix/react-ssr.git
+$ cd react-ssr
+$ yarn
+$ yarn dev <example-folder-name>
+```
