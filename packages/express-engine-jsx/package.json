@@ -61,7 +61,7 @@
     "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
     "cross-env": "^5.2.0",
-    "express": "^4.16.4",
+    "express": "^4.17.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "rollup-plugin-auto-external": "^2.0.0",
