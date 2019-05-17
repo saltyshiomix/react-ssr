@@ -95,7 +95,7 @@ WIP.
   - [ ] @react-ssr/fastify
   - [ ] @react-ssr/nest
 
-## Development
+## Develop `examples/<example-folder-name>`
 
 ```bash
 $ git clone https://github.com/saltyshiomix/react-ssr.git
