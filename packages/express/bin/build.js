@@ -8,6 +8,7 @@ const spawn = require('cross-spawn');
 
 const args = arg({
   '--mode': String,
+  '-m': '--mode',
 });
 
 if (!args['--mode']) {
