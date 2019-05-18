@@ -11,7 +11,7 @@
   "dependencies": {
     "@react-ssr/express": "latest",
     "@react-ssr/express-engine-jsx": "latest",
-    "express": "^4.16.4",
+    "express": "^4.17.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1"
