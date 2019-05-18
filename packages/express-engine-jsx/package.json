@@ -24,7 +24,7 @@
   "main": "register.js",
   "files": [
     "babel.js",
-    "client.jsx",
+    "page.jsx",
     "register.js"
   ],
   "scripts": {

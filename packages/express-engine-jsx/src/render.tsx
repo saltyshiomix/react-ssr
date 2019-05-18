@@ -39,7 +39,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
 
   try {
     await outputFileSync(page, template(file, props));
-    await outputFileSync(input, template(resolve(__dirname, 'client.jsx'), { page: basename(page).replace('.jsx', ''), props }));
+    await outputFileSync(input, template(resolve(__dirname, 'page.jsx'), { page: basename(page).replace('.jsx', ''), props }));
 
     await (await rollup(input)).write({
       file: input.replace('.page.jsx', '.js'),
