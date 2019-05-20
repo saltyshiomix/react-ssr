@@ -756,10 +756,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@react-ssr/express@^0.1.64":
-  version "0.1.64"
-  resolved "https://registry.yarnpkg.com/@react-ssr/express/-/express-0.1.64.tgz#1eb0dbac0622692c7d7fae79450ac353f98abce9"
-  integrity sha512-AfW+xIdvVZhExE8e+pANB8oXA82u37hQAe1o5ERk2YkSUJ97Aks+wo4zbzGRC5yCSoUV3lEqO6KTBbglmkQLzg==
+"@react-ssr/express@^0.1.66":
+  version "0.1.66"
+  resolved "https://registry.yarnpkg.com/@react-ssr/express/-/express-0.1.66.tgz#c9df6df898ae8ab247784dc6c8b1cb6a16199452"
+  integrity sha512-Pa7LTeD846ruUa1ygpwOk3LPgKIIaHblHeTyuQnK+KNNpfNjAUQzKf34xOwb3U2JU7x9CenOSLmaNALbcQU9Fg==
   dependencies:
     arg "^4.1.0"
     chalk "^2.4.2"
@@ -2674,10 +2674,10 @@ rollup-pluginutils@^2.7.0:
     estree-walker "^0.6.0"
     micromatch "^3.1.10"
 
-rollup@^1.12.2:
-  version "1.12.2"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-1.12.2.tgz#a7c34a4bef71feb43e3ae69f0b26ae683e75db44"
-  integrity sha512-ePehZfVMIE4eO0/LV6VaMY8kp0D9sbziUabpBeJbHAHa2WJPxuS0lYLmiLamb02e098RIRyq1F2yjM4O08dQVA==
+rollup@^1.12.3:
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-1.12.3.tgz#068b1957d5bebf6c0a758cfe42609b512add35a9"
+  integrity sha512-ueWhPijWN+GaPgD3l77hXih/gcDXmYph6sWeQegwBYtaqAE834e8u+MC2wT6FKIUsz1DBOyOXAQXUZB+rjWDoQ==
   dependencies:
     "@types/estree" "0.0.39"
     "@types/node" "^12.0.2"
