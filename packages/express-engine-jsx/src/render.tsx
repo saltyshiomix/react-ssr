@@ -114,6 +114,8 @@ const render = (file: string, config: Config, props: any): string => {
 
   } finally {
     outputFileSync(cache, html);
+
+    console.log(ufs.readFileSync('./dist/index.js', 'utf-8'));
   }
 };
 
