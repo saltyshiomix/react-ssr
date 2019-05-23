@@ -26,7 +26,7 @@ babelRule.use.options = {
 };
 
 export default (name: string, distDir: string): Configuration => {
-  const config: Configuration = {
+  return {
     mode: isProd ? 'production' : 'development',
     context: cwd,
     entry: {
@@ -45,6 +45,4 @@ export default (name: string, distDir: string): Configuration => {
       ],
     },
   };
-
-  return config;
 };
