@@ -1,10 +1,10 @@
 import { resolve } from 'path';
 import { Configuration } from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
-import VirtualModulePlugin from 'virtual-module-webpack-plugin';
 
 const cwd: string = process.cwd();
 const isProd: boolean = process.env.NODE_ENV !== 'production';
+const VirtualModulePlugin = require('virtual-module-webpack-plugin');
 
 export default (name: string, entryContents: string, pageContents: string, distDir: string): Configuration => {
   const config: Configuration = {

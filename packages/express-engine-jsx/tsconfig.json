@@ -20,8 +20,6 @@
     "noEmitOnError": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": { "*": ["types/*"] },
   },
   "include": [
     "src",
