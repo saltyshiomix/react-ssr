@@ -16,7 +16,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
     await remove(distDir);
   }
 
-  const renderFile = async (file: string, options: any, cb: (err: any, content?: string) => void) => {
+  const renderFile = (file: string, options: any, cb: any) => {
     try {
       // HACK: delete unnecessary server options
       const props: any = options;
@@ -24,7 +24,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
       delete props._locals;
       delete props.cache;
 
-      return cb(null, await render(file, config, props));
+      return cb(null, render(file, config, props));
 
     } catch (e) {
       return cb(e);

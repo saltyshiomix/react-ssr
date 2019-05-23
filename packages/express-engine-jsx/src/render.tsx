@@ -26,7 +26,7 @@ const getPagePath = (file: string, config: Config): string => {
   return file.split(sep + config.viewsDir + sep)[1];
 };
 
-const render = async (file: string, config: Config, props: any): Promise<string> => {
+const render = (file: string, config: Config, props: any): string => {
   let html: string = '<!DOCTYPE html>';
 
   const cwd: string = process.cwd();
@@ -98,7 +98,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
     return html;
 
   } finally {
-    await outputFileSync(cache, html);
+    outputFileSync(cache, html);
   }
 };
 
