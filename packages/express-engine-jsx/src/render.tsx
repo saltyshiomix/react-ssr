@@ -53,7 +53,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   ufs.use(mfs).use(fs);
 
   compiler.inputFileSystem = ufs;
-  compiler.outputFileSystem = fs;
+  compiler.outputFileSystem = mfs;
 
   try {
     compiler.run((err, stats) => {
