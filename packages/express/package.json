@@ -1,6 +1,6 @@
 {
   "name": "@react-ssr/express",
-  "version": "0.1.139",
+  "version": "0.1.140",
   "description": "React SSR with ease",
   "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
