@@ -65,7 +65,7 @@ const render = (file: string, config: Config, props: any): string => {
   compiler.inputFileSystem = ufs;
   // compiler.resolvers.normal.fileSystem = compiler.inputFileSystem;
   // compiler.resolvers.context.fileSystem = compiler.inputFileSystem;
-  compiler.outputFileSystem = fs;
+  compiler.outputFileSystem = require('fs');
 
   console.log(ufs.readFileSync('./react-ssr-src/entry.js', 'utf-8'));
 
@@ -115,7 +115,7 @@ const render = (file: string, config: Config, props: any): string => {
   } finally {
     outputFileSync(cache, html);
 
-    console.log(ufs.readFileSync('./dist/index.js', 'utf-8'));
+    // console.log(ufs.readFileSync('./dist/index.js', 'utf-8'));
   }
 };
 
