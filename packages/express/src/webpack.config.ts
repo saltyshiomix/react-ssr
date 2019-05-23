@@ -18,7 +18,7 @@ const babelRule = {
 
 const hasUserBabelrc: boolean = existsSync(resolve(cwd, '.babelrc')) || existsSync(resolve(cwd, '.babelrc.js')) || existsSync(resolve(cwd, 'babel.config.js'));
 if (hasUserBabelrc) {
-  !isProd && console.log(chalk`{cyan [react-ssr]}] Babelrc in: ${babelrc()}`);
+  !isProd && console.log(chalk`{cyan [react-ssr]} Babelrc in: ${babelrc()}`);
 }
 
 babelRule.use.options = {
