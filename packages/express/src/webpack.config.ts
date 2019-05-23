@@ -34,7 +34,7 @@ export default (name: string, distDir: string): Configuration => {
   } else {
     babelRule.options = {
       presets: [
-        require('@react-ssr/express/babel'),
+        require(resolve(__dirname, '../babel')),
       ],
     };
   }
