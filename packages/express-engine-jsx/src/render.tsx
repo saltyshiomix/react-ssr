@@ -67,6 +67,8 @@ const render = (file: string, config: Config, props: any): string => {
   // compiler.resolvers.context.fileSystem = compiler.inputFileSystem;
   compiler.outputFileSystem = fs;
 
+  console.log(ufs.readFileSync('./react-ssr-src/entry.js', 'utf-8'));
+
   try {
     compiler.run((err: any, stats) => {
       if (err) {
