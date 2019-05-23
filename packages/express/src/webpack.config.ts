@@ -46,13 +46,5 @@ export default (name: string, distDir: string): Configuration => {
     },
   };
 
-  // if (isProd) {
-  //   config.optimization = {
-  //     minimizer: [
-  //       new TerserPlugin(),
-  //     ],
-  //   };
-  // }
-
   return config;
 };
