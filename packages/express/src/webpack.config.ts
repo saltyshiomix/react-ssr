@@ -9,10 +9,8 @@ export default (name: string, distDir: string): Configuration => {
   const babelRule = {
     test: /\.(js|ts)x?$/,
     exclude: /node_modules/,
-    use: {
-      loader: 'babel-loader',
-      options: {},
-    },
+    loader: 'babel-loader',
+    options: {},
   };
   const hasBabelrc: boolean = existsSync(resolve(cwd, '.babelrc')) || existsSync(resolve(cwd, '.babelrc.js')) || existsSync(resolve(cwd, 'babel.config.js'));
   const getBabelrc = () => {
@@ -32,11 +30,11 @@ export default (name: string, distDir: string): Configuration => {
       console.log('[react-ssr] Babelrc in: ' + babelrc);
     }
 
-    babelRule.use.options = {
+    babelRule.options = {
       extends: babelrc,
     };
   } else {
-    babelRule.use.options = {
+    babelRule.options = {
       presets: [
         require('@react-ssr/express/babel'),
       ],
