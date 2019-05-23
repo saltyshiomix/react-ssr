@@ -85,7 +85,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
     return html;
 
   } finally {
-    await outputFileSync(cache, html);
+    // await outputFileSync(cache, html);
   }
 };
 
