@@ -1,6 +1,5 @@
-const { ReactSsrExpress } = require('@react-ssr/express');
-
-const app = ReactSsrExpress();
+const express = require('@react-ssr/express');
+const app = express({ views: 'pages' });
 
 app.get('/', (req, res) => {
   const user = { name: 'World' };

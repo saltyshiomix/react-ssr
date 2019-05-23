@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "basic-express-jsx",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@react-ssr/express": "latest",
+    "express": "^4.17.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.1"
+  }
+}

@@ -4,7 +4,7 @@ const { execSync } = require('child_process');
 const chalk = require('chalk');
 
 async function dev() {
-  let example = 'express-jsx';
+  let example = 'express-jsx-basic';
   if (3 <= process.argv.length) {
     const newExample = process.argv[2];
     if (!existsSync(resolve(__dirname, `examples/${newExample}`))) {
