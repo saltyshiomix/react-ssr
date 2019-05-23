@@ -1,10 +1,10 @@
-import { remove } from 'fs-extra';
+import { removeSync } from 'fs-extra';
 import { resolve } from 'path';
 import express, { Application } from 'express';
 import { Config } from '@react-ssr/express';
 import render from './render';
 
-const register = async (app: Application, config: Config): Promise<void> => {
+const register = (app: Application, config: Config): void => {
   require('@babel/register')();
 
   const ENGINE: string = 'jsx';
@@ -13,7 +13,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
   const viewsDir: string = config.viewsDir as string;
 
   if (process.env.REACT_SSR === 'BUILD') {
-    await remove(distDir);
+    removeSync(distDir);
   }
 
   const renderFile = (file: string, options: any, cb: any) => {
