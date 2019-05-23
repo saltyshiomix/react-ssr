@@ -138,7 +138,7 @@ WIP.
   - [x] lerna monorepo development
   - [x] @react-ssr/express
     - [x] `.jsx` support
-    - [ ] `.tsx` support
+    - [x] `.tsx` support
   - [ ] @react-ssr/fastify
   - [ ] @react-ssr/nest
 
