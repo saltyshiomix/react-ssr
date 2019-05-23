@@ -33,9 +33,7 @@ export default (name: string, distDir: string): Configuration => {
     };
   } else {
     babelRule.options = {
-      presets: [
-        require(resolve(__dirname, '../babel')),
-      ],
+      extends: require(resolve(__dirname, '../babel')),
     };
   }
 
