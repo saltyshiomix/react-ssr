@@ -44,7 +44,6 @@ export default (name: string, distDir: string): Configuration => {
 
   const config: Configuration = {
     mode: isProd ? 'production' : 'development',
-    context: cwd,
     entry: {
       [name]: '/react-ssr-src/entry.js',
     },
