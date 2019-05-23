@@ -49,7 +49,6 @@
     "memfs": "^2.15.2",
     "terser-webpack-plugin": "^1.2.4",
     "unionfs": "^4.2.0",
-    "virtual-module-webpack-plugin": "^0.4.1",
     "webpack": "^4.32.2"
   },
   "devDependencies": {
