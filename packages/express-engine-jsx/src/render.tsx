@@ -82,9 +82,10 @@ const render = (file: string, config: Config, props: any): string => {
         return;
       }
 
-      const output: string = mfs.readFileSync('./dist/index.js').toString();
+      const dist: string = resolve(cwd, distDir, name, '.js')
+      const output: string = mfs.readFileSync(dist).toString();
       console.log(output);
-      outputFileSync(resolve(cwd, distDir, name, '.js'), distDir);
+      outputFileSync(dist, output);
 
       // const info = stats.toJson();
 
