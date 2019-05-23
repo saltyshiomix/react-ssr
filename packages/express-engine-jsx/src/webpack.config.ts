@@ -4,7 +4,7 @@ import { Configuration } from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 
 const cwd: string = process.cwd();
-const isProd: boolean = process.env.NODE_ENV !== 'production';
+const isProd: boolean = process.env.NODE_ENV === 'production';
 
 export default (name: string, distDir: string): Configuration => {
   const babelRule = {
