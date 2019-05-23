@@ -756,10 +756,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@react-ssr/express@^0.1.66":
-  version "0.1.66"
-  resolved "https://registry.yarnpkg.com/@react-ssr/express/-/express-0.1.66.tgz#c9df6df898ae8ab247784dc6c8b1cb6a16199452"
-  integrity sha512-Pa7LTeD846ruUa1ygpwOk3LPgKIIaHblHeTyuQnK+KNNpfNjAUQzKf34xOwb3U2JU7x9CenOSLmaNALbcQU9Fg==
+"@react-ssr/express@^0.1.67":
+  version "0.1.67"
+  resolved "https://registry.yarnpkg.com/@react-ssr/express/-/express-0.1.67.tgz#2d2abfd5b1bfd0bf872df40ba67172ddffdc7c7c"
+  integrity sha512-fSaIHY1ffE1r1KgiGUrU1l0vp1HSCWNHoyjteS1QF23x1RgCg+nQrjw6Zs5CEbU5HE9+ptsMdTcUfzI+U1GFIw==
   dependencies:
     arg "^4.1.0"
     chalk "^2.4.2"
