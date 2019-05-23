@@ -70,7 +70,7 @@ const render = (file: string, config: Config, props: any): string => {
   compiler.inputFileSystem = ufs;
   // compiler.resolvers.normal.fileSystem = compiler.inputFileSystem;
   // compiler.resolvers.context.fileSystem = compiler.inputFileSystem;
-  compiler.outputFileSystem = mfs;
+  compiler.outputFileSystem = require('fs');
 
   try {
     compiler.run((err: any, stats) => {
@@ -82,10 +82,10 @@ const render = (file: string, config: Config, props: any): string => {
         return;
       }
 
-      const dist: string = resolve(cwd, distDir, `${name}.js`);
-      const output: string = mfs.readFileSync(dist).toString();
-      console.log(output);
-      outputFileSync(dist, output);
+      // const dist: string = resolve(cwd, distDir, `${name}.js`);
+      // const output: string = mfs.readFileSync(dist).toString();
+      // console.log(output);
+      // outputFileSync(dist, output);
     });
 
     let Page = require(file);
