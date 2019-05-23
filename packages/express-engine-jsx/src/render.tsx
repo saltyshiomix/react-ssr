@@ -1,6 +1,6 @@
 import {
-  existsSync,
-  readFileSync,
+  // existsSync,
+  // readFileSync,
   outputFileSync,
 } from 'fs-extra';
 import {
@@ -34,9 +34,9 @@ const render = (file: string, config: Config, props: any): string => {
   const pagePath: string = getPagePath(file, config);
 
   const cache: string = resolve(cwd, distDir, pagePath.replace('.jsx', '.html'));
-  if (existsSync(cache)) {
-    return readFileSync(cache).toString();
-  }
+  // if (existsSync(cache)) {
+  //   return readFileSync(cache).toString();
+  // }
 
   const page: string = resolve(cwd, distDir, pagePath);
   const name: string = basename(page).replace('.jsx', '');
