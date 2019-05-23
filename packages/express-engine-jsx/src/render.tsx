@@ -48,7 +48,7 @@ const render = (file: string, config: Config, props: any): string => {
   const { fs: mfs } = require('memfs');
   const { ufs } = require('unionfs');
 
-  mfs.mkdirpSync('./react-ssr-src');
+  mfs.mkdirSync('./react-ssr-src', { recursive: true });
   mfs.writeFileSync('./react-ssr-src/entry.js', entryContents, 'utf-8');
   mfs.writeFileSync('./react-ssr-src/page.js', pageContents, 'utf-8');
   ufs.use(mfs).use(fs);
