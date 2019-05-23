@@ -82,19 +82,23 @@ const render = (file: string, config: Config, props: any): string => {
         return;
       }
 
-      const info = stats.toJson();
+      const output: string = mfs.readFileSync('./dist/index.js').toString();
+      console.log(output);
+      outputFileSync(resolve(cwd, distDir, name, '.js'), distDir);
 
-      if (stats.hasErrors()) {
-        console.error(info.errors);
-      }
-      if (stats.hasWarnings()) {
-        console.warn(info.warnings);
-      }
+      // const info = stats.toJson();
 
-      console.log(stats.toString({
-        chunks: false,
-        colors: true,
-      }));
+      // if (stats.hasErrors()) {
+      //   console.error(info.errors);
+      // }
+      // if (stats.hasWarnings()) {
+      //   console.warn(info.warnings);
+      // }
+
+      // console.log(stats.toString({
+      //   chunks: false,
+      //   colors: true,
+      // }));
     });
 
     let Page = require(file);
@@ -110,8 +114,6 @@ const render = (file: string, config: Config, props: any): string => {
 
   } finally {
     outputFileSync(cache, html);
-
-    console.log(mfs.readFileSync('./dist/index.js'));
   }
 };
 
