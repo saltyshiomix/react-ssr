@@ -82,24 +82,10 @@ const render = (file: string, config: Config, props: any): string => {
         return;
       }
 
-      const dist: string = resolve(cwd, distDir, name, '.js')
+      const dist: string = resolve(cwd, distDir, `${name}.js`);
       const output: string = mfs.readFileSync(dist).toString();
       console.log(output);
       outputFileSync(dist, output);
-
-      // const info = stats.toJson();
-
-      // if (stats.hasErrors()) {
-      //   console.error(info.errors);
-      // }
-      // if (stats.hasWarnings()) {
-      //   console.warn(info.warnings);
-      // }
-
-      // console.log(stats.toString({
-      //   chunks: false,
-      //   colors: true,
-      // }));
     });
 
     let Page = require(file);
