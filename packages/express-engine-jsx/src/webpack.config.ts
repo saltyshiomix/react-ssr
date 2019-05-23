@@ -29,10 +29,9 @@ export default (name: string, distDir: string): Configuration => {
   if (hasBabelrc) {
     const babelrc: string = getBabelrc();
 
-    // if (!isProd) {
-    //   console.log('[react-ssr] Use babelrc in: ' + babelrc);
-    // }
-    console.log('[react-ssr] Use babelrc in: ' + babelrc);
+    if (!isProd) {
+      console.log('[react-ssr] Babelrc in: ' + babelrc);
+    }
 
     babelRule.use.options = {
       extends: babelrc,
@@ -44,8 +43,6 @@ export default (name: string, distDir: string): Configuration => {
       ],
     };
   }
-
-  console.log('[react-ssr] Output path: ' + resolve(cwd, distDir));
 
   const config: Configuration = {
     mode: isProd ? 'production' : 'development',
