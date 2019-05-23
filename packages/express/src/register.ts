@@ -1,12 +1,14 @@
 import { remove } from 'fs-extra';
 import { resolve } from 'path';
 import express, { Application } from 'express';
-import { Config } from './config';
+import babelrc from './babelrc';
 import render from './render';
+import { Config } from './config';
 
 const register = async (app: Application, config: Config): Promise<void> => {
   require('@babel/register')({
-    extends: resolve(__dirname, '../babel.config.dynamic.js'),
+    cacheDirectory: true,
+    extends: babelrc(),
   });
 
   const ENGINE: string = 'jsx';

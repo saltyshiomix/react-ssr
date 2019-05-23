@@ -1,6 +1,7 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { Configuration } from 'webpack';
+import babelrc from './babelrc';
 
 const cwd: string = process.cwd();
 const isProd: boolean = process.env.NODE_ENV === 'production';
@@ -13,26 +14,16 @@ const babelRule = {
     options: {},
   },
 };
-const hasBabelrc: boolean = existsSync(resolve(cwd, '.babelrc')) || existsSync(resolve(cwd, '.babelrc.js')) || existsSync(resolve(cwd, 'babel.config.js'));
-const getBabelrc = () => {
-  if (existsSync(resolve(cwd, '.babelrc'))) return resolve(cwd, '.babelrc');
-  if (existsSync(resolve(cwd, '.babelrc.js'))) return resolve(cwd, '.babelrc.js');
-  return resolve(cwd, 'babel.config.js');
-};
 
-if (hasBabelrc) {
-  const babelrc: string = getBabelrc();
+const hasUserBabelrc: boolean = existsSync(resolve(cwd, '.babelrc')) || existsSync(resolve(cwd, '.babelrc.js')) || existsSync(resolve(cwd, 'babel.config.js'));
+if (hasUserBabelrc) {
   !isProd && console.log('[react-ssr] Babelrc in: ' + babelrc);
-  babelRule.use.options = {
-    cacheDirectory: true,
-    extends: babelrc,
-  };
-} else {
-  babelRule.use.options = {
-    cacheDirectory: true,
-    extends: resolve(__dirname, '../babel.config.dynamic.js'),
-  };
 }
+
+babelRule.use.options = {
+  cacheDirectory: true,
+  extends: babelrc(),
+};
 
 export default (name: string, distDir: string): Configuration => {
   const config: Configuration = {
