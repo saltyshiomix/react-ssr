@@ -1,5 +1,5 @@
 const express = require('@react-ssr/express');
-const app = express({ views: 'pages' });
+const app = express({ viewsDir: 'pages' });
 
 app.get('/', (req, res) => {
   const user = { name: 'World' };

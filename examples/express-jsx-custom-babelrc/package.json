@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "basic-express-jsx",
+  "name": "express-jsx-custom-babelrc",
   "license": "MIT",
   "scripts": {
     "start": "node server.js"

@@ -1,7 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-export default class extends React.Component {
+interface Props {
+  user: any;
+}
+
+export default class extends React.Component<Props> {
   state = {
     message: 'This message is from state!',
   };
@@ -15,7 +19,7 @@ export default class extends React.Component {
       <React.Fragment>
         <Helmet>
           <meta charSet="utf-8" />
-          <title>The example of "express-jsx-basic"</title>
+          <title>The example of "express-tsx-basic"</title>
         </Helmet>
         <div>
           <p>Hello {this.props.user.name}!</p>

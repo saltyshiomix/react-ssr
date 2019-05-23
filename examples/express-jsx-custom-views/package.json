@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "basic-express-jsx",
+  "name": "express-jsx-custom-views",
   "license": "MIT",
   "scripts": {
     "start": "node server.js"
