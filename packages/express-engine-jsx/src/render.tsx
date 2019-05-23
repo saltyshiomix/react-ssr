@@ -67,8 +67,6 @@ const render = (file: string, config: Config, props: any): string => {
   // compiler.resolvers.context.fileSystem = compiler.inputFileSystem;
   compiler.outputFileSystem = mfs;
 
-  console.log(ufs.readFileSync('./react-ssr-src/entry.js', 'utf-8'));
-
   try {
     compiler.run((err: any, stats) => {
       if (err) {
@@ -78,9 +76,6 @@ const render = (file: string, config: Config, props: any): string => {
         }
         return;
       }
-
-      //debug
-      console.log(stats.compilation.assets['index.js'].source());
 
       const info = stats.toJson();
 
@@ -107,10 +102,6 @@ const render = (file: string, config: Config, props: any): string => {
     );
 
     return html;
-
-  // } catch (e) {
-  //   console.log(e);
-  //   throw e;
 
   } finally {
     outputFileSync(cache, html);
