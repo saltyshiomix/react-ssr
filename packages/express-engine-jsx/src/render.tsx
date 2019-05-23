@@ -63,9 +63,11 @@ const render = async (file: string, config: Config, props: any): Promise<string>
       if (err) {
         throw err;
       }
-      if (process.env.NODE_ENV !== 'production') {
-        console.log(stats.toString());
-      }
+
+      console.log(stats.toString({
+        chunks: false,
+        colors: true,
+      }));
     });
 
     let Page = require(file);
