@@ -1,7 +1,7 @@
 import fs from 'fs';
 import {
-  existsSync,
-  readFileSync,
+  // existsSync,
+  // readFileSync,
   outputFileSync,
 } from 'fs-extra';
 import {
@@ -44,9 +44,10 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   const pagePath: string = getPagePath(file, config);
 
   const cache: string = resolve(cwd, distDir, pagePath.replace(ext, '.html'));
-  if (existsSync(cache)) {
-    return readFileSync(cache).toString();
-  }
+  // TODO: use cache only when it is static one
+  // if (existsSync(cache)) {
+  //   return readFileSync(cache).toString();
+  // }
 
   const name: string = basename(pagePath).replace(ext, '');
   const compiler: webpack.Compiler = webpack(configure(name, ext, distDir));
