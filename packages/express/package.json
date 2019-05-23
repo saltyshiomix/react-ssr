@@ -27,7 +27,9 @@
   "main": "build/index.js",
   "files": [
     "bin",
-    "build"
+    "build",
+    "babel.js",
+    "page.jsx"
   ],
   "scripts": {
     "build": "rimraf build && run-p build:src build:types",
@@ -37,33 +39,54 @@
     "prepublishOnly": "npm run build:release"
   },
   "dependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "@babel/register": "^7.4.4",
+    "@babel/runtime-corejs2": "^7.4.5",
     "arg": "^4.1.0",
+    "art-template": "^4.13.2",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-react-require": "^3.1.1",
     "chalk": "^2.4.2",
     "cross-spawn": "^6.0.5",
     "delay": "^4.2.0",
+    "fs-extra": "^8.0.1",
     "got": "^9.6.0",
-    "ora": "^3.4.0"
+    "ora": "^3.4.0",
+    "unionfs": "^4.2.0",
+    "webpack": "^4.32.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
-    "@babel/preset-typescript": "^7.3.3",
     "@types/express": "^4.16.1",
+    "@types/fs-extra": "^7.0.0",
     "@types/got": "^9.4.4",
     "@types/node": "^12.0.2",
+    "@types/react": "^16.8.18",
+    "@types/react-dom": "^16.8.4",
+    "@types/webpack": "^4.4.32",
     "cross-env": "^5.2.0",
     "express": "^4.17.0",
     "npm-run-all": "^4.1.5",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "rimraf": "^2.6.3",
     "rollup": "^1.12.3",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.0",
     "rollup-plugin-terser": "^4.0.4",
     "typescript": "^3.4.5"
   },
   "peerDependencies": {
-    "express": "^4"
+    "express": "^4",
+    "react": "^16",
+    "react-dom": "^16"
   }
 }

@@ -6,7 +6,7 @@
 Install it:
 
 ```bash
-$ npm install --save @react-ssr/express @react-ssr/express-engine-jsx express react react-dom
+$ npm install --save @react-ssr/express express react react-dom
 ```
 
 and add a script to your package.json like this:
@@ -14,30 +14,18 @@ and add a script to your package.json like this:
 ```json
 {
   "scripts": {
-    "build": "react-ssr-build server.js --mode development",
-    "start": "npm run build && node server.js"
+    "start": "node server.js"
   }
 }
 ```
 
 Populate below files inside your project:
 
-**`./.babelrc`**
-
-```json
-{
-  "presets": [
-    "@react-ssr/express-engine-jsx/babel"
-  ]
-}
-```
-
 **`./server.js`**
 
 ```js
-const { ReactSsrExpress } = require('@react-ssr/express');
-
-const app = ReactSsrExpress();
+const express = require('@react-ssr/express');
+const app = express();
 
 app.get('/', (req, res) => {
   const user = { name: 'World' };
@@ -75,7 +63,6 @@ You'll see `Hello World!`.
 | package | version | description |
 | --- | --- | --- |
 | [@react-ssr/express](https://www.npmjs.com/package/@react-ssr/express) | ![@react-ssr/express](https://img.shields.io/npm/v/@react-ssr/express.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/express.svg) | express package |
-| [@react-ssr/express-engine-jsx](https://www.npmjs.com/package/@react-ssr/express-engine-jsx) | ![@react-ssr/express-engine-jsx](https://img.shields.io/npm/v/@react-ssr/express-engine-jsx.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/express-engine-jsx.svg) | express engine (jsx) |
 
 ## Contributing
 
@@ -90,8 +77,8 @@ WIP.
 - [ ] develop packages
   - [x] lerna monorepo development
   - [x] @react-ssr/express
-  - [x] @react-ssr/express-engine-jsx
-  - [ ] @react-ssr/express-engine-tsx
+    - [x] `.jsx` support
+    - [ ] `.tsx` support
   - [ ] @react-ssr/fastify
   - [ ] @react-ssr/nest
 

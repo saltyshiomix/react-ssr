@@ -1,7 +1,4 @@
 import { ReactSsrExpress } from './app';
-import { Config } from './config';
 
-export {
-  ReactSsrExpress,
-  Config,
-}
+module.exports = ReactSsrExpress;
+module.exports.default = ReactSsrExpress;

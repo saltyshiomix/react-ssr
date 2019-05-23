@@ -2,6 +2,7 @@ import { Server } from 'http';
 import express, { Application } from 'express';
 import delay from 'delay';
 import got from 'got';
+import register from './register';
 import { Config } from './config';
 import * as spinner from './spinner';
 
@@ -72,7 +73,7 @@ export function ReactSsrExpress(config: Config = {}) {
     throw new Error(`The engine ${config.engine} is not supported.`);
   }
 
-  require(`@react-ssr/express-engine-${config.engine}`)(app, config);
+  register(app, config);
 
   if (process.env.REACT_SSR === 'BUILD') {
     buildStaticPages(app);
