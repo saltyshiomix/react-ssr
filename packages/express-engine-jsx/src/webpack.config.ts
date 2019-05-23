@@ -28,6 +28,7 @@ export default (name: string, distDir: string): Configuration => {
             loader: 'babel-loader',
             options: {
               cwd,
+              babelrcRoots: cwd,
             },
           },
         },
