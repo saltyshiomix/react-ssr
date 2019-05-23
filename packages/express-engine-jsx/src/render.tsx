@@ -48,9 +48,9 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   const { fs: mfs } = require('memfs');
   const { ufs } = require('unionfs');
 
-  mfs.mkdirpSync('/react-ssr-src');
-  mfs.writeFileSync('/react-ssr-src/entry.js', entryContents, 'utf-8');
-  mfs.writeFileSync('/react-ssr-src/page.js', pageContents, 'utf-8');
+  mfs.mkdirpSync('./react-ssr-src');
+  mfs.writeFileSync('./react-ssr-src/entry.js', entryContents, 'utf-8');
+  mfs.writeFileSync('./react-ssr-src/page.js', pageContents, 'utf-8');
   ufs.use(mfs).use(fs);
 
   compiler.inputFileSystem = ufs;

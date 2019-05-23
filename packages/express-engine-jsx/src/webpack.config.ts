@@ -45,7 +45,7 @@ export default (name: string, distDir: string): Configuration => {
   const config: Configuration = {
     mode: isProd ? 'production' : 'development',
     entry: {
-      [name]: '/react-ssr-src/entry.js',
+      [name]: './react-ssr-src/entry.js',
     },
     output: {
       path: resolve(cwd, distDir),
