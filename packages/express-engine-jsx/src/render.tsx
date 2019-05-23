@@ -68,6 +68,9 @@ const render = async (file: string, config: Config, props: any): Promise<string>
         return;
       }
 
+      //debug
+      console.log(stats.compilation.assets['index.js'].source());
+
       const info = stats.toJson();
 
       if (stats.hasErrors()) {
