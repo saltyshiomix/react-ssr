@@ -48,7 +48,7 @@ const render = (file: string, config: Config, props: any): string => {
 
   process.env.MEMFS_DONT_WARN = 'true';
   const fs = require('fs');
-  const { Volume } = require('memfs');
+  const { createFsFromVolume, Volume } = require('memfs');
   const { ufs } = require('unionfs');
 
   const vol = new Volume;
@@ -59,13 +59,13 @@ const render = (file: string, config: Config, props: any): string => {
   // vol.mkdirSync('./react-ssr-src', { recursive: true });
   // vol.writeFileSync('./react-ssr-src/entry.js', entryContents, 'utf-8');
   // vol.writeFileSync('./react-ssr-src/page.js', pageContents, 'utf-8');
-  // const mfs = createFsFromVolume(vol);
-  ufs.use(vol).use(fs);
+  const mfs = createFsFromVolume(vol);
+  ufs.use(mfs).use(fs);
 
   compiler.inputFileSystem = ufs;
   // compiler.resolvers.normal.fileSystem = compiler.inputFileSystem;
   // compiler.resolvers.context.fileSystem = compiler.inputFileSystem;
-  compiler.outputFileSystem = require('fs');
+  compiler.outputFileSystem = mfs;
 
   console.log(ufs.readFileSync('./react-ssr-src/entry.js', 'utf-8'));
 
@@ -115,7 +115,7 @@ const render = (file: string, config: Config, props: any): string => {
   } finally {
     outputFileSync(cache, html);
 
-    // console.log(ufs.readFileSync('./dist/index.js', 'utf-8'));
+    console.log(mfs.readFileSync('./dist/index.js', 'utf-8'));
   }
 };
 
