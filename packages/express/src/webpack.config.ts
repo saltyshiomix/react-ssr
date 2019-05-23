@@ -30,7 +30,7 @@ if (hasBabelrc) {
 } else {
   babelRule.use.options = {
     cacheDirectory: true,
-    extends: resolve(__dirname, '../babel.js'),
+    extends: resolve(__dirname, '../babel.config.dynamic.js'),
   };
 }
 

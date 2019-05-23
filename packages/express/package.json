@@ -29,6 +29,7 @@
     "bin",
     "build",
     "babel.js",
+    "babel.config.dynamic.js",
     "page.jsx"
   ],
   "scripts": {
