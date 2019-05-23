@@ -99,6 +99,10 @@ const render = (file: string, config: Config, props: any): string => {
 
     return html;
 
+  } catch (e) {
+    console.log(e);
+    throw e;
+
   } finally {
     outputFileSync(cache, html);
   }
