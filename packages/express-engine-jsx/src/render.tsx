@@ -42,13 +42,13 @@ const waitUntilBuilt = (dist: string, mfs: any, timeout: number) => {
       watcher.close();
       reject(new Error('File did not exists and was not created during the timeout.'));
     }, timeout);
-    // mfs.access(dist, mfs.constants.R_OK, (err: any) => {
-    //   if (!err) {
-    //     clearTimeout(timer);
-    //     watcher.close();
-    //     resolve();
-    //   }
-    // });
+    mfs.access(dist, mfs.constants.R_OK, (err: any) => {
+      if (!err) {
+        clearTimeout(timer);
+        watcher.close();
+        resolve();
+      }
+    });
   });
 }
 
@@ -96,8 +96,7 @@ const render = (file: string, config: Config, props: any): string => {
 
     const script: string = page.replace('.jsx', '.js');
     const TIMEOUT: number = 5000;
-    waitUntilBuilt(script, mfs, TIMEOUT);
-    outputFileSync(script, mfs.readFileSync(script).toString());
+    waitUntilBuilt(script, mfs, TIMEOUT).then(() => outputFileSync(script, mfs.readFileSync(script).toString()));
 
     let Page = require(file);
     Page = Page.default || Page;
