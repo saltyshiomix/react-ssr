@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 const app = express({ engine: 'tsx' });
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
   const user = { name: 'World' };
   res.render('index', { user });
 });
