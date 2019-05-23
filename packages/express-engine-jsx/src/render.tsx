@@ -54,10 +54,10 @@ const render = (file: string, config: Config, props: any): string => {
   const pageContents: string = template(file, props);
   const compiler: WebpackComplier = webpack(configure(name, distDir));
 
-  process.env.MEMFS_DONT_WARN = 'true';
   const fs = require('fs');
-  const { fs: mfs } = require('memfs');
   const { ufs } = require('unionfs');
+  const MemoryFileSystem = require('memory-fs');
+  const mfs = new MemoryFileSystem;
 
   mfs.mkdirSync(resolve(cwd, 'react-ssr-src'), { recursive: true });
   mfs.writeFileSync(resolve(cwd, 'react-ssr-src/entry.js'), entryContents);
