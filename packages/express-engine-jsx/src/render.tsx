@@ -59,7 +59,7 @@ const render = (file: string, config: Config, props: any): string => {
   const MemoryFileSystem = require('memory-fs');
   const mfs = new MemoryFileSystem;
 
-  mfs.mkdirSync(resolve(cwd, 'react-ssr-src'), { recursive: true });
+  mfs.mkdirpSync(resolve(cwd, 'react-ssr-src'));
   mfs.writeFileSync(resolve(cwd, 'react-ssr-src/entry.js'), entryContents);
   mfs.writeFileSync(resolve(cwd, 'react-ssr-src/page.js'), pageContents);
   ufs.use(mfs).use(fs);
