@@ -48,18 +48,23 @@ const render = (file: string, config: Config, props: any): string => {
 
   process.env.MEMFS_DONT_WARN = 'true';
   const fs = require('fs');
-  const { createFsFromVolume, Volume } = require('memfs');
+  // const { createFsFromVolume, Volume } = require('memfs');
   const { ufs } = require('unionfs');
 
-  const vol = new Volume;
-  vol.fromJSON({
-    './react-ssr-src/entry.js': entryContents,
-    './react-ssr-src/page.js': pageContents,
-  }, cwd);
+  const MemoryFS = require("memory-fs");
+  const mfs = new MemoryFS;
+  mfs.mkdirpSync('./react-ssr-src');
+  mfs.writeFileSync('./react-ssr-src/entry.js', entryContents);
+  mfs.writeFileSync('./react-ssr-src/page.js', pageContents);
+  // const vol = new Volume;
+  // vol.fromJSON({
+  //   './react-ssr-src/entry.js': entryContents,
+  //   './react-ssr-src/page.js': pageContents,
+  // }, cwd);
   // vol.mkdirSync('./react-ssr-src', { recursive: true });
   // vol.writeFileSync('./react-ssr-src/entry.js', entryContents, 'utf-8');
   // vol.writeFileSync('./react-ssr-src/page.js', pageContents, 'utf-8');
-  const mfs = createFsFromVolume(vol);
+  // const mfs = createFsFromVolume(vol);
   ufs.use(mfs).use(fs);
 
   compiler.inputFileSystem = ufs;
