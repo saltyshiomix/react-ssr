@@ -8,7 +8,7 @@ import { Config } from './config';
 const register = async (app: Application, config: Config): Promise<void> => {
   require('@babel/register')({ extends: babelrc() });
 
-  const ENGINE: string = 'jsx';
+  const ENGINE: 'jsx'|'tsx' = config.engine as 'jsx'|'tsx';
   const cwd: string = process.cwd();
   const distDir: string = config.distDir as string;
   const viewsDir: string = config.viewsDir as string;
