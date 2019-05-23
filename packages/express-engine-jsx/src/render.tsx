@@ -54,8 +54,8 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   ufs.use(mfs).use(fs);
 
   compiler.inputFileSystem = ufs;
-  compiler.resolvers.normal.fileSystem = compiler.inputFileSystem;
-  compiler.resolvers.context.fileSystem = compiler.inputFileSystem;
+  // compiler.resolvers.normal.fileSystem = compiler.inputFileSystem;
+  // compiler.resolvers.context.fileSystem = compiler.inputFileSystem;
   compiler.outputFileSystem = fs;
 
   try {
