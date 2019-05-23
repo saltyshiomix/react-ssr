@@ -29,6 +29,7 @@
     "bin",
     "build",
     "babel.js",
+    "babel.config.default.js",
     "page.jsx"
   ],
   "scripts": {
