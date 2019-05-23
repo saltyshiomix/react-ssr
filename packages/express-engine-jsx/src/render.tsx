@@ -5,6 +5,7 @@ import {
 } from 'fs-extra';
 import {
   sep,
+  dirname,
   basename,
   resolve,
 } from 'path';
@@ -26,18 +27,30 @@ const getPagePath = (file: string, config: Config): string => {
   return file.split(sep + config.viewsDir + sep)[1];
 };
 
-const waitUntilBuilt = (dist: string, mfs: any) => {
-  const delay = require('delay');
-  while (true) {
-    if (mfs.existsSync(dist)) {
-      break;
-    }
-
-    (async () => {
-      await delay(50);
-    })();
-  }
-};
+const waitUntilBuilt = (dist: string, mfs: any, timeout: number) => {
+  return new Promise((resolve, reject) => {
+    const dir: string = dirname(dist);
+    const name: string = basename(dist);
+    const watcher = mfs.watch(dir, function (eventType: string, filename: string) {
+      if (eventType === 'rename' && filename === name) {
+        clearTimeout(timer);
+        watcher.close();
+        resolve();
+      }
+    });
+    const timer = setTimeout(() => {
+      watcher.close();
+      reject(new Error('File did not exists and was not created during the timeout.'));
+    }, timeout);
+    mfs.access(dist, mfs.constants.R_OK, (err: any) => {
+      if (!err) {
+        clearTimeout(timer);
+        watcher.close();
+        resolve();
+      }
+    });
+  });
+}
 
 const render = (file: string, config: Config, props: any): string => {
   let html: string = '<!DOCTYPE html>';
@@ -83,7 +96,8 @@ const render = (file: string, config: Config, props: any): string => {
     });
 
     const script: string = page.replace('.jsx', '.js');
-    waitUntilBuilt(script, mfs);
+    const TIMEOUT: number = 5000;
+    waitUntilBuilt(script, mfs, TIMEOUT);
     outputFileSync(script, mfs.readFileSync(script).toString());
 
     let Page = require(file);
