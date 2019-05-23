@@ -23,10 +23,12 @@ export default (name: string, distDir: string): Configuration => {
       rules: [
         {
           test: /\.(js|ts)x?$/,
-          loader: 'babel-loader',
           exclude: /node_modules/,
-          options: {
-            cwd,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              cwd,
+            },
           },
         },
       ],
