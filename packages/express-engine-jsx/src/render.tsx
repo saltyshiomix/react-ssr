@@ -1,3 +1,4 @@
+import fs from 'fs';
 import {
   existsSync,
   readFileSync,
@@ -12,21 +13,17 @@ import template from 'art-template';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Config } from '@react-ssr/express';
-import Html from './html';
+import delay from 'delay';
 import webpack from 'webpack';
 import configure from './webpack.config';
+import Html from './html';
 
 template.defaults.minimize = false;
-
-interface WebpackComplier extends webpack.Compiler {
-  resolvers?: any;
-}
 
 const getPagePath = (file: string, config: Config): string => {
   return file.split(sep + config.viewsDir + sep)[1];
 };
 
-const delay = require('delay');
 const waitUntilBuilt = async (dist: string, mfs: any) => {
   while (true) {
     if (mfs.existsSync(dist)) {
@@ -36,7 +33,7 @@ const waitUntilBuilt = async (dist: string, mfs: any) => {
   }
 }
 
-const render = (file: string, config: Config, props: any): string => {
+const render = async (file: string, config: Config, props: any): Promise<string> => {
   let html: string = '<!DOCTYPE html>';
 
   const cwd: string = process.cwd();
@@ -48,22 +45,14 @@ const render = (file: string, config: Config, props: any): string => {
     return readFileSync(cache).toString();
   }
 
-  const page: string = resolve(cwd, distDir, pagePath);
-  const name: string = basename(page).replace('.jsx', '');
-  const entryContents: string = template(resolve(__dirname, 'page.jsx'), { props });
-  const pageContents: string = template(file, props);
-  const compiler: WebpackComplier = webpack(configure(name, distDir));
-
-  const fs = require('fs');
+  const name: string = basename(pagePath).replace('.jsx', '');
+  const compiler: webpack.Compiler = webpack(configure(name, distDir));
+  const mfs = require('memory-fs')();
   const { ufs } = require('unionfs');
-  const MemoryFileSystem = require('memory-fs');
-  const mfs = new MemoryFileSystem;
-
-  mfs.mkdirpSync(resolve(cwd, 'react-ssr-src'));
-  mfs.writeFileSync(resolve(cwd, 'react-ssr-src/entry.js'), entryContents);
-  mfs.writeFileSync(resolve(cwd, 'react-ssr-src/page.js'), pageContents);
   ufs.use(mfs).use(fs);
-
+  mfs.mkdirpSync(resolve(cwd, 'react-ssr-src'));
+  mfs.writeFileSync(resolve(cwd, 'react-ssr-src/entry.js'), template(resolve(__dirname, 'page.jsx'), { props }));
+  mfs.writeFileSync(resolve(cwd, 'react-ssr-src/page.js'), template(file, props));
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
 
@@ -78,8 +67,9 @@ const render = (file: string, config: Config, props: any): string => {
       }
     });
 
-    const script: string = page.replace('.jsx', '.js');
-    waitUntilBuilt(script, mfs).then(() => outputFileSync(script, mfs.readFileSync(script).toString()));
+    const script: string = resolve(cwd, distDir, pagePath).replace('.jsx', '.js');
+    await waitUntilBuilt(script, mfs);
+    await outputFileSync(script, mfs.readFileSync(script).toString());
 
     let Page = require(file);
     Page = Page.default || Page;
@@ -93,7 +83,7 @@ const render = (file: string, config: Config, props: any): string => {
     return html;
 
   } finally {
-    outputFileSync(cache, html);
+    await outputFileSync(cache, html);
   }
 };
 
