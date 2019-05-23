@@ -39,15 +39,16 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   let html: string = '<!DOCTYPE html>';
 
   const cwd: string = process.cwd();
+  const ext: string = `.${config.engine}`;
   const distDir: string = config.distDir as string;
   const pagePath: string = getPagePath(file, config);
 
-  const cache: string = resolve(cwd, distDir, pagePath.replace('.jsx', '.html'));
+  const cache: string = resolve(cwd, distDir, pagePath.replace(ext, '.html'));
   if (existsSync(cache)) {
     return readFileSync(cache).toString();
   }
 
-  const name: string = basename(pagePath).replace('.jsx', '');
+  const name: string = basename(pagePath).replace(ext, '');
   const compiler: webpack.Compiler = webpack(configure(name, distDir));
   const mfs = new MemoryFileSystem;
   const { ufs } = require('unionfs');
@@ -69,7 +70,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
       }
     });
 
-    const script: string = resolve(cwd, distDir, pagePath).replace('.jsx', '.js');
+    const script: string = resolve(cwd, distDir, pagePath).replace(ext, '.js');
     await waitUntilBuilt(script, mfs);
     await outputFileSync(script, mfs.readFileSync(script).toString());
 
@@ -77,7 +78,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
     Page = Page.default || Page;
 
     html += renderToString(
-      <Html script={pagePath.replace('.jsx', '.js')}>
+      <Html script={pagePath.replace(ext, '.js')}>
         <Page {...props} />
       </Html>
     );
