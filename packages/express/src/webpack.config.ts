@@ -25,11 +25,9 @@ export default (name: string, distDir: string): Configuration => {
 
   if (hasBabelrc) {
     const babelrc: string = getBabelrc();
-
     if (!isProd) {
       console.log('[react-ssr] Babelrc in: ' + babelrc);
     }
-
     babelRule.options = {
       extends: babelrc,
     };
