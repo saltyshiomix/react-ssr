@@ -42,13 +42,13 @@ const waitUntilBuilt = (dist: string, mfs: any, timeout: number) => {
       watcher.close();
       reject(new Error('File did not exists and was not created during the timeout.'));
     }, timeout);
-    mfs.access(dist, mfs.constants.R_OK, (err: any) => {
-      if (!err) {
-        clearTimeout(timer);
-        watcher.close();
-        resolve();
-      }
-    });
+    // mfs.access(dist, mfs.constants.R_OK, (err: any) => {
+    //   if (!err) {
+    //     clearTimeout(timer);
+    //     watcher.close();
+    //     resolve();
+    //   }
+    // });
   });
 }
 
