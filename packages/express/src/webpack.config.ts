@@ -28,29 +28,9 @@ if (hasBabelrc) {
     extends: babelrc,
   };
 } else {
-  console.log('[react-ssr] No babelrc');
-
   babelRule.use.options = {
     cacheDirectory: true,
-    presets: [
-      '@babel/preset-env',
-      '@babel/preset-react',
-      '@babel/preset-typescript',
-    ],
-    plugins: [
-      'babel-plugin-react-require',
-      '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-proposal-class-properties',
-      ['@babel/plugin-proposal-object-rest-spread', {
-        useBuiltIns: true,
-      }],
-      ['@babel/plugin-transform-runtime', {
-        corejs: 2,
-        helpers: true,
-        regenerator: true,
-        useESModules: false,
-      }],
-    ],
+    extends: resolve(__dirname, '../babel'),
   };
 }
 
