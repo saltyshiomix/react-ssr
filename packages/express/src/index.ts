@@ -1,4 +1,7 @@
 import { ReactSsrExpress } from './app';
 
+// require support
 module.exports = ReactSsrExpress;
-module.exports.default = ReactSsrExpress;
+
+// typescript support
+export default ReactSsrExpress;
