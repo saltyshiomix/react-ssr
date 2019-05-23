@@ -45,10 +45,11 @@ export default (name: string, distDir: string): Configuration => {
     };
   }
 
-  console.log(resolve(cwd, distDir));
+  console.log('[react-ssr] Output path: ' + resolve(cwd, distDir));
 
   const config: Configuration = {
     mode: isProd ? 'production' : 'development',
+    context: cwd,
     entry: {
       [name]: './react-ssr-src/entry.js',
     },
