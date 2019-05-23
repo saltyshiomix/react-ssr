@@ -8,4 +8,3 @@ workspace
 
 # packages
 packages/express/build
-packages/express-engine-jsx/register.js
