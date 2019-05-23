@@ -5,7 +5,7 @@ import { Config } from './config';
 import render from './render';
 
 const register = async (app: Application, config: Config): Promise<void> => {
-  require('@babel/register')();
+  // require('@babel/register')();
 
   const ENGINE: string = 'jsx';
   const cwd: string = process.cwd();
