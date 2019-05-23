@@ -33,6 +33,8 @@ const waitUntilBuilt = async (dist: string, mfs: any) => {
   }
 }
 
+const MemoryFileSystem = require('memory-fs');
+
 const render = async (file: string, config: Config, props: any): Promise<string> => {
   let html: string = '<!DOCTYPE html>';
 
@@ -47,7 +49,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
 
   const name: string = basename(pagePath).replace('.jsx', '');
   const compiler: webpack.Compiler = webpack(configure(name, distDir));
-  const mfs = require('memory-fs')();
+  const mfs = new MemoryFileSystem;
   const { ufs } = require('unionfs');
   ufs.use(mfs).use(fs);
   mfs.mkdirpSync(resolve(cwd, 'react-ssr-src'));
