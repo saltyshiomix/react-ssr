@@ -1,5 +1,4 @@
 import {
-  remove,
   existsSync,
   readFileSync,
   outputFileSync,
@@ -14,7 +13,8 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Config } from '@react-ssr/express';
 import Html from './html';
-import rollup from './rollup';
+import webpack from 'webpack';
+import configure from './webpack.config';
 
 template.defaults.minimize = false;
 
@@ -35,19 +35,22 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   }
 
   const page: string = resolve(cwd, distDir, pagePath);
-  const input: string = page.replace('.jsx', '.page.jsx');
+  const name: string = basename(page).replace('.jsx', '');
+  const entryContents: string = template(resolve(__dirname, 'page.jsx'), { props });
+  const pageContents: string = template(file, props);
+  const compiler: webpack.Compiler = webpack(configure(name, entryContents, pageContents, distDir));
 
   try {
-    await outputFileSync(page, template(file, props));
-    await outputFileSync(input, template(resolve(__dirname, 'page.jsx'), { page: basename(page).replace('.jsx', ''), props }));
-
-    await (await rollup(input)).write({
-      file: input.replace('.page.jsx', '.js'),
-      format: 'iife',
-      name: 'ReactSsrExpress',
+    compiler.run((err, stats) => {
+      if (err) {
+        throw err;
+      }
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(stats.toString());
+      }
     });
 
-    let Page = require(page);
+    let Page = require(file);
     Page = Page.default || Page;
 
     html += renderToString(
@@ -60,9 +63,6 @@ const render = async (file: string, config: Config, props: any): Promise<string>
 
   } finally {
     await outputFileSync(cache, html);
-
-    await remove(page);
-    await remove(input);
   }
 };
 

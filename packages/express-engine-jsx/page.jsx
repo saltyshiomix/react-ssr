@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Page from './{{page}}';
+import Page from '/react-ssr-page.js';
 
 const props = JSON.parse('{{@props | JSON.stringify}}');
 
