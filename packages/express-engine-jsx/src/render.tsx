@@ -46,6 +46,7 @@ const render = (file: string, config: Config, props: any): string => {
 
   console.log(`[react-ssr] Building ${name}.js`);
 
+  process.env.MEMFS_DONT_WARN = 'true';
   const fs = require('fs');
   const { Volume } = require('memfs');
   const { ufs } = require('unionfs');
