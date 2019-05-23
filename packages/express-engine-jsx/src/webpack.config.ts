@@ -4,14 +4,13 @@ import TerserPlugin from 'terser-webpack-plugin';
 
 const cwd: string = process.cwd();
 const isProd: boolean = process.env.NODE_ENV !== 'production';
-const VirtualModulePlugin = require('virtual-module-webpack-plugin');
 
-export default (name: string, entryContents: string, pageContents: string, distDir: string): Configuration => {
+export default (name: string, distDir: string): Configuration => {
   const config: Configuration = {
     mode: isProd ? 'production' : 'development',
     context: cwd,
     entry: {
-      [name]: '/react-ssr-entry.js',
+      [name]: '/react-ssr-src/entry.js',
     },
     output: {
       path: resolve(cwd, distDir),
@@ -29,16 +28,6 @@ export default (name: string, entryContents: string, pageContents: string, distD
         },
       ],
     },
-    plugins: [
-      new VirtualModulePlugin({
-        moduleName: '/react-ssr-entry.js',
-        contents: entryContents,
-      }),
-      new VirtualModulePlugin({
-        moduleName: '/react-ssr-page.js',
-        contents: pageContents,
-      }),
-    ],
   };
 
   if (isProd) {
