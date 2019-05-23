@@ -26,6 +26,19 @@ const getPagePath = (file: string, config: Config): string => {
   return file.split(sep + config.viewsDir + sep)[1];
 };
 
+const waitUntilBuilt = (dist: string, mfs: any) => {
+  const delay = require('delay');
+  while (true) {
+    if (mfs.existsSync(dist)) {
+      break;
+    }
+
+    (async () => {
+      await delay(50);
+    })();
+  }
+};
+
 const render = (file: string, config: Config, props: any): string => {
   let html: string = '<!DOCTYPE html>';
 
@@ -56,10 +69,10 @@ const render = (file: string, config: Config, props: any): string => {
   ufs.use(mfs).use(fs);
 
   compiler.inputFileSystem = ufs;
-  compiler.outputFileSystem = fs;
+  compiler.outputFileSystem = mfs;
 
   try {
-    compiler.run((err: any, stats) => {
+    compiler.run((err: any) => {
       if (err) {
         console.error(err.stack || err);
         if (err.details) {
@@ -67,18 +80,17 @@ const render = (file: string, config: Config, props: any): string => {
         }
         return;
       }
-
-      // const dist: string = resolve(cwd, distDir, `${name}.js`);
-      // const output: string = mfs.readFileSync(dist).toString();
-      // console.log(output);
-      // outputFileSync(dist, output);
     });
+
+    const script: string = page.replace('.jsx', '.js');
+    waitUntilBuilt(script, mfs);
+    outputFileSync(script, mfs.readFileSync(script).toString());
 
     let Page = require(file);
     Page = Page.default || Page;
 
     html += renderToString(
-      <Html script={pagePath.replace('.jsx', '.js')}>
+      <Html script={script}>
         <Page {...props} />
       </Html>
     );
