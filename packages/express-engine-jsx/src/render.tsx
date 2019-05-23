@@ -85,7 +85,7 @@ const render = (file: string, config: Config, props: any): string => {
     Page = Page.default || Page;
 
     html += renderToString(
-      <Html script={script}>
+      <Html script={pagePath.replace('.jsx', '.js')}>
         <Page {...props} />
       </Html>
     );
