@@ -24,6 +24,9 @@ export default (name: string, distDir: string): Configuration => {
         {
           test: /\.(js|ts)x?$/,
           use: 'babel-loader',
+          options: {
+            cwd,
+          },
           exclude: /node_modules/,
         },
       ],
