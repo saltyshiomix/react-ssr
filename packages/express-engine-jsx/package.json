@@ -1,6 +1,6 @@
 {
   "name": "@react-ssr/express-engine-jsx",
-  "version": "0.1.98",
+  "version": "0.1.99",
   "description": "React SSR with ease",
   "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
