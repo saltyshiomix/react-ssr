@@ -72,10 +72,10 @@ const render = (file: string, config: Config, props: any): string => {
 
   process.env.MEMFS_DONT_WARN = 'true';
   const fs = require('fs');
-  const { mfs } = require('memfs');
+  const { fs: mfs } = require('memfs');
   const { ufs } = require('unionfs');
 
-  // mfs.mkdirSync(resolve(cwd, 'react-ssr-src'), { recursive: true });
+  mfs.mkdirSync(resolve(cwd, 'react-ssr-src'), { recursive: true });
   mfs.writeFileSync(resolve(cwd, 'react-ssr-src/entry.js'), entryContents);
   mfs.writeFileSync(resolve(cwd, 'react-ssr-src/page.js'), pageContents);
   ufs.use(mfs).use(fs);
