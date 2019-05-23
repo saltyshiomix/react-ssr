@@ -45,6 +45,8 @@ export default (name: string, distDir: string): Configuration => {
     };
   }
 
+  console.log(resolve(cwd, distDir));
+
   const config: Configuration = {
     mode: isProd ? 'production' : 'development',
     entry: {

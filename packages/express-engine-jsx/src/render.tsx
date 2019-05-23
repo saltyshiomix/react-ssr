@@ -44,6 +44,8 @@ const render = (file: string, config: Config, props: any): string => {
   const pageContents: string = template(file, props);
   const compiler: WebpackComplier = webpack(configure(name, distDir));
 
+  console.log(`> Building ${name}.js`);
+
   const fs = require('fs');
   const { fs: mfs } = require('memfs');
   const { ufs } = require('unionfs');
