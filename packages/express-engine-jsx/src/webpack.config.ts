@@ -29,6 +29,9 @@ export default (name: string, distDir: string): Configuration => {
             options: {
               cwd,
               babelrcRoots: cwd,
+              presets: [
+                '@react-ssr/express-engine-jsx/babel',
+              ],
             },
           },
         },
