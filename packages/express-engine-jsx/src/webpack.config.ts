@@ -8,7 +8,7 @@ const isProd: boolean = process.env.NODE_ENV !== 'production';
 
 export default (name: string, entryContents: string, pageContents: string, distDir: string): Configuration => {
   const config: Configuration = {
-    mode: isProd ? 'production' : 'development' as 'production'|'development',
+    mode: isProd ? 'production' : 'development',
     context: cwd,
     entry: {
       [name]: '/react-ssr-entry.js',
