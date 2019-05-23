@@ -32,8 +32,10 @@ export default (name: string, distDir: string): Configuration => {
       extends: babelrc,
     };
   } else {
+    const { presets, plugins } = require(resolve(__dirname, '../babel'))();
     babelRule.options = {
-      extends: require(resolve(__dirname, '../babel')),
+      presets,
+      plugins,
     };
   }
 
