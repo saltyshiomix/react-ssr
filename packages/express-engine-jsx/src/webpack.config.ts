@@ -29,7 +29,7 @@ export default (name: string, distDir: string): Configuration => {
   if (hasBabelrc) {
     const babelrc: string = getBabelrc();
 
-    console.log('[react-ssr] babelrc: ' + babelrc);
+    console.log('[react-ssr] Use babelrc in: ' + babelrc);
 
     babelRule.use.options = {
       extends: babelrc,
