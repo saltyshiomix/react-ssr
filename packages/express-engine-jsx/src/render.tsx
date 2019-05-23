@@ -1,6 +1,6 @@
 import {
-  // existsSync,
-  // readFileSync,
+  existsSync,
+  readFileSync,
   outputFileSync,
 } from 'fs-extra';
 import {
@@ -34,9 +34,9 @@ const render = (file: string, config: Config, props: any): string => {
   const pagePath: string = getPagePath(file, config);
 
   const cache: string = resolve(cwd, distDir, pagePath.replace('.jsx', '.html'));
-  // if (existsSync(cache)) {
-  //   return readFileSync(cache).toString();
-  // }
+  if (existsSync(cache)) {
+    return readFileSync(cache).toString();
+  }
 
   const page: string = resolve(cwd, distDir, pagePath);
   const name: string = basename(page).replace('.jsx', '');
@@ -44,33 +44,19 @@ const render = (file: string, config: Config, props: any): string => {
   const pageContents: string = template(file, props);
   const compiler: WebpackComplier = webpack(configure(name, distDir));
 
-  console.log(`[react-ssr] Building ${name}.js`);
-
   process.env.MEMFS_DONT_WARN = 'true';
   const fs = require('fs');
-  // const { createFsFromVolume, Volume } = require('memfs');
   const { ufs } = require('unionfs');
 
-  const MemoryFS = require("memory-fs");
+  const MemoryFS = require('memory-fs');
   const mfs = new MemoryFS;
   mfs.mkdirpSync(resolve(cwd, 'react-ssr-src'));
   mfs.writeFileSync(resolve(cwd, 'react-ssr-src/entry.js'), entryContents);
   mfs.writeFileSync(resolve(cwd, 'react-ssr-src/page.js'), pageContents);
-  // const vol = new Volume;
-  // vol.fromJSON({
-  //   './react-ssr-src/entry.js': entryContents,
-  //   './react-ssr-src/page.js': pageContents,
-  // }, cwd);
-  // vol.mkdirSync('./react-ssr-src', { recursive: true });
-  // vol.writeFileSync('./react-ssr-src/entry.js', entryContents, 'utf-8');
-  // vol.writeFileSync('./react-ssr-src/page.js', pageContents, 'utf-8');
-  // const mfs = createFsFromVolume(vol);
   ufs.use(mfs).use(fs);
 
   compiler.inputFileSystem = ufs;
-  // compiler.resolvers.normal.fileSystem = compiler.inputFileSystem;
-  // compiler.resolvers.context.fileSystem = compiler.inputFileSystem;
-  compiler.outputFileSystem = require('fs');
+  compiler.outputFileSystem = fs;
 
   try {
     compiler.run((err: any, stats) => {
