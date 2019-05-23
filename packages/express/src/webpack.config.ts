@@ -25,12 +25,12 @@ babelRule.use.options = {
   extends: babelrc(),
 };
 
-export default (name: string, distDir: string): Configuration => {
+export default (name: string, ext: '.jsx'|'.tsx', distDir: string): Configuration => {
   return {
     mode: isProd ? 'production' : 'development',
     context: cwd,
     entry: {
-      [name]: './react-ssr-src/entry.js',
+      [name]: `./react-ssr-src/entry${ext}`,
     },
     output: {
       path: resolve(cwd, distDir),

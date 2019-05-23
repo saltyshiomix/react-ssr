@@ -39,7 +39,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   let html: string = '<!DOCTYPE html>';
 
   const cwd: string = process.cwd();
-  const ext: string = `.${config.engine}`;
+  const ext: '.jsx'|'.tsx' = `.${config.engine}` as '.jsx'|'.tsx';
   const distDir: string = config.distDir as string;
   const pagePath: string = getPagePath(file, config);
 
@@ -49,13 +49,13 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   }
 
   const name: string = basename(pagePath).replace(ext, '');
-  const compiler: webpack.Compiler = webpack(configure(name, distDir));
+  const compiler: webpack.Compiler = webpack(configure(name, ext, distDir));
   const mfs = new MemoryFileSystem;
   const { ufs } = require('unionfs');
   ufs.use(mfs).use(fs);
   mfs.mkdirpSync(resolve(cwd, 'react-ssr-src'));
-  mfs.writeFileSync(resolve(cwd, 'react-ssr-src/entry.js'), template(resolve(__dirname, '../page.jsx'), { props }));
-  mfs.writeFileSync(resolve(cwd, 'react-ssr-src/page.js'), template(file, props));
+  mfs.writeFileSync(resolve(cwd, `react-ssr-src/entry${ext}`), template(resolve(__dirname, '../page.jsx'), { props }));
+  mfs.writeFileSync(resolve(cwd, `react-ssr-src/page${ext}`), template(file, props));
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
 
