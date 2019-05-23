@@ -53,9 +53,9 @@ const render = (file: string, config: Config, props: any): string => {
 
   const MemoryFS = require("memory-fs");
   const mfs = new MemoryFS;
-  mfs.mkdirpSync('/react-ssr-src');
-  mfs.writeFileSync('/react-ssr-src/entry.js', entryContents);
-  mfs.writeFileSync('/react-ssr-src/page.js', pageContents);
+  mfs.mkdirpSync(resolve(cwd, 'react-ssr-src'));
+  mfs.writeFileSync(resolve(cwd, 'react-ssr-src/entry.js'), entryContents);
+  mfs.writeFileSync(resolve(cwd, 'react-ssr-src/page.js'), pageContents);
   // const vol = new Volume;
   // vol.fromJSON({
   //   './react-ssr-src/entry.js': entryContents,
@@ -111,7 +111,7 @@ const render = (file: string, config: Config, props: any): string => {
   } finally {
     outputFileSync(cache, html);
 
-    console.log(mfs.readFileSync('./dist/index.js', 'utf-8'));
+    console.log(mfs.readFileSync('./dist/index.js'));
   }
 };
 
