@@ -6,10 +6,7 @@ import render from './render';
 import { Config } from './config';
 
 const register = async (app: Application, config: Config): Promise<void> => {
-  require('@babel/register')({
-    cacheDirectory: true,
-    extends: babelrc(),
-  });
+  require('@babel/register')({ extends: babelrc() });
 
   const ENGINE: string = 'jsx';
   const cwd: string = process.cwd();
