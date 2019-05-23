@@ -15,12 +15,8 @@ const babelRule = {
 };
 const hasBabelrc: boolean = existsSync(resolve(cwd, '.babelrc')) || existsSync(resolve(cwd, '.babelrc.js')) || existsSync(resolve(cwd, 'babel.config.js'));
 const getBabelrc = () => {
-  if (existsSync(resolve(cwd, '.babelrc'))) {
-    return resolve(cwd, '.babelrc');
-  }
-  if (existsSync(resolve(cwd, '.babelrc.js'))) {
-    return resolve(cwd, '.babelrc.js');
-  }
+  if (existsSync(resolve(cwd, '.babelrc'))) return resolve(cwd, '.babelrc');
+  if (existsSync(resolve(cwd, '.babelrc.js'))) return resolve(cwd, '.babelrc.js');
   return resolve(cwd, 'babel.config.js');
 };
 
@@ -32,21 +28,23 @@ if (hasBabelrc) {
     extends: babelrc,
   };
 } else {
+  console.log('[react-ssr] No babelrc');
+
   babelRule.use.options = {
     cacheDirectory: true,
     presets: [
-      require('@babel/preset-env'),
-      require('@babel/preset-react'),
-      require('@babel/preset-typescript'),
+      '@babel/preset-env',
+      '@babel/preset-react',
+      '@babel/preset-typescript',
     ],
     plugins: [
-      require('babel-plugin-react-require'),
-      require('@babel/plugin-syntax-dynamic-import'),
-      require('@babel/plugin-proposal-class-properties'),
-      [require('@babel/plugin-proposal-object-rest-spread'), {
+      'babel-plugin-react-require',
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
+      ['@babel/plugin-proposal-object-rest-spread', {
         useBuiltIns: true,
       }],
-      [require('@babel/plugin-transform-runtime'), {
+      ['@babel/plugin-transform-runtime', {
         corejs: 2,
         helpers: true,
         regenerator: true,
