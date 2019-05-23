@@ -32,7 +32,7 @@ export default (name: string, distDir: string): Configuration => {
     console.log('[react-ssr] use custom babelrc: ' + babelrc);
 
     babelRule.use.options = {
-      babelrc,
+      extends: babelrc,
     };
   } else {
     babelRule.use.options = {
