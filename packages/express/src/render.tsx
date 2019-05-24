@@ -30,26 +30,27 @@ const waitUntilBuilt = async (dist: string, mfs: any) => {
   }
 }
 
+const cwd: string = process.cwd();
+const ext: '.jsx'|'.tsx' = `.${engine()}` as '.jsx'|'.tsx';
+const { ufs } = require('unionfs');
 const MemoryFileSystem = require('memory-fs');
 
 const render = async (file: string, config: Config, props: any): Promise<string> => {
   let html: string = '<!DOCTYPE html>';
 
-  const cwd: string = process.cwd();
-  const ext: '.jsx'|'.tsx' = `.${engine()}` as '.jsx'|'.tsx';
   const distDir: string = config.distDir as string;
   const pagePath: string = getPagePath(file, config);
   const name: string = basename(pagePath).replace(ext, '');
   const compiler: webpack.Compiler = webpack(configure(name, ext, distDir));
   const mfs = new MemoryFileSystem;
-  const { ufs } = require('unionfs');
+
   ufs.use(mfs).use(fs);
   mfs.mkdirpSync(resolve(cwd, 'react-ssr-src'));
   mfs.writeFileSync(resolve(cwd, `react-ssr-src/entry${ext}`), template(resolve(__dirname, '../page.jsx'), { props }));
   mfs.writeFileSync(resolve(cwd, `react-ssr-src/page${ext}`), template(file, props));
+
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
-
   compiler.run((err: any) => {
     if (err) {
       console.error(err.stack || err);
