@@ -9,11 +9,9 @@ import { Config } from './config';
 require('@babel/register')({ extends: babelrc() });
 
 const register = async (app: Application, config: Config): Promise<void> => {
-  const distDir: string = config.distDir as string;
-  const viewsDir: string = config.viewsDir as string;
-
+  const { distDir, viewsDir } = config;
   if (process.env.REACT_SSR === 'BUILD') {
-    await remove(distDir);
+    await remove(distDir as string);
   }
 
   const renderFile = async (file: string, options: any, cb: any) => {
@@ -31,9 +29,9 @@ const register = async (app: Application, config: Config): Promise<void> => {
 
   const ENGINE: 'jsx'|'tsx' = engine();
   app.engine(ENGINE, renderFile);
-  app.set('views', resolve(process.cwd(), viewsDir));
+  app.set('views', resolve(process.cwd(), viewsDir as string));
   app.set('view engine', ENGINE);
-  app.use(express.static(distDir));
+  app.use(express.static(distDir as string));
 };
 
 export default register;
