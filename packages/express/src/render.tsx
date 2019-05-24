@@ -10,10 +10,12 @@ import { renderToString } from 'react-dom/server';
 import delay from 'delay';
 import webpack from 'webpack';
 import configure from './webpack.config';
-import engine from './engine';
 import Html from './html';
 import { Config } from './config';
-import { getPagePath } from './utils';
+import {
+  getPagePath,
+  getEngine,
+} from './utils';
 
 template.defaults.minimize = false;
 
@@ -27,7 +29,7 @@ const waitUntilBuilt = async (dist: string, mfs: any) => {
 }
 
 const cwd: string = process.cwd();
-const ext: '.jsx'|'.tsx' = `.${engine()}` as '.jsx'|'.tsx';
+const ext: '.jsx'|'.tsx' = `.${getEngine()}` as '.jsx'|'.tsx';
 const { ufs } = require('unionfs');
 const MemoryFileSystem = require('memory-fs');
 

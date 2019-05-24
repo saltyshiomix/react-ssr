@@ -1,13 +1,15 @@
 import { outputFile } from 'fs-extra';
 import { resolve } from 'path';
 import express, { Application } from 'express';
-import babelrc from './babelrc';
-import engine from './engine';
 import render from './render';
 import { Config } from './config';
-import { getPagePath } from './utils';
+import {
+  getPagePath,
+  getBabelrc,
+  getEngine,
+} from './utils';
 
-require('@babel/register')({ extends: babelrc() });
+require('@babel/register')({ extends: getBabelrc() });
 
 const cwd: string = process.cwd();
 
@@ -33,7 +35,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
     }
   };
 
-  const ENGINE: 'jsx'|'tsx' = engine();
+  const ENGINE: 'jsx'|'tsx' = getEngine();
   app.engine(ENGINE, renderFile);
   app.set('views', resolve(cwd, viewsDir as string));
   app.set('view engine', ENGINE);
