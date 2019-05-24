@@ -1,7 +1,6 @@
 import fs from 'fs';
 import { outputFileSync } from 'fs-extra';
 import {
-  sep,
   basename,
   resolve,
 } from 'path';
@@ -14,12 +13,9 @@ import configure from './webpack.config';
 import engine from './engine';
 import Html from './html';
 import { Config } from './config';
+import { getPagePath } from './utils';
 
 template.defaults.minimize = false;
-
-const getPagePath = (file: string, config: Config): string => {
-  return file.split(sep + config.viewsDir + sep)[1];
-};
 
 const waitUntilBuilt = async (dist: string, mfs: any) => {
   while (true) {
@@ -38,10 +34,10 @@ const MemoryFileSystem = require('memory-fs');
 const render = async (file: string, config: Config, props: any): Promise<string> => {
   let html: string = '<!DOCTYPE html>';
 
-  const distDir: string = config.distDir as string;
-  const pagePath: string = getPagePath(file, config);
+  const { distDir, viewsDir } = config;
+  const pagePath: string = getPagePath(file, viewsDir as string);
   const name: string = basename(pagePath).replace(ext, '');
-  const compiler: webpack.Compiler = webpack(configure(name, ext, distDir));
+  const compiler: webpack.Compiler = webpack(configure(name, ext, distDir as string));
   const mfs = new MemoryFileSystem;
 
   ufs.use(mfs).use(fs);
@@ -61,7 +57,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
     }
   });
 
-  const script: string = resolve(cwd, distDir, pagePath).replace(ext, '.js');
+  const script: string = resolve(cwd, distDir as string, pagePath).replace(ext, '.js');
   await waitUntilBuilt(script, mfs);
   await outputFileSync(script, mfs.readFileSync(script).toString());
 
