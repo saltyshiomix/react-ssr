@@ -1,9 +1,5 @@
 import fs from 'fs';
-import {
-  // existsSync,
-  // readFileSync,
-  outputFileSync,
-} from 'fs-extra';
+import { outputFileSync } from 'fs-extra';
 import {
   sep,
   basename,
@@ -43,13 +39,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   const ext: '.jsx'|'.tsx' = `.${engine()}` as '.jsx'|'.tsx';
   const distDir: string = config.distDir as string;
   const pagePath: string = getPagePath(file, config);
-
   const cache: string = resolve(cwd, distDir, pagePath.replace(ext, '.html'));
-  // TODO: use cache only when it is static one
-  // if (existsSync(cache)) {
-  //   return readFileSync(cache).toString();
-  // }
-
   const name: string = basename(pagePath).replace(ext, '');
   const compiler: webpack.Compiler = webpack(configure(name, ext, distDir));
   const mfs = new MemoryFileSystem;
