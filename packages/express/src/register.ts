@@ -30,6 +30,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
       return cb(e);
     } finally {
       if (!html) return;
+      // HACK: enable express' cache system
       await outputFile(resolve(cwd, distDir as string, getPagePath(file, viewsDir as string).replace('.jsx', '.html')), html);
     }
   };
