@@ -5,12 +5,10 @@ import { Config } from './config';
 export function ReactSsrExpress(config: Config = {}) {
   const app: Application = express();
 
-  config = {
+  register(app, {
     ...(new Config),
     ...config,
-  };
-
-  register(app, config);
+  });
 
   return app;
 }
