@@ -29,10 +29,8 @@ const register = async (app: Application, config: Config): Promise<void> => {
     } catch (e) {
       return cb(e);
     } finally {
-      if (!html) {
-        return;
-      }
-      await outputFile(resolve(cwd, distDir as string, getPagePath(file, viewsDir as string)), html);
+      if (!html) return;
+      await outputFile(resolve(cwd, distDir as string, getPagePath(file, viewsDir as string).replace('.jsx', '.html')), html);
     }
   };
 
