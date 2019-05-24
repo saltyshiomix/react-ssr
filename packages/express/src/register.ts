@@ -9,7 +9,6 @@ import { Config } from './config';
 require('@babel/register')({ extends: babelrc() });
 
 const register = async (app: Application, config: Config): Promise<void> => {
-  const ENGINE: 'jsx'|'tsx' = engine();
   const distDir: string = config.distDir as string;
   const viewsDir: string = config.viewsDir as string;
 
@@ -30,6 +29,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
     }
   };
 
+  const ENGINE: 'jsx'|'tsx' = engine();
   app.engine(ENGINE, renderFile);
   app.set('views', resolve(process.cwd(), viewsDir));
   app.set('view engine', ENGINE);
