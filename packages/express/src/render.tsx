@@ -39,7 +39,6 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   const ext: '.jsx'|'.tsx' = `.${engine()}` as '.jsx'|'.tsx';
   const distDir: string = config.distDir as string;
   const pagePath: string = getPagePath(file, config);
-  const cache: string = resolve(cwd, distDir, pagePath.replace(ext, '.html'));
   const name: string = basename(pagePath).replace(ext, '');
   const compiler: webpack.Compiler = webpack(configure(name, ext, distDir));
   const mfs = new MemoryFileSystem;
@@ -51,35 +50,30 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
 
-  try {
-    compiler.run((err: any) => {
-      if (err) {
-        console.error(err.stack || err);
-        if (err.details) {
-          console.error(err.details);
-        }
-        return;
+  compiler.run((err: any) => {
+    if (err) {
+      console.error(err.stack || err);
+      if (err.details) {
+        console.error(err.details);
       }
-    });
+      return;
+    }
+  });
 
-    const script: string = resolve(cwd, distDir, pagePath).replace(ext, '.js');
-    await waitUntilBuilt(script, mfs);
-    await outputFileSync(script, mfs.readFileSync(script).toString());
+  const script: string = resolve(cwd, distDir, pagePath).replace(ext, '.js');
+  await waitUntilBuilt(script, mfs);
+  await outputFileSync(script, mfs.readFileSync(script).toString());
 
-    let Page = require(file);
-    Page = Page.default || Page;
+  let Page = require(file);
+  Page = Page.default || Page;
 
-    html += renderToString(
-      <Html script={pagePath.replace(ext, '.js')}>
-        <Page {...props} />
-      </Html>
-    );
+  html += renderToString(
+    <Html script={pagePath.replace(ext, '.js')}>
+      <Page {...props} />
+    </Html>
+  );
 
-    return html;
-
-  } finally {
-    await outputFileSync(cache, html);
-  }
+  return html;
 };
 
 export default render;
