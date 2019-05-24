@@ -66,7 +66,6 @@ const express = require('@react-ssr/express');
 
 // default configuration
 const app = express({
-  engine: 'jsx', // or 'tsx'
   distDir: 'dist',
   viewsDir: 'views',
 });

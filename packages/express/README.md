@@ -67,7 +67,6 @@ const express = require('@react-ssr/express');
 
 // default configuration
 const app = express({
-  engine: 'jsx', // or 'tsx'
   distDir: 'dist',
   viewsDir: 'views',
 });
@@ -91,7 +90,7 @@ const app = express({
 import express from '@react-ssr/express';
 import { Request, Response } from 'express';
 
-const app = express({ engine: 'tsx' });
+const app = express();
 
 app.get('/', (_req: Request, res: Response) => {
   const user = { name: 'World' };
