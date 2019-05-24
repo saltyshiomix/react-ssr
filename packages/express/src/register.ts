@@ -1,4 +1,4 @@
-import { remove, outputFile } from 'fs-extra';
+import { outputFile } from 'fs-extra';
 import { resolve } from 'path';
 import express, { Application } from 'express';
 import babelrc from './babelrc';
@@ -13,9 +13,6 @@ const cwd: string = process.cwd();
 
 const register = async (app: Application, config: Config): Promise<void> => {
   const { distDir, viewsDir } = config;
-  if (process.env.REACT_SSR === 'BUILD') {
-    await remove(distDir as string);
-  }
 
   const renderFile = async (file: string, options: any, cb: any) => {
     let html: string|undefined;
