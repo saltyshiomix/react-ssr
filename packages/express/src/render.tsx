@@ -15,6 +15,7 @@ import { renderToString } from 'react-dom/server';
 import delay from 'delay';
 import webpack from 'webpack';
 import configure from './webpack.config';
+import engine from './engine';
 import Html from './html';
 import { Config } from './config';
 
@@ -39,7 +40,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   let html: string = '<!DOCTYPE html>';
 
   const cwd: string = process.cwd();
-  const ext: '.jsx'|'.tsx' = `.${config.engine}` as '.jsx'|'.tsx';
+  const ext: '.jsx'|'.tsx' = `.${engine()}` as '.jsx'|'.tsx';
   const distDir: string = config.distDir as string;
   const pagePath: string = getPagePath(file, config);
 

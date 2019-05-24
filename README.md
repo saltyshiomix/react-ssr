@@ -74,6 +74,10 @@ const app = express({
 
 ## TypeScript Support
 
+To enable TypeScript `.tsx`, just put `tsconfig.json` in your project root directory.
+
+And TypeScript codes should be like these:
+
 **`./package.json`**
 
 ```json
@@ -90,7 +94,7 @@ const app = express({
 import express from '@react-ssr/express';
 import { Request, Response } from 'express';
 
-const app = express({ engine: 'tsx' });
+const app = express();
 
 app.get('/', (_req: Request, res: Response) => {
   const user = { name: 'World' };

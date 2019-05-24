@@ -65,14 +65,6 @@ export function ReactSsrExpress(config: Config = {}) {
     ...config,
   };
 
-  if (!config.engine) {
-    throw new Error('InvalidProgramException: view engine must be specified.');
-  }
-
-  if (!['jsx', 'tsx'].includes(config.engine)) {
-    throw new Error(`The engine ${config.engine} is not supported.`);
-  }
-
   register(app, config);
 
   if (process.env.REACT_SSR === 'BUILD') {

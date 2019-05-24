@@ -2,13 +2,14 @@ import { remove } from 'fs-extra';
 import { resolve } from 'path';
 import express, { Application } from 'express';
 import babelrc from './babelrc';
+import engine from './engine';
 import render from './render';
 import { Config } from './config';
 
 const register = async (app: Application, config: Config): Promise<void> => {
   require('@babel/register')({ extends: babelrc() });
 
-  const ENGINE: 'jsx'|'tsx' = config.engine as 'jsx'|'tsx';
+  const ENGINE: 'jsx'|'tsx' = engine();
   const cwd: string = process.cwd();
   const distDir: string = config.distDir as string;
   const viewsDir: string = config.viewsDir as string;
