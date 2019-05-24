@@ -9,8 +9,9 @@ import { getPagePath } from './utils';
 
 require('@babel/register')({ extends: babelrc() });
 
+const cwd: string = process.cwd();
+
 const register = async (app: Application, config: Config): Promise<void> => {
-  const cwd: string = process.cwd();
   const { distDir, viewsDir } = config;
   if (process.env.REACT_SSR === 'BUILD') {
     await remove(distDir as string);
@@ -37,7 +38,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
 
   const ENGINE: 'jsx'|'tsx' = engine();
   app.engine(ENGINE, renderFile);
-  app.set('views', resolve(process.cwd(), viewsDir as string));
+  app.set('views', resolve(cwd, viewsDir as string));
   app.set('view engine', ENGINE);
   app.use(express.static(distDir as string));
 };
