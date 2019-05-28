@@ -43,14 +43,13 @@ const render = async (file: string, config: Config, props: any): Promise<string>
     return readFileSync(cacheHtml).toString();
   }
 
-  const compiler: webpack.Compiler = webpack(configure(hash, ext, distDir));
   const mfs = new MemoryFileSystem;
-
   ufs.use(mfs).use(fs);
   mfs.mkdirpSync(resolve(cwd, 'react-ssr-src'));
   mfs.writeFileSync(resolve(cwd, `react-ssr-src/entry${ext}`), template(resolve(__dirname, '../page.jsx'), { props }));
   mfs.writeFileSync(resolve(cwd, `react-ssr-src/page${ext}`), template(file, props));
 
+  const compiler: webpack.Compiler = webpack(configure(hash, ext, distDir));
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
   compiler.run((err: any) => {
