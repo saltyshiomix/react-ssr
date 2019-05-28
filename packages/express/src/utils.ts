@@ -1,8 +1,5 @@
 import { existsSync } from 'fs';
-import {
-  sep,
-  resolve,
-} from 'path';
+import { resolve } from 'path';
 
 const cwd: string = process.cwd();
 
@@ -11,10 +8,6 @@ export const getEngine = (): 'jsx'|'tsx' => {
     return 'tsx';
   }
   return 'jsx';
-};
-
-export const getPagePath = (file: string, viewsDir: string): string => {
-  return file.split(sep + viewsDir + sep)[1];
 };
 
 export const hasUserBabelrc = (): boolean => {
