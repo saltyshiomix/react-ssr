@@ -49,10 +49,8 @@ app.listen(3000, () => {
 ```jsx
 import React from 'react';
 
-export default class extends React.Component {
-  render() {
-    return `Hello ${this.props.user.name}!`;
-  }
+export default function Index(props) {
+  return `Hello ${props.user.name}!`;
 }
 ```
 
@@ -107,13 +105,11 @@ app.listen(3000, () => {
 ```tsx
 import React from 'react';
 
-interface Props {
+interface IndexProps {
   user: any;
 }
 
-export default class extends React.Component<Props> {
-  render() {
-    return `Hello ${this.props.user.name}!`;
-  }
+export default function Index(props: IndexProps) {
+  return `Hello ${props.user.name}!`;
 }
 ```
