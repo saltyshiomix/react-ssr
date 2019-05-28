@@ -35,16 +35,15 @@ const MemoryFileSystem = require('memory-fs');
 const render = async (file: string, config: Config, props: any): Promise<string> => {
   let html: string = '<!DOCTYPE html>';
 
-  const { distDir } = config;
-
+  const distDir: string = config.distDir as string;
   const hash: string = await hasha(file + JSON.stringify(props), { algorithm: 'md5' });
-  const cacheScript: string = resolve(cwd, distDir as string, `${hash}.js`);
-  const cacheHtml: string = resolve(cwd, distDir as string, `${hash}.html`);
+  const cacheScript: string = resolve(cwd, distDir, `${hash}.js`);
+  const cacheHtml: string = resolve(cwd, distDir, `${hash}.html`);
   if (existsSync(cacheScript) && existsSync(cacheHtml)) {
     return readFileSync(cacheHtml).toString();
   }
 
-  const compiler: webpack.Compiler = webpack(configure(hash, ext, distDir as string));
+  const compiler: webpack.Compiler = webpack(configure(hash, ext, distDir));
   const mfs = new MemoryFileSystem;
 
   ufs.use(mfs).use(fs);
