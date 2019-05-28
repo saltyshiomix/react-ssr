@@ -1,10 +1,8 @@
-import { outputFile } from 'fs-extra';
 import { resolve } from 'path';
 import express, { Application } from 'express';
 import render from './render';
 import { Config } from './config';
 import {
-  getPagePath,
   getBabelrc,
   getEngine,
 } from './utils';
@@ -17,21 +15,15 @@ const register = async (app: Application, config: Config): Promise<void> => {
   const { distDir, viewsDir } = config;
 
   const renderFile = async (file: string, options: any, cb: any) => {
-    let html: string|undefined;
     try {
       // HACK: delete unnecessary server options
       const props: any = options;
       delete props.settings;
       delete props._locals;
       delete props.cache;
-      html = await render(file, config, props);
-      return cb(null, html);
+      return cb(null, await render(file, config, props));
     } catch (e) {
       return cb(e);
-    } finally {
-      if (!html) return;
-      // HACK: enable express' cache system
-      await outputFile(resolve(cwd, distDir as string, getPagePath(file, viewsDir as string).replace('.jsx', '.html')), html);
     }
   };
 

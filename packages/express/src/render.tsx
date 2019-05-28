@@ -9,8 +9,8 @@ import template from 'art-template';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import delay from 'delay';
+import hasha from 'hasha';
 import webpack from 'webpack';
-import { sha256 } from 'crypto-hash';
 import configure from './webpack.config';
 import Html from './html';
 import { Config } from './config';
@@ -40,7 +40,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
 
   const { distDir, viewsDir } = config;
 
-  const hash: string = await sha256(file + JSON.stringify(props));
+  const hash: string = await hasha(file + JSON.stringify(props), { algorithm: 'sha256' });
   const cacheScript: string = resolve(cwd, distDir as string, `${hash}.js`);
   const cacheHtml: string = resolve(cwd, distDir as string, `${hash}.html`);
   if (existsSync(cacheScript) && existsSync(cacheHtml)) {
