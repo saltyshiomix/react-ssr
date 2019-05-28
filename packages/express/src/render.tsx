@@ -40,7 +40,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
 
   const { distDir, viewsDir } = config;
 
-  const hash: string = await hasha(file + JSON.stringify(props), { algorithm: 'sha256' });
+  const hash: string = await hasha(file + JSON.stringify(props), { algorithm: 'md5' });
   const cacheScript: string = resolve(cwd, distDir as string, `${hash}.js`);
   const cacheHtml: string = resolve(cwd, distDir as string, `${hash}.html`);
   if (existsSync(cacheScript) && existsSync(cacheHtml)) {
