@@ -1755,6 +1755,11 @@ crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
+crypto-hash@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/crypto-hash/-/crypto-hash-1.2.1.tgz#b7fbca0c9d749b8ae8f3ea44dd66eb11f3554165"
+  integrity sha512-UjisXrC1Xs0YTXc6V7Ypd8IzdbpsowPVgJq/2w478LEA6xx9+4RpcwirELUBP7AxivQOn30/KeEraY2tGy0EQw==
+
 csstype@^2.2.0:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.4.tgz#d585a6062096e324e7187f80e04f92bd0f00e37f"

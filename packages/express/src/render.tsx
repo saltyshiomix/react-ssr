@@ -1,14 +1,16 @@
 import fs from 'fs';
-import { outputFileSync } from 'fs-extra';
 import {
-  basename,
-  resolve,
-} from 'path';
+  existsSync,
+  readFileSync,
+  outputFileSync,
+} from 'fs-extra';
+import { resolve } from 'path';
 import template from 'art-template';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import delay from 'delay';
 import webpack from 'webpack';
+import { sha256 } from 'crypto-hash';
 import configure from './webpack.config';
 import Html from './html';
 import { Config } from './config';
@@ -24,7 +26,7 @@ const waitUntilBuilt = async (dist: string, mfs: any) => {
     if (mfs.existsSync(dist)) {
       break;
     }
-    await delay(30);
+    await delay(15);
   }
 }
 
@@ -37,9 +39,16 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   let html: string = '<!DOCTYPE html>';
 
   const { distDir, viewsDir } = config;
+
+  const hash: string = await sha256(file + JSON.stringify(props));
+  const cacheScript: string = resolve(cwd, distDir as string, `${hash}.js`);
+  const cacheHtml: string = resolve(cwd, distDir as string, `${hash}.html`);
+  if (existsSync(cacheScript) && existsSync(cacheHtml)) {
+    return readFileSync(cacheHtml).toString();
+  }
+
   const pagePath: string = getPagePath(file, viewsDir as string);
-  const name: string = basename(pagePath).replace(ext, '');
-  const compiler: webpack.Compiler = webpack(configure(name, ext, distDir as string));
+  const compiler: webpack.Compiler = webpack(configure(hash, ext, distDir as string));
   const mfs = new MemoryFileSystem;
 
   ufs.use(mfs).use(fs);
@@ -59,9 +68,8 @@ const render = async (file: string, config: Config, props: any): Promise<string>
     }
   });
 
-  const script: string = resolve(cwd, distDir as string, pagePath).replace(ext, '.js');
-  await waitUntilBuilt(script, mfs);
-  await outputFileSync(script, mfs.readFileSync(script).toString());
+  await waitUntilBuilt(cacheScript, mfs);
+  await outputFileSync(cacheScript, mfs.readFileSync(cacheScript).toString());
 
   let Page = require(file);
   Page = Page.default || Page;
@@ -72,7 +80,11 @@ const render = async (file: string, config: Config, props: any): Promise<string>
     </Html>
   );
 
-  return html;
+  try {
+    return html;
+  } finally {
+    await outputFileSync(cacheHtml, html);
+  }
 };
 
 export default render;
