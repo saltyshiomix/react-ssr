@@ -14,10 +14,7 @@ import webpack from 'webpack';
 import configure from './webpack.config';
 import Html from './html';
 import { Config } from './config';
-import {
-  getPagePath,
-  getEngine,
-} from './utils';
+import { getEngine } from './utils';
 
 template.defaults.minimize = false;
 
@@ -38,7 +35,7 @@ const MemoryFileSystem = require('memory-fs');
 const render = async (file: string, config: Config, props: any): Promise<string> => {
   let html: string = '<!DOCTYPE html>';
 
-  const { distDir, viewsDir } = config;
+  const { distDir } = config;
 
   const hash: string = await hasha(file + JSON.stringify(props), { algorithm: 'md5' });
   const cacheScript: string = resolve(cwd, distDir as string, `${hash}.js`);
@@ -47,7 +44,6 @@ const render = async (file: string, config: Config, props: any): Promise<string>
     return readFileSync(cacheHtml).toString();
   }
 
-  const pagePath: string = getPagePath(file, viewsDir as string);
   const compiler: webpack.Compiler = webpack(configure(hash, ext, distDir as string));
   const mfs = new MemoryFileSystem;
 
@@ -75,7 +71,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   Page = Page.default || Page;
 
   html += renderToString(
-    <Html script={pagePath.replace(ext, '.js')}>
+    <Html script={`${hash}.js`}>
       <Page {...props} />
     </Html>
   );
