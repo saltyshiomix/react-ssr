@@ -15,7 +15,7 @@ export default class extends React.Component {
       <React.Fragment>
         <Helmet>
           <meta charSet="utf-8" />
-          <title>The example of "express-jsx-custom-babelrc"</title>
+          <title>The example of "express-custom-babelrc"</title>
         </Helmet>
         <div>
           <p>Hello {this.props.user.name}!</p>

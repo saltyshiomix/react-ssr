@@ -19,7 +19,7 @@ export default class extends React.Component<Props> {
       <React.Fragment>
         <Helmet>
           <meta charSet="utf-8" />
-          <title>The example of "express-tsx-basic"</title>
+          <title>The example of "express-basic-tsx"</title>
         </Helmet>
         <div>
           <p>Hello {this.props.user.name}!</p>
