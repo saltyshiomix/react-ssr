@@ -123,6 +123,10 @@ export default function Index(props: IndexProps) {
 | --- | --- | --- |
 | [@react-ssr/express](https://www.npmjs.com/package/@react-ssr/express) | ![@react-ssr/express](https://img.shields.io/npm/v/@react-ssr/express.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/express.svg) | express package |
 
+## Examples
+
+See the [examples](./examples) folder.
+
 ## Contributing
 
 WIP.
