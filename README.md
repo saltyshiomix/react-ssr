@@ -132,7 +132,7 @@ WIP.
 - [ ] README
   - [x] Roadmaps
   - [x] How to use
-  - [ ] Contributing guilds
+  - [ ] Contributing guides
 - [ ] develop packages
   - [x] lerna monorepo development
   - [x] @react-ssr/express
