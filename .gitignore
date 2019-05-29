@@ -7,4 +7,4 @@ node_modules
 workspace
 
 # packages
-packages/express/build
+packages/express/dist

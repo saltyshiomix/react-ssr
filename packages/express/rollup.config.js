@@ -9,7 +9,7 @@ const extensions = ['.js', '.ts', '.tsx'];
 export default {
   input: 'src/index.ts',
   output: {
-    dir: 'build',
+    dir: 'dist',
     format: 'cjs',
   },
   plugins: [
