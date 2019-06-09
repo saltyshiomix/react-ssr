@@ -1,11 +1,15 @@
-import express, { Express } from 'express';
+import express from 'express';
 import register from './register';
 import { Config } from './config';
 
-let ReactSsrExpress = express;
+type Express = typeof express;
 
-ReactSsrExpress.prototype.constructor = (config?: Config): Express => {
-  const app: Express = express();
+interface IReactSsrExpress extends Express {
+  (config?: Config): express.Express;
+}
+
+const ctor = (config?: Config): express.Express => {
+  const app: express.Express = express();
 
   register(app, {
     ...(new Config),
@@ -13,7 +17,9 @@ ReactSsrExpress.prototype.constructor = (config?: Config): Express => {
   });
 
   return app;
-}
+};
+
+const ReactSsrExpress: IReactSsrExpress = Object.assign(express, ctor);
 
 export {
   ReactSsrExpress,
