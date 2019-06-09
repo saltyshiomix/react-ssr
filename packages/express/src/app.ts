@@ -1,9 +1,11 @@
-import express, { Application } from 'express';
+import express, { Express } from 'express';
 import register from './register';
 import { Config } from './config';
 
-export function ReactSsrExpress(config: Config = {}) {
-  const app: Application = express();
+let ReactSsrExpress = express;
+
+ReactSsrExpress.prototype.constructor = (config?: Config): Express => {
+  const app: Express = express();
 
   register(app, {
     ...(new Config),
@@ -12,3 +14,7 @@ export function ReactSsrExpress(config: Config = {}) {
 
   return app;
 }
+
+export {
+  ReactSsrExpress,
+};
