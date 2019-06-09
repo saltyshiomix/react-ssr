@@ -19,9 +19,9 @@ const ctor = (config?: Config): express.Express => {
   return app;
 };
 
-const ReactSsrExpress: IReactSsrExpress = express;
+const ReactSsrExpress: IReactSsrExpress = ctor as IReactSsrExpress;
 
-ReactSsrExpress.prototype.constructor = ctor;
+ReactSsrExpress.prototype = express.prototype;
 
 export {
   ReactSsrExpress,
