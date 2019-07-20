@@ -905,6 +905,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.6.2.tgz#a5ccec6abb6060d5f20d256fb03ed743e9774999"
   integrity sha512-gojym4tX0FWeV2gsW4Xmzo5wxGjXGm550oVUII7f7G5o4BV6c7DBdiG1RRQd+y1bvqRyYtPfMK85UM95vsapqQ==
 
+"@types/node@^12.6.8":
+  version "12.6.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.6.8.tgz#e469b4bf9d1c9832aee4907ba8a051494357c12c"
+  integrity sha512-aX+gFgA5GHcDi89KG5keey2zf0WfZk/HAQotEamsK2kbey+8yGKcson0hbK8E+v0NArlCJQCqMP161YhV6ZXLg==
+
 "@types/prop-types@*":
   version "15.7.1"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.1.tgz#f1a11e7babb0c3cad68100be381d1e064c68f1f6"
@@ -922,7 +927,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.8.22":
+"@types/react@*", "@types/react@^16.8.23":
   version "16.8.23"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.23.tgz#ec6be3ceed6353a20948169b6cb4c97b65b97ad2"
   integrity sha512-abkEOIeljniUN9qB5onp++g0EY38h7atnDHxwKUFz1r3VH1+yG1OKi2sNPTyObL40goBmfKFpdii2lEzwLX1cA==
@@ -957,10 +962,10 @@
   dependencies:
     source-map "^0.6.1"
 
-"@types/webpack@^4.4.34":
-  version "4.4.34"
-  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.4.34.tgz#e5f88b9a795da11683b4ec4a07d1c2b023b19810"
-  integrity sha512-GnEBgjHsfO1M7DIQ0dAupSofcmDItE3Zsu3reK8SQpl/6N0rtUQxUmQzVFAS5ou/FGjsYKjXAWfItLZ0kNFTfQ==
+"@types/webpack@^4.32.0":
+  version "4.32.0"
+  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.32.0.tgz#bd4a149964cd471538f2781f2be5f9815175463b"
+  integrity sha512-kpz5wHDyG/WEpzX9gcwFp/w0oSsq0n/rmFdJelk/QBMHmNIOZdiTDInV0Lj8itGKBahQrBgJGJRss/6UHgLuKg==
   dependencies:
     "@types/anymatch" "*"
     "@types/node" "*"
