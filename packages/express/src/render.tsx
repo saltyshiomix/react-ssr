@@ -35,7 +35,8 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   let html: string = '<!DOCTYPE html>';
 
   const distDir: string = config.distDir as string;
-  const hash: string = await hasha(file + JSON.stringify(props), { algorithm: 'md5' });
+  const env: string = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+  const hash: string = await hasha(env + file + JSON.stringify(props), { algorithm: 'md5' });
   const cache: string = resolve(cwd, distDir, `${hash}.js`);
 
   let Page = require(file);
