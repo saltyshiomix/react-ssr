@@ -1,7 +1,6 @@
 import fs from 'fs';
 import {
   existsSync,
-  readFileSync,
   outputFileSync,
 } from 'fs-extra';
 import { resolve } from 'path';
@@ -38,9 +37,18 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   const distDir: string = config.distDir as string;
   const hash: string = await hasha(file + JSON.stringify(props), { algorithm: 'md5' });
   const cacheScript: string = resolve(cwd, distDir, `${hash}.js`);
-  const cacheHtml: string = resolve(cwd, distDir, `${hash}.html`);
-  if (existsSync(cacheScript) && existsSync(cacheHtml)) {
-    return readFileSync(cacheHtml).toString();
+
+  let Page = require(file);
+  Page = Page.default || Page;
+
+  html += renderToString(
+    <Html script={`${hash}.js`}>
+      <Page {...props} />
+    </Html>
+  );
+
+  if (existsSync(cacheScript)) {
+    return html;
   }
 
   const mfs = new MemoryFileSystem;
@@ -65,20 +73,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   await waitUntilBuilt(cacheScript, mfs);
   await outputFileSync(cacheScript, mfs.readFileSync(cacheScript).toString());
 
-  let Page = require(file);
-  Page = Page.default || Page;
-
-  html += renderToString(
-    <Html script={`${hash}.js`}>
-      <Page {...props} />
-    </Html>
-  );
-
-  try {
-    return html;
-  } finally {
-    await outputFileSync(cacheHtml, html);
-  }
+  return html;
 };
 
 export default render;
