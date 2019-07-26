@@ -36,7 +36,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
 
   const distDir: string = config.distDir as string;
   const hash: string = await hasha(file + JSON.stringify(props), { algorithm: 'md5' });
-  const cacheScript: string = resolve(cwd, distDir, `${hash}.js`);
+  const cache: string = resolve(cwd, distDir, `${hash}.js`);
 
   let Page = require(file);
   Page = Page.default || Page;
@@ -47,7 +47,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
     </Html>
   );
 
-  if (existsSync(cacheScript)) {
+  if (existsSync(cache)) {
     return html;
   }
 
@@ -70,8 +70,8 @@ const render = async (file: string, config: Config, props: any): Promise<string>
     }
   });
 
-  await waitUntilBuilt(cacheScript, mfs);
-  await outputFileSync(cacheScript, mfs.readFileSync(cacheScript).toString());
+  await waitUntilBuilt(cache, mfs);
+  await outputFileSync(cache, mfs.readFileSync(cache).toString());
 
   return html;
 };
