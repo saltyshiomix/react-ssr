@@ -6,6 +6,7 @@
   <a href="https://npm.im/@react-ssr/express" alt="Downloads of @react-ssr/express">
     <img src="https://img.shields.io/npm/dt/@react-ssr/express.svg">
   </a>
+  <img src="https://img.shields.io/npm/l/@react-ssr/express.svg" alt="Package License (MIT)">
 </p>
 
 ## How to use
@@ -49,8 +50,8 @@ app.listen(3000, () => {
 ```jsx
 import React from 'react';
 
-export default function Index(props) {
-  return `Hello ${props.user.name}!`;
+export default function Index({ user }) {
+  return `Hello ${user.name}!`;
 }
 ```
 
@@ -109,7 +110,7 @@ interface IndexProps {
   user: any;
 }
 
-export default function Index(props: IndexProps) {
-  return `Hello ${props.user.name}!`;
+export default function Index({ user }: IndexProps) {
+  return `Hello ${user.name}!`;
 }
 ```

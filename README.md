@@ -42,8 +42,8 @@ app.listen(3000, () => {
 ```jsx
 import React from 'react';
 
-export default function Index(props) {
-  return `Hello ${props.user.name}!`;
+export default function Index({ user }) {
+  return `Hello ${user.name}!`;
 }
 ```
 
@@ -53,7 +53,7 @@ You'll see `Hello World!`.
 
 ## Features
 
-- Pass server data to the client `this.props`
+- Pass server data to the client `props`
 - Auto SSR (Server Side Rendering)
 - TypeScript support
 
@@ -112,24 +112,20 @@ interface IndexProps {
   user: any;
 }
 
-export default function Index(props: IndexProps) {
-  return `Hello ${props.user.name}!`;
+export default function Index({ user }: IndexProps) {
+  return `Hello ${user.name}!`;
 }
 ```
 
 ## Packages
 
-| package | version | description |
-| --- | --- | --- |
-| [@react-ssr/express](https://www.npmjs.com/package/@react-ssr/express) | ![@react-ssr/express](https://img.shields.io/npm/v/@react-ssr/express.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/express.svg) | express package |
+| package | version |
+| --- | --- |
+| [@react-ssr/express](https://github.com/saltyshiomix/react-ssr/blob/master/packages/express/README.md) | ![@react-ssr/express](https://img.shields.io/npm/v/@react-ssr/express.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/express.svg) |
 
 ## Examples
 
 See the [examples](./examples) folder.
-
-## Contributing
-
-WIP.
 
 ## Roadmaps
 
