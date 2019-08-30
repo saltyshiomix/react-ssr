@@ -11,10 +11,7 @@ interface IReactSsrExpress extends Express {
 const ctor = (config?: Config): express.Express => {
   const app: express.Express = express();
 
-  register(app, {
-    ...(new Config),
-    ...config,
-  });
+  register(app, Object.assign(new Config, config));
 
   return app;
 };
