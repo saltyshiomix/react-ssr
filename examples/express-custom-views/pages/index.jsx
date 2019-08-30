@@ -1,27 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
-export default class extends React.Component {
-  state = {
-    message: 'This message is from state!',
-  };
+const Index = ({ user }) => {
+  const [message, setMessage] = useState('waiting...');
 
-  handleClick = () => {
-    alert(this.state.message);
-  };
+  const onClick = () => setMessage('This is a react-ssr!');
 
-  render() {
-    return (
-      <React.Fragment>
-        <Helmet>
-          <meta charSet="utf-8" />
-          <title>The example of "express-custom-views"</title>
-        </Helmet>
-        <div>
-          <p>Hello {this.props.user.name}!</p>
-          <button onClick={this.handleClick}>Click Me</button>
-        </div>
-      </React.Fragment>
-    );
-  }
-}
+  return (
+    <React.Fragment>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>The example of "express-basic-jsx"</title>
+      </Helmet>
+      <div>
+        <p>Hello {user.name}!</p>
+        <button onClick={onClick}>Click Me</button>
+        <p>Message from state: {message}</p>
+      </div>
+    </React.Fragment>
+  );
+};
+
+export default Index;
