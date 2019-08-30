@@ -17,10 +17,7 @@ const register = async (app: Application, config: Config): Promise<void> => {
   const renderFile = async (file: string, options: any, cb: any) => {
     try {
       // HACK: delete unnecessary server options
-      const props: any = options;
-      delete props.settings;
-      delete props._locals;
-      delete props.cache;
+      const { settings, cache, _locals, ...props } = options;
       return cb(null, await render(file, config, props));
     } catch (e) {
       return cb(e);
