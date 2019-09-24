@@ -7,7 +7,7 @@ import { terser } from 'rollup-plugin-terser';
 const extensions = ['.js', '.ts', '.tsx'];
 
 export default {
-  input: 'src/index.ts',
+  input: 'lib/index.ts',
   output: {
     dir: 'dist',
     format: 'cjs',
