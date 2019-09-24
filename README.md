@@ -1,5 +1,5 @@
 <p align="center">😎 React SSR 😎</p>
-<p align="center">React SSR with ease</p>
+<p align="center">React SSR as a view template engine</p>
 
 ## How to use
 
