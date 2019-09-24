@@ -149,3 +149,7 @@ $ cd react-ssr
 $ yarn
 $ yarn dev <example-folder-name>
 ```
+
+## Articles
+
+[The React View Template Engine for Express](https://dev.to/saltyshiomix/the-react-view-template-engine-for-express-42f0)
