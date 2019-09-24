@@ -7,14 +7,14 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext",
+      "esnext"
     ],
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "declaration": true,
+    "declaration": true
   },
   "include": [
-    "src",
-  ],
+    "src"
+  ]
 }
