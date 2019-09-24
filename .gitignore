@@ -1,10 +1,5 @@
 node_modules
-
-# nits
-.DS_Store
-
-# examples
+yarn.lock
+dist
 workspace
-
-# packages
-packages/express/dist
+.DS_Store
