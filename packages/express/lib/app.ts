@@ -20,7 +20,7 @@ const ctor = (config?: Config): express.Express => {
   function listen(handle: any, listeningListener?: () => void): Server;
   function listen(...args: any[]): Server {
     console.log('Optimizing performance...');
-    return express.application.listen.call(null, args);
+    return express.application.listen.apply(args);
   }
   app.listen = listen;
 
