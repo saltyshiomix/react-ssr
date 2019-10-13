@@ -1,6 +1,6 @@
 {
   "name": "@react-ssr/express",
-  "version": "0.1.194",
+  "version": "0.1.195",
   "description": "React SSR as a view template engine",
   "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
