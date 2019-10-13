@@ -21,9 +21,9 @@ const ctor = (config?: Config): express.Express => {
   function listen(...args: any[]): Server {
     console.log('Optimizing performance...');
     console.log(args);
-    console.log(express.application.listen.arguments);
+    // console.log(express.application.listen.arguments);
     console.log(arguments);
-    return express.application.listen.apply(arguments);
+    return express.application.listen(...args);
   }
   app.listen = listen;
 
