@@ -25,6 +25,8 @@ const ctor = (config?: Config): express.Express => {
   // }
   // app.listen = listen;
 
+  app.listen = express.application.listen;
+
   register(app, Object.assign(new Config, config));
 
   return app;
