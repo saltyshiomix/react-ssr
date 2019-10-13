@@ -1,24 +1,23 @@
 {
   "private": true,
-  "name": "express-tsx-basic",
-  "license": "MIT",
+  "name": "express-basic-tsx",
   "scripts": {
     "start": "ts-node server.ts"
   },
   "dependencies": {
     "@react-ssr/express": "latest",
     "express": "^4.17.1",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
     "react-helmet": "^5.2.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.1",
-    "@types/node": "^12.7.3",
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.9.0",
-    "@types/react-helmet": "^5.0.9",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.6.2"
+    "@types/node": "^12.7.12",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
+    "@types/react-helmet": "^5.0.11",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.4"
   }
 }

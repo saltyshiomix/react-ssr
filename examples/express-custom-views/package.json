@@ -1,15 +1,14 @@
 {
   "private": true,
-  "name": "express-jsx-custom-views",
-  "license": "MIT",
+  "name": "express-custom-views",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "@react-ssr/express": "latest",
     "express": "^4.17.1",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
     "react-helmet": "^5.2.1"
   }
 }
