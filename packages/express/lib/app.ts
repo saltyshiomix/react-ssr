@@ -1,4 +1,4 @@
-import { Server } from 'http';
+import http from 'http';
 import express from 'express';
 import register from './register';
 import { Config } from './config';
@@ -12,18 +12,17 @@ interface IReactSsrExpress extends Express {
 const ctor = (config?: Config): express.Express => {
   const app: express.Express = express();
 
-  function listen(port: number, hostname: string, backlog: number, callback?: (...args: any[]) => void): Server;
-  function listen(port: number, hostname: string, callback?: (...args: any[]) => void): Server;
-  function listen(port: number, callback?: (...args: any[]) => void): Server;
-  function listen(callback?: (...args: any[]) => void): Server;
-  function listen(path: string, callback?: (...args: any[]) => void): Server;
-  function listen(handle: any, listeningListener?: () => void): Server;
-  function listen(...args: any[]): Server {
+  function listen(port: number, hostname: string, backlog: number, callback?: (...args: any[]) => void): http.Server;
+  function listen(port: number, hostname: string, callback?: (...args: any[]) => void): http.Server;
+  function listen(port: number, callback?: (...args: any[]) => void): http.Server;
+  function listen(callback?: (...args: any[]) => void): http.Server;
+  function listen(path: string, callback?: (...args: any[]) => void): http.Server;
+  function listen(handle: any, listeningListener?: () => void): http.Server;
+  function listen(): http.Server {
     console.log('Optimizing performance...');
-    console.log(args);
-    // console.log(express.application.listen.arguments);
-    console.log(arguments);
-    return express.application.listen(...args);
+
+    const server = http.createServer(app);
+    return server.listen.apply(server, arguments as any);
   }
   app.listen = listen;
 
