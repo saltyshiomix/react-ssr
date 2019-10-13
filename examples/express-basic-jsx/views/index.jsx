@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet';
 
 const Index = ({ user }) => {
   const [message, setMessage] = useState('waiting...');
@@ -8,15 +7,9 @@ const Index = ({ user }) => {
 
   return (
     <React.Fragment>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>The example of "express-basic-jsx"</title>
-      </Helmet>
-      <div>
-        <p>Hello {user.name}!</p>
-        <button onClick={onClick}>Click Me</button>
-        <p>Message from state: {message}</p>
-      </div>
+      <p>Hello {user.name}!</p>
+      <button onClick={onClick}>Click Me</button>
+      <p>Message from state: {message}</p>
     </React.Fragment>
   );
 };
