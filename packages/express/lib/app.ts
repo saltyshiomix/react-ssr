@@ -12,7 +12,7 @@ interface IReactSsrExpress extends Express {
 const ctor = (config?: Config): express.Express => {
   const app: express.Express = express();
 
-  const _listen = express.application.listen.bind({});
+  const _listen = app.listen.bind({});
   function listen(port: number, hostname: string, backlog: number, callback?: (...args: any[]) => void): Server;
   function listen(port: number, hostname: string, callback?: (...args: any[]) => void): Server;
   function listen(port: number, callback?: (...args: any[]) => void): Server;
