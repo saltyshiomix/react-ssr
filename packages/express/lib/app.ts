@@ -14,7 +14,7 @@ const ctor = (config?: Config): express.Express => {
 
   register(app, Object.assign(new Config, config));
 
-  const _listen = express.application.listen;
+  const _listen = app.listen;
   function listen(port: number, hostname: string, backlog: number, callback?: (...args: any[]) => void): Server;
   function listen(port: number, hostname: string, callback?: (...args: any[]) => void): Server;
   function listen(port: number, callback?: (...args: any[]) => void): Server;
