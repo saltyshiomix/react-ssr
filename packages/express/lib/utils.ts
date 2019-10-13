@@ -3,7 +3,7 @@ import { resolve } from 'path';
 
 const cwd: string = process.cwd();
 
-export const getEngine = (): 'jsx'|'tsx' => {
+export const getEngine = (): 'jsx' | 'tsx' => {
   if (existsSync(resolve(cwd, 'tsconfig.json'))) {
     return 'tsx';
   }

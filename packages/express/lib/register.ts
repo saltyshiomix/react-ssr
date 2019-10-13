@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { join } from 'path';
 import express, { Application } from 'express';
 import render from './render';
 import { Config } from './config';
@@ -12,7 +12,9 @@ require('@babel/register')({ extends: getBabelrc() });
 const cwd: string = process.cwd();
 
 const register = async (app: Application, config: Config): Promise<void> => {
-  const { distDir, viewsDir } = config;
+  const env: string = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+  const distDir: string = config.distDir || '';
+  const viewsDir: string = config.viewsDir || '';
 
   const renderFile = async (file: string, options: any, cb: any) => {
     try {
@@ -24,11 +26,11 @@ const register = async (app: Application, config: Config): Promise<void> => {
     }
   };
 
-  const ENGINE: 'jsx'|'tsx' = getEngine();
+  const ENGINE: 'jsx' | 'tsx' = getEngine();
   app.engine(ENGINE, renderFile);
-  app.set('views', resolve(cwd, viewsDir as string));
+  app.set('views', join(cwd, viewsDir));
   app.set('view engine', ENGINE);
-  app.use(express.static(distDir as string));
+  app.use(express.static(join(cwd, distDir, env)));
 };
 
 export default register;

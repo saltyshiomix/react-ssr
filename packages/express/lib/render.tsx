@@ -35,9 +35,9 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   let html: string = '<!DOCTYPE html>';
 
   const distDir: string = config.distDir as string;
-  const env: string = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+  const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
   const hash: string = await hasha(env + file + JSON.stringify(props), { algorithm: 'md5' });
-  const cache: string = resolve(cwd, distDir, `${hash}.js`);
+  const cache: string = resolve(cwd, distDir, env, `${hash}.js`);
 
   let Page = require(file);
   Page = Page.default || Page;
@@ -58,7 +58,7 @@ const render = async (file: string, config: Config, props: any): Promise<string>
   mfs.writeFileSync(resolve(cwd, `react-ssr-src/entry${ext}`), template(resolve(__dirname, '../page.jsx'), { props }));
   mfs.writeFileSync(resolve(cwd, `react-ssr-src/page${ext}`), template(file, props));
 
-  const compiler: webpack.Compiler = webpack(configure(hash, ext, distDir));
+  const compiler: webpack.Compiler = webpack(configure(hash, ext, distDir, env));
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
   compiler.run((err: any) => {

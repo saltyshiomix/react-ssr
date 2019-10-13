@@ -9,7 +9,7 @@ import {
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
 
-export default (name: string, ext: '.jsx'|'.tsx', distDir: string): Configuration => {
+export default (name: string, ext: '.jsx'|'.tsx', distDir: string, env: 'development' | 'production'): Configuration => {
   if (hasUserBabelrc()) {
     !isProd && console.log(chalk`{cyan [react-ssr]} Babelrc in: ${getBabelrc()}`);
   }
@@ -20,7 +20,7 @@ export default (name: string, ext: '.jsx'|'.tsx', distDir: string): Configuratio
       [name]: `./react-ssr-src/entry${ext}`,
     },
     output: {
-      path: resolve(process.cwd(), distDir),
+      path: resolve(process.cwd(), distDir, env),
       filename: '[name].js',
     },
     resolve: {
