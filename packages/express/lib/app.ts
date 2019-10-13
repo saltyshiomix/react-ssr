@@ -12,18 +12,18 @@ interface IReactSsrExpress extends Express {
 const ctor = (config?: Config): express.Express => {
   const app: express.Express = express();
 
-  const _listen = app.listen.bind({});
-  function listen(port: number, hostname: string, backlog: number, callback?: (...args: any[]) => void): Server;
-  function listen(port: number, hostname: string, callback?: (...args: any[]) => void): Server;
-  function listen(port: number, callback?: (...args: any[]) => void): Server;
-  function listen(callback?: (...args: any[]) => void): Server;
-  function listen(path: string, callback?: (...args: any[]) => void): Server;
-  function listen(handle: any, listeningListener?: () => void): Server;
-  function listen(...args: any[]): Server {
-    console.log('Optimizing performance...');
-    return _listen(...args);
-  }
-  app.listen = listen;
+  // const _listen = app.listen.bind({});
+  // function listen(port: number, hostname: string, backlog: number, callback?: (...args: any[]) => void): Server;
+  // function listen(port: number, hostname: string, callback?: (...args: any[]) => void): Server;
+  // function listen(port: number, callback?: (...args: any[]) => void): Server;
+  // function listen(callback?: (...args: any[]) => void): Server;
+  // function listen(path: string, callback?: (...args: any[]) => void): Server;
+  // function listen(handle: any, listeningListener?: () => void): Server;
+  // function listen(...args: any[]): Server {
+  //   console.log('Optimizing performance...');
+  //   return _listen(...args);
+  // }
+  // app.listen = listen;
 
   register(app, Object.assign(new Config, config));
 
