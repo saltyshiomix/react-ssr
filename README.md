@@ -1,12 +1,18 @@
 <p align="center">😎 React SSR 😎</p>
 <p align="center">React SSR as a view template engine</p>
 
-## How to use
+## Features
+
+- Pass the server data to the client `props`
+- Blazing fast SSR (Server Side Rendering)
+- Support TypeScript
+
+## Usage
 
 Install it:
 
 ```bash
-$ npm install --save @react-ssr/express express react react-dom
+$ npm install --save @react-ssr/express react react-dom
 ```
 
 and add a script to your package.json like this:
@@ -51,12 +57,6 @@ and then just run `npm start` and go to `http://localhost:3000`.
 
 You'll see `Hello World!`.
 
-## Features
-
-- Pass server data to the client `props`
-- Auto SSR (Server Side Rendering)
-- TypeScript support
-
 ## Configuration
 
 ```js
@@ -64,8 +64,8 @@ const express = require('@react-ssr/express');
 
 // default configuration
 const app = express({
-  distDir: 'dist',
   viewsDir: 'views',
+  cacheDir: '.cache',
 });
 ```
 
@@ -126,20 +126,6 @@ export default function Index({ user }: IndexProps) {
 ## Examples
 
 See the [examples](./examples) folder.
-
-## Roadmaps
-
-- [ ] README
-  - [x] Roadmaps
-  - [x] How to use
-  - [ ] Contributing guides
-- [ ] develop packages
-  - [x] lerna monorepo development
-  - [x] @react-ssr/express
-    - [x] `.jsx` support
-    - [x] `.tsx` support
-  - [ ] @react-ssr/fastify
-  - [ ] @react-ssr/nest
 
 ## Develop `examples/<example-folder-name>`
 

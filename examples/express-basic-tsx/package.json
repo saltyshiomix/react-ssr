@@ -6,7 +6,6 @@
   },
   "dependencies": {
     "@react-ssr/express": "canary",
-    "express": "^4.17.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
   },
