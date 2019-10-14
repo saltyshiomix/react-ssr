@@ -81,9 +81,8 @@ export default async (app: express.Application, config: Config): Promise<void> =
       const props = await codec.decompress(req.query.props);
       if (env !== 'production') {
         console.log('');
-        console.log('Props (dynamically server side rendered):');
+        console.log(`[ info ] ${Date.now()}: the props below is server side rendered dynamically`);
         console.log(props);
-        console.log('');
       }
 
       let script = fse.readFileSync(filename).toString()
