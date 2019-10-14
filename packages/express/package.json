@@ -28,6 +28,7 @@
   },
   "main": "index.js",
   "files": [
+    "dist",
     "index.js",
     "index.d.ts",
     "entry.jsx",
