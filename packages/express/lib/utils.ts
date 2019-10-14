@@ -37,7 +37,7 @@ export const gracefullyShutDown = async (getPortFn: () => number) => {
       run = true;
       const fkill = require('fkill');
       const port = getPortFn();
-      fkill(`:${port}`);
+      fkill(`:${port}`, { force: true });
     }
   };
   process.on('SIGINT', wrapper);

@@ -15,7 +15,7 @@ const render = async (file: string, props: object): Promise<string> => {
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
-  html += ReactDOMServer.renderToStaticMarkup(
+  html += ReactDOMServer.renderToString(
     <Html route={route} props={await codec.compress(props)}>
       <Page {...props} />
     </Html>
