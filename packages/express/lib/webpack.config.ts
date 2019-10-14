@@ -6,6 +6,7 @@ import {
   getBabelRule,
 } from './utils';
 
+const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration => {
@@ -20,9 +21,10 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
 
   return {
     mode: env,
+    context: cwd,
     entry,
     output: {
-      path: path.join(process.cwd(), cacheDir),
+      path: path.join(cwd, cacheDir),
       filename: '[name].js',
     },
     resolve: {

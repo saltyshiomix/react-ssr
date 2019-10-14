@@ -39,10 +39,10 @@ export default async (app: express.Application, config: Config): Promise<void> =
   if (env === 'development') {
     for (let i = 0; i < pages.length; i++) {
       const page = pages[i];
-      const name = path.basename(page, path.extname(page));
+      const hash = hasha(env + page, { algorithm: 'md5' });
       const [, ...rest] = page.replace(cwd, '').split(path.sep);
       const id = rest.join('/');
-      entry[name] = ['webpack-hot-middleware/client', `./${id}`];
+      entry[hash] = ['webpack-hot-middleware/client', `./${id}`];
     }
 
     const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
@@ -53,8 +53,9 @@ export default async (app: express.Application, config: Config): Promise<void> =
     // });
 
     app.use(require('webpack-dev-middleware')(compiler, {
-      serverSideRender: true,
+      // serverSideRender: true,
       logLevel: 'silent',
+      writeToDisk: true,
     }));
 
     app.use(require('webpack-hot-middleware')(compiler));
