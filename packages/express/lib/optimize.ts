@@ -126,14 +126,17 @@ export default async (app: express.Application, server: http.Server, config: Con
     const hash = hasha(env + page, { algorithm: 'md5' });
     const filename = path.join(cwd, config.cacheDir, `${hash}.js`);
 
-    console.log(page)
-    console.log('')
-
-    console.log(Object.keys(require.cache));
-
-    delete require.cache[page];
-
     await waitUntilCompleted(mfs, filename);
+
+    delete require.cache[filename];
+
+    const arr = Object.keys(require.cache);
+    for (let i = 0; i < arr.length; i++) {
+      const f = arr[i];
+      console.log(f);
+    }
+    console.log('')
+    console.log(filename)
 
     const [, ...rest] = page.replace(cwd, '').split(path.sep);
     const id = rest.join('/');
