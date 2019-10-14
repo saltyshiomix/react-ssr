@@ -79,7 +79,10 @@ export default async (app: express.Application, config: Config): Promise<void> =
 
   if (env === 'development') {
     // development mode (hot module replacement)
-    app.use(require('webpack-dev-middleware')(compiler, { serverSideRender: true }));
+    app.use(require('webpack-dev-middleware')(compiler, {
+      serverSideRender: true,
+      noInfo: true,
+    }));
     app.use(require('webpack-hot-middleware')(compiler));
 
     app.use((req, res) => {
