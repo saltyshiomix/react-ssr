@@ -25,7 +25,7 @@ and add a script to your package.json like this:
 }
 ```
 
-Populate below files inside your project:
+Populate files below inside your project:
 
 **`./server.js`**
 
@@ -34,8 +34,8 @@ const express = require('@react-ssr/express');
 const app = express();
 
 app.get('/', (req, res) => {
-  const user = { name: 'World' };
-  res.render('index', { user });
+  const message = 'Hello World!';
+  res.render('index', { message });
 });
 
 app.listen(3000, () => {
@@ -48,8 +48,8 @@ app.listen(3000, () => {
 ```jsx
 import React from 'react';
 
-export default function Index({ user }) {
-  return `Hello ${user.name}!`;
+export default function Index({ message }) {
+  return <p>{message}</p>;
 }
 ```
 
@@ -71,9 +71,9 @@ const app = express({
 
 ## TypeScript Support
 
-To enable TypeScript `.tsx`, just put `tsconfig.json` in your project root directory.
+To enable TypeScript engine (`.tsx`), just put `tsconfig.json` in your project root directory.
 
-And TypeScript codes should be like these:
+The code of TypeScript will be like this:
 
 **`./package.json`**
 
@@ -89,13 +89,16 @@ And TypeScript codes should be like these:
 
 ```ts
 import express from '@react-ssr/express';
-import { Request, Response } from 'express';
+import {
+  Request,
+  Response,
+} from 'express';
 
 const app = express();
 
-app.get('/', (_req: Request, res: Response) => {
-  const user = { name: 'World' };
-  res.render('index', { user });
+app.get('/', (req: Request, res: Response) => {
+  const message = 'Hello World!';
+  res.render('index', { message });
 });
 
 app.listen(3000, () => {
@@ -109,11 +112,11 @@ app.listen(3000, () => {
 import React from 'react';
 
 interface IndexProps {
-  user: any;
+  message: string;
 }
 
-export default function Index({ user }: IndexProps) {
-  return `Hello ${user.name}!`;
+export default function Index({ message }: IndexProps) {
+  return <p>{message}</p>;
 }
 ```
 
@@ -139,3 +142,7 @@ $ yarn dev <example-folder-name>
 ## Articles
 
 [The React View Template Engine for Express](https://dev.to/saltyshiomix/the-react-view-template-engine-for-express-42f0)
+
+## Related
+
+[saltyshiomix/react-ssr-starter](https://github.com/saltyshiomix/react-ssr-starter)
