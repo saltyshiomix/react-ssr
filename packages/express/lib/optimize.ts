@@ -148,6 +148,7 @@ export default async (app: express.Application, config: Config): Promise<void> =
 
       res.type('.js');
       res.send(script);
+      res.end();
     });
 
     await sleep(50);
