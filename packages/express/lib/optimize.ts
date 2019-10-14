@@ -104,13 +104,6 @@ export default async (app: express.Application, server: http.Server, config: Con
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
         const hash = hasha(env + page, { algorithm: 'md5' });
-        // const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
-        // let entryFile = fse.readFileSync(path.join(__dirname, '../entry.jsx')).toString();
-        // entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', 'true');
-        // mfs.unlinkSync(filename);
-        // mfs.unlinkSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`));
-        // mfs.unlinkSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`));
-        // mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
         entry[hash] = `./react-ssr-src/${hash}/entry${ext}`;
       }
