@@ -73,7 +73,6 @@ export default async (app: express.Application, config: Config): Promise<void> =
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
-
   compiler.run((err: Error) => {
     err && console.error(err.stack || err);
   });
@@ -99,6 +98,8 @@ export default async (app: express.Application, config: Config): Promise<void> =
     watcher.on('change', (p: string) => {
       console.log('(debug) changed: ' + p);
 
+      const entry: webpack.Entry = {};
+
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
         const hash = hasha(env + page, { algorithm: 'md5' });
@@ -106,10 +107,17 @@ export default async (app: express.Application, config: Config): Promise<void> =
         entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', 'true');
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
+        entry[hash] = ['react-hot-loader/patch', `./react-ssr-src/${hash}/entry${ext}`];
       }
 
+      const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
+      const compiler: webpack.Compiler = webpack(webpackConfig);
+      compiler.inputFileSystem = ufs;
+      compiler.outputFileSystem = mfs;
       compiler.run((err: Error) => {
         err && console.error(err.stack || err);
+
+        console.log('[ info ] recompiled all bundles');
       });
     });
   }
