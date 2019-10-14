@@ -54,7 +54,7 @@ export default async (app: express.Application, config: Config): Promise<void> =
   console.log('');
 
   await fse.remove(config.cacheDir);
-  console.log('  [ ok ] removed all caches');
+  console.log('  [ ok ] remove all caches');
 
   const pages = getPages(path.join(cwd, config.viewsDir));
   for (let i = 0; i < pages.length; i++) {
@@ -79,7 +79,7 @@ export default async (app: express.Application, config: Config): Promise<void> =
     const id = rest.join('/')
     const route = '/_react-ssr/' + id.replace(ext, '.js');
 
-    console.log('  [ ok ] ' + id);
+    console.log(`  [ ok ] optimize "${id}"`);
     await sleep(150);
 
     app.get(route, async (req, res) => {
