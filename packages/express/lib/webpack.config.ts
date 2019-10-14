@@ -22,7 +22,7 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     mode: env,
     entry,
     output: {
-      path: path.join(process.cwd(), cacheDir, env),
+      path: path.join(process.cwd(), cacheDir),
       filename: '[name].js',
     },
     resolve: {

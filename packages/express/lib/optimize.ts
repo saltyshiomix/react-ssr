@@ -78,30 +78,38 @@ export default async (app: express.Application, config: Config): Promise<void> =
   compiler.outputFileSystem = mfs;
 
   if (env === 'development') {
-    // development mode (hot module replacement)
     app.use(require('webpack-dev-middleware')(compiler, {
       serverSideRender: true,
-      noInfo: true,
+      logLevel: 'silent',
     }));
+
     app.use(require('webpack-hot-middleware')(compiler));
 
-    app.use((req, res) => {
-      const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
-      res.send(`
-<html>
-  <body>
-    <div id="app"></div>
-    ${normalizeAssets(assetsByChunkName.main)
-      .filter((path) => path.endsWith('.js'))
-      .map((path) => `<script src="${path}"></script>`)
-      .join('\n')}
-  </body>
-</html>
-      `);
-    });
+    for (let i = 0; i < pages.length; i++) {
+      const page = pages[i];
+      const hash = hasha(env + page, { algorithm: 'md5' });
+      const filename = path.join(cwd, config.cacheDir, `${hash}.js`);
+      const [, ...rest] = page.replace(cwd, '').split(path.sep);
+      const route = '/_react-ssr/' + rest.join('/').replace(ext, '.js');
+
+      app.get(route, async (req, res) => {
+        const props = await codec.decompress(req.query.props);
+
+        console.log('[ info ] props below is rendered from server side');
+        console.log(props);
+
+        const script = mfs.readFileSync(filename).toString()
+                        .replace(
+                          '__REACT_SSR__',
+                          JSON.stringify(props).replace(/"/g, '\\"'),
+                        );
+  
+        res.type('.js');
+        res.send(script);
+      });
+    }
 
     console.log('[ info ] enabled HMR');
-    console.log('');
   }
 
   if (env === 'production') {
@@ -115,7 +123,7 @@ export default async (app: express.Application, config: Config): Promise<void> =
     for (let i = 0; i < pages.length; i++) {
       const page = pages[i];
       const hash = hasha(env + page, { algorithm: 'md5' });
-      const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
+      const filename = path.join(cwd, config.cacheDir, `${hash}.js`);
 
       await waitUntilCompleted(mfs, filename);
 
