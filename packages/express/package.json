@@ -56,7 +56,6 @@
     "chokidar": "^3.2.1",
     "cross-spawn": "^7.0.1",
     "express": "^4.17.1",
-    "fkill": "^6.2.0",
     "fkill-cli": "^5.2.0",
     "fs-extra": "^8.1.0",
     "hasha": "^5.1.0",
