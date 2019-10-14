@@ -88,6 +88,7 @@ export default async (app: express.Application, config: Config): Promise<void> =
 
     const closeWatching = () => {
       if (watcher) {
+        console.log('stop watching');
         watcher.close();
       }
     };
@@ -106,10 +107,10 @@ export default async (app: express.Application, config: Config): Promise<void> =
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
       }
-    });
 
-    compiler.run((err: Error) => {
-      err && console.error(err.stack || err);
+      compiler.run((err: Error) => {
+        err && console.error(err.stack || err);
+      });
     });
   }
 
