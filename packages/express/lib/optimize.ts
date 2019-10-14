@@ -77,6 +77,7 @@ export default async (app: express.Application, config: Config): Promise<void> =
     const route = '/_react-ssr/' + id.replace(ext, '.js');
 
     console.log('  [ ok ] ' + id);
+    await sleep(150);
 
     app.get(route, async (req, res) => {
       const props = await codec.decompress(req.query.props);
