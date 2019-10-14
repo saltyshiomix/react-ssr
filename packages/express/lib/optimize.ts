@@ -48,9 +48,9 @@ export default async (app: express.Application, config: Config): Promise<void> =
     const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
     const compiler: webpack.Compiler = webpack(webpackConfig);
 
-    // compiler.watch({}, (err: Error) => {
-    //   err && console.error(err.stack || err);
-    // });
+    compiler.watch({}, (err: Error) => {
+      err && console.error(err.stack || err);
+    });
 
     app.use(require('webpack-dev-middleware')(compiler, {
       // serverSideRender: true,
@@ -72,11 +72,6 @@ export default async (app: express.Application, config: Config): Promise<void> =
 
         console.log('[ info ] props below is rendered from server side');
         console.log(props);
-
-        const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
-
-        console.log('assetsByChunkName.main');
-        console.log(assetsByChunkName.main);
 
         const script = fse.readFileSync(filename).toString()
                         .replace(
