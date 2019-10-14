@@ -97,11 +97,10 @@ export default async (app: express.Application, server: http.Server, config: Con
     process.on('exit', closeWatching);
 
     watcher.on('change', (p: string) => {
-      const entry: webpack.Entry = {};
-
       // remove file cache by operating system
       fse.removeSync(path.join(cwd, config.cacheDir, env));
 
+      const entry: webpack.Entry = {};
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
         const hash = hasha(env + page, { algorithm: 'md5' });
