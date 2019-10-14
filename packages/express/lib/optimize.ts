@@ -86,10 +86,8 @@ export default async (app: express.Application, config: Config): Promise<void> =
     });
 
     const closeWatching = () => {
-      if (watcher) {
-        console.log('stop watching');
-        watcher.close();
-      }
+      console.log('stop watching');
+      watcher.close();
     };
     process.on('SIGINT', closeWatching);
     process.on('SIGTERM', closeWatching);

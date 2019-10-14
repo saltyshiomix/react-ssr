@@ -21,6 +21,8 @@ const render = async (file: string, props: any): Promise<string> => {
     </Html>
   );
 
+  console.log(html);
+
   return html;
 };
 
