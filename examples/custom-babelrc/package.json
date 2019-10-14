@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "express-custom-babelrc",
+  "name": "custom-babelrc",
   "scripts": {
     "start": "node server.js"
   },

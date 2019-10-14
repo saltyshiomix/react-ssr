@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "express-custom-views",
+  "name": "basic-jsx",
   "scripts": {
     "start": "node server.js"
   },
