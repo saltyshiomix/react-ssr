@@ -47,7 +47,6 @@ const register = async (app: express.Application, config: Config): Promise<void>
   app.engine(engine, renderFile);
   app.set('views', path.join(process.cwd(), config.viewsDir));
   app.set('view engine', engine);
-  // app.set('etag', false);
 
   app.listen = function() {
     const args: any = arguments;
