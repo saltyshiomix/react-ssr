@@ -56,7 +56,6 @@ mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 export default async (app: express.Application, server: http.Server, config: Config): Promise<void> => {
   await fse.remove(config.cacheDir);
 
-  console.log('');
   console.log('[ info ] removed all caches');
   console.log('[ info ] optimizing for the performance...');
 
