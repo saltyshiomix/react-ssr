@@ -54,7 +54,6 @@ export default async (app: express.Application, config: Config): Promise<void> =
   console.log('');
   console.log('[ info ] removed all caches');
   console.log('[ info ] optimizing for the performance...');
-  console.log('');
 
   const entry: webpack.Entry = {};
   const pages = getPages(path.join(cwd, config.viewsDir));
@@ -111,7 +110,6 @@ export default async (app: express.Application, config: Config): Promise<void> =
     await sleep(50);
   }
 
-  console.log('');
   if (env === 'development') {
     console.log('[ info ] enabled HMR (development mode)');
   }
