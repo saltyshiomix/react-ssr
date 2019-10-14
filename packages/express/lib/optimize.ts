@@ -35,14 +35,18 @@ const sleep = (ms: number) => {
 }
 
 const waitUntilCompleted = (mfs: any, filename: string) => {
-  while (!mfs.existsSync(filename)) {
-    sleep(10);
+  const existsInMFS = mfs.existsSync(filename);
+  const existsInFS = fse.existsSync(filename)
+
+  if (existsInMFS && existsInFS) {
+    return;
   }
 
-  fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
-  while (!fse.existsSync(filename)) {
-    sleep(10);
+  if (existsInMFS) {
+    fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
   }
+
+  sleep(15);
 }
 
 const codec = require('json-url')('lzma');
