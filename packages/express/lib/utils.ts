@@ -13,7 +13,7 @@ export const getBabelrc = (): string => {
   if (existsSync(resolve(cwd, '.babelrc'))) return resolve(cwd, '.babelrc');
   if (existsSync(resolve(cwd, '.babelrc.js'))) return resolve(cwd, '.babelrc.js');
   if (existsSync(resolve(cwd, 'babel.config.js'))) return resolve(cwd, 'babel.config.js');
-  return resolve(__dirname, '../babel.config.default.js');
+  return resolve(__dirname, '../babel.js');
 };
 
 export const getBabelRule = () => {
