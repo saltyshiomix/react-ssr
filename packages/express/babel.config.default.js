@@ -1,5 +1,5 @@
 module.exports = (api) => {
-  api.cache(false);
+  api.cache(true);
 
   const presets = [
     require('@babel/preset-env'),

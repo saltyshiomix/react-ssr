@@ -15,12 +15,11 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
   }
 
   return {
-    cache: false,
     mode: env,
     context: cwd,
     entry,
     output: {
-      path: path.join(cwd, cacheDir),
+      path: path.join(cwd, cacheDir, env),
       filename: '[name].js',
     },
     resolve: {

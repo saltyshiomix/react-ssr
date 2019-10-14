@@ -99,18 +99,19 @@ export default async (app: express.Application, server: http.Server, config: Con
     watcher.on('change', (p: string) => {
       const entry: webpack.Entry = {};
 
-      fse.removeSync(path.join(cwd, config.cacheDir));
+      // remove file cache by operating system
+      fse.removeSync(path.join(cwd, config.cacheDir, env));
 
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
         const hash = hasha(env + page, { algorithm: 'md5' });
-        const filename = path.join(cwd, config.cacheDir, `${hash}.js`);
-        let entryFile = fse.readFileSync(path.join(__dirname, '../entry.jsx')).toString();
-        entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', 'true');
-        mfs.unlinkSync(filename);
-        mfs.unlinkSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`));
-        mfs.unlinkSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`));
-        mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
+        // const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
+        // let entryFile = fse.readFileSync(path.join(__dirname, '../entry.jsx')).toString();
+        // entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', 'true');
+        // mfs.unlinkSync(filename);
+        // mfs.unlinkSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`));
+        // mfs.unlinkSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`));
+        // mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
         entry[hash] = `./react-ssr-src/${hash}/entry${ext}`;
       }
@@ -121,14 +122,12 @@ export default async (app: express.Application, server: http.Server, config: Con
       compiler.outputFileSystem = mfs;
       compiler.run(async (err: Error) => {
         err && console.error(err.stack || err);
-
         for (let i = 0; i < pages.length; i++) {
           const page = pages[i];
           const hash = hasha(env + page, { algorithm: 'md5' });
-          const filename = path.join(cwd, config.cacheDir, `${hash}.js`);
+          const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
           await waitUntilCompleted(mfs, filename);
         }
-
         console.log('[ info ] recompiled all bundles');
       });
     });
@@ -137,7 +136,7 @@ export default async (app: express.Application, server: http.Server, config: Con
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
     const hash = hasha(env + page, { algorithm: 'md5' });
-    const filename = path.join(cwd, config.cacheDir, `${hash}.js`);
+    const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
 
     await waitUntilCompleted(mfs, filename);
 
