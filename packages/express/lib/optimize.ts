@@ -70,60 +70,20 @@ export default async (app: express.Application, server: http.Server, config: Con
     entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', env === 'development' ? 'true' : 'false');
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
-    entry[hash] = `./react-ssr-src/${hash}/entry${ext}`;
+    entry[hash] = env === 'production' ? `./react-ssr-src/${hash}/entry${ext}` : ['webpack-hot-middleware/client', `./react-ssr-src/${hash}/entry${ext}`];
   }
 
   const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
+  if (env === 'development') {
+    app.use(require("webpack-hot-middleware")(compiler));
+  }
+
   compiler.run((err: Error) => {
     err && console.error(err.stack || err);
   });
-
-  if (env === 'development') {
-    const chokidar = require('chokidar');
-    const watcher = chokidar.watch(cwd, {
-      ignored: [
-        /node_modules/,
-      ],
-    });
-
-    const closeWatching = () => {
-      watcher.close();
-    };
-    process.on('SIGINT', closeWatching);
-    process.on('SIGTERM', closeWatching);
-    process.on('exit', closeWatching);
-
-    watcher.on('change', (p: string) => {
-      // remove file cache by operating system
-      fse.removeSync(path.join(cwd, config.cacheDir, env));
-
-      const entry: webpack.Entry = {};
-      for (let i = 0; i < pages.length; i++) {
-        const page = pages[i];
-        const hash = hasha(env + page, { algorithm: 'md5' });
-        mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
-        entry[hash] = `./react-ssr-src/${hash}/entry${ext}`;
-      }
-
-      const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
-      const compiler: webpack.Compiler = webpack(webpackConfig);
-      compiler.inputFileSystem = ufs;
-      compiler.outputFileSystem = mfs;
-      compiler.run(async (err: Error) => {
-        err && console.error(err.stack || err);
-        for (let i = 0; i < pages.length; i++) {
-          const page = pages[i];
-          const hash = hasha(env + page, { algorithm: 'md5' });
-          const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
-          await waitUntilCompleted(mfs, filename);
-        }
-        console.log('[ info ] recompiled all bundles');
-      });
-    });
-  }
 
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
@@ -157,6 +117,48 @@ export default async (app: express.Application, server: http.Server, config: Con
   }
 
   if (env === 'development') {
+    const chokidar = require('chokidar');
+    const watcher = chokidar.watch(cwd, {
+      ignored: [
+        /node_modules/,
+      ],
+    });
+
+    const closeWatching = () => {
+      watcher.close();
+    };
+    process.on('SIGINT', closeWatching);
+    process.on('SIGTERM', closeWatching);
+    process.on('exit', closeWatching);
+
+    watcher.on('change', (p: string) => {
+      // remove file cache by operating system
+      fse.removeSync(path.join(cwd, config.cacheDir, env));
+
+      // overwrite memory fs
+      for (let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+        const hash = hasha(env + page, { algorithm: 'md5' });
+        mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
+        // entry[hash] = ['webpack-hot-middleware/client', `./react-ssr-src/${hash}/entry${ext}`];
+      }
+
+      // const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
+      // const compiler: webpack.Compiler = webpack(webpackConfig);
+      // compiler.inputFileSystem = ufs;
+      // compiler.outputFileSystem = mfs;
+      compiler.run(async (err: Error) => {
+        err && console.error(err.stack || err);
+        for (let i = 0; i < pages.length; i++) {
+          const page = pages[i];
+          const hash = hasha(env + page, { algorithm: 'md5' });
+          const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
+          await waitUntilCompleted(mfs, filename);
+        }
+        console.log('[ info ] recompiled all bundles');
+      });
+    });
+
     console.log('[ info ] running a server (development mode)');
   }
 

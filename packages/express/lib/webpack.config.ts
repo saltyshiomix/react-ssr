@@ -10,8 +10,14 @@ const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration => {
-  if (hasUserBabelrc()) {
-    !(env === 'production') && console.log(`[ info ] use custom babelrc in: ${getBabelrc()}`);
+  const plugins = [];
+
+  if (env === 'development') {
+    if (hasUserBabelrc()) {
+      console.log(`[ info ] use custom babelrc in: ${getBabelrc()}`);
+    }
+
+    plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 
   return {
@@ -30,8 +36,6 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
         getBabelRule(),
       ],
     },
-    plugins: [
-      new webpack.NamedModulesPlugin(),
-    ],
+    plugins,
   };
 };
