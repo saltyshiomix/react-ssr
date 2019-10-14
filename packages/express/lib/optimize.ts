@@ -45,7 +45,7 @@ const waitUntilCompleted = async (mfs: any, filename: string) => {
   waitUntilCompleted(mfs, filename);
 }
 
-const codec = require('json-url')('lzma');
+const codec = require('json-url')('lzw');
 const { ufs } = require('unionfs');
 const MemoryFileSystem = require('memory-fs');
 const mfs = new MemoryFileSystem;
@@ -89,11 +89,11 @@ export default async (app: express.Application, config: Config): Promise<void> =
 
       console.log('req.query');
       console.log(req.query);
-      const props = await codec.decompress(req.query.props);
+      const json = await codec.decompress(req.query.props);
 
       console.log('');
       console.log(`Accessed ${route}: props:`);
-      console.log(props);
+      console.log(json);
       console.log('');
 
       res.type('.js');
