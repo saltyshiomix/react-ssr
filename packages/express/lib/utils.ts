@@ -30,14 +30,18 @@ export const getBabelRule = () => {
   };
 };
 
-export const gracefullyShutDown = async (getPortFn: () => number) => {
+export const gracefullyShutDown = async (getPort: () => number) => {
   let run = false;
   const wrapper = () => {
     if (!run) {
       run = true;
-      const fkill = require('fkill');
-      const port = getPortFn();
-      fkill(`:${port}`, { force: true });
+      const resolve = require('resolve-as-bin');
+      const spawn = require('cross-spawn');
+      const port = getPort();
+      spawn.sync(resolve('fkill'), ['-f', `:${port}`], {
+        cwd,
+        stdio: 'inherit',
+      });
     }
   };
   process.on('SIGINT', wrapper);
