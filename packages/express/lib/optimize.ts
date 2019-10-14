@@ -74,11 +74,11 @@ export default async (app: express.Application, config: Config): Promise<void> =
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
 
-  if (env === 'production') {
-    compiler.run((err: Error) => {
-      err && console.error(err.stack || err);
-    });
-  } else {
+  compiler.run((err: Error) => {
+    err && console.error(err.stack || err);
+  });
+
+  if (env === 'development') {
     const chokidar = require('chokidar');
     const watcher = chokidar.watch(cwd, {
       ignored: [
@@ -108,7 +108,7 @@ export default async (app: express.Application, config: Config): Promise<void> =
       }
     });
 
-    compiler.watch({}, (err: Error) => {
+    compiler.run((err: Error) => {
       err && console.error(err.stack || err);
     });
   }
