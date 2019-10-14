@@ -36,13 +36,15 @@ const register = async (app: express.Application, config: Config): Promise<void>
       return cb(e);
     } finally {
       console.log('ENV (options.settings.env): ' + options.settings.env);
+      console.log(options.settings);
 
       if (options.settings.env === 'development') {
-        Object.keys(require.cache).forEach((_module) => {
-          console.log(_module);
-          if (moduleDetectRegEx.test(require.cache[_module].filename)) {
-            delete require.cache[_module];
-            console.log('[ debug ] deleted cache: ' + require.cache[_module].filename);
+        Object.keys(require.cache).forEach((filename) => {
+          console.log('filename: ' + filename);
+
+          if (moduleDetectRegEx.test(filename)) {
+            delete require.cache[filename];
+            console.log('[ debug ] deleted cache: ' + filename);
           }
         });
       }
