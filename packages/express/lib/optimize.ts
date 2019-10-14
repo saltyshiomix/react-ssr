@@ -78,6 +78,10 @@ export default async (app: express.Application, config: Config): Promise<void> =
   compiler.outputFileSystem = mfs;
 
   if (env === 'development') {
+    compiler.watch({}, (err: Error) => {
+      err && console.error(err.stack || err);
+    });
+
     app.use(require('webpack-dev-middleware')(compiler, {
       serverSideRender: true,
       logLevel: 'silent',
