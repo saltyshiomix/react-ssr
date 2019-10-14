@@ -17,7 +17,8 @@ const register = async (app: express.Application, config: Config): Promise<void>
 
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
-      moduleDetectRegEx = new RegExp([].concat(options.settings.views).map(viewPath => '^' + _escaperegexp(viewPath)).join('|'));
+      const pattern = [].concat(options.settings.views).map(viewPath => '^' + _escaperegexp(viewPath)).join('|');
+      moduleDetectRegEx = new RegExp(pattern);
     }
 
     if (!babelRegistered) {
