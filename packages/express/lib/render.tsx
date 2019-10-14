@@ -22,25 +22,6 @@ const render = async (file: string, props: any): Promise<string> => {
     </Html>
   );
 
-  console.log('');
-  console.log(`ROUTE: ${route}`);
-  console.log('');
-
-  console.log('');
-  console.log('COMPRESSED_PROPS:');
-  console.log(compressedProps);
-  console.log('');
-
-  console.log('');
-  console.log('PROPS:');
-  console.log(props);
-  console.log('');
-
-  console.log('');
-  console.log('HTML:');
-  console.log(html);
-  console.log('');
-
   return html;
 };
 

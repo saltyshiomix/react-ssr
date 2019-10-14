@@ -31,17 +31,13 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const waitUntilCompleted = async (mfs: any, filename: string) => {
   const existsInMFS = mfs.existsSync(filename);
   const existsInFS = fse.existsSync(filename)
-
   if (existsInMFS && existsInFS) {
     return;
   }
-
   if (existsInMFS) {
     fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
   }
-
   await sleep(15);
-
   waitUntilCompleted(mfs, filename);
 }
 
@@ -75,19 +71,27 @@ export default async (app: express.Application, config: Config): Promise<void> =
 
     await waitUntilCompleted(mfs, filename);
 
-    const [, ...rest] = page.replace(cwd, '').replace(ext, '.js').split(path.sep);
+    const [, ...rest] = page.replace(cwd, '').split(path.sep);
     const id = rest.join('/')
-    const route = '/_react-ssr/' + id;
+    const route = '/_react-ssr/' + id.replace(ext, '.js');
 
-    console.log('  ' + id);
+    console.log('  [DONE] ' + id);
 
     app.get(route, async (req, res) => {
       const props = await codec.decompress(req.query.props);
+      if (env !== 'production') {
+        console.log('');
+        console.log('Props (dynamically server side rendered):');
+        console.log(props);
+        console.log('');
+      }
+
       let script = fse.readFileSync(filename).toString()
                       .replace(
                         '__REACT_SSR__',
                         JSON.stringify(props).replace(/"/g, '\\"'),
                       );
+
       res.type('.js');
       res.send(script);
     });
