@@ -1,12 +1,17 @@
 import fs from 'fs';
 import fse from 'fs-extra';
 import path from 'path';
+import net from 'net';
+import http from 'http';
 import express from 'express';
 import hasha from 'hasha';
 import webpack from 'webpack';
 import configure from './webpack.config';
 import Config from './config';
-import { getEngine } from './utils';
+import {
+  getEngine,
+  gracefullyShutDown,
+} from './utils';
 
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const cwd = process.cwd();
@@ -48,7 +53,7 @@ const mfs = new MemoryFileSystem;
 ufs.use(mfs).use(fs);
 mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
-export default async (app: express.Application, config: Config): Promise<void> => {
+export default async (app: express.Application, server: http.Server, config: Config): Promise<void> => {
   await fse.remove(config.cacheDir);
 
   console.log('');
@@ -151,6 +156,18 @@ export default async (app: express.Application, config: Config): Promise<void> =
   }
 
   if (env === 'development') {
-    console.log('[ info ] enabled HMR (development mode)');
+    console.log('[ info ] running a server (development mode)');
   }
+
+  gracefullyShutDown(() => {
+    console.log('[ info ] gracefully shutting down. Please wait...');
+
+    process.on('SIGINT', () => {
+      console.log('[ warn ] force-closing all open sockets...');
+      process.exit(0);
+    });
+
+    const address = server.address() as net.AddressInfo;
+    return address.port;
+  });
 };

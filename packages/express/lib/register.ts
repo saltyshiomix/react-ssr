@@ -7,7 +7,6 @@ import Config from './config';
 import {
   getBabelrc,
   getEngine,
-  gracefullyShutDown,
 } from './utils';
 
 const _escaperegexp = require('lodash.escaperegexp');
@@ -35,16 +34,11 @@ const register = async (app: express.Application, config: Config): Promise<void>
     } catch (e) {
       return cb(e);
     } finally {
-      console.log('ENV (options.settings.env): ' + options.settings.env);
-      console.log(options.settings);
-
-      if (options.settings.env === 'development') {
+      if (process.env.NODE_ENV !== 'production') {
         Object.keys(require.cache).forEach((filename) => {
-          console.log('filename: ' + filename);
-
           if (moduleDetectRegEx.test(filename)) {
             delete require.cache[filename];
-            console.log('[ debug ] deleted cache: ' + filename);
+            console.log('[ info ] deleted cache: ' + filename);
           }
         });
       }
@@ -60,19 +54,11 @@ const register = async (app: express.Application, config: Config): Promise<void>
   app.listen = function() {
     const args: any = arguments;
     const server = http.createServer(app);
-    optimize(app, config).then(() => {
+    optimize(app, server, config).then(() => {
       server.listen.apply(server, args)
     });
     return server;
   };
-
-  gracefullyShutDown(() => {
-    console.log('[ info ] gracefully shutting down. Please wait...');
-    process.on('SIGINT', () => {
-      console.log('[ warn ] force-closing all open sockets...');
-      process.exit(0);
-    });
-  });
 };
 
 export default register;
