@@ -66,7 +66,7 @@ export default async (app: express.Application, config: Config): Promise<void> =
     entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', env === 'development' ? 'true' : 'false');
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
-    entry[hash] = env === 'production' ? `./react-ssr-src/${hash}/entry${ext}` : ['react-hot-loader/patch', `./react-ssr-src/${hash}/entry${ext}`];
+    entry[hash] = `./react-ssr-src/${hash}/entry${ext}`;
   }
 
   const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
@@ -107,7 +107,7 @@ export default async (app: express.Application, config: Config): Promise<void> =
         entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', 'true');
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
-        entry[hash] = ['react-hot-loader/patch', `./react-ssr-src/${hash}/entry${ext}`];
+        entry[hash] = `./react-ssr-src/${hash}/entry${ext}`;
       }
 
       const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);

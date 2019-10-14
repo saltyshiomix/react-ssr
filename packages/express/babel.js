@@ -20,10 +20,6 @@ module.exports = () => {
     }],
   ];
 
-  if (process.env.NODE_ENV !== 'production') {
-    plugins.push(require('react-hot-loader/babel'));
-  }
-
   return {
     presets,
     plugins,

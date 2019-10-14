@@ -14,11 +14,6 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     !(env === 'production') && console.log(`[ info ] use custom babelrc in: ${getBabelrc()}`);
   }
 
-  const plugins = [new webpack.NamedModulesPlugin()];
-  if (env === 'development') {
-    plugins.push(new webpack.HotModuleReplacementPlugin());
-  }
-
   return {
     mode: env,
     context: cwd,
@@ -29,15 +24,14 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     },
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      alias: env === 'production' ? {} : {
-        'react-dom': '@hot-loader/react-dom',
-      },
     },
     module: {
       rules: [
         getBabelRule(),
       ],
     },
-    plugins,
+    plugins: [
+      new webpack.NamedModulesPlugin(),
+    ],
   };
 };
