@@ -141,8 +141,6 @@ export default async (app: express.Application, server: http.Server, config: Con
         console.log(props);
       }
 
-      delete require.cache[filename];
-
       const script = fse.readFileSync(filename).toString()
                       .replace(
                         '__REACT_SSR__',
