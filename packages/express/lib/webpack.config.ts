@@ -15,7 +15,7 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
   }
 
   return {
-    // cache: false,
+    cache: false,
     mode: env,
     context: cwd,
     entry,
