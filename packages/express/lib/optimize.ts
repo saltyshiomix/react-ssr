@@ -26,11 +26,9 @@ const getPages = (dir: string): string[] => {
   return pages;
 };
 
-const sleep = (ms: number) => {
-  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
-}
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const waitUntilCompleted = (mfs: any, filename: string) => {
+const waitUntilCompleted = async (mfs: any, filename: string) => {
   const existsInMFS = mfs.existsSync(filename);
   const existsInFS = fse.existsSync(filename)
 
@@ -42,7 +40,7 @@ const waitUntilCompleted = (mfs: any, filename: string) => {
     fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
   }
 
-  sleep(15);
+  await sleep(15);
 
   waitUntilCompleted(mfs, filename);
 }
@@ -75,26 +73,26 @@ export default (app: express.Application, config: Config): void => {
 
     const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
 
-    waitUntilCompleted(mfs, filename);
+    waitUntilCompleted(mfs, filename).then(() => {
+      const [, ...rest] = page.replace(cwd, '').split(path.sep);
+      const id = rest.join('/')
+      const route = '/_react-ssr/' + id;
 
-    const [, ...rest] = page.replace(cwd, '').split(path.sep);
-    const id = rest.join('/')
-    const route = '/_react-ssr/' + id;
+      console.log('  ' + id);
 
-    console.log('  ' + id);
+      app.get(route, async (req, res) => {
+        let script = fse.readFileSync(filename).toString();
 
-    app.get(route, async (req, res) => {
-      let script = fse.readFileSync(filename).toString();
+        const props = await codec.decompress(req.query.props);
 
-      const props = await codec.decompress(req.query.props);
+        console.log('');
+        console.log(`Accessed ${route}: props:`);
+        console.log(props);
+        console.log('');
 
-      console.log('');
-      console.log(`Accessed ${route}: props:`);
-      console.log(props);
-      console.log('');
-
-      res.type('.js');
-      res.send(script);
+        res.type('.js');
+        res.send(script);
+      });
     });
   }
 
