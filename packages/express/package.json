@@ -32,7 +32,8 @@
     "index.js",
     "index.d.ts",
     "entry.jsx",
-    "babel.js"
+    "babel.js",
+    "babel.config.default.js"
   ],
   "scripts": {
     "build": "rimraf dist && rollup -c",
