@@ -164,7 +164,6 @@ export default async (app: express.Application, server: http.Server, config: Con
     console.log('[ info ] gracefully shutting down. Please wait...');
 
     process.on('SIGINT', () => {
-      console.log('[ warn ] force-closing all open sockets...');
       process.exit(0);
     });
 
