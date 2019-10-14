@@ -129,7 +129,7 @@ export default async (app: express.Application, server: http.Server, config: Con
     console.log(page)
     console.log('')
 
-    console.log(require.cache);
+    console.log(Object.keys(require.cache));
 
     delete require.cache[page];
 
