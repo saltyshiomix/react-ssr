@@ -1,6 +1,6 @@
 import express = require('express');
 
-declare function reactSsrExpress(config: reactSsrExpress.Config): express.Express;
+declare function reactSsrExpress(config?: reactSsrExpress.Config): express.Express;
 
 declare namespace reactSsrExpress {
   interface Config {
