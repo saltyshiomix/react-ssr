@@ -38,7 +38,7 @@ const waitUntilCompleted = async (mfs: any, filename: string) => {
   if (existsInMFS) {
     fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
   }
-  await sleep(15);
+  await sleep(50);
   waitUntilCompleted(mfs, filename);
 }
 
@@ -148,8 +148,6 @@ export default async (app: express.Application, config: Config): Promise<void> =
       res.type('.js');
       res.send(script);
     });
-
-    await sleep(50);
   }
 
   if (env === 'development') {

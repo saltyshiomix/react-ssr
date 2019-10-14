@@ -30,13 +30,15 @@ export const getBabelRule = () => {
   };
 };
 
-export const gracefullyShutDown = (fn: () => void) => {
+export const gracefullyShutDown = async (fn: () => void) => {
   let run = false;
   const wrapper = () => {
     if (!run) {
       run = true;
       fn();
     }
+    const fkill = require('fkill');
+    fkill('node', { ignoreCase: true });
   };
   process.on('SIGINT', wrapper);
   process.on('SIGTERM', wrapper);

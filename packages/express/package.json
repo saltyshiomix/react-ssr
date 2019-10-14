@@ -55,6 +55,7 @@
     "babel-plugin-react-require": "^3.1.1",
     "chokidar": "^3.2.1",
     "express": "^4.17.1",
+    "fkill": "^6.2.0",
     "fs-extra": "^8.1.0",
     "hasha": "^5.1.0",
     "json-url": "^2.4.2",

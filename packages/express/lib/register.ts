@@ -38,10 +38,11 @@ const register = async (app: express.Application, config: Config): Promise<void>
       console.log('ENV (options.settings.env): ' + options.settings.env);
 
       if (options.settings.env === 'development') {
-        Object.keys(require.cache).forEach((module) => {
-          if (moduleDetectRegEx.test(require.cache[module].filename)) {
-            delete require.cache[module];
-            console.log('[ debug ] deleted cache: ' + require.cache[module].filename);
+        Object.keys(require.cache).forEach((_module) => {
+          console.log(_module);
+          if (moduleDetectRegEx.test(require.cache[_module].filename)) {
+            delete require.cache[_module];
+            console.log('[ debug ] deleted cache: ' + require.cache[_module].filename);
           }
         });
       }
