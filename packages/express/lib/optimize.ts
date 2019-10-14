@@ -83,7 +83,11 @@ export default async (app: express.Application, config: Config): Promise<void> =
 
     app.get(route, async (req, res) => {
       const props = await codec.decompress(req.query.props);
-      let script = fse.readFileSync(filename).toString().replace('__REACT_SSR__', JSON.stringify(props));
+      let script = fse.readFileSync(filename).toString()
+                      .replace(
+                        '__REACT_SSR__',
+                        JSON.stringify(props).replace(/"/g, '\\"'),
+                      );
       res.type('.js');
       res.send(script);
     });
