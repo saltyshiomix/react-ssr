@@ -90,11 +90,7 @@ The code of TypeScript will be like this:
 **`./server.ts`**
 
 ```ts
-import express from '@react-ssr/express';
-import {
-  Request,
-  Response,
-} from 'express';
+import express, { Request, Response } from '@react-ssr/express';
 
 const app = express();
 

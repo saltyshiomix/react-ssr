@@ -1,5 +1,4 @@
-import express from '@react-ssr/express';
-import { Request, Response } from 'express';
+import express, { Request, Response } from '@react-ssr/express';
 
 const app = express();
 
