@@ -11,6 +11,7 @@ import { getEngine } from './utils';
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const cwd = process.cwd();
 const ext = '.' + getEngine();
+const codec = require('json-url')('lzw');
 
 const getPages = (dir: string): string[] => {
   const pages: string[] = [];
@@ -26,61 +27,30 @@ const getPages = (dir: string): string[] => {
   return pages;
 };
 
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-const waitUntilCompleted = async (mfs: any, filename: string) => {
-  const existsInMFS = mfs.existsSync(filename);
-  const existsInFS = fse.existsSync(filename)
-  if (existsInMFS && existsInFS) {
-    return;
-  }
-  if (existsInMFS) {
-    fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
-  }
-  await sleep(15);
-  waitUntilCompleted(mfs, filename);
-}
-
-const normalizeAssets = (assets: any) => {
-  if (require('is-object')(assets)) {
-    return Object.values(assets);
-  }
-  return Array.isArray(assets) ? assets : [assets];
-}
-
-const codec = require('json-url')('lzw');
-const { ufs } = require('unionfs');
-const MemoryFileSystem = require('memory-fs');
-const mfs = new MemoryFileSystem;
-ufs.use(mfs).use(fs);
-mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
-
 export default async (app: express.Application, config: Config): Promise<void> => {
   await fse.remove(config.cacheDir);
+
   console.log('');
   console.log('[ info ] removed all caches');
 
   const entry: webpack.Entry = {};
   const pages = getPages(path.join(cwd, config.viewsDir));
 
-  for (let i = 0; i < pages.length; i++) {
-    const page = pages[i];
-    const hash = hasha(env + page, { algorithm: 'md5' });
-    mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${hash}`));
-    mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), fse.readFileSync(path.join(__dirname, '../entry.jsx')));
-    mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
-    entry[hash] = env === 'production' ? `./react-ssr-src/${hash}/entry${ext}` : ['webpack-hot-middleware/client', `./react-ssr-src/${hash}/entry${ext}`];
-  }
-
-  const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
-  const compiler: webpack.Compiler = webpack(webpackConfig);
-  compiler.inputFileSystem = ufs;
-  compiler.outputFileSystem = mfs;
-
   if (env === 'development') {
-    compiler.watch({}, (err: Error) => {
-      err && console.error(err.stack || err);
-    });
+    for (let i = 0; i < pages.length; i++) {
+      const page = pages[i];
+      const name = path.basename(page, path.extname(page));
+      const [, ...rest] = page.replace(cwd, '').split(path.sep);
+      const id = rest.join('/');
+      entry[name] = ['webpack-hot-middleware/client', `./${id}`];
+    }
+
+    const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
+    const compiler: webpack.Compiler = webpack(webpackConfig);
+
+    // compiler.watch({}, (err: Error) => {
+    //   err && console.error(err.stack || err);
+    // });
 
     app.use(require('webpack-dev-middleware')(compiler, {
       serverSideRender: true,
@@ -102,24 +72,63 @@ export default async (app: express.Application, config: Config): Promise<void> =
         console.log('[ info ] props below is rendered from server side');
         console.log(props);
 
-        const script = mfs.readFileSync(filename).toString()
+        const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
+
+        console.log('assetsByChunkName.main');
+        console.log(assetsByChunkName.main);
+
+        const script = fse.readFileSync(filename).toString()
                         .replace(
                           '__REACT_SSR__',
                           JSON.stringify(props).replace(/"/g, '\\"'),
                         );
-  
+
         res.type('.js');
         res.send(script);
       });
-    }
 
-    console.log('[ info ] enabled HMR');
+      console.log('[ info ] enabled HMR');
+    }
   }
 
   if (env === 'production') {
     console.log('[ info ] optimizing the performance for production...');
     console.log('');
 
+    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+    const waitUntilCompleted = async (mfs: any, filename: string) => {
+      const existsInMFS = mfs.existsSync(filename);
+      const existsInFS = fse.existsSync(filename)
+      if (existsInMFS && existsInFS) {
+        return;
+      }
+      if (existsInMFS) {
+        fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
+      }
+      await sleep(15);
+      waitUntilCompleted(mfs, filename);
+    }
+
+    const { ufs } = require('unionfs');
+    const MemoryFileSystem = require('memory-fs');
+    const mfs = new MemoryFileSystem;
+    ufs.use(mfs).use(fs);
+    mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
+
+    for (let i = 0; i < pages.length; i++) {
+      const page = pages[i];
+      const hash = hasha(env + page, { algorithm: 'md5' });
+      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${hash}`));
+      mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), fse.readFileSync(path.join(__dirname, '../entry.jsx')));
+      mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
+      entry[hash] = `./react-ssr-src/${hash}/entry${ext}`;
+    }
+
+    const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
+    const compiler: webpack.Compiler = webpack(webpackConfig);
+    compiler.inputFileSystem = ufs;
+    compiler.outputFileSystem = mfs;
     compiler.run((err: Error) => {
       err && console.error(err.stack || err);
     });
@@ -132,7 +141,7 @@ export default async (app: express.Application, config: Config): Promise<void> =
       await waitUntilCompleted(mfs, filename);
 
       const [, ...rest] = page.replace(cwd, '').split(path.sep);
-      const id = rest.join('/')
+      const id = rest.join('/');
       const route = '/_react-ssr/' + id.replace(ext, '.js');
 
       console.log(`  [ ok ] optimized "${id}"`);
