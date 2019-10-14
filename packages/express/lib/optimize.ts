@@ -52,7 +52,7 @@ const mfs = new MemoryFileSystem;
 ufs.use(mfs).use(fs);
 mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
-export default (app: express.Application, config: Config): void => {
+export default async (app: express.Application, config: Config): Promise<void> => {
   console.log('Optimizing performance...');
   console.log('');
 
@@ -73,26 +73,31 @@ export default (app: express.Application, config: Config): void => {
 
     const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
 
-    waitUntilCompleted(mfs, filename).then(() => {
-      const [, ...rest] = page.replace(cwd, '').split(path.sep);
-      const id = rest.join('/')
-      const route = '/_react-ssr/' + id;
+    await waitUntilCompleted(mfs, filename);
 
-      console.log('  ' + id);
+    const [, ...rest] = page.replace(cwd, '').replace(ext, '.js').split(path.sep);
+    const id = rest.join('/')
+    const route = '/_react-ssr/' + id;
 
-      app.get(route, async (req, res) => {
-        let script = fse.readFileSync(filename).toString();
+    console.log('  ' + id);
 
-        const props = await codec.decompress(req.query.props);
+    app.get(route, async (req, res) => {
+      let script = fse.readFileSync(filename).toString();
 
-        console.log('');
-        console.log(`Accessed ${route}: props:`);
-        console.log(props);
-        console.log('');
+      console.log('req.query.props');
+      console.log(req.query.props);
 
-        res.type('.js');
-        res.send(script);
-      });
+      console.log('req.query');
+      console.log(req.query);
+      const props = await codec.decompress(req.query.props);
+
+      console.log('');
+      console.log(`Accessed ${route}: props:`);
+      console.log(props);
+      console.log('');
+
+      res.type('.js');
+      res.send(script);
     });
   }
 

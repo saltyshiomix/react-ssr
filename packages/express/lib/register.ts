@@ -28,9 +28,12 @@ const register = async (app: express.Application, config: Config): Promise<void>
   app.set('view engine', ENGINE);
 
   app.listen = function() {
-    optimize(app, config);
+    const args: any = arguments;
     const server = http.createServer(app);
-    return server.listen.apply(server, arguments as any);
+    optimize(app, config).then(() => {
+      server.listen.apply(server, args)
+    });
+    return server;
   };
 };
 
