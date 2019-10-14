@@ -58,6 +58,7 @@
     "fs-extra": "^8.1.0",
     "hasha": "^5.1.0",
     "json-url": "^2.4.2",
+    "lodash.escaperegexp": "^4.1.2",
     "unionfs": "^4.2.0",
     "webpack": "^4.41.1"
   },
