@@ -73,9 +73,34 @@ export default async (app: express.Application, config: Config): Promise<void> =
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
-  compiler.run((err: Error) => {
-    err && console.error(err.stack || err);
-  });
+
+  if (env === 'production') {
+    compiler.run((err: Error) => {
+      err && console.error(err.stack || err);
+    });
+  } else {
+    const chokidar = require('chokidar');
+    const watcher = chokidar.watch(cwd);
+
+    const closeWatching = () => {
+      if (watcher) {
+        watcher.close();
+      }
+    };
+    process.on('SIGINT', closeWatching);
+    process.on('SIGTERM', closeWatching);
+    process.on('exit', closeWatching);
+
+    watcher.on('change', (p: string) => {
+      console.log('changed: ' + p);
+      const hash = hasha(env + p, { algorithm: 'md5' });
+      mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(p));
+    });
+
+    compiler.watch({}, (err: Error) => {
+      err && console.error(err.stack || err);
+    });
+  }
 
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
