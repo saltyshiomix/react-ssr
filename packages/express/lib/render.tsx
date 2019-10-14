@@ -1,78 +1,43 @@
-import fs from 'fs';
-import {
-  existsSync,
-  outputFileSync,
-} from 'fs-extra';
-import { resolve } from 'path';
-import template from 'art-template';
+import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import delay from 'delay';
-import hasha from 'hasha';
-import webpack from 'webpack';
-import configure from './webpack.config';
 import Html from './html';
-import { Config } from './config';
-import { getEngine } from './utils';
 
-template.defaults.minimize = false;
+const codec = require('json-url')('lzw');
 
-const waitUntilBuilt = async (dist: string, mfs: any) => {
-  while (true) {
-    if (mfs.existsSync(dist)) {
-      break;
-    }
-    await delay(15);
-  }
-}
-
-const cwd: string = process.cwd();
-const ext: '.jsx'|'.tsx' = `.${getEngine()}` as '.jsx'|'.tsx';
-const { ufs } = require('unionfs');
-const MemoryFileSystem = require('memory-fs');
-
-const render = async (file: string, config: Config, props: any): Promise<string> => {
-  let html: string = '<!DOCTYPE html>';
-
-  const distDir: string = config.distDir as string;
-  const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
-  const hash: string = await hasha(env + file + JSON.stringify(props), { algorithm: 'md5' });
-  const cache: string = resolve(cwd, distDir, env, `${hash}.js`);
+const render = async (file: string, props: any): Promise<string> => {
+  const [, ...rest] = file.replace(process.cwd(), '').split(path.sep);
+  const route: string = '/_react-ssr/' + rest.join('/');
+  const compressedProps: string = await codec.compress(props);
 
   let Page = require(file);
   Page = Page.default || Page;
 
+  let html = '<!DOCTYPE html>';
   html += renderToString(
-    <Html script={`${hash}.js`}>
+    <Html route={route} props={compressedProps}>
       <Page {...props} />
     </Html>
   );
 
-  if (existsSync(cache)) {
-    return html;
-  }
+  console.log('');
+  console.log(`ROUTE: ${route}`);
+  console.log('');
 
-  const mfs = new MemoryFileSystem;
-  ufs.use(mfs).use(fs);
-  mfs.mkdirpSync(resolve(cwd, 'react-ssr-src'));
-  mfs.writeFileSync(resolve(cwd, `react-ssr-src/entry${ext}`), template(resolve(__dirname, '../page.jsx'), { props }));
-  mfs.writeFileSync(resolve(cwd, `react-ssr-src/page${ext}`), template(file, props));
+  console.log('');
+  console.log('COMPRESSED_PROPS:');
+  console.log(compressedProps);
+  console.log('');
 
-  const compiler: webpack.Compiler = webpack(configure(hash, ext, distDir, env));
-  compiler.inputFileSystem = ufs;
-  compiler.outputFileSystem = mfs;
-  compiler.run((err: any) => {
-    if (err) {
-      console.error(err.stack || err);
-      if (err.details) {
-        console.error(err.details);
-      }
-      return;
-    }
-  });
+  console.log('');
+  console.log('PROPS:');
+  console.log(props);
+  console.log('');
 
-  await waitUntilBuilt(cache, mfs);
-  await outputFileSync(cache, mfs.readFileSync(cache).toString());
+  console.log('');
+  console.log('HTML:');
+  console.log(html);
+  console.log('');
 
   return html;
 };

@@ -1,26 +1,25 @@
-import { resolve } from 'path';
-import chalk from 'chalk';
-import { Configuration } from 'webpack';
+import path from 'path';
+import webpack from 'webpack';
 import {
   hasUserBabelrc,
   getBabelrc,
   getBabelRule,
 } from './utils';
 
-const isProd: boolean = process.env.NODE_ENV === 'production';
+const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
-export default (name: string, ext: '.jsx'|'.tsx', distDir: string, env: 'development' | 'production'): Configuration => {
+export default (name: string, ext: string, cacheDir: string): webpack.Configuration => {
   if (hasUserBabelrc()) {
-    !isProd && console.log(chalk`{cyan [react-ssr]} Babelrc in: ${getBabelrc()}`);
+    !(env === 'production') && console.log(`[react-ssr] Babelrc in: ${getBabelrc()}`);
   }
 
   return {
-    mode: isProd ? 'production' : 'development',
+    mode: env,
     entry: {
       [name]: `./react-ssr-src/entry${ext}`,
     },
     output: {
-      path: resolve(process.cwd(), distDir, env),
+      path: path.join(process.cwd(), cacheDir, env),
       filename: '[name].js',
     },
     resolve: {

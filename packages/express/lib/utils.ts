@@ -3,12 +3,7 @@ import { resolve } from 'path';
 
 const cwd: string = process.cwd();
 
-export const getEngine = (): 'jsx' | 'tsx' => {
-  if (existsSync(resolve(cwd, 'tsconfig.json'))) {
-    return 'tsx';
-  }
-  return 'jsx';
-};
+export const getEngine = (): 'jsx' | 'tsx' => existsSync(resolve(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
 
 export const hasUserBabelrc = (): boolean => {
   return existsSync(resolve(cwd, '.babelrc')) || existsSync(resolve(cwd, '.babelrc.js')) || existsSync(resolve(cwd, 'babel.config.js'));

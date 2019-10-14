@@ -31,10 +31,10 @@
     "dist",
     "babel.js",
     "babel.config.default.js",
-    "page.jsx"
+    "entry.jsx"
   ],
   "scripts": {
-    "build": "rimraf build && run-p build:src build:types",
+    "build": "rimraf dist && run-p build:src build:types",
     "build:src": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly --outDir dist",
     "build:release": "cross-env NODE_ENV=production npm run build",
@@ -51,13 +51,11 @@
     "@babel/preset-typescript": "^7.6.0",
     "@babel/register": "^7.6.2",
     "@babel/runtime-corejs2": "^7.6.3",
-    "art-template": "^4.13.2",
     "babel-loader": "^8.0.6",
     "babel-plugin-react-require": "^3.1.1",
-    "chalk": "^2.4.2",
-    "delay": "^4.3.0",
     "fs-extra": "^8.1.0",
     "hasha": "^5.1.0",
+    "json-url": "^2.4.2",
     "unionfs": "^4.2.0",
     "webpack": "^4.41.1"
   },

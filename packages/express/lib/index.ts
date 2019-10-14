@@ -1,5 +1,5 @@
-import { ReactSsrExpress } from './app';
+import app from './app';
 
-module.exports = ReactSsrExpress;
+module.exports = app;
 
-export default ReactSsrExpress;
+export default app;

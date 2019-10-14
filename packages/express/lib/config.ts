@@ -1,4 +1,4 @@
-export class Config {
-  public distDir?: string = 'dist';
-  public viewsDir?: string = 'views';
+export default class Config {
+  public viewsDir: string = 'views';
+  public cacheDir: string = '.cache';
 }

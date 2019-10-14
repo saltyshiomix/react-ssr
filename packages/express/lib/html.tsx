@@ -1,8 +1,9 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 interface HtmlProps {
-  children: ReactNode;
-  script: string;
+  children: React.ReactNode;
+  route: string;
+  props: string;
 }
 
 const Html = (props: HtmlProps) => {
@@ -10,7 +11,7 @@ const Html = (props: HtmlProps) => {
     <html>
       <body>
         <div id="app">{props.children}</div>
-        <script src={`/${props.script}`}></script>
+        <script src={props.route + `?props=${props.props}`}></script>
       </body>
     </html>
   );
