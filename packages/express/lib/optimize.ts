@@ -82,20 +82,8 @@ export default async (app: express.Application, config: Config): Promise<void> =
     console.log('  ' + id);
 
     app.get(route, async (req, res) => {
-      let script = fse.readFileSync(filename).toString();
-
-      console.log('req.query.props');
-      console.log(req.query.props);
-
-      console.log('req.query');
-      console.log(req.query);
-      const json = await codec.decompress(req.query.props);
-
-      console.log('');
-      console.log(`Accessed ${route}: props:`);
-      console.log(json);
-      console.log('');
-
+      const props = await codec.decompress(req.query.props);
+      let script = fse.readFileSync(filename).toString().replace('__REACT_SSR__', JSON.stringify(props));
       res.type('.js');
       res.send(script);
     });
