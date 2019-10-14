@@ -80,7 +80,11 @@ export default async (app: express.Application, config: Config): Promise<void> =
     });
   } else {
     const chokidar = require('chokidar');
-    const watcher = chokidar.watch(cwd);
+    const watcher = chokidar.watch(cwd, {
+      ignored: [
+        /node_modules/,
+      ],
+    });
 
     const closeWatching = () => {
       if (watcher) {
@@ -92,9 +96,16 @@ export default async (app: express.Application, config: Config): Promise<void> =
     process.on('exit', closeWatching);
 
     watcher.on('change', (p: string) => {
-      console.log('changed: ' + p);
-      const hash = hasha(env + p, { algorithm: 'md5' });
-      mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(p));
+      console.log('(debug) changed: ' + p);
+
+      for (let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+        const hash = hasha(env + page, { algorithm: 'md5' });
+        let entryFile = fse.readFileSync(path.join(__dirname, '../entry.jsx')).toString();
+        entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', 'true');
+        mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
+        mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
+      }
     });
 
     compiler.watch({}, (err: Error) => {
