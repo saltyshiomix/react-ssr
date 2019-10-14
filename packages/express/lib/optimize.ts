@@ -49,7 +49,8 @@ ufs.use(mfs).use(fs);
 mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
 export default async (app: express.Application, config: Config): Promise<void> => {
-  console.log('Optimizing performance...');
+  console.log('');
+  console.log('[ info ] optimizing performance...');
   console.log('');
 
   const pages = getPages(path.join(cwd, config.viewsDir));
@@ -75,13 +76,13 @@ export default async (app: express.Application, config: Config): Promise<void> =
     const id = rest.join('/')
     const route = '/_react-ssr/' + id.replace(ext, '.js');
 
-    console.log('  [DONE] ' + id);
+    console.log('  [ ok ] ' + id);
 
     app.get(route, async (req, res) => {
       const props = await codec.decompress(req.query.props);
       if (env !== 'production') {
         console.log('');
-        console.log(`[ info ] ${Date.now().toLocaleString()}: the props below is server side rendered dynamically`);
+        console.log(`[ info ] the props below is rendered by server side dynamically`);
         console.log(props);
       }
 
