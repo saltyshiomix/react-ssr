@@ -128,16 +128,6 @@ export default async (app: express.Application, server: http.Server, config: Con
 
     await waitUntilCompleted(mfs, filename);
 
-    delete require.cache[filename];
-
-    const arr = Object.keys(require.cache);
-    for (let i = 0; i < arr.length; i++) {
-      const f = arr[i];
-      console.log(f);
-    }
-    console.log('')
-    console.log(filename)
-
     const [, ...rest] = page.replace(cwd, '').split(path.sep);
     const id = rest.join('/');
     const route = '/_react-ssr/' + id.replace(ext, '.js');
@@ -150,6 +140,8 @@ export default async (app: express.Application, server: http.Server, config: Con
         console.log('[ info ] props below is rendered from server side');
         console.log(props);
       }
+
+      delete require.cache[filename];
 
       const script = fse.readFileSync(filename).toString()
                       .replace(
