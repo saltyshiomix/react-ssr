@@ -26,10 +26,6 @@ const getPages = (dir: string): string[] => {
   return pages;
 };
 
-let count = 0;
-let existsFileInMFS = false;
-let existsFileInFS = false;
-
 const sleep = (ms: number) => {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 }
@@ -47,6 +43,8 @@ const waitUntilCompleted = (mfs: any, filename: string) => {
   }
 
   sleep(15);
+
+  waitUntilCompleted(mfs, filename);
 }
 
 const codec = require('json-url')('lzma');
