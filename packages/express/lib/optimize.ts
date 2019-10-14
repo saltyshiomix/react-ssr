@@ -91,7 +91,6 @@ export default async (app: express.Application, server: http.Server, config: Con
     });
 
     const closeWatching = () => {
-      console.log('stop watching');
       watcher.close();
     };
     process.on('SIGINT', closeWatching);
@@ -99,8 +98,6 @@ export default async (app: express.Application, server: http.Server, config: Con
     process.on('exit', closeWatching);
 
     watcher.on('change', (p: string) => {
-      console.log('(debug) changed: ' + p);
-
       const entry: webpack.Entry = {};
 
       for (let i = 0; i < pages.length; i++) {

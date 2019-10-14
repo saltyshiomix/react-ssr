@@ -34,14 +34,11 @@ const register = async (app: express.Application, config: Config): Promise<void>
     } catch (e) {
       return cb(e);
     } finally {
-      if (process.env.NODE_ENV !== 'production') {
-        Object.keys(require.cache).forEach((filename) => {
-          if (moduleDetectRegEx.test(filename)) {
-            delete require.cache[filename];
-            console.log('[ info ] deleted cache: ' + filename);
-          }
-        });
-      }
+      Object.keys(require.cache).forEach((filename) => {
+        if (moduleDetectRegEx.test(filename)) {
+          delete require.cache[filename];
+        }
+      });
     }
   };
 
