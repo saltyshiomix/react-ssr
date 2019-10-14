@@ -53,6 +53,9 @@ export default async (app: express.Application, config: Config): Promise<void> =
   console.log('[ info ] optimizing performance...');
   console.log('');
 
+  await fse.remove(config.cacheDir);
+  console.log('  [ ok ] removed all caches');
+
   const pages = getPages(path.join(cwd, config.viewsDir));
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
