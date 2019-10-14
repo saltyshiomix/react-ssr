@@ -8,16 +8,19 @@ import {
 
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
-export default (name: string, ext: string, cacheDir: string): webpack.Configuration => {
+export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration => {
   if (hasUserBabelrc()) {
-    !(env === 'production') && console.log(`[react-ssr] Babelrc in: ${getBabelrc()}`);
+    !(env === 'production') && console.log(`[ info ] use custom babelrc in: ${getBabelrc()}`);
+  }
+
+  const plugins = [new webpack.NamedModulesPlugin()];
+  if (env === 'development') {
+    plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 
   return {
     mode: env,
-    entry: {
-      [name]: `./react-ssr-src/entry${ext}`,
-    },
+    entry,
     output: {
       path: path.join(process.cwd(), cacheDir, env),
       filename: '[name].js',
@@ -30,5 +33,6 @@ export default (name: string, ext: string, cacheDir: string): webpack.Configurat
         getBabelRule(),
       ],
     },
+    plugins,
   };
 };
