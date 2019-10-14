@@ -30,28 +30,19 @@ let count = 0;
 let existsFileInMFS = false;
 let existsFileInFS = false;
 
+const sleep = (ms: number) => {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
 const waitUntilCompleted = (mfs: any, filename: string) => {
-  if (existsFileInMFS && existsFileInFS) {
-    return;
+  while (!mfs.existsSync(filename)) {
+    sleep(10);
   }
 
-  if (existsFileInMFS) {
-    fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
-
-    setTimeout(() => {
-      if (fse.existsSync(filename)) {
-        existsFileInFS = true;
-      }
-    }, 5 * count + 3);
+  fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
+  while (!fse.existsSync(filename)) {
+    sleep(10);
   }
-
-  setTimeout(() => {
-    if (mfs.existsSync(filename)) {
-      existsFileInMFS = true;
-    }
-  }, 5 * count);
-
-  waitUntilCompleted(mfs, filename);
 }
 
 const codec = require('json-url')('lzma');
