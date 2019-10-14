@@ -29,6 +29,9 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     },
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      alias: env === 'production' ? {} : {
+        'react-dom': '@hot-loader/react-dom',
+      },
     },
     module: {
       rules: [
