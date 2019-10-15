@@ -78,7 +78,9 @@ export default async (app: express.Application, server: http.Server, config: Con
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
   if (env === 'development') {
-    app.use(require("webpack-hot-middleware")(compiler));
+    app.use(require('webpack-hot-middleware')(compiler, {
+      reload: true,
+    }));
   }
 
   compiler.run((err: Error) => {
