@@ -27,7 +27,7 @@ if (html.indexOf('html') < 0) {
   const iframe = document.getElementById('app');
   // iframe.contentDocument.innerHTML = '';
 
-  iframeDoc = iframe.contentDocument;
+  const iframeDoc = iframe.contentDocument;
   // iframeDoc.documentElement.innerHTML = '';
 
   iframeDoc.removeChild(iframeDoc.documentElement);
