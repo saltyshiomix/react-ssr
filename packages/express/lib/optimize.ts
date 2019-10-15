@@ -122,7 +122,7 @@ export default async (app: express.Application, server: http.Server, config: Con
     const watcher = chokidar.watch(cwd, {
       ignored: [
         /node_modules/,
-        escaperegexp(config.cacheDir),
+        new RegExp(escaperegexp(config.cacheDir)),
       ],
     });
 
