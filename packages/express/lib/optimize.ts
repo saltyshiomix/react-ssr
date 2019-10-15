@@ -60,8 +60,9 @@ export default async (app: express.Application, server: http.Server, config: Con
     reloadable = await reload(app);
   }
 
-  await fse.remove(path.join(cwd, config.cacheDir));
-  console.log('[ info ] removed all caches');
+  await fse.remove(path.join(cwd, config.cacheDir), () => {
+    console.log('[ info ] removed all caches');
+  });
 
   console.log('[ info ] optimizing for the performance...');
 
