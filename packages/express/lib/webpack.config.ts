@@ -32,8 +32,5 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
         getBabelRule(),
       ],
     },
-    node: {
-      fs: 'empty',
-    },
   };
 };
