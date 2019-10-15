@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
-import cheerio from 'cheerio';
 import Page from './__REACT_SSR_PAGE_NAME__';
 
 let renderMethod = ReactDOM.hydrate;
@@ -16,8 +15,6 @@ const html = ReactDOMServer.renderToStaticMarkup(<Page {...props} />);
 if (html.indexOf('html') < 0) {
   renderMethod(<Page {...props} />, document.getElementById('app'));
 } else {
-  const $ = cheerio.load(html);
-  const body = $('body').html();
 
   // const script = '__REACT_SSR_SCRIPT__';
   // renderMethod((
@@ -30,8 +27,10 @@ if (html.indexOf('html') < 0) {
   const iframe = document.getElementById('app');
   // iframe.contentDocument.innerHTML = '';
 
-  iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-  iframeDoc.documentElement.innerHTML = '';
+  iframeDoc = iframe.contentDocument;
+  // iframeDoc.documentElement.innerHTML = '';
+
+  iframeDoc.removeChild(iframeDoc.documentElement);
 
   renderMethod(<Page {...props} />, iframeDoc);
 }
