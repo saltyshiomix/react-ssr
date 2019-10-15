@@ -85,33 +85,8 @@ export default async (app: express.Application, server: http.Server, config: Con
     err && console.error(err.stack || err);
   });
 
-  if (env === 'production') {
-    // compiler.run((err: Error) => {
-    //   err && console.error(err.stack || err);
-    // });
-  } else {
-    // app.use(require('webpack-dev-middleware')(compiler, {
-    //   hot: true,
-    //   serverSideRender: true,
-    //   writeToDisk: true,
-    // }));
+  if (env === 'development') {
     app.use(require('webpack-hot-middleware')(compiler));
-
-    // app.get('/_react-ssr/views/*.hot-update.json', (req, res) => {
-    //   const jsonName = req.originalUrl.replace('/_react-ssr/views/', '');
-    //   const jsonPath = path.join(cwd, config.cacheDir, env, jsonName);
-
-    //   console.log(jsonPath);
-
-    //   const json = mfs.readFileSync(jsonPath).toString();
-
-    //   // const jsonPath = path.join(cwd, config.cacheDir, env, 'hot/hot-update.json');
-    //   // const json = mfs.readFileSync(jsonPath).toString();
-
-    //   console.log(json);
-
-    //   res.json(json);
-    // });
   }
 
   for (let i = 0; i < pages.length; i++) {
@@ -134,11 +109,17 @@ export default async (app: express.Application, server: http.Server, config: Con
         console.log(props);
       }
 
-      const script = fse.readFileSync(filename).toString()
+      const script = mfs.readFileSync(filename).toString()
                       .replace(
                         '__REACT_SSR__',
                         JSON.stringify(props).replace(/"/g, '\\"'),
                       );
+
+      // const script = fse.readFileSync(filename).toString()
+      //                 .replace(
+      //                   '__REACT_SSR__',
+      //                   JSON.stringify(props).replace(/"/g, '\\"'),
+      //                 );
 
       res.type('.js');
       res.send(script);
@@ -175,7 +156,7 @@ export default async (app: express.Application, server: http.Server, config: Con
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
         entry[hash] = [
-          // 'webpack/hot/dev-server',
+          'webpack/hot/dev-server',
           `webpack-hot-middleware/client?reload=true`,
           `./react-ssr-src/${hash}/entry${ext}`
         ];
@@ -188,18 +169,6 @@ export default async (app: express.Application, server: http.Server, config: Con
       compiler.run((err: Error) => {
         err && console.error(err.stack || err);
       });
-
-      // // overwrite memory fs
-      // for (let i = 0; i < pages.length; i++) {
-      //   const page = pages[i];
-      //   const hash = hasha(env + page, { algorithm: 'md5' });
-      //   // mfs.unlinkSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`));
-      //   mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
-      // }
-
-      // compiler.run((err: Error) => {
-      //   err && console.error(err.stack || err);
-      // });
 
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
