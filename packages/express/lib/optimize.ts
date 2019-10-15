@@ -92,12 +92,12 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     const hash = hasha(env + page, { algorithm: 'md5' });
     const [filename, dirname] = getRelativeInfo(page);
 
-    console.log(template.replace('__REACT_SSR_PAGE_NAME_', path.basename(filename, path.extname(filename))));
+    console.log(template.replace('__REACT_SSR_PAGE_NAME__', path.basename(filename, path.extname(filename))));
 
     mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
     mfs.writeFileSync(
       path.join(cwd, `react-ssr-src/${dirname}/entry-${path.basename(filename)}`),
-      template.replace('__REACT_SSR_PAGE_NAME_', path.basename(filename, path.extname(filename))),
+      template.replace('__REACT_SSR_PAGE_NAME__', path.basename(filename, path.extname(filename))),
     );
     mfs.writeFileSync(
       path.join(cwd, `react-ssr-src/${filename}`),

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Page from './__REACT_SSR_PAGE_NAME_';
+import Page from './__REACT_SSR_PAGE_NAME__';
 
 let renderMethod = ReactDOM.hydrate;
 
