@@ -167,10 +167,11 @@ export default async (app: express.Application, server: http.Server, config: Con
         await waitUntilCompleted(mfs, filename);
       }
 
-      setTimeout(() => {
-        reloadable.reload();
-        console.log('[ info ] reloaded');
-      }, 800);
+      await sleep(500);
+
+      reloadable.reload();
+
+      console.log('[ info ] reloaded');
     });
 
     console.log('[ info ] enabled hot reloading');
