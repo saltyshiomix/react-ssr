@@ -42,9 +42,7 @@ const Html = (props: HtmlProps) => {
         {ReactHtmlParser(head || '')}
       </head>
       <body {...bodyAttr}>
-        <div id="app">
-          {ReactHtmlParser(body || '')}
-        </div>
+        {ReactHtmlParser(body || '')}
         <script src={route + `?props=${injectProps}`}></script>
         {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
       </body>
