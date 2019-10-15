@@ -89,6 +89,7 @@ export default async (app: express.Application, server: http.Server, config: Con
   } else {
     // app.use('/__webpack_hmr', express.static(path.resolve(`${cwd}/${config.cacheDir}/development`)));
     app.use(require('webpack-dev-middleware')(compiler, {
+      hot: true,
       serverSideRender: true,
       writeToDisk: true,
     }));
