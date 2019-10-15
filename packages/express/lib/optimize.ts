@@ -147,16 +147,16 @@ export default async (app: express.Application, server: http.Server, config: Con
       // const compiler: webpack.Compiler = webpack(webpackConfig);
       // compiler.inputFileSystem = ufs;
       // compiler.outputFileSystem = mfs;
-      compiler.run(async (err: Error) => {
-        err && console.error(err.stack || err);
-        for (let i = 0; i < pages.length; i++) {
-          const page = pages[i];
-          const hash = hasha(env + page, { algorithm: 'md5' });
-          const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
-          await waitUntilCompleted(mfs, filename);
-        }
-        console.log('[ info ] recompiled all bundles');
-      });
+      // compiler.run(async (err: Error) => {
+      //   err && console.error(err.stack || err);
+      //   for (let i = 0; i < pages.length; i++) {
+      //     const page = pages[i];
+      //     const hash = hasha(env + page, { algorithm: 'md5' });
+      //     const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
+      //     await waitUntilCompleted(mfs, filename);
+      //   }
+      //   console.log('[ info ] recompiled all bundles');
+      // });
     });
 
     console.log('[ info ] running a server (development mode)');
