@@ -3,9 +3,10 @@
 
 ## Features
 
-- Pass the server data to the client `props`
+- Passing the server data to the client `props`
 - Blazing fast SSR (Server Side Rendering)
-- Support TypeScript
+- Hot relaoding when `process.env.NODE_ENV !== 'production'`
+- TypeScript support
 
 ## Usage
 
