@@ -55,9 +55,6 @@ const getRelativeInfo = (file: string): string[] => {
   const [, ...rest] = splitted;
   const relativeFile = rest.join(path.sep);
   const relativeDir = path.dirname(relativeFile);
-
-  console.log([relativeFile, relativeDir]);
-
   return [relativeFile, relativeDir];
 };
 
@@ -103,9 +100,40 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   for (let i = 0; i < otherPages.length; i++) {
     const page = otherPages[i];
     const [filename, dirname] = getRelativeInfo(page);
-    mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
+    if (dirname !== '.') {
+      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
+    }
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${filename}`), fse.readFileSync(page));
   }
+
+  // debug
+  const walk = function(dir: string, done: (err: any, results: any) => void) {
+    var results: string[] = [];
+    mfs.readdir(dir, (err: Error, list: string[]) => {
+      if (err) return done(err, undefined);
+      var i = 0;
+      (function next() {
+        var file = list[i++];
+        if (!file) return done(undefined, results);
+        file = path.resolve(dir, file);
+        mfs.stat(file, (err: any, stat: fs.Stats) => {
+          if (stat && stat.isDirectory()) {
+            walk(file, (err, res) => {
+              results = results.concat(res);
+              next();
+            });
+          } else {
+            results.push(file);
+            next();
+          }
+        });
+      })();
+    });
+  };
+
+  walk(path.join(cwd, 'react-ssr-src'), (err, results) => {
+    console.log(results);
+  });
 
   const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
   const compiler: webpack.Compiler = webpack(webpackConfig);
