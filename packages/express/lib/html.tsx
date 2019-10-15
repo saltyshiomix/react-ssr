@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import ReactHtmlParser from 'react-html-parser';
+import cheerio from 'cheerio';
 
 interface HtmlProps {
   children: React.ReactNode;
@@ -28,14 +30,28 @@ const Html = (props: HtmlProps) => {
     );
   }
 
+  const $ = cheerio.load(html);
+  const htmlAttr = $('html').attr();
+  const bodyAttr = $('body').attr();
+  const head = $('head').html();
+
   const normalizeStyle = {
     margin: 0,
     padding: 0,
   };
 
   return (
-    <html style={normalizeStyle}>
-      <body style={normalizeStyle}>
+    <html
+      {...htmlAttr}
+      style={normalizeStyle}
+    >
+      <head>
+        {ReactHtmlParser(head || '')}
+      </head>
+      <body
+        {...bodyAttr}
+        style={normalizeStyle}
+      >
         <div id="wrapper">
           <iframe
             id="app"
