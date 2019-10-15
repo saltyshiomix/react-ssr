@@ -26,5 +26,5 @@ if (html.indexOf('html') < 0) {
       {/* {ReactHtmlParser(body || '')} */}
       <Page {...props} />
     </React.Fragment>
-  ), document.getElementById('app'));
+  ), document.getElementById('app').contentDocument);
 }
