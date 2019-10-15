@@ -167,7 +167,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   }
 
   // wait until bundled files are ready
-  await sleep(1500);
+  await sleep(2000);
 };
 
 export default async (app: express.Application, server: http.Server, config: Config): Promise<http.Server> => {
