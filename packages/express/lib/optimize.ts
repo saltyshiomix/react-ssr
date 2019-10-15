@@ -37,22 +37,17 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const waitUntilCompleted = async (mfs: any, filename: string, forceWrite?: boolean) => {
   const existsInMFS = mfs.existsSync(filename);
   let existsInFS = fse.existsSync(filename);
-
   if (forceWrite && existsInMFS) {
     fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
     existsInFS = fse.existsSync(filename);
   }
-
   if (existsInMFS && existsInFS) {
     return;
   }
-
   if (existsInMFS) {
     fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
   }
-
   await sleep(50);
-
   waitUntilCompleted(mfs, filename);
 }
 
