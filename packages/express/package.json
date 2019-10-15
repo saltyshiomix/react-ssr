@@ -64,9 +64,7 @@
     "reload": "^3.0.2",
     "resolve-as-bin": "^2.1.0",
     "unionfs": "^4.2.0",
-    "webpack": "^4.41.1",
-    "webpack-dev-middleware": "^3.7.2",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack": "^4.41.1"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.0.0",
