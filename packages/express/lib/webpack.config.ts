@@ -22,12 +22,16 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 
+  // const [, ...rest] = file.replace(process.cwd(), '').replace(ext, '.js').split(path.sep);
+  // const route: string = '/_react-ssr/' + rest.join('/');
+
   return {
     mode: env,
     context: cwd,
     entry,
     output: {
       path: path.join(cwd, cacheDir, env),
+      publicPath: `/_react-ssr/`,
       filename: '[name].js',
     },
     resolve: {
