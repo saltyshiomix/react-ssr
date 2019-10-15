@@ -136,7 +136,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
       const id = rest.join('/');
       const route = '/_react-ssr/' + id.replace(ext, '.js');
 
-      console.log(`  [ ok ] optimized "${id}"`);
+      console.log(`[  ok  ] optimized "${id}"`);
 
       app.get(route, async (req, res) => {
         const props = await codec.decompress(req.query.props);

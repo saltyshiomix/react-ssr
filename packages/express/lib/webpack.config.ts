@@ -12,7 +12,7 @@ const env = process.env.NODE_ENV === 'production' ? 'production' : 'development'
 export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration => {
   if (env === 'development') {
     if (hasUserBabelrc()) {
-      console.log(`[ info ] use custom babelrc in: ${getBabelrc()}`);
+      console.log(`[ info ] custom babelrc in: ${getBabelrc()}`);
     }
   }
 
