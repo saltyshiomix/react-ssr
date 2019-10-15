@@ -1,5 +1,9 @@
 import React from 'react';
 
+if (process.env.NODE_ENV !== 'production') {
+  require('reload/lib/reload-client');
+}
+
 interface HtmlProps {
   children: React.ReactNode;
   route: string;

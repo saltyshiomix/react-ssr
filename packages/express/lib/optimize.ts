@@ -53,10 +53,16 @@ const mfs = new MemoryFileSystem;
 ufs.use(mfs).use(fs);
 mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
-export default async (app: express.Application, server: http.Server, config: Config): Promise<void> => {
-  await fse.remove(path.join(cwd, config.cacheDir));
+export default async (app: express.Application, server: http.Server, config: Config): Promise<http.Server> => {
+  let reloadable: any = false;
+  if (env === 'development') {
+    const reload = require('reload');
+    reloadable = await reload(app);
+  }
 
+  await fse.remove(path.join(cwd, config.cacheDir));
   console.log('[ info ] removed all caches');
+
   console.log('[ info ] optimizing for the performance...');
 
   const entry: webpack.Entry = {};
@@ -71,7 +77,7 @@ export default async (app: express.Application, server: http.Server, config: Con
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
     entry[hash] = env === 'production' ? `./react-ssr-src/${hash}/entry${ext}` : [
-      `webpack-hot-middleware/client`,
+      // `webpack-hot-middleware/client`,
       `./react-ssr-src/${hash}/entry${ext}`
     ];
   }
@@ -83,10 +89,6 @@ export default async (app: express.Application, server: http.Server, config: Con
   compiler.run((err: Error) => {
     err && console.error(err.stack || err);
   });
-
-  if (env === 'development') {
-    app.use(require('webpack-hot-middleware')(compiler));
-  }
 
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
@@ -150,7 +152,7 @@ export default async (app: express.Application, server: http.Server, config: Con
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
         entry[hash] = [
-          `webpack-hot-middleware/client`,
+          // `webpack-hot-middleware/client`,
           `./react-ssr-src/${hash}/entry${ext}`
         ];
       }
@@ -170,7 +172,9 @@ export default async (app: express.Application, server: http.Server, config: Con
         await waitUntilCompleted(mfs, filename);
       }
 
-      console.log('[ info ] recompiled all bundles');
+      reloadable.reload();
+
+      console.log('[ info ] reloaded');
     });
 
     console.log('[ info ] enabled hot reloading');
@@ -186,4 +190,6 @@ export default async (app: express.Application, server: http.Server, config: Con
     const address = server.address() as net.AddressInfo;
     return address.port;
   });
+
+  return server;
 };

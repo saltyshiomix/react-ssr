@@ -52,7 +52,7 @@ const register = async (app: express.Application, config: Config): Promise<void>
   app.listen = function() {
     const args: any = arguments;
     const server = http.createServer(app);
-    optimize(app, server, config).then(() => {
+    optimize(app, server, config).then((server) => {
       server.listen.apply(server, args);
     });
     return server;

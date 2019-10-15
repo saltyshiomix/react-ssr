@@ -10,13 +10,13 @@ const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration => {
-  const plugins = [];
+  // const plugins = [];
 
   if (env === 'development') {
     if (hasUserBabelrc()) {
       console.log(`[ info ] use custom babelrc in: ${getBabelrc()}`);
     }
-    plugins.push(new webpack.HotModuleReplacementPlugin());
+    // plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 
   return {
@@ -35,6 +35,6 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
         getBabelRule(),
       ],
     },
-    plugins,
+    // plugins,
   };
 };
