@@ -64,14 +64,13 @@ export default async (app: express.Application, server: http.Server, config: Con
 
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
-    const name = path.basename(page, path.extname(page));
     const hash = hasha(env + page, { algorithm: 'md5' });
     mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${hash}`));
     let entryFile = fse.readFileSync(path.join(__dirname, '../entry.jsx')).toString();
     entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', env === 'development' ? 'true' : 'false');
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
-    entry[hash] = env === 'production' ? `./react-ssr-src/${hash}/entry${ext}` : [`webpack-hot-middleware/client?name=${name}`, `./react-ssr-src/${hash}/entry${ext}`];
+    entry[hash] = env === 'production' ? `./react-ssr-src/${hash}/entry${ext}` : [`webpack-hot-middleware/client?path=/__webpack_hmr`, `./react-ssr-src/${hash}/entry${ext}`];
   }
 
   const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
