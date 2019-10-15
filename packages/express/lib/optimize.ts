@@ -104,7 +104,7 @@ export default async (app: express.Application, server: http.Server, config: Con
     app.get(route, async (req, res) => {
       const props = await codec.decompress(req.query.props);
       if (env === 'development') {
-        console.log('[ info ] props below is rendered from server side');
+        console.log('[ info ] the props below is rendered from the server side');
         console.log(props);
       }
 
