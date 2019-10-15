@@ -8,4 +8,9 @@ if ('__REACT_SSR_DEVELOPMENT__') {
 
 const props = JSON.parse('__REACT_SSR__');
 
-ReactDOM.hydrate(<Page {...props} />, document.getElementById('app'));
+ReactDOM.hydrate((
+  <React.Fragment>
+    <Page {...props} />
+    {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+  </React.Fragment>
+), document.getElementById('app'));
