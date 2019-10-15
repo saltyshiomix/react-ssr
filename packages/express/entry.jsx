@@ -28,7 +28,10 @@ if (html.indexOf('html') < 0) {
   // ), document.getElementById('app').contentDocument);
 
   const iframe = document.getElementById('app');
-  iframe.contentDocument.innerHTML = '';
+  // iframe.contentDocument.innerHTML = '';
 
-  renderMethod(<Page {...props} />, document.getElementById('app').contentDocument);
+  iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+  iframeDoc.documentElement.innerHTML = '';
+
+  renderMethod(<Page {...props} />, iframeDoc);
 }
