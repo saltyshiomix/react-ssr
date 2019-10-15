@@ -24,18 +24,13 @@ if (html.indexOf('html') < 0) {
   //   </React.Fragment>
   // ), document.getElementById('app').contentDocument);
 
-  const iframe = document.getElementById('app');
-  // iframe.contentDocument.innerHTML = '';
+  // const iframe = document.getElementById('app');
+  // const iframeDoc = iframe.contentDocument;
+  // const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
-  const iframeDoc = iframe.contentDocument;
+  document.getElementById('wrapper').innerHTML = '<iframe id="app" frameBorder="0"></iframe>';
+  // console.log(iframe.contentDocument); // null!!
+  // console.log(iframe.contentWindow.document);
 
-  console.log(iframe.contentDocument);
-  console.log(iframe.contentWindow.document);
-
-  // iframeDoc.documentElement.innerHTML = '';
-  iframeDoc.innerHTML = '';
-
-  // iframeDoc.removeChild(iframeDoc.documentElement);
-
-  renderMethod(<Page {...props} />, iframeDoc);
+  renderMethod(<Page {...props} />, document.getElementById('app'));
 }

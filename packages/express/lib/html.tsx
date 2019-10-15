@@ -44,7 +44,9 @@ const Html = (props: HtmlProps) => {
         {ReactHtmlParser(head || '')}
       </head>
       <body {...bodyAttr}>
-        <iframe id="app" src={escapedHTML} frameBorder="0"></iframe>
+        <div id="wrapper">
+          <iframe id="app" src={escapedHTML} frameBorder="0"></iframe>
+        </div>
         {/* <div id="app">
           {ReactHtmlParser(body || '')}
         </div> */}
