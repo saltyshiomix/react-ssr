@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Page from './page';
 
 if ('__REACT_SSR_DEVELOPMENT__') {
-  require('reload/lib/reload-client');
+  require('reload/lib/reload');
 }
 
 const props = JSON.parse('__REACT_SSR__');
