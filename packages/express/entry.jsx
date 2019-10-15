@@ -32,5 +32,5 @@ if (html.indexOf('html') < 0) {
   // console.log(iframe.contentDocument); // null!!
   // console.log(iframe.contentWindow.document);
 
-  renderMethod(<Page {...props} />, document.getElementById('app'));
+  renderMethod(<Page {...props} />, document.getElementById('app').contentDocument);
 }
