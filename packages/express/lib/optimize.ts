@@ -34,16 +34,9 @@ const getPages = (dir: string): string[] => {
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const waitUntilCompleted = async (mfs: any, filename: string, forceWrite?: boolean) => {
+const waitUntilCompleted = async (mfs: any, filename: string) => {
   const existsInMFS = mfs.existsSync(filename);
   let existsInFS = fse.existsSync(filename);
-  if (forceWrite && existsInMFS) {
-    console.log('force output: ' + filename);
-
-
-    fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
-    existsInFS = fse.existsSync(filename);
-  }
   if (existsInMFS && existsInFS) {
     return;
   }
@@ -176,7 +169,7 @@ export default async (app: express.Application, server: http.Server, config: Con
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
         const hash = hasha(env + page, { algorithm: 'md5' });
-        // mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${hash}`));
+        mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${hash}`));
         let entryFile = fse.readFileSync(path.join(__dirname, '../entry.jsx')).toString();
         entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', 'true');
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
@@ -212,7 +205,7 @@ export default async (app: express.Application, server: http.Server, config: Con
         const page = pages[i];
         const hash = hasha(env + page, { algorithm: 'md5' });
         const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
-        await waitUntilCompleted(mfs, filename, true);
+        await waitUntilCompleted(mfs, filename);
       }
 
       console.log('[ info ] recompiled all bundles');
