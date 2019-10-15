@@ -91,6 +91,9 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     const page = entryPages[i];
     const hash = hasha(env + page, { algorithm: 'md5' });
     const [filename, dirname] = getRelativeInfo(page);
+
+    console.log(template.replace('__REACT_SSR_PAGE_NAME_', path.basename(filename, path.extname(filename))));
+
     mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
     mfs.writeFileSync(
       path.join(cwd, `react-ssr-src/${dirname}/entry-${path.basename(filename)}`),
@@ -154,22 +157,22 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
       const page = entryPages[i];
       const hash = hasha(env + page, { algorithm: 'md5' });
       const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
-  
+
       await waitUntilCompleted(mfs, filename);
-  
+
       const [, ...rest] = page.replace(cwd, '').split(path.sep);
       const id = rest.join('/');
       const route = '/_react-ssr/' + id.replace(ext, '.js');
-  
+
       console.log(`  [ ok ] optimized "${id}"`);
-  
+
       app.get(route, async (req, res) => {
         const props = await codec.decompress(req.query.props);
         if (env === 'development') {
           console.log('[ info ] the props below is rendered from the server side');
           console.log(props);
         }
-  
+
         const swichableFS = env === 'development' ? mfs : fse;
         const script = swichableFS.readFileSync(filename)
                                   .toString()
@@ -177,7 +180,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
                                     '__REACT_SSR_PROPS__',
                                     JSON.stringify(props).replace(/"/g, '\\"'),
                                   );
-  
+
         res.type('.js');
         res.send(script);
       });
