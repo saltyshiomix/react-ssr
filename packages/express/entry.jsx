@@ -28,8 +28,12 @@ if (html.indexOf('html') < 0) {
   // iframe.contentDocument.innerHTML = '';
 
   const iframeDoc = iframe.contentDocument;
+
+  console.log(iframe.contentDocument);
+  console.log(iframe.contentWindow.document);
+
   // iframeDoc.documentElement.innerHTML = '';
-  iframeDoc.documentElement.innerHTML
+  iframeDoc.innerHTML = '';
 
   // iframeDoc.removeChild(iframeDoc.documentElement);
 
