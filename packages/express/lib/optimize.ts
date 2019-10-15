@@ -167,7 +167,7 @@ export default async (app: express.Application, server: http.Server, config: Con
         await waitUntilCompleted(mfs, filename);
       }
 
-      await sleep(500);
+      await sleep(1500);
 
       reloadable.reload();
 
