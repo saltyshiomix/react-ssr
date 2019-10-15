@@ -27,4 +27,6 @@ if (html.indexOf('html') < 0) {
   //     <Page {...props} />
   //   </React.Fragment>
   // ), document.getElementById('app').contentDocument);
+
+  renderMethod(<Page {...props} />, document.getElementById('app').contentDocument);
 }
