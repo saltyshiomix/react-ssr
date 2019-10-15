@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "basic-jsx",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.21",
+    "@emotion/styled": "^10.0.17",
+    "@react-ssr/express": "canary",
+    "babel-plugin-emotion": "^10.0.21",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2"
+  }
+}

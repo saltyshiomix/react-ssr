@@ -1,0 +1,8 @@
+{
+  "presets": [
+    "@react-ssr/express/babel"
+  ],
+  "plugins": [
+    "emotion"
+  ]
+}
