@@ -20,21 +20,6 @@ if (html.indexOf('html') < 0) {
   const $ = cheerio.load(html);
   const body = $('body').html();
 
-
-  // debug
-  React.Children.forEach(<Page {...props} />, (child, index) => {
-    console.log(child);
-    console.log(child.props);
-    console.log(child.props.children);
-    console.log(child.key);
-
-    React.Children.forEach(child.props.children, (c, i) => {
-      console.log(c.type);
-      console.log(c);
-    });
-  });
-
-
   // const script = '__REACT_SSR_SCRIPT__';
   renderMethod((
     <React.Fragment>
