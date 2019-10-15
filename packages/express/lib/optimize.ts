@@ -87,7 +87,6 @@ export default async (app: express.Application, server: http.Server, config: Con
       err && console.error(err.stack || err);
     });
   } else {
-    // app.use('/__webpack_hmr', express.static(path.resolve(`${cwd}/${config.cacheDir}/development`)));
     app.use(require('webpack-dev-middleware')(compiler, {
       hot: true,
       serverSideRender: true,
@@ -174,31 +173,6 @@ export default async (app: express.Application, server: http.Server, config: Con
       }
 
       console.log('[ info ] recompiled all bundles');
-
-      // for (let i = 0; i < pages.length; i++) {
-      //   const page = pages[i];
-      //   const hash = hasha(env + page, { algorithm: 'md5' });
-      //   const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
-      //   await waitUntilCompleted(mfs, filename);
-      // }
-      // console.log('[ info ] recompiled all bundles');
-      // const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
-      // const compiler: webpack.Compiler = webpack(webpackConfig);
-      // compiler.inputFileSystem = ufs;
-      // compiler.outputFileSystem = mfs;
-      // app.use(require('webpack-hot-middleware')(compiler, {
-      //   reload: true,
-      // }));
-      // compiler.run(async (err: Error) => {
-      //   err && console.error(err.stack || err);
-      //   for (let i = 0; i < pages.length; i++) {
-      //     const page = pages[i];
-      //     const hash = hasha(env + page, { algorithm: 'md5' });
-      //     const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
-      //     await waitUntilCompleted(mfs, filename);
-      //   }
-      //   console.log('[ info ] recompiled all bundles');
-      // });
     });
 
     console.log('[ info ] enabled HMR');
