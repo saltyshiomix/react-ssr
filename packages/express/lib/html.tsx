@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface HtmlProps {
   children: React.ReactNode;
   route: string;
@@ -8,11 +6,14 @@ interface HtmlProps {
 
 const Html = (props: HtmlProps) => {
   return (
-    <React.Fragment>
-      <div id="app">{props.children}</div>
-      <script src={props.route + `?props=${props.props}`}></script>
-      {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-    </React.Fragment>
+    <html>
+      <head></head>
+      <body>
+        <div id="app">{props.children}</div>
+        <script src={props.route + `?props=${props.props}`}></script>
+        {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+      </body>
+    </html>
   );
 };
 

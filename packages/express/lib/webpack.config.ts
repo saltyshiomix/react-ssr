@@ -16,8 +16,6 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     }
   }
 
-  console.log(entry);
-
   return {
     mode: env,
     context: cwd,

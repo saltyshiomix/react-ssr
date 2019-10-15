@@ -1,6 +1,7 @@
 import path from 'path';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import ReactHtmlParser from 'react-html-parser';
 import Html from './html';
 import { getEngine } from './utils';
 
@@ -13,6 +14,9 @@ const render = async (file: string, props: object): Promise<string> => {
 
   let Page = require(file);
   Page = Page.default || Page;
+
+  console.log('RENDER.TSX:');
+  console.log(ReactDOMServer.renderToString(<Page {...props} />));
 
   let html = '<!DOCTYPE html>';
   html += ReactDOMServer.renderToString(

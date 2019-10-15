@@ -25,6 +25,9 @@ const ignores = [
   '.*',
   '*.json',
   '*.lock',
+  '*.md',
+  '*.txt',
+  '*.yml',
   'LICENSE',
 ];
 
@@ -92,7 +95,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     const hash = hasha(env + page, { algorithm: 'md5' });
     const [filename, dirname] = getRelativeInfo(page);
 
-    console.log(template.replace('__REACT_SSR_PAGE_NAME__', path.basename(filename, path.extname(filename))));
+    // console.log(template.replace('__REACT_SSR_PAGE_NAME__', path.basename(filename, path.extname(filename))));
 
     mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
     mfs.writeFileSync(
@@ -116,33 +119,33 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   }
 
   // debug
-  const walk = function(dir: string, done: (err: any, results: any) => void) {
-    var results: string[] = [];
-    mfs.readdir(dir, (err: Error, list: string[]) => {
-      if (err) return done(err, undefined);
-      var i = 0;
-      (function next() {
-        var file = list[i++];
-        if (!file) return done(undefined, results);
-        file = path.resolve(dir, file);
-        mfs.stat(file, (err: any, stat: fs.Stats) => {
-          if (stat && stat.isDirectory()) {
-            walk(file, (err, res) => {
-              results = results.concat(res);
-              next();
-            });
-          } else {
-            results.push(file);
-            next();
-          }
-        });
-      })();
-    });
-  };
+  // const walk = function(dir: string, done: (err: any, results: any) => void) {
+  //   var results: string[] = [];
+  //   mfs.readdir(dir, (err: Error, list: string[]) => {
+  //     if (err) return done(err, undefined);
+  //     var i = 0;
+  //     (function next() {
+  //       var file = list[i++];
+  //       if (!file) return done(undefined, results);
+  //       file = path.resolve(dir, file);
+  //       mfs.stat(file, (err: any, stat: fs.Stats) => {
+  //         if (stat && stat.isDirectory()) {
+  //           walk(file, (err, res) => {
+  //             results = results.concat(res);
+  //             next();
+  //           });
+  //         } else {
+  //           results.push(file);
+  //           next();
+  //         }
+  //       });
+  //     })();
+  //   });
+  // };
 
-  walk(path.join(cwd, 'react-ssr-src'), (err, results) => {
-    console.log(results);
-  });
+  // walk(path.join(cwd, 'react-ssr-src'), (err, results) => {
+  //   console.log(results);
+  // });
 
   const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
   const compiler: webpack.Compiler = webpack(webpackConfig);

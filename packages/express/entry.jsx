@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
+import ReactHtmlParser from 'react-html-parser';
 import Page from './__REACT_SSR_PAGE_NAME__';
 
 let renderMethod = ReactDOM.hydrate;
@@ -9,6 +11,8 @@ if ('__REACT_SSR_DEVELOPMENT__') {
 }
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
+
+console.log(ReactDOMServer.renderToString(<Page {...props} />));
 
 renderMethod((
   <React.Fragment>
