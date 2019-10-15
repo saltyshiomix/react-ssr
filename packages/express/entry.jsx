@@ -23,6 +23,11 @@ if (html.indexOf('html') < 0) {
 
   // debug
   React.Children.forEach(<Page {...props} />, (child, index) => {
+    console.log(child);
+    console.log(child.props);
+    console.log(child.props.children);
+    console.log(child.key);
+
     React.Children.forEach(child.props.children, (c, i) => {
       console.log(c.type);
       console.log(c);
