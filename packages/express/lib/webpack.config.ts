@@ -17,8 +17,8 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
       console.log(`[ info ] use custom babelrc in: ${getBabelrc()}`);
     }
 
-    const WriteFilePlugin = require('write-file-webpack-plugin');
-    plugins.push(new WriteFilePlugin());
+    // const WriteFilePlugin = require('write-file-webpack-plugin');
+    // plugins.push(new WriteFilePlugin());
     plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 
@@ -29,9 +29,9 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     output: {
       path: path.join(cwd, cacheDir, env),
       filename: '[name].js',
-      publicPath: '/__webpack_hmr/',
-      hotUpdateChunkFilename: 'hot/hot-update.js',
-      hotUpdateMainFilename: 'hot/hot-update.json',
+      publicPath: '/_react-ssr/views/',
+      // hotUpdateChunkFilename: 'hot/hot-update.js',
+      // hotUpdateMainFilename: 'hot/hot-update.json',
     },
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
