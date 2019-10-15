@@ -70,7 +70,7 @@ export default async (app: express.Application, server: http.Server, config: Con
     entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', env === 'development' ? 'true' : 'false');
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
-    entry[hash] = env === 'production' ? `./react-ssr-src/${hash}/entry${ext}` : [`webpack-hot-middleware/client?path=/__webpack_hmr`, `./react-ssr-src/${hash}/entry${ext}`];
+    entry[hash] = env === 'production' ? `./react-ssr-src/${hash}/entry${ext}` : [`webpack-hot-middleware/client`, `./react-ssr-src/${hash}/entry${ext}`];
   }
 
   const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
@@ -78,9 +78,10 @@ export default async (app: express.Application, server: http.Server, config: Con
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
   if (env === 'development') {
-    app.use(require('webpack-dev-middleware')(compiler, {
-      logLevel: 'debug',
-    }));
+    app.use('/__webpack_hmr', express.static(path.resolve(`${cwd}/${config.cacheDir}/development`)));
+    // app.use(require('webpack-dev-middleware')(compiler, {
+    //   logLevel: 'debug',
+    // }));
     app.use(require('webpack-hot-middleware')(compiler));
   }
 

@@ -28,8 +28,10 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     entry,
     output: {
       path: path.join(cwd, cacheDir, env),
-      publicPath: env === 'development' ? '/__webpack_hmr/' : undefined,
       filename: '[name].js',
+      publicPath: '/__webpack_hmr/',
+      hotUpdateChunkFilename: 'hot/hot-update.js',
+      hotUpdateMainFilename: 'hot/hot-update.json',
     },
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
