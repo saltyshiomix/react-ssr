@@ -21,10 +21,10 @@ if (html.indexOf('html') < 0) {
   const body = $('body').html();
 
   // const script = '__REACT_SSR_SCRIPT__';
-  renderMethod((
-    <React.Fragment>
-      {/* {ReactHtmlParser(body || '')} */}
-      <Page {...props} />
-    </React.Fragment>
-  ), document.getElementById('app').contentDocument);
+  // renderMethod((
+  //   <React.Fragment>
+  //     {/* {ReactHtmlParser(body || '')} */}
+  //     <Page {...props} />
+  //   </React.Fragment>
+  // ), document.getElementById('app').contentDocument);
 }

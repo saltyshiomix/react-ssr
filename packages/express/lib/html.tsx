@@ -36,13 +36,15 @@ const Html = (props: HtmlProps) => {
   const head = $('head').html();
   const body = $('body').html();
 
+  const escapedHTML = 'data:text/html;charset=utf-8,' + escape(html || '');
+
   return (
     <html {...htmlAttr}>
       <head>
         {ReactHtmlParser(head || '')}
       </head>
       <body {...bodyAttr}>
-        <iframe id="app" srcDoc={body || ''} frameBorder="0"></iframe>
+        <iframe id="app" src={escapedHTML} frameBorder="0"></iframe>
         {/* <div id="app">
           {ReactHtmlParser(body || '')}
         </div> */}
