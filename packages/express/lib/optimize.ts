@@ -169,9 +169,8 @@ export default async (app: express.Application, server: http.Server, config: Con
 
       setTimeout(() => {
         reloadable.reload();
-      }, 300);
-
-      console.log('[ info ] reloaded');
+        console.log('[ info ] reloaded');
+      }, 800);
     });
 
     console.log('[ info ] enabled hot reloading');
