@@ -71,7 +71,6 @@ export default async (app: express.Application, server: http.Server, config: Con
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
     entry[hash] = env === 'production' ? `./react-ssr-src/${hash}/entry${ext}` : [
-      // 'webpack/hot/dev-server',
       `webpack-hot-middleware/client?reload=true`,
       `./react-ssr-src/${hash}/entry${ext}`
     ];
@@ -156,7 +155,6 @@ export default async (app: express.Application, server: http.Server, config: Con
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
         entry[hash] = [
-          'webpack/hot/dev-server',
           `webpack-hot-middleware/client?reload=true`,
           `./react-ssr-src/${hash}/entry${ext}`
         ];
