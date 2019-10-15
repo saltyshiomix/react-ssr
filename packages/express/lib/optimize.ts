@@ -81,7 +81,11 @@ export default async (app: express.Application, server: http.Server, config: Con
     app.use(require("webpack-hot-middleware")(compiler));
   }
 
-  if (env === 'production') {
+  if (env === 'development') {
+    compiler.watch({}, (err: Error) => {
+      err && console.error(err.stack || err);
+    });
+  } else {
     compiler.run((err: Error) => {
       err && console.error(err.stack || err);
     });
