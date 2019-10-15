@@ -16,9 +16,6 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     if (hasUserBabelrc()) {
       console.log(`[ info ] use custom babelrc in: ${getBabelrc()}`);
     }
-
-    // const WriteFilePlugin = require('write-file-webpack-plugin');
-    // plugins.push(new WriteFilePlugin());
     plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 
@@ -30,8 +27,6 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
       path: path.join(cwd, cacheDir, env),
       filename: '[name].js',
       publicPath: '/_react-ssr/views/',
-      // hotUpdateChunkFilename: 'hot/hot-update.js',
-      // hotUpdateMainFilename: 'hot/hot-update.json',
     },
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],

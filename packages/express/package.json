@@ -65,8 +65,7 @@
     "unionfs": "^4.2.0",
     "webpack": "^4.41.1",
     "webpack-dev-middleware": "^3.7.2",
-    "webpack-hot-middleware": "^2.25.0",
-    "write-file-webpack-plugin": "^4.5.1"
+    "webpack-hot-middleware": "^2.25.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.0.0",
