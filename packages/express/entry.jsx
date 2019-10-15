@@ -6,7 +6,6 @@ let renderMethod = ReactDOM.hydrate;
 
 if ('__REACT_SSR_DEVELOPMENT__') {
   renderMethod = ReactDOM.render;
-  require('reload/lib/reload');
 }
 
 const props = JSON.parse('__REACT_SSR__');
