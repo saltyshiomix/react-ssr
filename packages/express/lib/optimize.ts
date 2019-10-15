@@ -92,8 +92,14 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     const hash = hasha(env + page, { algorithm: 'md5' });
     const [filename, dirname] = getRelativeInfo(page);
     mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
-    mfs.writeFileSync(path.join(cwd, `react-ssr-src/${dirname}/entry-${path.basename(filename)}`), template);
-    mfs.writeFileSync(path.join(cwd, `react-ssr-src/${filename}`), fse.readFileSync(page));
+    mfs.writeFileSync(
+      path.join(cwd, `react-ssr-src/${dirname}/entry-${path.basename(filename)}`),
+      template.replace('__REACT_SSR_PAGE_NAME_', path.basename(filename, path.extname(filename))),
+    );
+    mfs.writeFileSync(
+      path.join(cwd, `react-ssr-src/${filename}`),
+      fse.readFileSync(page),
+    );
     entry[hash] = `react-ssr-src/${dirname}/entry-${path.basename(filename)}`;
   }
 
@@ -168,7 +174,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
         const script = swichableFS.readFileSync(filename)
                                   .toString()
                                   .replace(
-                                    '__REACT_SSR__',
+                                    '__REACT_SSR_PROPS__',
                                     JSON.stringify(props).replace(/"/g, '\\"'),
                                   );
   
