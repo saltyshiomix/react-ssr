@@ -54,7 +54,7 @@ ufs.use(mfs).use(fs);
 mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
 export default async (app: express.Application, server: http.Server, config: Config): Promise<void> => {
-  await fse.remove(config.cacheDir);
+  await fse.remove(path.join(cwd, config.cacheDir));
 
   console.log('[ info ] removed all caches');
   console.log('[ info ] optimizing for the performance...');
@@ -71,7 +71,7 @@ export default async (app: express.Application, server: http.Server, config: Con
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
     mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
     entry[hash] = env === 'production' ? `./react-ssr-src/${hash}/entry${ext}` : [
-      `webpack-hot-middleware/client?reload=true`,
+      `webpack-hot-middleware/client`,
       `./react-ssr-src/${hash}/entry${ext}`
     ];
   }
@@ -108,17 +108,12 @@ export default async (app: express.Application, server: http.Server, config: Con
         console.log(props);
       }
 
-      const script = mfs.readFileSync(filename).toString()
+      const swichableFS = env === 'development' ? mfs : fse;
+      const script = swichableFS.readFileSync(filename).toString()
                       .replace(
                         '__REACT_SSR__',
                         JSON.stringify(props).replace(/"/g, '\\"'),
                       );
-
-      // const script = fse.readFileSync(filename).toString()
-      //                 .replace(
-      //                   '__REACT_SSR__',
-      //                   JSON.stringify(props).replace(/"/g, '\\"'),
-      //                 );
 
       res.type('.js');
       res.send(script);
@@ -144,7 +139,7 @@ export default async (app: express.Application, server: http.Server, config: Con
 
     watcher.on('change', async (p: string) => {
       // remove file cache by operating system
-      await fse.remove(path.join(cwd, config.cacheDir, env));
+      await fse.remove(path.join(cwd, config.cacheDir));
 
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
@@ -155,7 +150,7 @@ export default async (app: express.Application, server: http.Server, config: Con
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
         entry[hash] = [
-          `webpack-hot-middleware/client?reload=true`,
+          `webpack-hot-middleware/client`,
           `./react-ssr-src/${hash}/entry${ext}`
         ];
       }
