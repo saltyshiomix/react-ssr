@@ -47,9 +47,6 @@ const getPages = async (config: Config): Promise<string[][]> => {
     }
     otherPages.push(p);
   }
-
-  console.log(otherPages);
-
   return [entryPages, otherPages];
 };
 
@@ -58,6 +55,9 @@ const getRelativeInfo = (file: string): string[] => {
   const [, ...rest] = splitted;
   const relativeFile = rest.join(path.sep);
   const relativeDir = path.dirname(relativeFile);
+
+  console.log([relativeFile, relativeDir]);
+
   return [relativeFile, relativeDir];
 };
 
