@@ -100,11 +100,11 @@ export default async (app: express.Application, server: http.Server, config: Con
 
     app.get('/_react-ssr/views/*.hot-update.json', (req, res) => {
       const jsonName = req.originalUrl.replace('/_react-ssr/views/', '');
-      // const jsonPath = path.join(cwd, config.cacheDir, env, jsonName);
-      // const json = mfs.readFileSync(jsonPath).toString();
-
-      const jsonPath = path.join(cwd, config.cacheDir, env, 'hot/hot-update.json');
+      const jsonPath = path.join(cwd, config.cacheDir, env, jsonName);
       const json = mfs.readFileSync(jsonPath).toString();
+
+      // const jsonPath = path.join(cwd, config.cacheDir, env, 'hot/hot-update.json');
+      // const json = mfs.readFileSync(jsonPath).toString();
 
       console.log(json);
 
