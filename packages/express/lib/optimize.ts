@@ -79,9 +79,9 @@ export default async (app: express.Application, server: http.Server, config: Con
   compiler.outputFileSystem = mfs;
   if (env === 'development') {
     // app.use('/__webpack_hmr', express.static(path.resolve(`${cwd}/${config.cacheDir}/development`)));
-    // app.use(require('webpack-dev-middleware')(compiler, {
-    //   logLevel: 'debug',
-    // }));
+    app.use(require('webpack-dev-middleware')(compiler, {
+      serverSideRender: true,
+    }));
     app.use(require('webpack-hot-middleware')(compiler));
   }
 
