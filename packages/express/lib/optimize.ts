@@ -158,9 +158,9 @@ export default async (app: express.Application, server: http.Server, config: Con
       // const compiler: webpack.Compiler = webpack(webpackConfig);
       // compiler.inputFileSystem = ufs;
       // compiler.outputFileSystem = mfs;
-      app.use(require('webpack-hot-middleware')(compiler, {
-        reload: true,
-      }));
+      // app.use(require('webpack-hot-middleware')(compiler, {
+      //   reload: true,
+      // }));
       compiler.run(async (err: Error) => {
         err && console.error(err.stack || err);
         for (let i = 0; i < pages.length; i++) {
