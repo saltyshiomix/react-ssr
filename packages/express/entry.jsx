@@ -28,5 +28,5 @@ if (html.indexOf('html') < 0) {
   //   </React.Fragment>
   // ), document.getElementById('app').contentDocument);
 
-  renderMethod(<Page {...props} />, document.getElementById('app').contentWindow.document);
+  renderMethod(<Page {...props} />, document.getElementById('app'));
 }
