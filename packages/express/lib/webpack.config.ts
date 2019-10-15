@@ -31,7 +31,7 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     entry,
     output: {
       path: path.join(cwd, cacheDir, env),
-      publicPath: `/_react-ssr/`,
+      publicPath: `/_react-ssr/views/`,
       filename: '[name].js',
     },
     resolve: {
