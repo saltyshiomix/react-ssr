@@ -167,6 +167,7 @@ export default async (app: express.Application, server: http.Server, config: Con
         await waitUntilCompleted(mfs, filename);
       }
 
+      // wait until bundled files are ready
       await sleep(1500);
 
       reloadable.reload();
