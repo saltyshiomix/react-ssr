@@ -24,7 +24,6 @@ const register = async (app: express.Application, config: Config): Promise<void>
     if (!babelRegistered) {
       require('@babel/register')({
         extends: getBabelrc(),
-        only: [].concat(options.settings.views),
       });
       babelRegistered = true;
     }
