@@ -9,7 +9,7 @@ import {
   getEngine,
 } from './utils';
 
-const _escaperegexp = require('lodash.escaperegexp');
+const escaperegexp = require('lodash.escaperegexp');
 
 const register = async (app: express.Application, config: Config): Promise<void> => {
   let babelRegistered = false;
@@ -17,7 +17,7 @@ const register = async (app: express.Application, config: Config): Promise<void>
 
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
-      const pattern = [].concat(options.settings.views).map(viewPath => '^' + _escaperegexp(viewPath)).join('|');
+      const pattern = [].concat(options.settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');
       moduleDetectRegEx = new RegExp(pattern);
     }
 
