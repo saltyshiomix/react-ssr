@@ -177,9 +177,9 @@ export default async (app: express.Application, server: http.Server, config: Con
         const page = pages[i];
         const hash = hasha(env + page, { algorithm: 'md5' });
         // mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${hash}`));
-        // let entryFile = fse.readFileSync(path.join(__dirname, '../entry.jsx')).toString();
-        // entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', 'true');
-        // mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
+        let entryFile = fse.readFileSync(path.join(__dirname, '../entry.jsx')).toString();
+        entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', 'true');
+        mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
         entry[hash] = [
           // 'webpack/hot/dev-server',
