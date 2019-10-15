@@ -29,8 +29,9 @@ if (html.indexOf('html') < 0) {
 
   const iframeDoc = iframe.contentDocument;
   // iframeDoc.documentElement.innerHTML = '';
+  iframeDoc.documentElement.innerHTML
 
-  iframeDoc.removeChild(iframeDoc.documentElement);
+  // iframeDoc.removeChild(iframeDoc.documentElement);
 
   renderMethod(<Page {...props} />, iframeDoc);
 }
