@@ -18,7 +18,6 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
 
   return {
     mode: env,
-    target: 'node',
     context: cwd,
     entry,
     output: {
@@ -32,6 +31,9 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
       rules: [
         getBabelRule(),
       ],
+    },
+    node: {
+      fs: 'empty',
     },
   };
 };
