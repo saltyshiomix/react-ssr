@@ -103,7 +103,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
       path.join(cwd, `react-ssr-src/${filename}`),
       fse.readFileSync(page),
     );
-    entry[hash] = `react-ssr-src/${dirname}/entry-${path.basename(filename)}`;
+    entry[hash] = `./react-ssr-src/${dirname}/entry-${path.basename(filename)}`;
   }
 
   for (let i = 0; i < otherPages.length; i++) {
