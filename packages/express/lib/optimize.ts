@@ -84,9 +84,14 @@ export default async (app: express.Application, server: http.Server, config: Con
     // }));
     app.use(require('webpack-hot-middleware')(compiler));
 
-    app.get('/_react-ssr/*.hot-update.json', (req, res, next) => {
-      console.log(req.originalUrl);
-      next();
+    app.get('/_react-ssr/views/*.hot-update.json', (req, res) => {
+      const jsonName = req.originalUrl.replace('/_react-ssr/views/', '');
+      const jsonPath = path.join(cwd, config.cacheDir, env, jsonName);
+      const json = mfs.readFileSync(jsonPath).toString();
+
+      console.log(json);
+
+      res.json(json);
     });
   }
 
