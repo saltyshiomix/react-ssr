@@ -38,6 +38,9 @@ const waitUntilCompleted = async (mfs: any, filename: string, forceWrite?: boole
   const existsInMFS = mfs.existsSync(filename);
   let existsInFS = fse.existsSync(filename);
   if (forceWrite && existsInMFS) {
+    console.log('force output: ' + filename);
+
+
     fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
     existsInFS = fse.existsSync(filename);
   }
@@ -101,6 +104,9 @@ export default async (app: express.Application, server: http.Server, config: Con
     app.get('/_react-ssr/views/*.hot-update.json', (req, res) => {
       const jsonName = req.originalUrl.replace('/_react-ssr/views/', '');
       const jsonPath = path.join(cwd, config.cacheDir, env, jsonName);
+
+      console.log(jsonPath);
+
       const json = mfs.readFileSync(jsonPath).toString();
 
       // const jsonPath = path.join(cwd, config.cacheDir, env, 'hot/hot-update.json');
@@ -171,6 +177,10 @@ export default async (app: express.Application, server: http.Server, config: Con
         mfs.unlinkSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`));
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
       }
+
+      compiler.run((err: Error) => {
+        err && console.error(err.stack || err);
+      });
 
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
