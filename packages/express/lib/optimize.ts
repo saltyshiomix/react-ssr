@@ -123,6 +123,12 @@ export default async (app: express.Application, server: http.Server, config: Con
   }
 
   if (env === 'development') {
+    app.get('/_react-ssr/reload.js', (req, res) => {
+      const script = fse.readFileSync(path.join(cwd, 'node_modules/reload/lib/reload-client.js')).toString();
+      res.type('.js');
+      res.send(script);
+    });
+
     const escaperegexp = require('lodash.escaperegexp');
     const chokidar = require('chokidar');
     const watcher = chokidar.watch(cwd, {

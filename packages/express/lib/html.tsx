@@ -15,6 +15,7 @@ const Html = (props: HtmlProps) => {
     <React.Fragment>
       <div id="app">{props.children}</div>
       <script src={props.route + `?props=${props.props}`}></script>
+      {process.env.NODE_ENV === 'production' ? null : <script src="/_react-ssr/reload.js" />}
     </React.Fragment>
   );
 };
