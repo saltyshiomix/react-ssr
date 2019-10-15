@@ -88,7 +88,6 @@ export default async (app: express.Application, server: http.Server, config: Con
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
   compiler.outputFileSystem = mfs;
-
   compiler.run((err: Error) => {
     err && console.error(err.stack || err);
   });
@@ -174,17 +173,40 @@ export default async (app: express.Application, server: http.Server, config: Con
       // remove file cache by operating system
       await fse.remove(path.join(cwd, config.cacheDir, env));
 
-      // overwrite memory fs
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
         const hash = hasha(env + page, { algorithm: 'md5' });
-        // mfs.unlinkSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`));
+        // mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${hash}`));
+        // let entryFile = fse.readFileSync(path.join(__dirname, '../entry.jsx')).toString();
+        // entryFile = entryFile.replace('\'__REACT_SSR_DEVELOPMENT__\'', 'true');
+        // mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/entry${ext}`), entryFile);
         mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
+        entry[hash] = [
+          // 'webpack/hot/dev-server',
+          `webpack-hot-middleware/client?reload=true`,
+          `./react-ssr-src/${hash}/entry${ext}`
+        ];
       }
 
+      const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
+      const compiler: webpack.Compiler = webpack(webpackConfig);
+      compiler.inputFileSystem = ufs;
+      compiler.outputFileSystem = mfs;
       compiler.run((err: Error) => {
         err && console.error(err.stack || err);
       });
+
+      // // overwrite memory fs
+      // for (let i = 0; i < pages.length; i++) {
+      //   const page = pages[i];
+      //   const hash = hasha(env + page, { algorithm: 'md5' });
+      //   // mfs.unlinkSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`));
+      //   mfs.writeFileSync(path.join(cwd, `react-ssr-src/${hash}/page${ext}`), fse.readFileSync(page));
+      // }
+
+      // compiler.run((err: Error) => {
+      //   err && console.error(err.stack || err);
+      // });
 
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
