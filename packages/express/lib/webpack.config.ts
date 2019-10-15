@@ -17,6 +17,8 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
       console.log(`[ info ] use custom babelrc in: ${getBabelrc()}`);
     }
 
+    const WriteFilePlugin = require('write-file-webpack-plugin');
+    plugins.push(new WriteFilePlugin());
     plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 

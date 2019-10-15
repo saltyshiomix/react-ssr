@@ -81,9 +81,11 @@ export default async (app: express.Application, server: http.Server, config: Con
     app.use(require("webpack-hot-middleware")(compiler));
   }
 
-  compiler.run((err: Error) => {
-    err && console.error(err.stack || err);
-  });
+  if (env === 'production') {
+    compiler.run((err: Error) => {
+      err && console.error(err.stack || err);
+    });
+  }
 
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
