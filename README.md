@@ -145,3 +145,5 @@ $ yarn dev <example-folder-name>
 ## Related
 
 [saltyshiomix/react-ssr-starter](https://github.com/saltyshiomix/react-ssr-starter)
+
+[reactjs/express-react-views](https://github.com/reactjs/express-react-views)

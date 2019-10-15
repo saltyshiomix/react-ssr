@@ -16,7 +16,7 @@ const Html = (props: HtmlProps) => {
     injectProps,
   } = props;
 
-  const html: string = ReactDOMServer.renderToStaticMarkup(<React.Fragment>{children}</React.Fragment>);
+  const html: string = ReactDOMServer.renderToString(<React.Fragment>{children}</React.Fragment>);
 
   if (html.indexOf('html') < 0) {
     return (
