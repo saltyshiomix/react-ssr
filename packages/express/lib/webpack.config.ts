@@ -30,8 +30,8 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
       path: path.join(cwd, cacheDir, env),
       filename: '[name].js',
       publicPath: '/_react-ssr/views/',
-      // hotUpdateChunkFilename: 'hot/hot-update.js',
-      // hotUpdateMainFilename: 'hot/hot-update.json',
+      hotUpdateChunkFilename: 'hot/hot-update.js',
+      hotUpdateMainFilename: 'hot/hot-update.json',
     },
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],

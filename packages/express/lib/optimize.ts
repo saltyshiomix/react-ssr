@@ -34,16 +34,25 @@ const getPages = (dir: string): string[] => {
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const waitUntilCompleted = async (mfs: any, filename: string) => {
+const waitUntilCompleted = async (mfs: any, filename: string, forceWrite?: boolean) => {
   const existsInMFS = mfs.existsSync(filename);
-  const existsInFS = fse.existsSync(filename)
+  let existsInFS = fse.existsSync(filename);
+
+  if (forceWrite && existsInMFS) {
+    fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
+    existsInFS = fse.existsSync(filename);
+  }
+
   if (existsInMFS && existsInFS) {
     return;
   }
+
   if (existsInMFS) {
     fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
   }
+
   await sleep(50);
+
   waitUntilCompleted(mfs, filename);
 }
 
@@ -96,7 +105,10 @@ export default async (app: express.Application, server: http.Server, config: Con
 
     app.get('/_react-ssr/views/*.hot-update.json', (req, res) => {
       const jsonName = req.originalUrl.replace('/_react-ssr/views/', '');
-      const jsonPath = path.join(cwd, config.cacheDir, env, jsonName);
+      // const jsonPath = path.join(cwd, config.cacheDir, env, jsonName);
+      // const json = mfs.readFileSync(jsonPath).toString();
+
+      const jsonPath = path.join(cwd, config.cacheDir, env, 'hot/hot-update.json');
       const json = mfs.readFileSync(jsonPath).toString();
 
       console.log(json);
@@ -155,7 +167,7 @@ export default async (app: express.Application, server: http.Server, config: Con
 
     watcher.on('change', async (p: string) => {
       // remove file cache by operating system
-      fse.removeSync(path.join(cwd, config.cacheDir, env));
+      await fse.remove(path.join(cwd, config.cacheDir, env));
 
       // overwrite memory fs
       for (let i = 0; i < pages.length; i++) {
@@ -169,7 +181,7 @@ export default async (app: express.Application, server: http.Server, config: Con
         const page = pages[i];
         const hash = hasha(env + page, { algorithm: 'md5' });
         const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
-        await waitUntilCompleted(mfs, filename);
+        await waitUntilCompleted(mfs, filename, true);
       }
 
       console.log('[ info ] recompiled all bundles');
