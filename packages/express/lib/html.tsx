@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import ReactHtmlParser from 'react-html-parser';
-import cheerio from 'cheerio';
 
 interface HtmlProps {
   children: React.ReactNode;
@@ -30,26 +28,21 @@ const Html = (props: HtmlProps) => {
     );
   }
 
-  const $ = cheerio.load(html);
-  const htmlAttr = $('html').attr();
-  const bodyAttr = $('body').attr();
-  const head = $('head').html();
-  const body = $('body').html();
-
-  const escapedHTML = 'data:text/html;charset=utf-8,' + escape(html || '');
+  const normalizeStyle = {
+    margin: 0,
+    padding: 0,
+  };
 
   return (
-    <html {...htmlAttr}>
-      <head>
-        {ReactHtmlParser(head || '')}
-      </head>
-      <body {...bodyAttr}>
+    <html style={normalizeStyle}>
+      <body style={normalizeStyle}>
         <div id="wrapper">
-          <iframe id="app" src={escapedHTML} frameBorder="0"></iframe>
+          <iframe
+            id="app"
+            src={'data:text/html;charset=utf-8,' + escape(html || '')}
+            frameBorder="0"
+          ></iframe>
         </div>
-        {/* <div id="app">
-          {ReactHtmlParser(body || '')}
-        </div> */}
         <script src={route + `?props=${injectProps}`}></script>
         {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
       </body>
