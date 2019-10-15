@@ -18,14 +18,13 @@ const html = ReactDOMServer.renderToStaticMarkup(<Page {...props} />);
 
 if (html.indexOf('html') < 0) {
   renderMethod(<Page {...props} />, document.getElementById('app'));
-  return;
+} else {
+  renderMethod((
+    <React.Fragment>
+      <Page {...props} />
+  
+  
+      {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+    </React.Fragment>
+  ), document.body.appendChild(document.createElement('div')));
 }
-
-renderMethod((
-  <React.Fragment>
-    <Page {...props} />
-
-
-    {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-  </React.Fragment>
-), document.body.appendChild(document.createElement('div')));

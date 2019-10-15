@@ -37,31 +37,32 @@ const Html = (props: HtmlProps) => {
 
   const $ = cheerio.load(html);
 
+  const htmlAttr = $('html').attr();
+  console.log('');
+  console.log('htmlAttr');
+  console.log(htmlAttr);
+  console.log('');
+
   const head = $('head').html();
   const body = $('body').html();
-  const bodyInnerHTML = $('body').children().html();
+
+  console.log('');
+  console.log('HEAD');
+  console.log(head);
+  console.log('');
 
   console.log('');
   console.log('BODY');
   console.log(body);
   console.log('');
 
-  console.log('');
-  console.log('BODY INNER HTML');
-  console.log(bodyInnerHTML);
-  console.log('');
-
   return (
     <html>
-      {head
-        ? (
-          <React.Fragment>
-            {ReactHtmlParser(head)}
-          </React.Fragment>
-        )
-        : null}
+      <head>
+        {ReactHtmlParser(head || '')}
+      </head>
       <body>
-        {ReactHtmlParser(bodyInnerHTML || '')}
+        {ReactHtmlParser(body || '')}
         <script src={route + `?props=${injectProps}`}></script>
         {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
       </body>
