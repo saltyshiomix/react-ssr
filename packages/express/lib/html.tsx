@@ -34,31 +34,45 @@ const Html = (props: HtmlProps) => {
   const htmlAttr = $('html').attr();
   const bodyAttr = $('body').attr();
   const head = $('head').html();
+  const body = $('body').html();
 
   const normalizeStyle = {
     margin: 0,
     padding: 0,
   };
 
+  // return (
+  //   <html
+  //     {...htmlAttr}
+  //     style={normalizeStyle}
+  //   >
+  //     <head>
+  //       {ReactHtmlParser(head || '')}
+  //     </head>
+  //     <body
+  //       {...bodyAttr}
+  //       style={normalizeStyle}
+  //     >
+  //       <div id="wrapper">
+  //         <iframe
+  //           id="app"
+  //           src={'data:text/html;charset=utf-8,' + escape(html || '')}
+  //           frameBorder="0"
+  //         ></iframe>
+  //       </div>
+  //       <script src={route + `?props=${injectProps}`}></script>
+  //       {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+  //     </body>
+  //   </html>
+  // );
+
   return (
-    <html
-      {...htmlAttr}
-      style={normalizeStyle}
-    >
+    <html {...htmlAttr}>
       <head>
         {ReactHtmlParser(head || '')}
       </head>
-      <body
-        {...bodyAttr}
-        style={normalizeStyle}
-      >
-        <div id="wrapper">
-          <iframe
-            id="app"
-            src={'data:text/html;charset=utf-8,' + escape(html || '')}
-            frameBorder="0"
-          ></iframe>
-        </div>
+      <body {...bodyAttr}>
+        {ReactHtmlParser(body || '')}
         <script src={route + `?props=${injectProps}`}></script>
         {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
       </body>
