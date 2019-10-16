@@ -17,4 +17,6 @@ if (html.indexOf('html') < 0) {
 } else {
   // document.getElementById('wrapper').innerHTML = '<iframe id="app" frameBorder="0"></iframe>';
   // renderMethod(<Page {...props} />, document.getElementById('app').contentDocument);
+
+  renderMethod(<Page {...props} />, document);
 }

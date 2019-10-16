@@ -30,13 +30,15 @@ const Html = (props: HtmlProps) => {
     );
   }
 
-  console.log(html);
+  // console.log(html);
 
   const $ = cheerio.load(html);
   const htmlAttr = $('html').attr();
   const bodyAttr = $('body').attr();
   const head = $('head').html();
   const body = $('body').html();
+
+  console.log(body);
 
   // const normalizeStyle = {
   //   margin: 0,
