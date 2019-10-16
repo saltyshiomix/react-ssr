@@ -10,7 +10,7 @@ if ('__REACT_SSR_DEVELOPMENT__') {
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-const html = ReactDOMServer.renderToStaticMarkup(<Page {...props} />);
+const html = ReactDOMServer.renderToString(<Page {...props} />);
 
 if (html.indexOf('html') < 0) {
   renderMethod(<Page {...props} />, document.getElementById('app'));
@@ -19,5 +19,9 @@ if (html.indexOf('html') < 0) {
   // renderMethod(<Page {...props} />, document.getElementById('app').contentDocument);
 
   // renderMethod(<Page {...props} />, document);
-  ReactDOM.hydrate(<Page {...props} />, document);
+  ReactDOM.hydrate((
+    <React.Fragment>
+      <Page {...props} />
+    </React.Fragment>
+  ), document);
 }
