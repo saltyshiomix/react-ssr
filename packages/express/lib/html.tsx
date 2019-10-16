@@ -36,8 +36,6 @@ const Html = (props: HtmlProps) => {
   const head = $('head').html();
   const body = $('body').html();
 
-  console.log(body);
-
   // const normalizeStyle = {
   //   margin: 0,
   //   padding: 0,
