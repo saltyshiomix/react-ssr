@@ -15,6 +15,6 @@ const html = ReactDOMServer.renderToStaticMarkup(<Page {...props} />);
 if (html.indexOf('html') < 0) {
   renderMethod(<Page {...props} />, document.getElementById('app'));
 } else {
-  document.getElementById('wrapper').innerHTML = '<iframe id="app" frameBorder="0"></iframe>';
-  renderMethod(<Page {...props} />, document.getElementById('app').contentDocument);
+  // document.getElementById('wrapper').innerHTML = '<iframe id="app" frameBorder="0"></iframe>';
+  // renderMethod(<Page {...props} />, document.getElementById('app').contentDocument);
 }
