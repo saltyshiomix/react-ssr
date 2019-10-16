@@ -18,5 +18,6 @@ if (html.indexOf('html') < 0) {
   // document.getElementById('wrapper').innerHTML = '<iframe id="app" frameBorder="0"></iframe>';
   // renderMethod(<Page {...props} />, document.getElementById('app').contentDocument);
 
-  renderMethod(<Page {...props} />, document);
+  // renderMethod(<Page {...props} />, document);
+  ReactDOM.hydrate(<Page {...props} />, document);
 }
