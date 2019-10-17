@@ -26,14 +26,14 @@ if (hasHtml) {
   if (hasEmotion) {
     hydrateByEmotion(html);
   } else {
-    hydrateByEmotion(html);
-    // const $ = cheerio.load(html);
-    // const body = $('body').html();
-    // ReactDOM.hydrate((
-    //   <React.Fragment>
-    //     {ReactHtmlParser(body || '')}
-    //   </React.Fragment>
-    // ), document.getElementById('react-ssr-root'));
+    // hydrateByEmotion(html);
+    const $ = cheerio.load(html);
+    const body = $('body').html();
+    ReactDOM.hydrate((
+      <React.Fragment>
+        {ReactHtmlParser(body || '')}
+      </React.Fragment>
+    ), document.getElementById('react-ssr-root'));
   }
 } else {
   if (hasEmotion) {
