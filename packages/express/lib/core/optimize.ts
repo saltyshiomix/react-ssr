@@ -83,6 +83,8 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
 
         console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
 
+        console.log(route);
+
         app.get(route, async (req, res) => {
           const props = await codec.decompress(req.query.props);
           if (env === 'development') {
@@ -92,6 +94,9 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
 
           const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
           const script = readFileWithProps(filename, props);
+
+          console.log(script);
+
           res.type('.js').send(script);
         });
       }
