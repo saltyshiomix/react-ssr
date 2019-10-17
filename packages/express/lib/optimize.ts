@@ -125,6 +125,8 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   });
 
   if (app) {
+    app.get('', async (req, res) => {});
+
     for (let i = 0; i < entryPages.length; i++) {
       const page = entryPages[i];
       const hash = hasha(env + page, { algorithm: 'md5' });
@@ -166,7 +168,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     }
   }
 
-  // wait until bundled files are ready
+  console.log('[ info ] writing caches...');
   await sleep(2000);
 };
 
@@ -190,6 +192,14 @@ export default async (app: express.Application, server: http.Server, config: Con
   mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
   await bundle(config, ufs, mfs, app);
+
+  const addressInfo = server.address() as net.AddressInfo;
+  const {
+    address,
+    port,
+  } = addressInfo;
+
+  console.log(addressInfo);
 
   if (env === 'development') {
     const escaperegexp = require('lodash.escaperegexp');
@@ -225,8 +235,7 @@ export default async (app: express.Application, server: http.Server, config: Con
       process.exit(0);
     });
 
-    const address = server.address() as net.AddressInfo;
-    return address.port;
+    return port;
   });
 
   return server;

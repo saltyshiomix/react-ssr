@@ -5,15 +5,13 @@ import cheerio from 'cheerio';
 
 interface HtmlProps {
   children: React.ReactNode;
-  route: string;
-  injectProps: string;
+  script: string;
 }
 
 const Html = (props: HtmlProps) => {
   const {
     children,
-    route,
-    injectProps,
+    script,
   } = props;
 
   const html: string = ReactDOMServer.renderToString(<React.Fragment>{children}</React.Fragment>);
@@ -23,7 +21,7 @@ const Html = (props: HtmlProps) => {
       <html>
         <body>
           <div id="app">{children}</div>
-          <script src={route + `?props=${injectProps}`}></script>
+          <script src={script}></script>
           {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
         </body>
       </html>
@@ -60,7 +58,7 @@ const Html = (props: HtmlProps) => {
   //           frameBorder="0"
   //         ></iframe>
   //       </div>
-  //       <script src={route + `?props=${injectProps}`}></script>
+  //       <script src={script}></script>
   //       {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
   //     </body>
   //   </html>
@@ -73,7 +71,7 @@ const Html = (props: HtmlProps) => {
       </head>
       <body {...bodyAttr}>
         {ReactHtmlParser(body || '')}
-        <script src={route + `?props=${injectProps}`}></script>
+        <script src={script}></script>
         {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
       </body>
     </html>

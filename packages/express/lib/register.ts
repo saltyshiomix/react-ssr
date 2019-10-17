@@ -28,8 +28,10 @@ const register = async (app: express.Application, config: Config): Promise<void>
       babelRegistered = true;
     }
 
+    const { settings, cache, _locals, ...props } = options;
+    console.log(options);
+
     try {
-      const { settings, cache, _locals, ...props } = options;
       return cb(undefined, await render(file, props));
     } catch (e) {
       return cb(e);

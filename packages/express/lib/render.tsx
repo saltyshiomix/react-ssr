@@ -9,14 +9,14 @@ const codec = require('json-url')('lzw');
 
 const render = async (file: string, props: object): Promise<string> => {
   const [, ...rest] = file.replace(process.cwd(), '').replace(ext, '.js').split(path.sep);
-  const route: string = '/_react-ssr/' + rest.join('/');
+  const script = `/_react-ssr/${rest.join('/')}?props=${await codec.compress(props)}`;
 
   let Page = require(file);
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
   html += ReactDOMServer.renderToString(
-    <Html route={route} injectProps={await codec.compress(props)}>
+    <Html script={script}>
       <Page {...props} />
     </Html>
   );
