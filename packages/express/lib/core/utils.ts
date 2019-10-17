@@ -14,7 +14,6 @@ import readdir from 'recursive-readdir';
 import Config from './config';
 
 const cwd: string = process.cwd();
-const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 export const getEngine = (): 'jsx' | 'tsx' => existsSync(join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
 
