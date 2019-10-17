@@ -121,4 +121,6 @@ export const waitUntilBundled = async (pages: string[], config: Config) => {
     const filename = join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
     await performWaitUntilBundled(filename);
   }
+
+  await sleep(env === 'production' ? 3000 : 1500);
 };
