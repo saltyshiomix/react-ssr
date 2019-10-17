@@ -11,8 +11,8 @@ const ext = '.' + getEngine();
 const codec = require('json-url')('lzw');
 
 const render = async (file: string, props: object, config: Config): Promise<string> => {
-  const pageId = getPageId(file, config, '/').replace(ext, '.js');
-  const script = `/_react-ssr/${pageId}?props=${await codec.compress(props)}`;
+  const pageId = getPageId(file, config, '/');
+  const script = `/_react-ssr/${pageId}.js?props=${await codec.compress(props)}`;
 
   let Page = require(file);
   Page = Page.default || Page;

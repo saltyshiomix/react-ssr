@@ -88,9 +88,9 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
       await waitUntilCompleted(mfs, filename);
 
       const pageId = getPageId(page, config, '/');
-      const route = '/_react-ssr/' + pageId.replace(ext, '.js');
+      const route = `/_react-ssr/${pageId}.js`;
 
-      console.log(`[ info ] optimized "${pageId}"`);
+      console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
 
       app.get(route, async (req, res) => {
         const props = await codec.decompress(req.query.props);
@@ -133,8 +133,6 @@ export default async (app: express.Application, server: http.Server, config: Con
   await fse.remove(path.join(cwd, config.cacheDir), () => {
     console.log('[ info ] removed all caches');
   });
-
-  console.log('[ info ] optimizing for the performance...');
 
   const { ufs } = require('unionfs');
   const MemoryFileSystem = require('memory-fs');
