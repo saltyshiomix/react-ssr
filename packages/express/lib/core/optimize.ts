@@ -49,29 +49,33 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     const page = entryPages[i];
     const pageId = getPageId(page, config, '/');
     const dir = path.dirname(pageId);
+    const name = path.basename(pageId);
     if (dir !== '.') {
       mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
     }
     mfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${dir}/entry-${pageId}${ext}`),
-      template.replace('__REACT_SSR_PAGE_NAME__', path.basename(pageId)),
+      path.join(cwd, `react-ssr-src/${dir}/entry-${name}${ext}`),
+      template.replace('__REACT_SSR_PAGE_NAME__', name),
     );
     mfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${dir}/${pageId}${ext}`),
+      path.join(cwd, `react-ssr-src/${dir}/${name}${ext}`),
       fse.readFileSync(page),
     );
-    entry[getPageId(page, config, '_')] = `./react-ssr-src/${dir}/entry-${pageId}${ext}`;
+    entry[getPageId(page, config, '_')] = `./react-ssr-src/${dir}/entry-${name}${ext}`;
   }
+
+  console.log(entry);
 
   for (let i = 0; i < otherPages.length; i++) {
     const page = otherPages[i];
     const pageId = getPageId(page, config, '/');
     const dir = path.dirname(pageId);
+    const name = path.basename(pageId);
     if (dir !== '.') {
       mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
     }
     mfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${dir}/${pageId}${ext}`),
+      path.join(cwd, `react-ssr-src/${dir}/${name}${ext}`),
       fse.readFileSync(page),
     );
   }
