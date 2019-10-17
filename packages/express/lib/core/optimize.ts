@@ -90,40 +90,65 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
   // compiler.outputFileSystem = fs;
-  compiler.run((err: Error) => {
+  compiler.run(async (err: Error) => {
     err && console.error(err.stack || err);
+
+    if (app) {
+      for (let i = 0; i < entryPages.length; i++) {
+        const page = entryPages[i];
+        const pageId = getPageId(page, config, '/');
+        const route = `/_react-ssr/${pageId}.js`;
+
+        console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
+
+        app.get(route, async (req, res) => {
+          const props = await codec.decompress(req.query.props);
+          if (env === 'development') {
+            console.log('[ info ] the props below is rendered from the server side');
+            console.log(props);
+          }
+
+          const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
+          const script = readFileWithProps(filename, props);
+          res.type('.js').send(script);
+        });
+      }
+    }
+
+    const readdir = require('recursive-readdir');
+    console.log(await readdir(path.join(cwd, config.cacheDir)));
   });
 
-  if (app) {
-    for (let i = 0; i < entryPages.length; i++) {
-      const page = entryPages[i];
-      const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
+  // if (app) {
+  //   for (let i = 0; i < entryPages.length; i++) {
+  //     const page = entryPages[i];
+  //     const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
 
-      // await waitUntilCompleted(mfs, filename);
+  //     // await waitUntilCompleted(mfs, filename);
 
-      const pageId = getPageId(page, config, '/');
-      const route = `/_react-ssr/${pageId}.js`;
+  //     const pageId = getPageId(page, config, '/');
+  //     const route = `/_react-ssr/${pageId}.js`;
 
-      console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
+  //     console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
 
-      app.get(route, async (req, res) => {
-        const props = await codec.decompress(req.query.props);
-        if (env === 'development') {
-          console.log('[ info ] the props below is rendered from the server side');
-          console.log(props);
-        }
+  //     app.get(route, async (req, res) => {
+  //       const props = await codec.decompress(req.query.props);
+  //       if (env === 'development') {
+  //         console.log('[ info ] the props below is rendered from the server side');
+  //         console.log(props);
+  //       }
 
-        const script = readFileWithProps(filename, props);
-        res.type('.js').send(script);
-      });
-    }
-  } else {
-    // for (let i = 0; i < entryPages.length; i++) {
-    //   const page = entryPages[i];
-    //   const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
-    //   await waitUntilCompleted(mfs, filename);
-    // }
-  }
+  //       const script = readFileWithProps(filename, props);
+  //       res.type('.js').send(script);
+  //     });
+  //   }
+  // } else {
+  //   // for (let i = 0; i < entryPages.length; i++) {
+  //   //   const page = entryPages[i];
+  //   //   const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
+  //   //   await waitUntilCompleted(mfs, filename);
+  //   // }
+  // }
 
   // console.log('[ info ] writing caches. please wait...');
 
@@ -147,9 +172,6 @@ export default async (app: express.Application, server: http.Server, config: Con
   mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
   await bundle(config, ufs, mfs, app);
-
-  const readdir = require('recursive-readdir');
-  console.log(await readdir(path.join(cwd, config.cacheDir)));
 
   // if (env === 'development') {
   //   const escaperegexp = require('lodash.escaperegexp');
