@@ -19,12 +19,12 @@ const prodConfig: webpack.Configuration = {
     pathinfo: false,
   },
   optimization: {
-    // namedModules: false,
-    // namedChunks: false,
+    namedModules: false,
+    namedChunks: false,
     nodeEnv: 'production',
     flagIncludedChunks: true,
     occurrenceOrder: true,
-    sideEffects: true,
+    // sideEffects: true,
     usedExports: true,
     concatenateModules: true,
     splitChunks: {
