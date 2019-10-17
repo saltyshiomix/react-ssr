@@ -7,12 +7,10 @@ import {
   getPageId,
 } from './utils';
 
-const ext = '.' + getEngine();
 const codec = require('json-url')('lzw');
 
 const render = async (file: string, props: object, config: Config): Promise<string> => {
-  const pageId = getPageId(file, config, '/');
-  const script = `/_react-ssr/${pageId}.js?props=${await codec.compress(props)}`;
+  const script = `/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`;
 
   let Page = require(file);
   Page = Page.default || Page;

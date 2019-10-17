@@ -12,7 +12,7 @@ import {
   gracefullyShutDown,
   getPages,
   getPageId,
-  getRelativeInfo,
+  getPageInfo,
 } from './utils';
 
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
@@ -48,28 +48,33 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
-    const info = getRelativeInfo(page, config);
-    if (info.dir !== '.') {
-      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${info.dir}`));
+    const pageId = getPageId(page, config, '/');
+    const dir = path.dirname(pageId);
+    if (dir !== '.') {
+      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
     }
     mfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${info.dir}/entry-${path.basename(info.file)}`),
-      template.replace('__REACT_SSR_PAGE_NAME__', info.filename),
+      path.join(cwd, `react-ssr-src/${dir}/entry-${pageId}${ext}`),
+      template.replace('__REACT_SSR_PAGE_NAME__', path.basename(pageId)),
     );
     mfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${info.file}`),
+      path.join(cwd, `react-ssr-src/${dir}/${pageId}${ext}`),
       fse.readFileSync(page),
     );
-    entry[getPageId(page, config)] = `./react-ssr-src/${info.dir}/entry-${path.basename(info.file)}`;
+    entry[getPageId(page, config, '_')] = `./react-ssr-src/${dir}/entry-${pageId}${ext}`;
   }
 
   for (let i = 0; i < otherPages.length; i++) {
     const page = otherPages[i];
-    const info = getRelativeInfo(page, config);
-    if (info.dir !== '.') {
-      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${info.dir}`));
+    const pageId = getPageId(page, config, '/');
+    const dir = path.dirname(pageId);
+    if (dir !== '.') {
+      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
     }
-    mfs.writeFileSync(path.join(cwd, `react-ssr-src/${info.file}`), fse.readFileSync(page));
+    mfs.writeFileSync(
+      path.join(cwd, `react-ssr-src/${dir}/${pageId}${ext}`),
+      fse.readFileSync(page),
+    );
   }
 
   const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
@@ -83,7 +88,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   if (app) {
     for (let i = 0; i < entryPages.length; i++) {
       const page = entryPages[i];
-      const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config)}.js`);
+      const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
 
       await waitUntilCompleted(mfs, filename);
 
@@ -114,7 +119,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   } else {
     for (let i = 0; i < entryPages.length; i++) {
       const page = entryPages[i];
-      const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config)}.js`);
+      const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
       await waitUntilCompleted(mfs, filename);
     }
   }
