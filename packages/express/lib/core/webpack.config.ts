@@ -27,11 +27,11 @@ const prodConfig: webpack.Configuration = {
     // sideEffects: true,
     // usedExports: true,
     // concatenateModules: true,
-    splitChunks: {
-      minSize: 30000,
-      maxAsyncRequests: 5,
-      maxInitialRequests: 3,
-    },
+    // splitChunks: {
+    //   minSize: 30000,
+    //   maxAsyncRequests: 5,
+    //   maxInitialRequests: 3,
+    // },
     noEmitOnErrors: true,
     minimize: true,
     minimizer: [new TerserPlugin()],
