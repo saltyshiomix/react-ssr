@@ -32,7 +32,7 @@ const prodConfig: webpack.Configuration = {
     //   maxAsyncRequests: 5,
     //   maxInitialRequests: 3,
     // },
-    noEmitOnErrors: true,
+    // noEmitOnErrors: true,
     minimize: true,
     minimizer: [new TerserPlugin()],
   },
@@ -41,7 +41,7 @@ const prodConfig: webpack.Configuration = {
     //   'process.env.NODE_ENV': JSON.stringify('production'),
     // }),
     // new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+    // new webpack.NoEmitOnErrorsPlugin(),
   ],
 };
 
