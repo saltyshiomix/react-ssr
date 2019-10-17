@@ -21,7 +21,7 @@ const prodConfig: webpack.Configuration = {
   optimization: {
     namedModules: false,
     namedChunks: false,
-    // nodeEnv: 'production',
+    nodeEnv: 'production',
     // flagIncludedChunks: true,
     // occurrenceOrder: true,
     // sideEffects: true,
