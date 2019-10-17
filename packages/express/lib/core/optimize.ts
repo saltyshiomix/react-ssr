@@ -163,7 +163,9 @@ export default async (app: express.Application, server: http.Server, config: Con
     console.log('[ info ] enabled hot reloading');
   }
 
-  await sleep(env === 'production' ? 5000 : 3200);
+  const [pages] = await getPages(config);
+  await waitUntilBundled(pages, config);
+  // await sleep(env === 'production' ? 5000 : 3200);
 
   gracefullyShutDown(() => {
     console.log('[ info ] gracefully shutting down. please wait...');
