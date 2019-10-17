@@ -137,7 +137,7 @@ export default async (app: express.Application, server: http.Server, config: Con
       await bundle(config, ufs, memfs);
       await sleep(2000);
       reloadable.reload();
-      console.log('[ info ] reloaded');
+      console.log(`[ info ] reloaded (onchange: ${p.replace(cwd, '')})`);
     });
 
     console.log('[ info ] enabled hot reloading');
