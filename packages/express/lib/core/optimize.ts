@@ -1,7 +1,7 @@
 import fs from 'fs';
 import fse from 'fs-extra';
 import MemoryFileSystem from 'memory-fs';
-import path from 'path';
+import path, { sep } from 'path';
 import net from 'net';
 import http from 'http';
 import express from 'express';
@@ -135,11 +135,13 @@ export default async (app: express.Application, server: http.Server, config: Con
     process.on('exit', closeWatching);
 
     watcher.on('change', async (p: string) => {
-      await fse.remove(path.join(cwd, config.cacheDir));
+      fse.removeSync(path.join(cwd, config.cacheDir));
       await bundle(config, ufs, memfs);
       await sleep(2000);
       reloadable.reload();
-      console.log(`[ info ] reloaded (onchange: ${p.replace(cwd, '')})`);
+
+      const [, ...rest] = p.replace(cwd, '').split(sep);
+      console.log(`[ info ] reloaded (onchange: ${rest.join('/')})`);
     });
 
     console.log('[ info ] enabled hot reloading');
