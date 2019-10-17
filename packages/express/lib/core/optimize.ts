@@ -54,14 +54,14 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
       mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
     }
     mfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${dir}/entry-${name}${ext}`),
+      path.join(cwd, `react-ssr-src/${path.join(dir, `entry-${name}${ext}`)}`),
       template.replace('__REACT_SSR_PAGE_NAME__', name),
     );
     mfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${dir}/${name}${ext}`),
+      path.join(cwd, `react-ssr-src/${path.join(dir, name + ext)}`),
       fse.readFileSync(page),
     );
-    entry[getPageId(page, config, '_')] = `./react-ssr-src/${dir}/entry-${name}${ext}`;
+    entry[getPageId(page, config, '_')] = `./react-ssr-src/${path.join(dir, `entry-${name}${ext}`)}`;
   }
 
   console.log(entry);
@@ -75,7 +75,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
       mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
     }
     mfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${dir}/${name}${ext}`),
+      path.join(cwd, `react-ssr-src/${path.join(dir, name + ext)}`),
       fse.readFileSync(page),
     );
   }
