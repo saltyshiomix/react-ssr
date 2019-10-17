@@ -12,7 +12,7 @@ export const Layout = (props) => {
       <head>
         <title>{title}</title>
       </head>
-      <body>
+      <body data-ssr-id='emotion'>
         {children}
         <ReactSsrScript script={script} />
       </body>
