@@ -27,7 +27,7 @@ const InjectScript = (props) => {
     <React.Fragment>
       {props.children}
       {ReactHtmlParser(script)}
-      {process.env.NODE_ENV === 'production' ? null : ReactHtmlParser('<script src="/reload/reload.js"></script>')}
+      {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
     </React.Fragment>
   );
 };

@@ -1,7 +1,7 @@
 import path from 'path';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import Html from './html';
+import Html from './dom/html';
 import { getEngine } from './utils';
 
 const ext = '.' + getEngine();
