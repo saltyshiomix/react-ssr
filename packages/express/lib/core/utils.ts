@@ -98,3 +98,7 @@ export const getPageId = (page: string, config: Config, separator: string = '_')
                           .split(sep);
   return rest.join(separator);
 };
+
+export const readFileWithProps = (file: string, props: any, fs: any) => {
+  return fs.readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
+};

@@ -9,9 +9,10 @@ import configure from './webpack.config';
 import Config from './config';
 import {
   getEngine,
-  gracefullyShutDown,
   getPages,
   getPageId,
+  readFileWithProps,
+  gracefullyShutDown,
 } from './utils';
 
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
@@ -112,16 +113,8 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
           console.log(props);
         }
 
-        const swichableFS = env === 'development' ? mfs : fse;
-        const script = swichableFS.readFileSync(filename)
-                                  .toString()
-                                  .replace(
-                                    '__REACT_SSR_PROPS__',
-                                    JSON.stringify(props).replace(/"/g, '\\"'),
-                                  );
-
-        res.type('.js');
-        res.send(script);
+        const script = readFileWithProps(filename, props, mfs);
+        res.type('.js').send(script);
       });
     }
   } else {
