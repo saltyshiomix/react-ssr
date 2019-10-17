@@ -16,17 +16,15 @@ const hydrateByEmotion = (html) => {
 };
 
 const hasHtml = 0 <= html.indexOf('html');
-const hasEmotion = 0 <= html.indexOf('emotion');
+const ssrId = document.body.dataset.reactSsrId;
 
-console.log('hasEmotion:');
-console.log(hasEmotion);
-console.log(html);
+console.log('ssrId:');
+console.log(ssrId);
 
 if (hasHtml) {
-  if (hasEmotion) {
+  if (ssrId === 'emotion') {
     hydrateByEmotion(html);
   } else {
-    // hydrateByEmotion(html);
     const $ = cheerio.load(html);
     const body = $('body').html();
     ReactDOM.hydrate((
@@ -36,7 +34,7 @@ if (hasHtml) {
     ), document.getElementById('react-ssr-root'));
   }
 } else {
-  if (hasEmotion) {
+  if (ssrId === 'emotion') {
     hydrateByEmotion(html);
   } else {
     ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));

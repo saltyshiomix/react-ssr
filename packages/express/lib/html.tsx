@@ -16,12 +16,15 @@ const Html = (props: HtmlProps) => {
 
   const html: string = ReactDOMServer.renderToString(<React.Fragment>{children}</React.Fragment>);
 
-  console.log(html);
+  let ssrId: string = 'default';
+  if (0 <= html.indexOf('emotion')) {
+    ssrId = 'emotion';
+  }
 
   if (html.indexOf('html') < 0) {
     return (
       <html>
-        <body>
+        <body data-ssr-id={ssrId}>
           <div id="react-ssr-root">
             {children}
           </div>
@@ -43,7 +46,10 @@ const Html = (props: HtmlProps) => {
       <head>
         {ReactHtmlParser(head || '')}
       </head>
-      <body {...bodyAttr}>
+      <body
+        data-ssr-id={ssrId}
+        {...bodyAttr}
+      >
         <div id="react-ssr-root">
           {ReactHtmlParser(body || '')}
         </div>
