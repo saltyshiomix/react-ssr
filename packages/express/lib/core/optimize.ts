@@ -12,7 +12,6 @@ import {
   getEngine,
   getPages,
   getPageId,
-  // waitUntilBundled,
   readFileWithProps,
   gracefullyShutDown,
   sleep,
@@ -26,22 +25,6 @@ const codec = require('json-url')('lzw');
 const ufs = require('unionfs').ufs;
 const memfs = new MemoryFileSystem();
 ufs.use(fs).use(memfs);
-
-// export const waitUntilBundled = async (pages: string[], config: Config) => {
-//   let bundled = true;
-//   for (let i = 0; i < pages.length; i++) {
-//     const page = pages[i];
-//     const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
-//     if (!fse.existsSync(filename)) {
-//       bundled = false;
-//       break;
-//     }
-//   }
-//   if (!bundled) {
-//     await sleep(100);
-//     waitUntilBundled(pages, config);
-//   }
-// };
 
 // onchange bundling
 async function bundle(config: Config, ufs: any, memfs: any): Promise<void>;
@@ -162,7 +145,6 @@ export default async (app: express.Application, server: http.Server, config: Con
     watcher.on('change', async (p: string) => {
       fse.removeSync(path.join(cwd, config.cacheDir));
       await bundle(config, ufs, memfs);
-      // await sleep(2000);
       reloadable.reload();
 
       const [, ...rest] = p.replace(cwd, '').split(sep);
@@ -171,9 +153,6 @@ export default async (app: express.Application, server: http.Server, config: Con
 
     console.log('[ info ] enabled hot reloading');
   }
-
-  // const [pages] = await getPages(config);
-  // await waitUntilBundled(pages, config);
 
   gracefullyShutDown(() => {
     console.log('[ info ] gracefully shutting down. please wait...');
