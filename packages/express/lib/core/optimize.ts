@@ -120,7 +120,9 @@ export default async (app: express.Application, server: http.Server, config: Con
     const chokidar = require('chokidar');
     const watcher = chokidar.watch(cwd, {
       ignored: [
-        /node_modules/,
+        /node_modules/i,
+        /package\.json/i,
+        /readme\.md/i,
         new RegExp(escaperegexp(config.cacheDir)),
       ],
     });
