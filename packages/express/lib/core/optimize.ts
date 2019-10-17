@@ -28,7 +28,7 @@ const waitUntilCompleted = async (mfs: any, filename: string) => {
     return;
   }
   if (existsInMFS) {
-    fse.mkdirpSync(path.dirname(filename));
+    fse.mkdirSync(path.dirname(filename), { recursive: true });
     fse.writeFileSync(filename, mfs.readFileSync(filename).toString());
   }
   await sleep(100);
@@ -52,7 +52,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     const dir = path.dirname(pageId);
     const name = path.basename(pageId);
     if (dir !== '.') {
-      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
+      mfs.mkdirSync(path.join(cwd, `react-ssr-src/${dir}`), { recursive: true });
     }
     mfs.writeFileSync(
       path.join(cwd, `react-ssr-src/${path.join(dir, `entry-${name}${ext}`)}`),
@@ -71,7 +71,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     const dir = path.dirname(pageId);
     const name = path.basename(pageId);
     if (dir !== '.') {
-      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
+      mfs.mkdirSync(path.join(cwd, `react-ssr-src/${dir}`), { recursive: true });
     }
     mfs.writeFileSync(
       path.join(cwd, `react-ssr-src/${path.join(dir, name + ext)}`),
@@ -146,7 +146,7 @@ export default async (app: express.Application, server: http.Server, config: Con
   const MemoryFileSystem = require('memory-fs');
   const mfs = new MemoryFileSystem;
   ufs.use(mfs).use(fs);
-  mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
+  mfs.mkdirSync(path.join(cwd, 'react-ssr-src'), { recursive: true });
 
   await bundle(config, ufs, mfs, app);
 
