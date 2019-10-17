@@ -70,10 +70,10 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     },
   };
 
-  if (env === 'production') {
-    console.log('production');
-    config = merge(config, prodConfig);
-  }
+  // if (env === 'production') {
+  //   console.log('production');
+  //   config = merge(config, prodConfig);
+  // }
 
   return config;
 };
