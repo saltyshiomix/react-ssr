@@ -20,7 +20,7 @@ const cwd = process.cwd();
 const ext = '.' + getEngine();
 const codec = require('json-url')('lzw');
 
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+// const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // const waitUntilCompleted = async (mfs: any, filename: string) => {
 //   const existsInMFS = mfs.existsSync(filename);
