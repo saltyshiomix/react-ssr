@@ -15,28 +15,34 @@ const hydrateByEmotion = (html) => {
   hydrate(ids);
 };
 
-const hasHtml = 0 <= html.indexOf('html');
 const ssrId = document.body.dataset.ssrId;
 
-console.log('ssrId:');
-console.log(ssrId);
+if (0 <= html.indexOf('html')) {
+  switch (ssrId) {
+    case 'emotion':
+      hydrateByEmotion(html);
+      break;
 
-if (hasHtml) {
-  if (ssrId === 'emotion') {
-    hydrateByEmotion(html);
-  } else {
-    const $ = cheerio.load(html);
-    const body = $('body').html();
-    ReactDOM.hydrate((
-      <React.Fragment>
-        {ReactHtmlParser(body || '')}
-      </React.Fragment>
-    ), document.getElementById('react-ssr-root'));
+    default:
+      const $ = cheerio.load(html);
+      const body = $('body').html();
+      ReactDOM.hydrate((
+        <React.Fragment>
+          {ReactHtmlParser(body || '')}
+        </React.Fragment>
+      ), document.getElementById('react-ssr-root'));
+      break;
   }
 } else {
-  if (ssrId === 'emotion') {
-    hydrateByEmotion(html);
-  } else {
-    ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));
+  switch (ssrId) {
+    case 'emotion':
+        hydrateByEmotion(html);
+      break;
+
+    default:
+      ReactDOM.hydrate((
+        <Page {...props} />
+      ), document.getElementById('react-ssr-root'));
+      break;
   }
 }

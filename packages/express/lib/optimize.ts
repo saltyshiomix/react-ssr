@@ -83,12 +83,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app: express.Applicati
 async function bundle(config: Config, ufs: any, mfs: any, app?: express.Application) {
   const entry: webpack.Entry = {};
   const [entryPages, otherPages] = await getPages(config);
-  const template = fse.readFileSync(path.join(__dirname, '../entry.jsx'))
-                      .toString();
-                      // .replace(
-                      //   '\'__REACT_SSR_DEVELOPMENT__\'',
-                      //   env === 'development' ? 'true' : 'false',
-                      // );
+  const template = fse.readFileSync(path.join(__dirname, '../entry.jsx')).toString();
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
@@ -125,8 +120,6 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   });
 
   if (app) {
-    app.get('', async (req, res) => {});
-
     for (let i = 0; i < entryPages.length; i++) {
       const page = entryPages[i];
       const hash = hasha(env + page, { algorithm: 'md5' });
