@@ -4,6 +4,7 @@ import {
   BasicCard,
   TitleCard,
   AnimatedCard,
+  bounce,
 } from '../components';
 
 const Home = (props) => {
@@ -18,8 +19,8 @@ const Home = (props) => {
         <BasicCard>
           <a href="/">Go to home page</a>
         </BasicCard>
-        <AnimatedCard>
-          With <code>:hover</code>.
+        <AnimatedCard animation={bounce}>
+          Let's bounce.
         </AnimatedCard>
       </div>
     </Layout>
