@@ -129,6 +129,18 @@ export default function Index({ message }: IndexProps) {
 
 See the [examples](./examples) folder.
 
+Each example uses `@react-ssr/express@canary` by default, so it may have some bugs.
+
+To use the stable version, please rewrite to `@react-ssr/express@latest`:
+
+```json
+{
+  "dependencies": {
+    "@react-ssr/express": "latest"
+  }
+}
+```
+
 ## Develop `examples/<example-folder-name>`
 
 ```bash
