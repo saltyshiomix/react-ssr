@@ -20,7 +20,9 @@ const Html = (props: HtmlProps) => {
     return (
       <html>
         <body>
-          <div id="react-ssr-root">{children}</div>
+          <div id="react-ssr-root">
+            {children}
+          </div>
           <script src={script}></script>
           {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
         </body>
