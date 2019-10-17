@@ -193,14 +193,6 @@ export default async (app: express.Application, server: http.Server, config: Con
 
   await bundle(config, ufs, mfs, app);
 
-  const addressInfo = server.address() as net.AddressInfo;
-  const {
-    address,
-    port,
-  } = addressInfo;
-
-  console.log(addressInfo);
-
   if (env === 'development') {
     const escaperegexp = require('lodash.escaperegexp');
     const chokidar = require('chokidar');
@@ -235,7 +227,7 @@ export default async (app: express.Application, server: http.Server, config: Con
       process.exit(0);
     });
 
-    return port;
+    return (server.address() as net.AddressInfo).port;
   });
 
   return server;
