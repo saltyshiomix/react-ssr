@@ -25,7 +25,8 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     context: cwd,
     entry,
     output: {
-      path: path.join(cwd, cacheDir, env),
+      // path: path.join(cwd, cacheDir, env),
+      path: path.resolve(cwd, cacheDir, env),
       filename: '[name].js',
     },
     resolve: {
