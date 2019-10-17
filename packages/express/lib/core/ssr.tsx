@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-// import ReactHtmlParser from 'react-html-parser';
-// import cheerio from 'cheerio';
 
 interface SsrProps {
   children: any;
@@ -36,9 +34,5 @@ export default (props: SsrProps) => {
     );
   }
 
-  return (
-    <React.Fragment>
-      {React.cloneElement(children, { script })}
-    </React.Fragment>
-  );
+  return React.cloneElement(children, { script });
 };
