@@ -16,10 +16,12 @@ const hydrateByEmotion = (html) => {
 };
 
 class InjectScript extends React.Component {
+  script;
+
   constructor(props) {
     super(props);
-    this._script = document.getElementById('react-ssr-script').innerHTML;
-    this.script = {...(this._script)};
+    // this._script = document.getElementById('react-ssr-script').innerHTML;
+    this.script = document.getElementById('react-ssr-script').innerHTML;
 
     console.log(this.script);
   }
@@ -30,6 +32,9 @@ class InjectScript extends React.Component {
     const wrapper = document.createElement('div');
     wrapper.id = 'react-ssr-script';
     wrapper.innerHTML = this.script + process.env.NODE_ENV === 'production' ? '' : <script src="/reload/reload.js"></script>;
+
+    console.log(wrapper);
+
     document.body.appendChild(wrapper);
   }
 
@@ -58,7 +63,7 @@ if (hasHtml) {
         <InjectScript>
           <Page {...props} />
         </InjectScript>
-      ), document);
+      ), document.documentElement);
       break;
   }
 } else {
