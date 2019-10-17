@@ -23,6 +23,10 @@ const env = process.env.NODE_ENV === 'production' ? 'production' : 'development'
 const ext = '.' + getEngine();
 const codec = require('json-url')('lzw');
 
+const ufs = require('unionfs').ufs;
+const memfs = new MemoryFileSystem();
+ufs.use(fs).use(memfs);
+
 // onchange bundling
 async function bundle(config: Config, ufs: any, memfs: any): Promise<void>;
 
@@ -108,9 +112,6 @@ export default async (app: express.Application, server: http.Server, config: Con
 
   fse.removeSync(path.join(cwd, config.cacheDir));
 
-  const { ufs } = require('unionfs');
-  const memfs = new MemoryFileSystem();
-  ufs.use(fs).use(memfs);
   memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
   await bundle(config, ufs, memfs, app);
