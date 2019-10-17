@@ -62,6 +62,7 @@
     "json-url": "^2.4.2",
     "lodash.escaperegexp": "^4.1.2",
     "memfs": "^2.15.5",
+    "memory-fs": "^0.5.0",
     "recursive-readdir": "^2.2.2",
     "reload": "^3.0.2",
     "resolve-as-bin": "^2.1.0",
@@ -70,6 +71,7 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^8.0.0",
+    "@types/memory-fs": "^0.3.2",
     "@types/node": "^12.7.12",
     "@types/react": "^16.9.5",
     "@types/react-dom": "^16.9.1",

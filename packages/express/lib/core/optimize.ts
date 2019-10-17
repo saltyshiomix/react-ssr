@@ -1,6 +1,7 @@
 import fs from 'fs';
 import fse from 'fs-extra';
-import { fs as memfs, vol } from 'memfs';
+// import { fs as memfs, vol } from 'memfs';
+import MemoryFileSystem from 'memory-fs';
 import path from 'path';
 import net from 'net';
 import http from 'http';
@@ -169,7 +170,9 @@ export default async (app: express.Application, server: http.Server, config: Con
   // console.log('[ info ] removed all caches');
 
   const { ufs } = require('unionfs');
-  ufs.use(fs).use(vol);
+  const memfs = new MemoryFileSystem();
+  // ufs.use(fs).use(vol);
+  ufs.use(fs).use(memfs);
   memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
   await bundle(config, ufs, memfs, app);
