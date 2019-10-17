@@ -15,6 +15,7 @@ import {
   waitUntilBundled,
   readFileWithProps,
   gracefullyShutDown,
+  sleep,
 } from './utils';
 
 const cwd = process.cwd();
@@ -140,6 +141,8 @@ export default async (app: express.Application, server: http.Server, config: Con
 
     console.log('[ info ] enabled hot reloading');
   }
+
+  await sleep(env === 'production' ? 3000 : 1500);
 
   gracefullyShutDown(() => {
     console.log('[ info ] gracefully shutting down. please wait...');

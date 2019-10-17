@@ -105,7 +105,7 @@ export const readFileWithProps = (file: string, props: any) => {
   return readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
 };
 
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const performWaitUntilBundled = async (filename: string) => {
   if (existsSync(filename)) {
@@ -121,6 +121,4 @@ export const waitUntilBundled = async (pages: string[], config: Config) => {
     const filename = join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
     await performWaitUntilBundled(filename);
   }
-
-  await sleep(env === 'production' ? 3000 : 1500);
 };
