@@ -21,7 +21,7 @@ const prodConfig: webpack.Configuration = {
   optimization: {
     // namedModules: false,
     // namedChunks: false,
-    nodeEnv: 'production',
+    // nodeEnv: 'production',
     // flagIncludedChunks: true,
     // occurrenceOrder: true,
     // sideEffects: true,
@@ -37,11 +37,11 @@ const prodConfig: webpack.Configuration = {
     minimizer: [new TerserPlugin()],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
+    // new webpack.DefinePlugin({
+    //   'process.env.NODE_ENV': JSON.stringify('production'),
+    // }),
     // new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+    // new webpack.NoEmitOnErrorsPlugin(),
   ],
 };
 
