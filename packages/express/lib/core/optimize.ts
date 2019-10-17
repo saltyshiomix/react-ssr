@@ -135,7 +135,7 @@ export default async (app: express.Application, server: http.Server, config: Con
     watcher.on('change', async (p: string) => {
       await fse.remove(path.join(cwd, config.cacheDir));
       await bundle(config, ufs, memfs);
-      await sleep(1000);
+      await sleep(2000);
       reloadable.reload();
       console.log('[ info ] reloaded');
     });
