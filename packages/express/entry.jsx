@@ -16,7 +16,7 @@ const hydrateByEmotion = (html) => {
 };
 
 const hasHtml = 0 <= html.indexOf('html');
-const ssrId = document.body.dataset.reactSsrId;
+const ssrId = document.body.dataset.ssrId;
 
 console.log('ssrId:');
 console.log(ssrId);
