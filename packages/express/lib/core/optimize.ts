@@ -61,7 +61,8 @@ const getRelativeInfo = (file: string): string[] => {
 };
 
 const getPageName = (page: string): string => {
-  return page.replace(/\//g, '_').replace(path.extname(page), '');
+  const [, ...rest] = page.replace(cwd, '').split(path.sep);
+  return rest.join('_');
 };
 
 const waitUntilCompleted = async (mfs: any, filename: string) => {
