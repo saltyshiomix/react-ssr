@@ -14,6 +14,7 @@ import readdir from 'recursive-readdir';
 import Config from './config';
 
 const cwd: string = process.cwd();
+const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 export const getEngine = (): 'jsx' | 'tsx' => existsSync(join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
 
@@ -102,4 +103,22 @@ export const getPageId = (page: string, config: Config, separator: string = '_')
 
 export const readFileWithProps = (file: string, props: any) => {
   return readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
+};
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+const performWaitUntilBundled = async (filename: string) => {
+  if (existsSync(filename)) {
+    return;
+  }
+  await sleep(100);
+  performWaitUntilBundled(filename);
+}
+
+export const waitUntilBundled = async (pages: string[], config: Config) => {
+  for (let i = 0; i < pages.length; i++) {
+    const page = pages[i];
+    const filename = join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
+    await performWaitUntilBundled(filename);
+  }
 };

@@ -1,6 +1,5 @@
 import fs from 'fs';
 import fse from 'fs-extra';
-// import { fs as memfs, vol } from 'memfs';
 import MemoryFileSystem from 'memory-fs';
 import path from 'path';
 import net from 'net';
@@ -13,38 +12,15 @@ import {
   getEngine,
   getPages,
   getPageId,
+  waitUntilBundled,
   readFileWithProps,
   gracefullyShutDown,
 } from './utils';
 
-const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const cwd = process.cwd();
+const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const ext = '.' + getEngine();
 const codec = require('json-url')('lzw');
-
-// process.env.NODE_ENV = 'development';
-
-// const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-// const waitUntilCompleted = async (mfs: any, filename: string) => {
-//   const existsInMFS = mfs.existsSync(filename);
-//   const existsInFS = fse.existsSync(filename);
-//   if (existsInMFS && existsInFS) {
-//     return;
-//   }
-//   if (existsInMFS) {
-//     const _env = process.env.NODE_ENV;
-//     process.env.NODE_ENV = 'development';
-//     try {
-//       fse.mkdirsSync(path.dirname(filename));
-//       fse.writeFileSync(filename, mfs.readFileSync(filename).toString());
-//     } finally {
-//       process.env.NODE_ENV = _env;
-//     }
-//   }
-//   await sleep(100);
-//   waitUntilCompleted(mfs, filename);
-// }
 
 // onchange bundling
 async function bundle(config: Config, ufs: any, memfs: any): Promise<void>;
@@ -93,9 +69,10 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
   const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
-  // compiler.outputFileSystem = fs;
   compiler.run(async (err: Error) => {
     err && console.error(err.stack || err);
+
+    await waitUntilBundled(entryPages, config);
 
     if (app) {
       for (let i = 0; i < entryPages.length; i++) {
@@ -118,45 +95,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
         });
       }
     }
-
-    const readdir = require('recursive-readdir');
-    console.log(await readdir(path.join(cwd, config.cacheDir)));
   });
-
-  // if (app) {
-  //   for (let i = 0; i < entryPages.length; i++) {
-  //     const page = entryPages[i];
-  //     const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
-
-  //     // await waitUntilCompleted(mfs, filename);
-
-  //     const pageId = getPageId(page, config, '/');
-  //     const route = `/_react-ssr/${pageId}.js`;
-
-  //     console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
-
-  //     app.get(route, async (req, res) => {
-  //       const props = await codec.decompress(req.query.props);
-  //       if (env === 'development') {
-  //         console.log('[ info ] the props below is rendered from the server side');
-  //         console.log(props);
-  //       }
-
-  //       const script = readFileWithProps(filename, props);
-  //       res.type('.js').send(script);
-  //     });
-  //   }
-  // } else {
-  //   // for (let i = 0; i < entryPages.length; i++) {
-  //   //   const page = entryPages[i];
-  //   //   const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
-  //   //   await waitUntilCompleted(mfs, filename);
-  //   // }
-  // }
-
-  // console.log('[ info ] writing caches. please wait...');
-
-  // await sleep(env === 'production' ? 3000 : 2000);
 };
 
 export default async (app: express.Application, server: http.Server, config: Config): Promise<http.Server> => {
@@ -167,42 +106,40 @@ export default async (app: express.Application, server: http.Server, config: Con
   }
 
   fse.removeSync(path.join(cwd, config.cacheDir));
-  // console.log('[ info ] removed all caches');
 
   const { ufs } = require('unionfs');
   const memfs = new MemoryFileSystem();
-  // ufs.use(fs).use(vol);
   ufs.use(fs).use(memfs);
   memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
   await bundle(config, ufs, memfs, app);
 
-  // if (env === 'development') {
-  //   const escaperegexp = require('lodash.escaperegexp');
-  //   const chokidar = require('chokidar');
-  //   const watcher = chokidar.watch(cwd, {
-  //     ignored: [
-  //       /node_modules/,
-  //       new RegExp(escaperegexp(config.cacheDir)),
-  //     ],
-  //   });
+  if (env === 'development') {
+    const escaperegexp = require('lodash.escaperegexp');
+    const chokidar = require('chokidar');
+    const watcher = chokidar.watch(cwd, {
+      ignored: [
+        /node_modules/,
+        new RegExp(escaperegexp(config.cacheDir)),
+      ],
+    });
 
-  //   const closeWatching = () => {
-  //     watcher.close();
-  //   };
-  //   process.on('SIGINT', closeWatching);
-  //   process.on('SIGTERM', closeWatching);
-  //   process.on('exit', closeWatching);
+    const closeWatching = () => {
+      watcher.close();
+    };
+    process.on('SIGINT', closeWatching);
+    process.on('SIGTERM', closeWatching);
+    process.on('exit', closeWatching);
 
-  //   watcher.on('change', async (p: string) => {
-  //     await fse.remove(path.join(cwd, config.cacheDir));
-  //     await bundle(config, ufs, mfs);
-  //     reloadable.reload();
-  //     console.log('[ info ] reloaded');
-  //   });
+    watcher.on('change', async (p: string) => {
+      await fse.remove(path.join(cwd, config.cacheDir));
+      await bundle(config, ufs, memfs);
+      reloadable.reload();
+      console.log('[ info ] reloaded');
+    });
 
-  //   console.log('[ info ] enabled hot reloading');
-  // }
+    console.log('[ info ] enabled hot reloading');
+  }
 
   gracefullyShutDown(() => {
     console.log('[ info ] gracefully shutting down. please wait...');
