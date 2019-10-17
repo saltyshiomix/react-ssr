@@ -126,7 +126,8 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   }
 
   console.log('[ info ] writing caches...');
-  await sleep(2000);
+
+  await sleep(env === 'production' ? 5000 : 2000);
 };
 
 export default async (app: express.Application, server: http.Server, config: Config): Promise<http.Server> => {
