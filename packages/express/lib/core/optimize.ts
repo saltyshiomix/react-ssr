@@ -126,9 +126,9 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     }
   }
 
-  console.log('[ info ] writing caches...');
+  console.log('[ info ] writing caches. please wait...');
 
-  await sleep(env === 'production' ? 5000 : 2000);
+  await sleep(env === 'production' ? 3000 : 2000);
 };
 
 export default async (app: express.Application, server: http.Server, config: Config): Promise<http.Server> => {
@@ -178,7 +178,7 @@ export default async (app: express.Application, server: http.Server, config: Con
   }
 
   gracefullyShutDown(() => {
-    console.log('[ info ] gracefully shutting down. Please wait...');
+    console.log('[ info ] gracefully shutting down. please wait...');
 
     process.on('SIGINT', () => {
       process.exit(0);
