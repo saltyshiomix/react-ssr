@@ -12,7 +12,6 @@ import {
   gracefullyShutDown,
   getPages,
   getPageId,
-  getPageInfo,
 } from './utils';
 
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';

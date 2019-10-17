@@ -6,7 +6,6 @@ import {
   join,
   resolve,
   sep,
-  dirname,
   basename,
   extname,
 } from 'path';
@@ -98,13 +97,4 @@ export const getPageId = (page: string, config: Config, separator: string = '_')
                           .replace(extname(page), '')
                           .split(sep);
   return rest.join(separator);
-};
-
-export const getPageInfo = (page: string, config: Config) => {
-  const pageId = getPageId(page, config, sep);
-  const dir = dirname(pageId);
-  return {
-    pageId,
-    dir,
-  };
 };
