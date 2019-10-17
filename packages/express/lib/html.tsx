@@ -34,6 +34,19 @@ const Html = (props: HtmlProps) => {
   const head = $('head').html();
   const body = $('body').html();
 
+  return (
+    <html {...htmlAttr}>
+      <head>
+        {ReactHtmlParser(head || '')}
+      </head>
+      <body {...bodyAttr}>
+        {ReactHtmlParser(body || '')}
+        <script src={script}></script>
+        {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+      </body>
+    </html>
+  );
+
   // const normalizeStyle = {
   //   margin: 0,
   //   padding: 0,
@@ -63,19 +76,6 @@ const Html = (props: HtmlProps) => {
   //     </body>
   //   </html>
   // );
-
-  return (
-    <html {...htmlAttr}>
-      <head>
-        {ReactHtmlParser(head || '')}
-      </head>
-      <body {...bodyAttr}>
-        {ReactHtmlParser(body || '')}
-        <script src={script}></script>
-        {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-      </body>
-    </html>
-  );
 };
 
 export default Html;

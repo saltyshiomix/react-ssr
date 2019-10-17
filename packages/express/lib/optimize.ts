@@ -84,11 +84,11 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   const entry: webpack.Entry = {};
   const [entryPages, otherPages] = await getPages(config);
   const template = fse.readFileSync(path.join(__dirname, '../entry.jsx'))
-                      .toString()
-                      .replace(
-                        '\'__REACT_SSR_DEVELOPMENT__\'',
-                        env === 'development' ? 'true' : 'false',
-                      );
+                      .toString();
+                      // .replace(
+                      //   '\'__REACT_SSR_DEVELOPMENT__\'',
+                      //   env === 'development' ? 'true' : 'false',
+                      // );
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
