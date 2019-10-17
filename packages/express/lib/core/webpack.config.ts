@@ -12,27 +12,27 @@ const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 const prodConfig: webpack.Configuration = {
-  // performance: {
-  //   hints: 'warning',
-  // },
-  // output: {
-  //   pathinfo: false,
-  // },
+  performance: {
+    hints: 'warning',
+  },
+  output: {
+    pathinfo: false,
+  },
   optimization: {
-    // namedModules: false,
-    // namedChunks: false,
+    namedModules: false,
+    namedChunks: false,
     // nodeEnv: 'production',
     // flagIncludedChunks: true,
     // occurrenceOrder: true,
     // sideEffects: true,
     // usedExports: true,
-    // concatenateModules: true,
-    // splitChunks: {
-    //   minSize: 30000,
-    //   maxAsyncRequests: 5,
-    //   maxInitialRequests: 3,
-    // },
-    // noEmitOnErrors: true,
+    concatenateModules: true,
+    splitChunks: {
+      minSize: 30000,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+    },
+    noEmitOnErrors: true,
     minimize: true,
     minimizer: [new TerserPlugin()],
   },
@@ -40,8 +40,8 @@ const prodConfig: webpack.Configuration = {
     // new webpack.DefinePlugin({
     //   'process.env.NODE_ENV': JSON.stringify('production'),
     // }),
-    // new webpack.optimize.ModuleConcatenationPlugin(),
-    // new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
   ],
 };
 
