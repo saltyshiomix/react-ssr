@@ -1,18 +1,30 @@
-import { existsSync } from 'fs';
-import { resolve } from 'path';
+import {
+  existsSync,
+  Stats,
+} from 'fs';
+import {
+  join,
+  resolve,
+  sep,
+  dirname,
+  basename,
+  extname,
+} from 'path';
+import readdir from 'recursive-readdir';
+import Config from './config';
 
 const cwd: string = process.cwd();
 
-export const getEngine = (): 'jsx' | 'tsx' => existsSync(resolve(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
+export const getEngine = (): 'jsx' | 'tsx' => existsSync(join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
 
 export const hasUserBabelrc = (): boolean => {
-  return existsSync(resolve(cwd, '.babelrc')) || existsSync(resolve(cwd, '.babelrc.js')) || existsSync(resolve(cwd, 'babel.config.js'));
+  return existsSync(join(cwd, '.babelrc')) || existsSync(join(cwd, '.babelrc.js')) || existsSync(join(cwd, 'babel.config.js'));
 };
 
 export const getBabelrc = (): string => {
-  if (existsSync(resolve(cwd, '.babelrc'))) return resolve(cwd, '.babelrc');
-  if (existsSync(resolve(cwd, '.babelrc.js'))) return resolve(cwd, '.babelrc.js');
-  if (existsSync(resolve(cwd, 'babel.config.js'))) return resolve(cwd, 'babel.config.js');
+  if (existsSync(join(cwd, '.babelrc'))) return join(cwd, '.babelrc');
+  if (existsSync(join(cwd, '.babelrc.js'))) return join(cwd, '.babelrc.js');
+  if (existsSync(join(cwd, 'babel.config.js'))) return join(cwd, 'babel.config.js');
   return resolve(__dirname, '../babel.config.default.js');
 };
 
@@ -47,4 +59,49 @@ export const gracefullyShutDown = async (getPort: () => number) => {
   process.on('SIGINT', wrapper);
   process.on('SIGTERM', wrapper);
   process.on('exit', wrapper);
+};
+
+const ignores = [
+  '.*',
+  '*.json',
+  '*.lock',
+  '*.md',
+  '*.txt',
+  '*.yml',
+  'LICENSE',
+];
+
+const ignoreDotDir = (file: string, stats: Stats) => {
+  return stats.isDirectory() && basename(file).startsWith('.');
+};
+
+const ignoreNodeModules = (file: string, stats: Stats) => {
+  return stats.isDirectory() && basename(file) == 'node_modules';
+};
+
+export const getPages = async (config: Config): Promise<string[][]> => {
+  const allPages = await readdir(cwd, [ignoreNodeModules, ignoreDotDir, ...ignores]);
+  const entryPages = await readdir(join(cwd, config.viewsDir), [ignoreDotDir, ...ignores]);
+  const otherPages = [];
+  for (let i = 0; i < allPages.length; i++) {
+    const p = allPages[i];
+    if (entryPages.includes(p)) {
+      continue;
+    }
+    otherPages.push(p);
+  }
+  return [entryPages, otherPages];
+};
+
+export const getPageId = (page: string, config: Config, separator: string = '_'): string => {
+  const [, ...rest] = page.replace(join(cwd, config.viewsDir), '')
+                          .replace(extname(page), '')
+                          .split(sep);
+  return rest.join(separator);
+};
+
+export const getRelativeInfo = (page: string, config: Config): string[] => {
+  const relativeFile = getPageId(page, config, sep);
+  const relativeDir = dirname(relativeFile);
+  return [relativeFile, relativeDir];
 };

@@ -4,13 +4,15 @@ import path from 'path';
 import net from 'net';
 import http from 'http';
 import express from 'express';
-import readdir from 'recursive-readdir';
 import webpack from 'webpack';
 import configure from './webpack.config';
 import Config from './config';
 import {
   getEngine,
   gracefullyShutDown,
+  getPages,
+  getPageId,
+  getRelativeInfo,
 } from './utils';
 
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
@@ -19,51 +21,6 @@ const ext = '.' + getEngine();
 const codec = require('json-url')('lzw');
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-const ignores = [
-  '.*',
-  '*.json',
-  '*.lock',
-  '*.md',
-  '*.txt',
-  '*.yml',
-  'LICENSE',
-];
-
-const ignoreDotDir = (file: string, stats: fse.Stats) => {
-  return stats.isDirectory() && path.basename(file).startsWith('.');
-};
-
-const ignoreNodeModules = (file: string, stats: fse.Stats) => {
-  return stats.isDirectory() && path.basename(file) == 'node_modules';
-};
-
-const getPages = async (config: Config): Promise<string[][]> => {
-  const allPages = await readdir(cwd, [ignoreNodeModules, ignoreDotDir, ...ignores]);
-  const entryPages = await readdir(path.join(cwd, config.viewsDir), [ignoreDotDir, ...ignores]);
-  const otherPages = [];
-  for (let i = 0; i < allPages.length; i++) {
-    const p = allPages[i];
-    if (entryPages.includes(p)) {
-      continue;
-    }
-    otherPages.push(p);
-  }
-  return [entryPages, otherPages];
-};
-
-const getPageId = (page: string, config: Config, sep: string = '_'): string => {
-  const [, ...rest] = page.replace(path.join(cwd, config.viewsDir), '')
-                          .replace(path.extname(page), '')
-                          .split(path.sep);
-  return rest.join(sep);
-};
-
-const getRelativeInfo = (page: string, config: Config): string[] => {
-  const relativeFile = getPageId(page, config, path.sep);
-  const relativeDir = path.dirname(relativeFile);
-  return [relativeFile, relativeDir];
-};
 
 const waitUntilCompleted = async (mfs: any, filename: string) => {
   const existsInMFS = mfs.existsSync(filename);

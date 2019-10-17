@@ -31,7 +31,7 @@ const register = async (app: express.Application, config: Config): Promise<void>
     const { settings, cache, _locals, ...props } = options;
 
     try {
-      return cb(undefined, await render(file, props));
+      return cb(undefined, await render(file, props, config));
     } catch (e) {
       return cb(e);
     } finally {
