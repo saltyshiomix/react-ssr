@@ -16,22 +16,18 @@ const hydrateByEmotion = (html) => {
 };
 
 const InjectScript = (props) => {
-  const [scripts, setScripts] = useState([]);
+  const [script, setScript] = useState('');
 
   useEffect(() => {
-    setScripts([
-      ReactHtmlParser(document.getElementById('react-ssr-script').innerHTML),
-      process.env.NODE_ENV === 'production' ? null : ReactHtmlParser(<script src="/reload/reload.js"></script>),
-    ]);
+    setScript(document.getElementById('react-ssr-script').innerHTML);
     return () => {};
   }, []);
 
   return (
     <React.Fragment>
       {props.children}
-      {scripts.map((ScriptComponent, i) => ({
-        <ScriptComponent key={i} />
-      }))}
+      {ReactHtmlParser(script)}
+      {process.env.NODE_ENV === 'production' ? null : ReactHtmlParser('<script src="/reload/reload.js"></script>')}
     </React.Fragment>
   );
 };
