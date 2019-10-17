@@ -20,6 +20,7 @@ const hasEmotion = 0 <= html.indexOf('emotion');
 
 console.log('hasEmotion:');
 console.log(hasEmotion);
+console.log(html);
 
 if (hasHtml) {
   if (hasEmotion) {
