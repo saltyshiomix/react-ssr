@@ -38,6 +38,7 @@ export const waitUntilBundled = async (pages: string[], config: Config) => {
     }
   }
   if (!bundled) {
+    await sleep(100);
     waitUntilBundled(pages, config);
   }
 };
