@@ -1,5 +1,6 @@
 import fs from 'fs';
 import fse from 'fs-extra';
+import { fs as memfs, vol } from 'memfs';
 import path from 'path';
 import net from 'net';
 import http from 'http';
@@ -43,12 +44,12 @@ const codec = require('json-url')('lzw');
 // }
 
 // onchange bundling
-async function bundle(config: Config, ufs: any, mfs: any): Promise<void>;
+async function bundle(config: Config, ufs: any, memfs: any): Promise<void>;
 
 // initial bundling
-async function bundle(config: Config, ufs: any, mfs: any, app: express.Application): Promise<void>;
+async function bundle(config: Config, ufs: any, memfs: any, app: express.Application): Promise<void>;
 
-async function bundle(config: Config, ufs: any, mfs: any, app?: express.Application) {
+async function bundle(config: Config, ufs: any, memfs: any, app?: express.Application) {
   const entry: webpack.Entry = {};
   const [entryPages, otherPages] = await getPages(config);
   const template = fse.readFileSync(path.join(__dirname, '../entry.js')).toString();
@@ -59,13 +60,13 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     const dir = path.dirname(pageId);
     const name = path.basename(pageId);
     if (dir !== '.') {
-      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
+      memfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
     }
-    mfs.writeFileSync(
+    memfs.writeFileSync(
       path.join(cwd, `react-ssr-src/${path.join(dir, `entry-${name}${ext}`)}`),
       template.replace('__REACT_SSR_PAGE_NAME__', name),
     );
-    mfs.writeFileSync(
+    memfs.writeFileSync(
       path.join(cwd, `react-ssr-src/${path.join(dir, name + ext)}`),
       fse.readFileSync(page),
     );
@@ -78,9 +79,9 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     const dir = path.dirname(pageId);
     const name = path.basename(pageId);
     if (dir !== '.') {
-      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
+      memfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
     }
-    mfs.writeFileSync(
+    memfs.writeFileSync(
       path.join(cwd, `react-ssr-src/${path.join(dir, name + ext)}`),
       fse.readFileSync(page),
     );
@@ -166,12 +167,10 @@ export default async (app: express.Application, server: http.Server, config: Con
   // console.log('[ info ] removed all caches');
 
   const { ufs } = require('unionfs');
-  const MemoryFileSystem = require('memory-fs');
-  const mfs = new MemoryFileSystem;
-  ufs.use(mfs).use(fs);
-  mfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
+  ufs.use(fs).use(vol);
+  memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
-  await bundle(config, ufs, mfs, app);
+  await bundle(config, ufs, memfs, app);
 
   // if (env === 'development') {
   //   const escaperegexp = require('lodash.escaperegexp');

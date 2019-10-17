@@ -61,6 +61,7 @@
     "fs-extra": "^8.1.0",
     "json-url": "^2.4.2",
     "lodash.escaperegexp": "^4.1.2",
+    "memfs": "^2.15.5",
     "recursive-readdir": "^2.2.2",
     "reload": "^3.0.2",
     "resolve-as-bin": "^2.1.0",
