@@ -28,8 +28,14 @@ const waitUntilCompleted = async (mfs: any, filename: string) => {
     return;
   }
   if (existsInMFS) {
-    fse.mkdirsSync(path.dirname(filename));
-    fse.writeFileSync(filename, mfs.readFileSync(filename).toString());
+    const _env = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'development';
+    try {
+      fse.mkdirsSync(path.dirname(filename));
+      fse.writeFileSync(filename, mfs.readFileSync(filename).toString());
+    } finally {
+      process.env.NODE_ENV = _env;
+    }
   }
   await sleep(100);
   waitUntilCompleted(mfs, filename);
