@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
-import ReactHtmlParser from 'react-html-parser';
-import cheerio from 'cheerio';
 import Page from './__REACT_SSR_PAGE_NAME__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
@@ -25,11 +23,7 @@ if (hasHtml) {
       break;
 
     default:
-      // const $ = cheerio.load(html);
-      // const body = $('body').html();
-      ReactDOM.hydrate((
-        <Page {...props} />
-      ), document);
+      ReactDOM.hydrate(<Page {...props} />, document);
       break;
   }
 } else {
@@ -39,9 +33,7 @@ if (hasHtml) {
       break;
 
     default:
-      ReactDOM.hydrate((
-        <Page {...props} />
-      ), document.getElementById('react-ssr-root'));
+      ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));
       break;
   }
 }

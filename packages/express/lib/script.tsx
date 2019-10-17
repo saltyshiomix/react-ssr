@@ -1,10 +1,15 @@
 import React from 'react';
 
-export default (props) => {
+export default ({ script }: { script: string }) => {
+  let reloadable = process.env.NODE_ENV !== 'production';
+  if (reloadable) {
+    reloadable = !document.getElementById('reload');
+  }
+
   return (
     <React.Fragment>
-      <script src={props.script}></script>
-      {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+      <script src={script}></script>
+      {reloadable ? <script id="reload" src="/reload/reload.js"></script> : null}
     </React.Fragment>
   );
 };
