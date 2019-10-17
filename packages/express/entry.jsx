@@ -18,32 +18,28 @@ const hydrateByEmotion = (html) => {
 const hasHtml = 0 <= html.indexOf('html');
 const hasEmotion = 0 <= html.indexOf('emotion');
 
+console.log('hasEmotion:');
+console.log(hasEmotion);
+
 if (hasHtml) {
   if (hasEmotion) {
     hydrateByEmotion(html);
   } else {
     const $ = cheerio.load(html);
-    const htmlAttr = $('html').attr();
-    const bodyAttr = $('body').attr();
-    const head = $('head').html();
+    // const htmlAttr = $('html').attr();
+    // const bodyAttr = $('body').attr();
+    // const head = $('head').html();
     const body = $('body').html();
     ReactDOM.hydrate((
-      <html {...htmlAttr}>
-        <head>
-          {ReactHtmlParser(head || '')}
-        </head>
-        <body {...bodyAttr}>
-          {ReactHtmlParser(body || '')}
-          <script src={route + `?props=${injectProps}`}></script>
-          {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-        </body>
-      </html>
-    ), document);
+      <React.Fragment>
+        {ReactHtmlParser(body || '')}
+      </React.Fragment>
+    ), document.getElementById('react-ssr-root'));
   }
 } else {
   if (hasEmotion) {
     hydrateByEmotion(html);
   } else {
-    ReactDOM.hydrate(<Page {...props} />, document.getElementById('app'));
+    ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));
   }
 }

@@ -20,7 +20,7 @@ const Html = (props: HtmlProps) => {
     return (
       <html>
         <body>
-          <div id="app">{children}</div>
+          <div id="react-ssr-root">{children}</div>
           <script src={script}></script>
           {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
         </body>
@@ -40,7 +40,9 @@ const Html = (props: HtmlProps) => {
         {ReactHtmlParser(head || '')}
       </head>
       <body {...bodyAttr}>
-        {ReactHtmlParser(body || '')}
+        <div id="react-ssr-root">
+          {ReactHtmlParser(body || '')}
+        </div>
         <script src={script}></script>
         {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
       </body>
