@@ -23,14 +23,14 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const waitUntilCompleted = async (mfs: any, filename: string) => {
   const existsInMFS = mfs.existsSync(filename);
-  let existsInFS = fse.existsSync(filename);
+  const existsInFS = fse.existsSync(filename);
   if (existsInMFS && existsInFS) {
     return;
   }
   if (existsInMFS) {
-    fse.outputFileSync(filename, mfs.readFileSync(filename).toString());
+    fse.writeFileSync(filename, mfs.readFileSync(filename).toString());
   }
-  await sleep(50);
+  await sleep(100);
   waitUntilCompleted(mfs, filename);
 }
 
