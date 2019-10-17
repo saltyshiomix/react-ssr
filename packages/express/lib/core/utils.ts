@@ -122,3 +122,11 @@ export const waitUntilBundled = async (pages: string[], config: Config) => {
     await performWaitUntilBundled(filename);
   }
 };
+
+// export const waitUntilBundled = async (pages: string[], config: Config) => {
+//   for (let i = 0; i < pages.length; i++) {
+//     const page = pages[i];
+//     const filename = join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
+//     await performWaitUntilBundled(filename);
+//   }
+// };
