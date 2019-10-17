@@ -147,7 +147,7 @@ export default async (app: express.Application, server: http.Server, config: Con
     console.log('[ info ] enabled hot reloading');
   }
 
-  await sleep(env === 'production' ? 3200 : 2400);
+  await sleep(env === 'production' ? 5000 : 3200);
 
   gracefullyShutDown(() => {
     console.log('[ info ] gracefully shutting down. please wait...');
