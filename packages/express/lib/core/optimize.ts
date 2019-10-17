@@ -52,19 +52,17 @@ const getPages = async (config: Config): Promise<string[][]> => {
   return [entryPages, otherPages];
 };
 
-const getRelativeInfo = (file: string): string[] => {
-  const splitted = file.replace(cwd, '').split(path.sep);
-  const [, ...rest] = splitted;
-  const relativeFile = rest.join(path.sep);
-  const relativeDir = path.dirname(relativeFile);
-  return [relativeFile, relativeDir];
-};
-
-const getPageId = (page: string, config: Config): string => {
+const getPageId = (page: string, config: Config, sep: string = '_'): string => {
   const [, ...rest] = page.replace(path.join(cwd, config.viewsDir), '')
                           .replace(path.extname(page), '')
                           .split(path.sep);
-  return rest.join('_');
+  return rest.join(sep);
+};
+
+const getRelativeInfo = (page: string, config: Config): string[] => {
+  const relativeFile = getPageId(page, config, path.sep);
+  const relativeDir = path.dirname(relativeFile);
+  return [relativeFile, relativeDir];
 };
 
 const waitUntilCompleted = async (mfs: any, filename: string) => {
@@ -93,9 +91,10 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
-    const [filename, dirname] = getRelativeInfo(page);
-
-    mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
+    const [filename, dirname] = getRelativeInfo(page, config);
+    if (dirname !== '.') {
+      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
+    }
     mfs.writeFileSync(
       path.join(cwd, `react-ssr-src/${dirname}/entry-${path.basename(filename)}`),
       template.replace('__REACT_SSR_PAGE_NAME__', path.basename(filename, path.extname(filename))),
@@ -109,7 +108,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
 
   for (let i = 0; i < otherPages.length; i++) {
     const page = otherPages[i];
-    const [filename, dirname] = getRelativeInfo(page);
+    const [filename, dirname] = getRelativeInfo(page, config);
     if (dirname !== '.') {
       mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
     }
