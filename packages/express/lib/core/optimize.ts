@@ -27,21 +27,21 @@ const ufs = require('unionfs').ufs;
 const memfs = new MemoryFileSystem();
 ufs.use(fs).use(memfs);
 
-export const waitUntilBundled = async (pages: string[], config: Config) => {
-  let bundled = true;
-  for (let i = 0; i < pages.length; i++) {
-    const page = pages[i];
-    const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
-    if (!fse.existsSync(filename)) {
-      bundled = false;
-      break;
-    }
-  }
-  if (!bundled) {
-    await sleep(100);
-    waitUntilBundled(pages, config);
-  }
-};
+// export const waitUntilBundled = async (pages: string[], config: Config) => {
+//   let bundled = true;
+//   for (let i = 0; i < pages.length; i++) {
+//     const page = pages[i];
+//     const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
+//     if (!fse.existsSync(filename)) {
+//       bundled = false;
+//       break;
+//     }
+//   }
+//   if (!bundled) {
+//     await sleep(100);
+//     waitUntilBundled(pages, config);
+//   }
+// };
 
 // onchange bundling
 async function bundle(config: Config, ufs: any, memfs: any): Promise<void>;
@@ -87,6 +87,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
     );
   }
 
+  let compiled = false;
   const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
@@ -114,7 +115,16 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
         });
       }
     }
+
+    compiled = true;
   });
+
+  while (true) {
+    if (compiled) {
+      break;
+    }
+    await sleep(100);
+  }
 };
 
 export default async (app: express.Application, server: http.Server, config: Config): Promise<http.Server> => {
@@ -162,8 +172,8 @@ export default async (app: express.Application, server: http.Server, config: Con
     console.log('[ info ] enabled hot reloading');
   }
 
-  const [pages] = await getPages(config);
-  await waitUntilBundled(pages, config);
+  // const [pages] = await getPages(config);
+  // await waitUntilBundled(pages, config);
 
   gracefullyShutDown(() => {
     console.log('[ info ] gracefully shutting down. please wait...');
