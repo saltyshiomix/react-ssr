@@ -1,7 +1,10 @@
+import ReactSsrScript from '@react-ssr/express/script';
+
 export const Layout = (props) => {
   const {
     title,
     children,
+    script,
   } = props;
 
   return (
@@ -11,6 +14,7 @@ export const Layout = (props) => {
       </head>
       <body>
         {children}
+        <ReactSsrScript script={script} />
       </body>
     </html>
   );
