@@ -54,7 +54,7 @@
     "@types/express": "^4.17.1",
     "babel-loader": "^8.0.6",
     "babel-plugin-react-require": "^3.1.1",
-    "chokidar": "^3.2.1",
+    "chokidar": "^3.2.2",
     "cross-spawn": "^7.0.1",
     "express": "^4.17.1",
     "fkill-cli": "^5.2.0",
