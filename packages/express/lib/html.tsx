@@ -53,8 +53,10 @@ const Html = (props: HtmlProps) => {
         <div id="react-ssr-root">
           {ReactHtmlParser(body || '')}
         </div>
-        <script src={script}></script>
-        {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+        <div id="react-ssr-script">
+          <script src={script}></script>
+          {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+        </div>
       </body>
     </html>
   );

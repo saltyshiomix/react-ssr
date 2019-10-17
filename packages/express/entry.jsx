@@ -15,6 +15,24 @@ const hydrateByEmotion = (html) => {
   hydrate(ids);
 };
 
+class InjectScript extends React.Component {
+  constructor(props) {
+    super(props);
+    this.script = document.getElementById('react-ssr-script').innerHTML;
+
+    console.log(this.script);
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        {props.children}
+        {ReactHtmlParser(this.script)}
+      </React.Fragment>
+    );
+  }
+}
+
 const ssrId = document.body.dataset.ssrId;
 
 if (0 <= html.indexOf('html')) {
@@ -27,9 +45,9 @@ if (0 <= html.indexOf('html')) {
       const $ = cheerio.load(html);
       const body = $('body').html();
       ReactDOM.hydrate((
-        <React.Fragment>
-          {ReactHtmlParser(body || '')}
-        </React.Fragment>
+        <InjectScript>
+          <Page {...props} />
+        </InjectScript>
       ), document.getElementById('react-ssr-root'));
       break;
   }
