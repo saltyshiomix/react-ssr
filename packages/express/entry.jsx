@@ -36,9 +36,10 @@ class InjectScript extends React.Component {
   }
 }
 
+const hasHtml = 0 <= html.indexOf('html');
 const ssrId = document.body.dataset.ssrId;
 
-if (0 <= html.indexOf('html')) {
+if (hasHtml) {
   switch (ssrId) {
     case 'emotion':
       hydrateByEmotion(html);
@@ -51,7 +52,7 @@ if (0 <= html.indexOf('html')) {
         <InjectScript>
           <Page {...props} />
         </InjectScript>
-      ), document.getElementById('react-ssr-root'));
+      ), document);
       break;
   }
 } else {
