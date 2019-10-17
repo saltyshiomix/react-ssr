@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import ReactHtmlParser from 'react-html-parser';
@@ -15,37 +15,26 @@ const hydrateByEmotion = (html) => {
   hydrate(ids);
 };
 
-class InjectScript extends React.Component {
-  script;
+const InjectScript = (props) => {
+  const [scripts, setScripts] = useState([]);
 
-  constructor(props) {
-    super(props);
-    // this._script = document.getElementById('react-ssr-script').innerHTML;
-    this.script = document.getElementById('react-ssr-script').innerHTML;
+  useEffect(() => {
+    setScripts([
+      ReactHtmlParser(document.getElementById('react-ssr-script').innerHTML),
+      process.env.NODE_ENV === 'production' ? null : ReactHtmlParser(<script src="/reload/reload.js"></script>),
+    ]);
+    return () => {};
+  }, []);
 
-    console.log(this.script);
-  }
-
-  componentDidMount() {
-    console.log(this.script);
-
-    const wrapper = document.createElement('div');
-    wrapper.id = 'react-ssr-script';
-    wrapper.innerHTML = this.script + process.env.NODE_ENV === 'production' ? '' : <script src="/reload/reload.js"></script>;
-
-    console.log(wrapper);
-
-    document.body.appendChild(wrapper);
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        {props.children}
-      </React.Fragment>
-    );
-  }
-}
+  return (
+    <React.Fragment>
+      {props.children}
+      {scripts.map((ScriptComponent, i) => ({
+        <ScriptComponent key={i} />
+      }))}
+    </React.Fragment>
+  );
+};
 
 const hasHtml = 0 <= html.indexOf('html');
 const ssrId = document.body.dataset.ssrId;
