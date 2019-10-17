@@ -137,9 +137,8 @@ export default async (app: express.Application, server: http.Server, config: Con
     reloadable = await reload(app);
   }
 
-  await fse.remove(path.join(cwd, config.cacheDir), () => {
-    console.log('[ info ] removed all caches');
-  });
+  fse.removeSync(path.join(cwd, config.cacheDir));
+  console.log('[ info ] removed all caches');
 
   const { ufs } = require('unionfs');
   const MemoryFileSystem = require('memory-fs');
