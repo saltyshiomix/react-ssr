@@ -64,8 +64,6 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     entry[getPageId(page, config, '_')] = `./react-ssr-src/${path.join(dir, `entry-${name}${ext}`)}`;
   }
 
-  console.log(entry);
-
   for (let i = 0; i < otherPages.length; i++) {
     const page = otherPages[i];
     const pageId = getPageId(page, config, '/');
