@@ -20,19 +20,19 @@ export default (props: SsrProps) => {
     ssrId = 'emotion';
   }
 
-  if (!hasHtml) {
-    return (
-      <html>
-        <body data-ssr-id={ssrId}>
-          <div id="react-ssr-root">
-            {children}
-          </div>
-          <script src={script}></script>
-          {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-        </body>
-      </html>
-    );
+  if (hasHtml) {
+    return React.cloneElement(children, { script });
   }
 
-  return React.cloneElement(children, { script });
+  return (
+    <html>
+      <body data-ssr-id={ssrId}>
+        <div id="react-ssr-root">
+          {children}
+        </div>
+        <script src={script}></script>
+        {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+      </body>
+    </html>
+  );
 };
