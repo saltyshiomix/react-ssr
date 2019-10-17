@@ -1,5 +1,6 @@
 import {
   existsSync,
+  readFileSync,
   Stats,
 } from 'fs';
 import {
@@ -99,6 +100,6 @@ export const getPageId = (page: string, config: Config, separator: string = '_')
   return rest.join(separator);
 };
 
-export const readFileWithProps = (file: string, props: any, fs: any) => {
-  return fs.readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
+export const readFileWithProps = (file: string, props: any) => {
+  return readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
 };

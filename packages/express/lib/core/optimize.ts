@@ -22,25 +22,25 @@ const codec = require('json-url')('lzw');
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const waitUntilCompleted = async (mfs: any, filename: string) => {
-  const existsInMFS = mfs.existsSync(filename);
-  const existsInFS = fse.existsSync(filename);
-  if (existsInMFS && existsInFS) {
-    return;
-  }
-  if (existsInMFS) {
-    const _env = process.env.NODE_ENV;
-    process.env.NODE_ENV = 'development';
-    try {
-      fse.mkdirsSync(path.dirname(filename));
-      fse.writeFileSync(filename, mfs.readFileSync(filename).toString());
-    } finally {
-      process.env.NODE_ENV = _env;
-    }
-  }
-  await sleep(100);
-  waitUntilCompleted(mfs, filename);
-}
+// const waitUntilCompleted = async (mfs: any, filename: string) => {
+//   const existsInMFS = mfs.existsSync(filename);
+//   const existsInFS = fse.existsSync(filename);
+//   if (existsInMFS && existsInFS) {
+//     return;
+//   }
+//   if (existsInMFS) {
+//     const _env = process.env.NODE_ENV;
+//     process.env.NODE_ENV = 'development';
+//     try {
+//       fse.mkdirsSync(path.dirname(filename));
+//       fse.writeFileSync(filename, mfs.readFileSync(filename).toString());
+//     } finally {
+//       process.env.NODE_ENV = _env;
+//     }
+//   }
+//   await sleep(100);
+//   waitUntilCompleted(mfs, filename);
+// }
 
 // onchange bundling
 async function bundle(config: Config, ufs: any, mfs: any): Promise<void>;
@@ -89,7 +89,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
-  compiler.outputFileSystem = mfs;
+  // compiler.outputFileSystem = fs;
   compiler.run((err: Error) => {
     err && console.error(err.stack || err);
   });
@@ -99,7 +99,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
       const page = entryPages[i];
       const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
 
-      await waitUntilCompleted(mfs, filename);
+      // await waitUntilCompleted(mfs, filename);
 
       const pageId = getPageId(page, config, '/');
       const route = `/_react-ssr/${pageId}.js`;
@@ -113,21 +113,21 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
           console.log(props);
         }
 
-        const script = readFileWithProps(filename, props, mfs);
+        const script = readFileWithProps(filename, props);
         res.type('.js').send(script);
       });
     }
   } else {
-    for (let i = 0; i < entryPages.length; i++) {
-      const page = entryPages[i];
-      const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
-      await waitUntilCompleted(mfs, filename);
-    }
+    // for (let i = 0; i < entryPages.length; i++) {
+    //   const page = entryPages[i];
+    //   const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
+    //   await waitUntilCompleted(mfs, filename);
+    // }
   }
 
   console.log('[ info ] writing caches. please wait...');
 
-  await sleep(env === 'production' ? 3000 : 2000);
+  // await sleep(env === 'production' ? 3000 : 2000);
 };
 
 export default async (app: express.Application, server: http.Server, config: Config): Promise<http.Server> => {
