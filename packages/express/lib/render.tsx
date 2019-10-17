@@ -1,7 +1,7 @@
 import path from 'path';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import Html from './dom/html';
+import SSR from './ssr';
 import { getEngine } from './utils';
 
 const ext = '.' + getEngine();
@@ -16,9 +16,9 @@ const render = async (file: string, props: object): Promise<string> => {
 
   let html = '<!DOCTYPE html>';
   html += ReactDOMServer.renderToString(
-    <Html script={script}>
+    <SSR script={script}>
       <Page {...props} />
-    </Html>
+    </SSR>
   );
 
   return html;

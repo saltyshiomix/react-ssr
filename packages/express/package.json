@@ -31,7 +31,8 @@
     "dist",
     "index.js",
     "index.d.ts",
-    "entry.jsx",
+    "script.js",
+    "entry.js",
     "babel.js",
     "babel.config.default.js"
   ],

@@ -15,23 +15,6 @@ const hydrateByEmotion = (html) => {
   hydrate(ids);
 };
 
-const InjectScript = (props) => {
-  const [script, setScript] = useState('');
-
-  useEffect(() => {
-    setScript(document.getElementById('react-ssr-script').innerHTML);
-    return () => {};
-  }, []);
-
-  return (
-    <React.Fragment>
-      {props.children}
-      {ReactHtmlParser(script)}
-      {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-    </React.Fragment>
-  );
-};
-
 const hasHtml = 0 <= html.indexOf('html');
 const ssrId = document.body.dataset.ssrId;
 
@@ -42,13 +25,11 @@ if (hasHtml) {
       break;
 
     default:
-      const $ = cheerio.load(html);
-      const body = $('body').html();
+      // const $ = cheerio.load(html);
+      // const body = $('body').html();
       ReactDOM.hydrate((
-        <InjectScript>
-          <Page {...props} />
-        </InjectScript>
-      ), document.documentElement);
+        <Page {...props} />
+      ), document);
       break;
   }
 } else {
