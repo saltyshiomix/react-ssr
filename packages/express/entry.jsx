@@ -18,19 +18,25 @@ const hydrateByEmotion = (html) => {
 class InjectScript extends React.Component {
   constructor(props) {
     super(props);
-    this.script = document.getElementById('react-ssr-script').innerHTML;
+    this._script = document.getElementById('react-ssr-script').innerHTML;
+    this.script = {...(this._script)};
 
     console.log(this.script);
+  }
+
+  componentDidMount() {
+    console.log(this.script);
+
+    const wrapper = document.createElement('div');
+    wrapper.id = 'react-ssr-script';
+    wrapper.innerHTML = this.script + process.env.NODE_ENV === 'production' ? '' : <script src="/reload/reload.js"></script>;
+    document.body.appendChild(wrapper);
   }
 
   render() {
     return (
       <React.Fragment>
         {props.children}
-        <div id="react-ssr-script">
-          {ReactHtmlParser(this.script)}
-          {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-        </div>
       </React.Fragment>
     );
   }
