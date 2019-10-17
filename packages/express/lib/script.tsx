@@ -1,17 +1,13 @@
 import React from 'react';
 
 export default ({ script }: { script: string }) => {
-  let reloadable = process.env.NODE_ENV !== 'production';
-  if (reloadable) {
-    if (typeof window !== 'undefined') {
-      reloadable = false;
-    }
-  }
+  const mountable = typeof window !== 'undefined';
+  const reloadable = process.env.NODE_ENV !== 'production';
 
   return (
     <React.Fragment>
-      <script src={script}></script>
-      {reloadable ? <script src="/reload/reload.js"></script> : null}
+      {mountable ? <script src={script}></script> : null}
+      {mountable && reloadable ? <script src="/reload/reload.js"></script> : null}
     </React.Fragment>
   );
 };
