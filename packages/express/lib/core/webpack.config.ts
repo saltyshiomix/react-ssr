@@ -33,7 +33,9 @@ const prodConfig: webpack.Configuration = {
       maxInitialRequests: 3,
     },
     minimize: true,
-    minimizer: [new TerserPlugin()],
+    minimizer: [
+      new TerserPlugin(),
+    ],
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -68,10 +70,5 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     },
   };
 
-  if (env === 'production') {
-    console.log('production');
-    config = merge(config, prodConfig);
-  }
-
-  return config;
+  return merge(config, env === 'production' ? prodConfig : {});
 };
