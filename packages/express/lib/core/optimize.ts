@@ -60,8 +60,10 @@ const getRelativeInfo = (file: string): string[] => {
   return [relativeFile, relativeDir];
 };
 
-const getPageName = (page: string): string => {
-  const [, ...rest] = page.replace(cwd, '').split(path.sep);
+const getPageId = (page: string, config: Config): string => {
+  const [, ...rest] = page.replace(path.join(cwd, config.viewsDir), '')
+                          .replace(path.extname(page), '')
+                          .split(path.sep);
   return rest.join('_');
 };
 
@@ -102,7 +104,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
       path.join(cwd, `react-ssr-src/${filename}`),
       fse.readFileSync(page),
     );
-    entry[getPageName(page)] = `./react-ssr-src/${dirname}/entry-${path.basename(filename)}`;
+    entry[getPageId(page, config)] = `./react-ssr-src/${dirname}/entry-${path.basename(filename)}`;
   }
 
   for (let i = 0; i < otherPages.length; i++) {
@@ -125,7 +127,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   if (app) {
     for (let i = 0; i < entryPages.length; i++) {
       const page = entryPages[i];
-      const filename = path.join(cwd, config.cacheDir, env, `${getPageName(page)}.js`);
+      const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config)}.js`);
 
       await waitUntilCompleted(mfs, filename);
 
@@ -157,7 +159,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   } else {
     for (let i = 0; i < entryPages.length; i++) {
       const page = entryPages[i];
-      const filename = path.join(cwd, config.cacheDir, env, `${getPageName(page)}.js`);
+      const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config)}.js`);
       await waitUntilCompleted(mfs, filename);
     }
   }
