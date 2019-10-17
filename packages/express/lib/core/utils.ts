@@ -100,8 +100,13 @@ export const getPageId = (page: string, config: Config, separator: string = '_')
   return rest.join(separator);
 };
 
-export const getRelativeInfo = (page: string, config: Config): string[] => {
-  const relativeFile = getPageId(page, config, sep);
-  const relativeDir = dirname(relativeFile);
-  return [relativeFile, relativeDir];
+export const getRelativeInfo = (page: string, config: Config) => {
+  const file = getPageId(page, config, sep);
+  const filename = basename(file, extname(file));
+  const dir = dirname(file);
+  return {
+    file,
+    filename,
+    dir,
+  };
 };

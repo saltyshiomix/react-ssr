@@ -48,28 +48,28 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
-    const [filename, dirname] = getRelativeInfo(page, config);
-    if (dirname !== '.') {
-      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
+    const info = getRelativeInfo(page, config);
+    if (info.dir !== '.') {
+      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${info.dir}`));
     }
     mfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${dirname}/entry-${path.basename(filename)}`),
-      template.replace('__REACT_SSR_PAGE_NAME__', path.basename(filename, path.extname(filename))),
+      path.join(cwd, `react-ssr-src/${info.dir}/entry-${path.basename(info.file)}`),
+      template.replace('__REACT_SSR_PAGE_NAME__', info.filename),
     );
     mfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${filename}`),
+      path.join(cwd, `react-ssr-src/${info.file}`),
       fse.readFileSync(page),
     );
-    entry[getPageId(page, config)] = `./react-ssr-src/${dirname}/entry-${path.basename(filename)}`;
+    entry[getPageId(page, config)] = `./react-ssr-src/${info.dir}/entry-${path.basename(info.file)}`;
   }
 
   for (let i = 0; i < otherPages.length; i++) {
     const page = otherPages[i];
-    const [filename, dirname] = getRelativeInfo(page, config);
-    if (dirname !== '.') {
-      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
+    const info = getRelativeInfo(page, config);
+    if (info.dir !== '.') {
+      mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${info.dir}`));
     }
-    mfs.writeFileSync(path.join(cwd, `react-ssr-src/${filename}`), fse.readFileSync(page));
+    mfs.writeFileSync(path.join(cwd, `react-ssr-src/${info.file}`), fse.readFileSync(page));
   }
 
   const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
@@ -87,11 +87,10 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
 
       await waitUntilCompleted(mfs, filename);
 
-      const [, ...rest] = page.replace(cwd, '').split(path.sep);
-      const id = rest.join('/');
-      const route = '/_react-ssr/' + id.replace(ext, '.js');
+      const pageId = getPageId(page, config, '/');
+      const route = '/_react-ssr/' + pageId.replace(ext, '.js');
 
-      console.log(`[ info ] optimized "${id}"`);
+      console.log(`[ info ] optimized "${pageId}"`);
 
       app.get(route, async (req, res) => {
         const props = await codec.decompress(req.query.props);
