@@ -27,7 +27,10 @@ class InjectScript extends React.Component {
     return (
       <React.Fragment>
         {props.children}
-        {ReactHtmlParser(this.script)}
+        <div id="react-ssr-script">
+          {ReactHtmlParser(this.script)}
+          {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+        </div>
       </React.Fragment>
     );
   }

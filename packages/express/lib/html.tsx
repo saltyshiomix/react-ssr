@@ -50,9 +50,7 @@ const Html = (props: HtmlProps) => {
         data-ssr-id={ssrId}
         {...bodyAttr}
       >
-        <div id="react-ssr-root">
-          {ReactHtmlParser(body || '')}
-        </div>
+        {ReactHtmlParser(body || '')}
         <div id="react-ssr-script">
           <script src={script}></script>
           {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
