@@ -125,7 +125,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
     // }
   }
 
-  console.log('[ info ] writing caches. please wait...');
+  // console.log('[ info ] writing caches. please wait...');
 
   // await sleep(env === 'production' ? 3000 : 2000);
 };
@@ -138,7 +138,7 @@ export default async (app: express.Application, server: http.Server, config: Con
   }
 
   fse.removeSync(path.join(cwd, config.cacheDir));
-  console.log('[ info ] removed all caches');
+  // console.log('[ info ] removed all caches');
 
   const { ufs } = require('unionfs');
   const MemoryFileSystem = require('memory-fs');
@@ -148,32 +148,35 @@ export default async (app: express.Application, server: http.Server, config: Con
 
   await bundle(config, ufs, mfs, app);
 
-  if (env === 'development') {
-    const escaperegexp = require('lodash.escaperegexp');
-    const chokidar = require('chokidar');
-    const watcher = chokidar.watch(cwd, {
-      ignored: [
-        /node_modules/,
-        new RegExp(escaperegexp(config.cacheDir)),
-      ],
-    });
+  const readdir = require('recursive-readdir');
+  console.log(await readdir(path.join(cwd, config.cacheDir)));
 
-    const closeWatching = () => {
-      watcher.close();
-    };
-    process.on('SIGINT', closeWatching);
-    process.on('SIGTERM', closeWatching);
-    process.on('exit', closeWatching);
+  // if (env === 'development') {
+  //   const escaperegexp = require('lodash.escaperegexp');
+  //   const chokidar = require('chokidar');
+  //   const watcher = chokidar.watch(cwd, {
+  //     ignored: [
+  //       /node_modules/,
+  //       new RegExp(escaperegexp(config.cacheDir)),
+  //     ],
+  //   });
 
-    watcher.on('change', async (p: string) => {
-      await fse.remove(path.join(cwd, config.cacheDir));
-      await bundle(config, ufs, mfs);
-      reloadable.reload();
-      console.log('[ info ] reloaded');
-    });
+  //   const closeWatching = () => {
+  //     watcher.close();
+  //   };
+  //   process.on('SIGINT', closeWatching);
+  //   process.on('SIGTERM', closeWatching);
+  //   process.on('exit', closeWatching);
 
-    console.log('[ info ] enabled hot reloading');
-  }
+  //   watcher.on('change', async (p: string) => {
+  //     await fse.remove(path.join(cwd, config.cacheDir));
+  //     await bundle(config, ufs, mfs);
+  //     reloadable.reload();
+  //     console.log('[ info ] reloaded');
+  //   });
+
+  //   console.log('[ info ] enabled hot reloading');
+  // }
 
   gracefullyShutDown(() => {
     console.log('[ info ] gracefully shutting down. please wait...');
