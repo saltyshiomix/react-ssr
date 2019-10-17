@@ -5,6 +5,8 @@
 
 - Passing the server data to the client `props`
 - Blazing fast SSR (Server Side Rendering)
+- Dynamic server side rendering `props`
+  - Suitable for dynamic routes like blogging
 - Hot relaoding when `process.env.NODE_ENV !== 'production'`
 - TypeScript support
 
