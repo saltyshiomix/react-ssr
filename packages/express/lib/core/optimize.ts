@@ -92,8 +92,6 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
   compiler.run(async (err: Error) => {
     err && console.error(err.stack || err);
 
-    await waitUntilBundled(entryPages, config);
-
     if (app) {
       for (let i = 0; i < entryPages.length; i++) {
         const page = entryPages[i];
@@ -165,7 +163,6 @@ export default async (app: express.Application, server: http.Server, config: Con
 
   const [pages] = await getPages(config);
   await waitUntilBundled(pages, config);
-  // await sleep(env === 'production' ? 5000 : 3200);
 
   gracefullyShutDown(() => {
     console.log('[ info ] gracefully shutting down. please wait...');
