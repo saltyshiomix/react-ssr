@@ -17,12 +17,12 @@ import {
   gracefullyShutDown,
 } from './utils';
 
-process.env.NODE_OPTIONS = '--no-warnings';
-
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const cwd = process.cwd();
 const ext = '.' + getEngine();
 const codec = require('json-url')('lzw');
+
+process.env.NODE_ENV = 'development';
 
 // const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
