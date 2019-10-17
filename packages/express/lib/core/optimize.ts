@@ -28,6 +28,7 @@ const waitUntilCompleted = async (mfs: any, filename: string) => {
     return;
   }
   if (existsInMFS) {
+    fse.mkdirpSync(path.dirname(filename));
     fse.writeFileSync(filename, mfs.readFileSync(filename).toString());
   }
   await sleep(100);
