@@ -13,14 +13,14 @@ export default (props: SsrProps) => {
   } = props;
 
   const html: string = ReactDOMServer.renderToString(<React.Fragment>{children}</React.Fragment>);
-  const hasHtml: boolean = 0 <= html.indexOf('html');
+  const withHtml: boolean = 0 <= html.indexOf('html');
 
   let ssrId: string = 'default';
   if (0 <= html.indexOf('emotion')) {
     ssrId = 'emotion';
   }
 
-  if (hasHtml) {
+  if (withHtml) {
     return React.cloneElement(children, { script });
   }
 
