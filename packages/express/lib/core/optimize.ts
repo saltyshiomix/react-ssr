@@ -4,7 +4,6 @@ import path from 'path';
 import net from 'net';
 import http from 'http';
 import express from 'express';
-import hasha from 'hasha';
 import readdir from 'recursive-readdir';
 import webpack from 'webpack';
 import configure from './webpack.config';
@@ -61,6 +60,10 @@ const getRelativeInfo = (file: string): string[] => {
   return [relativeFile, relativeDir];
 };
 
+const getPageName = (page: string): string => {
+  return page.replace(/\//g, '_').replace(path.extname(page), '');
+};
+
 const waitUntilCompleted = async (mfs: any, filename: string) => {
   const existsInMFS = mfs.existsSync(filename);
   let existsInFS = fse.existsSync(filename);
@@ -87,7 +90,6 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
-    const hash = hasha(env + page, { algorithm: 'md5' });
     const [filename, dirname] = getRelativeInfo(page);
 
     mfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dirname}`));
@@ -99,7 +101,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
       path.join(cwd, `react-ssr-src/${filename}`),
       fse.readFileSync(page),
     );
-    entry[hash] = `./react-ssr-src/${dirname}/entry-${path.basename(filename)}`;
+    entry[getPageName(page)] = `./react-ssr-src/${dirname}/entry-${path.basename(filename)}`;
   }
 
   for (let i = 0; i < otherPages.length; i++) {
@@ -122,8 +124,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   if (app) {
     for (let i = 0; i < entryPages.length; i++) {
       const page = entryPages[i];
-      const hash = hasha(env + page, { algorithm: 'md5' });
-      const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
+      const filename = path.join(cwd, config.cacheDir, env, `${getPageName(page)}.js`);
 
       await waitUntilCompleted(mfs, filename);
 
@@ -155,8 +156,7 @@ async function bundle(config: Config, ufs: any, mfs: any, app?: express.Applicat
   } else {
     for (let i = 0; i < entryPages.length; i++) {
       const page = entryPages[i];
-      const hash = hasha(env + page, { algorithm: 'md5' });
-      const filename = path.join(cwd, config.cacheDir, env, `${hash}.js`);
+      const filename = path.join(cwd, config.cacheDir, env, `${getPageName(page)}.js`);
       await waitUntilCompleted(mfs, filename);
     }
   }
