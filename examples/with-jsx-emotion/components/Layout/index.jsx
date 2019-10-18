@@ -31,9 +31,7 @@ export const Layout = (props) => {
         `}
       />
       <body data-ssr-id='emotion'>
-        <div className="container">
-          {children}
-        </div>
+        {children}
         <ReactSsrScript script={script} />
       </body>
     </html>
