@@ -6,6 +6,7 @@ import Page from './__REACT_SSR_PAGE_NAME__';
 const props = JSON.parse('__REACT_SSR_PROPS__');
 const html = ReactDOMServer.renderToString(<Page {...props} />);
 const withHtml = 0 <= html.indexOf('html');
+const container = withHtml ? document : document.getElementById('react-ssr-root');
 const ssrSrc = document.getElementById('react-ssr-script').src;
 const ssrQuery = '?' + ssrSrc.split('?')[1];
 const ssrQueryObject = ssrQuery.substring(1).split('&').map((p) => p.split('=')).reduce((obj, e) => ({...obj, [e[0]]: e[1]}), {});
@@ -29,18 +30,10 @@ switch (ssrId) {
       }, []);
       return <Page {...props} />;
     }
-    if (withHtml) {
-      ReactDOM.hydrate(<MuiApp {...props} />, document);
-    } else {
-      ReactDOM.hydrate(<MuiApp {...props} />, document.getElementById('react-ssr-root'));
-    }
+    ReactDOM.hydrate(<MuiApp {...props} />, container);
     break;
 
   default:
-    if (withHtml) {
-      ReactDOM.hydrate(<Page {...props} />, document);
-    } else {
-      ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));
-    }
+    ReactDOM.hydrate(<Page {...props} />, container);
     break;
 }
