@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 
 const Index = ({ user }) => {
   const [message, setMessage] = useState('waiting...');

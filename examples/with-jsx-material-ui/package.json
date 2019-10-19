@@ -9,5 +9,8 @@
     "@react-ssr/express": "canary",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.12.2"
   }
 }

@@ -21,35 +21,30 @@ const hydrateByEmotion = (html) => {
 //   );
 // };
 
-const hasHtml = 0 <= html.indexOf('html');
+const withHtml = 0 <= html.indexOf('html');
 const ssrSrc = document.getElementById('react-ssr-script').src;
 const ssrQuery = '?' + ssrSrc.split('?')[1];
 const ssrQueryObject = ssrQuery.substring(1).split('&').map((p) => p.split('=')).reduce((obj, e) => ({...obj, [e[0]]: e[1]}), {});
 const ssrId = ssrQueryObject['ssrid'];
 
-console.log(ssrId);
+switch (ssrId) {
+  case 'emotion':
+    hydrateByEmotion(html);
+    break;
 
-if (hasHtml) {
-  switch (ssrId) {
-    case 'emotion':
-      hydrateByEmotion(html);
-      break;
-
-    default:
+  case 'mui':
+    if (withHtml) {
       ReactDOM.hydrate(<Page {...props} />, document);
-      break;
-  }
-} else {
-  switch (ssrId) {
-    case 'emotion':
-      hydrateByEmotion(html);
-      break;
-
-    // case 'material-ui':
-    //   hydrateByMaterialUI();
-
-    default:
+    } else {
       ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));
-      break;
-  }
+    }
+    break;
+
+  default:
+    if (withHtml) {
+      ReactDOM.hydrate(<Page {...props} />, document);
+    } else {
+      ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));
+    }
+    break;
 }
