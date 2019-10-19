@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import Page from './__REACT_SSR_PAGE_NAME__';
 
+React.useLayoutEffect = React.useEffect;
+
 const props = JSON.parse('__REACT_SSR_PROPS__');
 const html = ReactDOMServer.renderToString(<Page {...props} />);
 
@@ -33,10 +35,6 @@ switch (ssrId) {
     break;
 
   case 'mui':
-    // React.useLayoutEffect = React.useEffect;
-    const isServerSide = typeof window == 'undefined';
-    React.useLayoutEffect = isServerSide ? () => {} : React.useLayoutEffect;
-    // const useEnhancedEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
     function MuiApp() {
       React.useEffect(() => {
         const jssStyles = document.getElementById('jss-server-side');
