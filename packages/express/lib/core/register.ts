@@ -10,6 +10,12 @@ import {
 } from './utils';
 
 const escaperegexp = require('lodash.escaperegexp');
+const styleExtensions = [
+  '.css',
+  '.sass',
+  '.scss',
+  '.styl',
+];
 
 const register = async (app: express.Application, config: Config): Promise<void> => {
   let babelRegistered = false;
@@ -25,9 +31,11 @@ const register = async (app: express.Application, config: Config): Promise<void>
       require('@babel/register')({
         extends: getBabelrc(),
       });
-      require.extensions['.css'] = () => {
-        return;
-      };
+      styleExtensions.forEach((styleExtension) => {
+        require.extensions[styleExtension] = () => {
+          return;
+        };
+      });
       babelRegistered = true;
     }
 
