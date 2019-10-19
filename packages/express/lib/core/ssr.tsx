@@ -12,7 +12,7 @@ export default (props: SsrProps) => {
     script,
   } = props;
 
-  const html: string = ReactDOMServer.renderToString(<React.Fragment>{children}</React.Fragment>);
+  const html: string = ReactDOMServer.renderToString(<React.Fragment>{children}</React.Fragment>).toLowerCase();
   const withHtml: boolean = 0 <= html.indexOf('html');
 
   let ssrId: string = 'default';
@@ -24,7 +24,6 @@ export default (props: SsrProps) => {
   }
 
   console.log(ssrId);
-  console.log(html);
 
   if (withHtml) {
     return React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` });
