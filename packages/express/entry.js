@@ -35,17 +35,6 @@ switch (ssrId) {
     break;
 
   case 'mui':
-    // function MuiApp() {
-    //   const [showChild, setShowChild] = React.useState(false);
-    //   React.useEffect(() => {
-    //     const jssStyles = document.getElementById('jss-server-side');
-    //     if (jssStyles) {
-    //       jssStyles.parentNode.removeChild(jssStyles);
-    //     }
-    //     setShowChild(typeof window !== 'undefined');
-    //   }, []);
-    //   return showChild ? <Page {...props} /> : null;
-    // }
     function MuiApp() {
       React.useEffect(() => {
         const jssStyles = document.getElementById('jss-server-side');
