@@ -20,9 +20,6 @@ switch (ssrId) {
     break;
 
   case 'mui':
-    // because Material UI uses "useLayoutEffect" so many times, suppress warnings
-    console.warn = () => {};
-
     function MuiApp(props) {
       React.useEffect(() => {
         const jssStyles = document.getElementById('jss-server-side');

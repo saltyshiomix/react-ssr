@@ -64,7 +64,6 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
 
   let config: webpack.Configuration = {
     mode: 'development',
-    target: 'web',
     context: cwd,
     entry,
     output: {
@@ -79,6 +78,14 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
         getBabelRule(),
       ],
     },
+    optimization: {
+      nodeEnv: 'production',
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify('development'),
+      }),
+    ],
   };
 
   if (env === 'production') {
