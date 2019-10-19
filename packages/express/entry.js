@@ -33,18 +33,16 @@ switch (ssrId) {
     break;
 
   case 'mui':
+    // because Material UI uses "useLayoutEffect" so many times, suppress warnings
+    console.ignoredYellowBox = ['Warning: useLayoutEffect does nothing on the server, because its effect cannot be encoded into the server renderer\'s output format. This will lead to a mismatch between the initial, non-hydrated UI and the intended UI. To avoid this, useLayoutEffect should only be used in components that render exclusively on the client. See https://fb.me/react-uselayouteffect-ssr for common fixes.'];
+
     function MuiApp(props) {
-      const [showChild, setShowChild] = React.useState(false);
       React.useEffect(() => {
-        setShowChild(true);
         const jssStyles = document.getElementById('jss-server-side');
         if (jssStyles) {
           jssStyles.parentNode.removeChild(jssStyles);
         }
       }, []);
-      if (!showChild) {
-        return null;
-      }
       return <Page {...props} />;
     }
     if (withHtml) {
