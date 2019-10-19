@@ -19,6 +19,12 @@ export default (props: SsrProps) => {
   if (0 <= html.indexOf('emotion')) {
     ssrId = 'emotion';
   }
+  if (0 <= html.indexOf('mui')) {
+    ssrId = 'mui';
+  }
+
+  console.log(ssrId);
+  console.log(html);
 
   if (withHtml) {
     return React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` });
