@@ -40,12 +40,10 @@ export default (props: SsrProps) => {
           <html {...htmlAttr}>
             <head>
               {head ? ReactHtmlParser(head) : null}
-              {/* <style id="jss-server-side">{css}</style> */}
+              {sheets.getStyleElement()}
             </head>
             <body {...bodyAttr}>
               {body ? ReactHtmlParser(body) : null}
-              <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
             </body>
           </html>
         );
