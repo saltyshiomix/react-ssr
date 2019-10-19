@@ -25,6 +25,9 @@ const register = async (app: express.Application, config: Config): Promise<void>
       require('@babel/register')({
         extends: getBabelrc(),
       });
+      require.extensions['.css'] = () => {
+        return;
+      };
       babelRegistered = true;
     }
 
