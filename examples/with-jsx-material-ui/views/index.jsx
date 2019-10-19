@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) =>
       paddingTop: theme.spacing(4),
     },
     logo: {
-      width: 200,
+      width: 240,
       margin: theme.spacing(2),
     },
   })
@@ -54,6 +54,7 @@ const Index = (props) => {
         >
           CLICK ME
         </Button>
+        <br />
         <br />
         <Typography gutterBottom>
           Hello {message}!
