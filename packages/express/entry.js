@@ -33,21 +33,24 @@ switch (ssrId) {
     break;
 
   case 'mui':
-    function MuiApp() {
+    function MuiApp(props) {
+      const [showChild, setShowChild] = React.useState(false);
       React.useEffect(() => {
+        setShowChild(true);
         const jssStyles = document.getElementById('jss-server-side');
         if (jssStyles) {
           jssStyles.parentNode.removeChild(jssStyles);
         }
       }, []);
+      if (!showChild) {
+        return null;
+      }
       return <Page {...props} />;
     }
     if (withHtml) {
-      ReactDOM.hydrate(<MuiApp />, document);
+      ReactDOM.hydrate(<MuiApp {...props} />, document);
     } else {
-      if (typeof window !== 'undefined') {
-        ReactDOM.hydrate(<MuiApp />, document.getElementById('react-ssr-root'));
-      }
+      ReactDOM.hydrate(<MuiApp {...props} />, document.getElementById('react-ssr-root'));
     }
     break;
 
