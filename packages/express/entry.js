@@ -47,6 +47,12 @@ switch (ssrId) {
     // } else {
     //   ReactDOM.hydrate(<MuiApp />, document.getElementById('react-ssr-root'));
     // }
+
+    if (withHtml) {
+      ReactDOM.hydrate(<Page {...props} />, document);
+    } else {
+      ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));
+    }
     break;
 
   default:
