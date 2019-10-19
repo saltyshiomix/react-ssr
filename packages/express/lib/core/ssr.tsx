@@ -54,7 +54,6 @@ export default (props: SsrProps) => {
           </html>
         );
       }
-      break;
 
     default:
       if (withHtml) {
