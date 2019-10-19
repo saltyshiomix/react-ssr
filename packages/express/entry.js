@@ -34,19 +34,21 @@ switch (ssrId) {
 
   case 'mui':
     // React.useLayoutEffect = React.useEffect;
-    // function MuiApp() {
-    //   React.useLayoutEffect(() => {
-    //     const jssStyles = document.getElementById('jss-server-side');
-    //     if (jssStyles) {
-    //       jssStyles.parentNode.removeChild(jssStyles);
-    //     }
-    //   }, []);
-    //   return <Page {...props} />;
-    // }
+    const useEnhancedEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+    function MuiApp() {
+      useEnhancedEffect(() => {});
+      React.useEffect(() => {
+        const jssStyles = document.getElementById('jss-server-side');
+        if (jssStyles) {
+          jssStyles.parentNode.removeChild(jssStyles);
+        }
+      }, []);
+      return <Page {...props} />;
+    }
     if (withHtml) {
-      ReactDOM.hydrate(<Page {...props} />, document);
+      ReactDOM.hydrate(<MuiApp />, document);
     } else {
-      ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));
+      ReactDOM.hydrate(<MuiApp />, document.getElementById('react-ssr-root'));
     }
     break;
 
