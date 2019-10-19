@@ -18,7 +18,7 @@ export default (props: SsrProps) => {
   const withHtml: boolean = 0 <= html.indexOf('html');
 
   let ssrId: string = 'default';
-  0 <= html.indexOf('mui') && (ssrId = 'mui');
+  0 <= html.indexOf('"mui') && (ssrId = 'mui');
   0 <= html.indexOf('emotion') && (ssrId = 'emotion');
 
   switch (ssrId) {
