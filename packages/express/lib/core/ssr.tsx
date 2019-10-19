@@ -52,14 +52,10 @@ export default (props: SsrProps) => {
         );
       } else {
         const html = ReactDOMServer.renderToString(sheets.collect(children));
-        const css = sheets.toString();
-
-        console.log(html);
-
         return (
           <html>
             <head>
-              <style id="jss-server-side">{css}</style>
+              {sheets.getStyleElement()}
             </head>
             <body>
               <div id="react-ssr-root">
