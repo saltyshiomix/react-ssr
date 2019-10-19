@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import Page from './__REACT_SSR_PAGE_NAME__';
 
+React.useLayoutEffect = React.useEffect;
+
 const props = JSON.parse('__REACT_SSR_PROPS__');
 const html = ReactDOMServer.renderToString(<Page {...props} />);
 
@@ -33,16 +35,25 @@ switch (ssrId) {
     break;
 
   case 'mui':
+    // function MuiApp() {
+    //   const [showChild, setShowChild] = React.useState(false);
+    //   React.useEffect(() => {
+    //     const jssStyles = document.getElementById('jss-server-side');
+    //     if (jssStyles) {
+    //       jssStyles.parentNode.removeChild(jssStyles);
+    //     }
+    //     setShowChild(typeof window !== 'undefined');
+    //   }, []);
+    //   return showChild ? <Page {...props} /> : null;
+    // }
     function MuiApp() {
-      const [showChild, setShowChild] = React.useState(false);
       React.useEffect(() => {
         const jssStyles = document.getElementById('jss-server-side');
         if (jssStyles) {
           jssStyles.parentNode.removeChild(jssStyles);
         }
-        setShowChild(true);
       }, []);
-      return showChild ? <Page {...props} /> : null;
+      return <Page {...props} />;
     }
     if (withHtml) {
       ReactDOM.hydrate(<MuiApp />, document);
