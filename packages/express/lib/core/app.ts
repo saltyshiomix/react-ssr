@@ -8,6 +8,4 @@ const ReactSsrExpress = (options?: Config) => {
   return app;
 };
 
-ReactSsrExpress.prototype = express.prototype;
-
-export default ReactSsrExpress;
+export default Object.assign(express, ReactSsrExpress);
