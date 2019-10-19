@@ -22,12 +22,12 @@ switch (ssrId) {
 
   case 'mui':
     function MuiApp(props) {
-      React.useEffect(() => {
-        const jssStyles = document.getElementById('jss-server-side');
-        if (jssStyles) {
-          jssStyles.parentNode.removeChild(jssStyles);
-        }
-      }, []);
+      // React.useEffect(() => {
+      //   const jssStyles = document.getElementById('jss-server-side');
+      //   if (jssStyles) {
+      //     jssStyles.parentNode.removeChild(jssStyles);
+      //   }
+      // }, []);
       return <Page {...props} />;
     }
     ReactDOM.hydrate(<MuiApp {...props} />, container);

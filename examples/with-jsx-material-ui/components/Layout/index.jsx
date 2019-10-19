@@ -3,7 +3,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ReactSsrScript from '@react-ssr/express/script';
 import {
-  initializeFonts,
+  // initializeFonts,
   theme,
 } from '../../lib';
 
@@ -14,9 +14,9 @@ export const Layout = (props) => {
     script,
   } = props;
 
-  useEffect(() => {
-    initializeFonts();
-  }, []);
+  // useEffect(() => {
+  //   initializeFonts();
+  // }, []);
 
   return (
     <html lang="en">
