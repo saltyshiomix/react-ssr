@@ -2,10 +2,11 @@ import express from 'express';
 import register from './register';
 import Config from './config';
 
-const ReactSsrExpress = (options?: Config) => {
+function ReactSsrExpress(this: typeof ReactSsrExpress, options?: Config) {
   const app = express();
+  this.prototype = app.prototype;
   register(app, Object.assign(new Config, options || {}));
   return app;
 };
 
-export default Object.assign(express, ReactSsrExpress);
+export default ReactSsrExpress;
