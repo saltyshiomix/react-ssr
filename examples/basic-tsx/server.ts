@@ -7,6 +7,6 @@ app.get('/', (_req: Request, res: Response) => {
   res.render('index', { user });
 });
 
-app.listen(4000, () => {
-  console.log('> Ready on http://localhost:4000');
+app.listen(3000, () => {
+  console.log('> Ready on http://localhost:3000');
 });
