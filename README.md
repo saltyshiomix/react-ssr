@@ -192,7 +192,7 @@ A working example is here: [examples/custom-layout](https://github.com/saltyshio
 
 - [x] [emotion](https://emotion.sh)
 - [ ] [styled-components](https://www.styled-components.com)
-- [ ] [material-ui](https://material-ui.com)
+- [x] [material-ui](https://material-ui.com)
 - [ ] [antd](https://ant.design)
 - [ ] and more...
 
@@ -259,13 +259,17 @@ export const Layout = (props) => {
 };
 ```
 
+A working example is here: [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
+
 ### With styled-components
 
 WIP
 
 ### With Material UI
 
-WIP
+We can use [material-ui](https://material-ui.com) without extra configuration.
+
+A working example is here: [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
 
 ### With Ant Design
 
@@ -334,6 +338,7 @@ export default function Index({ message }: IndexProps) {
 - [examples/custom-layout](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-layout)
 - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
 - [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
+- [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
 
 Each example uses `@react-ssr/express@canary` by default, so it may have some bugs.
 
