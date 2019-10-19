@@ -34,9 +34,10 @@ switch (ssrId) {
 
   case 'mui':
     // React.useLayoutEffect = React.useEffect;
-    const useEnhancedEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+    const isServerSide = typeof window == 'undefined';
+    React.useLayoutEffect = isServerSide ? () => {} : React.useLayoutEffect;
+    // const useEnhancedEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
     function MuiApp() {
-      useEnhancedEffect(() => {});
       React.useEffect(() => {
         const jssStyles = document.getElementById('jss-server-side');
         if (jssStyles) {
