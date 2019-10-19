@@ -22,7 +22,6 @@ const prodConfig: webpack.Configuration = {
   optimization: {
     namedModules: false,
     namedChunks: false,
-    nodeEnv: 'production',
     flagIncludedChunks: true,
     occurrenceOrder: true,
     sideEffects: true,
@@ -39,9 +38,6 @@ const prodConfig: webpack.Configuration = {
     ],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
     new webpack.optimize.ModuleConcatenationPlugin(),
   ],
 };
@@ -79,7 +75,7 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
       ],
     },
     optimization: {
-      nodeEnv: 'development',
+      nodeEnv: 'production',
     },
     plugins: [
       new webpack.DefinePlugin({
