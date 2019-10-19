@@ -33,25 +33,21 @@ switch (ssrId) {
     break;
 
   case 'mui':
-    // function MuiApp() {
-    //   React.useEffect(() => {
-    //     const jssStyles = document.getElementById('jss-server-side');
-    //     if (jssStyles) {
-    //       jssStyles.parentNode.removeChild(jssStyles);
-    //     }
-    //   }, []);
-    //   return <Page {...props} />;
-    // }
-    // if (withHtml) {
-    //   ReactDOM.hydrate(<MuiApp />, document);
-    // } else {
-    //   ReactDOM.hydrate(<MuiApp />, document.getElementById('react-ssr-root'));
-    // }
-
+    function MuiApp() {
+      const [showChild, setShowChild] = React.useState(false);
+      React.useEffect(() => {
+        const jssStyles = document.getElementById('jss-server-side');
+        if (jssStyles) {
+          jssStyles.parentNode.removeChild(jssStyles);
+        }
+        setShowChild(true);
+      }, []);
+      return showChild ? <Page {...props} /> : null;
+    }
     if (withHtml) {
-      ReactDOM.hydrate(<Page {...props} />, document);
+      ReactDOM.hydrate(<MuiApp />, document);
     } else {
-      ReactDOM.render(<Page {...props} />, document.getElementById('react-ssr-root'));
+      ReactDOM.hydrate(<MuiApp />, document.getElementById('react-ssr-root'));
     }
     break;
 
