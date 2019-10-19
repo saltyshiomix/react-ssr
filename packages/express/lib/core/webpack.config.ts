@@ -93,7 +93,7 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     if (typeof userWebpack === 'function') {
       config = userWebpack(config, env);
     } else {
-      console.warn('[ warn ] ssr.config.js#webpack must be function');
+      console.warn('[ warn ] ssr.config.js#webpack must be a function');
     }
   }
 
