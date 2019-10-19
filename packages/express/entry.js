@@ -20,19 +20,6 @@ switch (ssrId) {
     hydrate(ids);
     break;
 
-  case 'mui':
-    function MuiApp(props) {
-      // React.useEffect(() => {
-      //   const jssStyles = document.getElementById('jss-server-side');
-      //   if (jssStyles) {
-      //     jssStyles.parentNode.removeChild(jssStyles);
-      //   }
-      // }, []);
-      return <Page {...props} />;
-    }
-    ReactDOM.hydrate(<MuiApp {...props} />, container);
-    break;
-
   default:
     ReactDOM.hydrate(<Page {...props} />, container);
     break;
