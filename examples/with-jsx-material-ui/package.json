@@ -11,6 +11,6 @@
     "react-dom": "^16.10.2"
   },
   "devDependencies": {
-    "babel-plugin-import": "^1.12.2"
+    "babel-plugin-transform-imports": "^2.0.0"
   }
 }

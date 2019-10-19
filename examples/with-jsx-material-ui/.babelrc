@@ -4,13 +4,13 @@
   ],
   "plugins": [
     [
-      "babel-plugin-import",
+      "babel-plugin-transform-imports",
       {
-        "libraryName": "@material-ui/core",
-        "libraryDirectory": "",
-        "camel2DashComponentName": false
-      },
-      "core"
+        "@material-ui/core": {
+          "transform": "@material-ui/core/lib/${member}",
+          "preventFullImport": true
+        }
+      }
     ]
   ]
 }
