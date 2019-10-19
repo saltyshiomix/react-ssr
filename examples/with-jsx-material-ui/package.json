@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "basic-jsx",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.5.1",
+    "@react-ssr/express": "canary",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2"
+  }
+}
