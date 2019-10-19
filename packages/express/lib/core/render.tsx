@@ -4,6 +4,8 @@ import SSR from './ssr';
 import Config from './config';
 import { getPageId } from './utils';
 
+React.useLayoutEffect = () => {};
+
 const codec = require('json-url')('lzw');
 
 const render = async (file: string, props: object, config: Config): Promise<string> => {

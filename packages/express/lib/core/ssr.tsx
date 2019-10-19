@@ -3,8 +3,6 @@ import ReactDOMServer from 'react-dom/server';
 import cheerio from 'cheerio';
 import ReactHtmlParser from 'react-html-parser';
 
-React.useLayoutEffect = () => {};
-
 interface SsrProps {
   children: any;
   script: string;
