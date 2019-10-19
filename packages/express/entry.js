@@ -34,7 +34,7 @@ switch (ssrId) {
 
   case 'mui':
     // because Material UI uses "useLayoutEffect" so many times, suppress warnings
-    console.ignoredYellowBox = ['Warning: useLayoutEffect does nothing on the server'];
+    console.warn = () => {};
 
     function MuiApp(props) {
       React.useEffect(() => {

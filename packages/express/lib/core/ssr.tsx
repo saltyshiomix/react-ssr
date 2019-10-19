@@ -29,7 +29,6 @@ export default (props: SsrProps) => {
     case 'mui':
       const { ServerStyleSheets } = require('@material-ui/core/styles');
       const sheets = new ServerStyleSheets();
-      const YellowBox = require('yellowbox-react');
       if (withHtml) {
         const html = ReactDOMServer.renderToStaticMarkup(sheets.collect(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` })));
         const css = sheets.toString();
@@ -48,7 +47,6 @@ export default (props: SsrProps) => {
               {body ? ReactHtmlParser(body) : null}
               <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
               {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-              <YellowBox />
             </body>
           </html>
         );

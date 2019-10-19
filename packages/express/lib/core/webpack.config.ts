@@ -63,8 +63,7 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
   }
 
   let config: webpack.Configuration = {
-    // mode: 'development',
-    mode: 'none',
+    mode: 'development',
     target: 'web',
     context: cwd,
     entry,
@@ -91,7 +90,7 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     if (typeof userWebpack === 'function') {
       config = userWebpack(config, env);
     } else {
-      console.log('[ warn ] ssr.config.js#webpack must be function');
+      console.warn('[ warn ] ssr.config.js#webpack must be function');
     }
   }
 
