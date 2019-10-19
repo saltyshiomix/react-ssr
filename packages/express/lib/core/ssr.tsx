@@ -19,10 +19,9 @@ export default (props: SsrProps) => {
   if (0 <= html.indexOf('emotion')) {
     ssrId = 'emotion';
   }
-  const scriptWithSsrId = `${script}&ssrid=${ssrId}`
 
   if (withHtml) {
-    return React.cloneElement(children, { script: scriptWithSsrId });
+    return React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` });
   }
 
   return (
@@ -31,7 +30,7 @@ export default (props: SsrProps) => {
         <div id="react-ssr-root">
           {children}
         </div>
-        <script src={scriptWithSsrId}></script>
+        <script src={`${script}&ssrid=${ssrId}`}></script>
         {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
       </body>
     </html>
