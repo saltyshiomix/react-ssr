@@ -13,14 +13,6 @@ const hydrateByEmotion = (html) => {
   hydrate(ids);
 };
 
-// const hydrateByMaterialUI = () => {
-//   const { ServerStyleSheets } = require('@material-ui/core/styles');
-//   const sheets = new ServerStyleSheets();
-//   const html = ReactDOMServer.renderToString(
-//     sheets.collect(<Page {...props} />)
-//   );
-// };
-
 const withHtml = 0 <= html.indexOf('html');
 const ssrSrc = document.getElementById('react-ssr-script').src;
 const ssrQuery = '?' + ssrSrc.split('?')[1];
