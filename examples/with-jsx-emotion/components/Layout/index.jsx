@@ -30,7 +30,7 @@ export const Layout = (props) => {
           }
         `}
       />
-      <body data-ssr-id='emotion'>
+      <body>
         {children}
         <ReactSsrScript script={script} />
       </body>

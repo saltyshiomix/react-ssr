@@ -13,8 +13,21 @@ const hydrateByEmotion = (html) => {
   hydrate(ids);
 };
 
+// const hydrateByMaterialUI = () => {
+//   const { ServerStyleSheets } = require('@material-ui/core/styles');
+//   const sheets = new ServerStyleSheets();
+//   const html = ReactDOMServer.renderToString(
+//     sheets.collect(<Page {...props} />)
+//   );
+// };
+
 const hasHtml = 0 <= html.indexOf('html');
-const ssrId = document.body.dataset.ssrId;
+const ssrSrc = document.getElementById('react-ssr-script').src;
+const ssrQuery = '?' + ssrSrc.split('?')[1];
+const ssrQueryObject = ssrQuery.substring(1).split('&').map((p) => p.split('=')).reduce((obj, e) => ({...obj, [e[0]]: e[1]}), {});
+const ssrId = ssrQueryObject['ssrid'];
+
+console.log(ssrId);
 
 if (hasHtml) {
   switch (ssrId) {
@@ -29,8 +42,11 @@ if (hasHtml) {
 } else {
   switch (ssrId) {
     case 'emotion':
-        hydrateByEmotion(html);
+      hydrateByEmotion(html);
       break;
+
+    // case 'material-ui':
+    //   hydrateByMaterialUI();
 
     default:
       ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));

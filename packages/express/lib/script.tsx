@@ -6,7 +6,7 @@ export default ({ script }: { script: string }) => {
 
   return (
     <React.Fragment>
-      {mountable ? <script src={script}></script> : null}
+      {mountable ? <script id="react-ssr-script" src={script}></script> : null}
       {mountable && reloadable ? <script src="/reload/reload.js"></script> : null}
     </React.Fragment>
   );
