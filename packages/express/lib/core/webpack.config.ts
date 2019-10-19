@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import { smart as merge } from 'webpack-merge';
@@ -45,6 +46,15 @@ const prodConfig: webpack.Configuration = {
   ],
 };
 
+const getUserWebpack = () => {
+  const userConfigPath = path.join(cwd, 'ssr.config.js');
+  if (fs.existsSync(userConfigPath)) {
+    return require(userConfigPath).webpack;
+  } else {
+    return undefined;
+  }
+};
+
 export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration => {
   if (env === 'development') {
     if (hasUserBabelrc()) {
@@ -70,5 +80,18 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
     },
   };
 
-  return merge(config, env === 'production' ? prodConfig : {});
+  if (env === 'production') {
+    config = merge(config, prodConfig);
+  }
+
+  const userWebpack = getUserWebpack();
+  if (userWebpack) {
+    if (typeof userWebpack === 'function') {
+      config = userWebpack(config, env);
+    } else {
+      console.log('[ warn ] ssr.config.js#webpack must be function');
+    }
+  }
+
+  return config;
 };

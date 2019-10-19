@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "basic-jsx",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@react-ssr/express": "canary",
+    "css-loader": "^3.2.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.2"
+  }
+}
