@@ -51,7 +51,7 @@ switch (ssrId) {
     if (withHtml) {
       ReactDOM.hydrate(<Page {...props} />, document);
     } else {
-      ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));
+      ReactDOM.render(<Page {...props} />, document.getElementById('react-ssr-root'));
     }
     break;
 
