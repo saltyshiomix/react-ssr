@@ -21,10 +21,8 @@ export default (props: SsrProps) => {
   }
   const scriptWithSsrId = `${script}&ssrid=${ssrId}`
 
-  console.log(html);
-
   if (withHtml) {
-    return React.cloneElement(children, { scriptWithSsrId });
+    return React.cloneElement(children, { script: scriptWithSsrId });
   }
 
   return (
