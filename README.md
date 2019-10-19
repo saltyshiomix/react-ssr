@@ -66,8 +66,6 @@ You'll see `Hello World!`.
   - Don't create other components in the views directory
 - The each view's extension must be either `.jsx` or `.tsx`
   - We can decide freely with other components' extension
-- With a Layout component (explain it later), we must specify `data-ssr-id`
-  - e.g. `<body data-ssr-id='emotion'>`
 
 ## Configuration
 
@@ -190,47 +188,7 @@ export default Index;
 
 A working example is here: [examples/custom-layout](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-layout)
 
-## `data-ssr-id`
-
-If we use the SSR supported UI framework, we must specify `data-ssr-id` in the body tag.
-
-(Without the layout, we don't need to specify `data-ssr-id`.)
-
-**./components/layout.jsx** ([emotion](https://emotion.sh) example)
-
-```jsx
-import ReactSsrScript from '@react-ssr/express/script';
-import { css, Global } from '@emotion/core';
-
-export const Layout = (props) => {
-  const {
-    children,
-    script,
-  } = props;
-
-  return (
-    <html>
-      <head>
-        <title>Hello Emotion</title>
-      </head>
-      <Global
-        styles={css`
-          html, body {
-            margin: 0;
-            padding: 0;
-          }
-        `}
-      />
-      <body data-ssr-id='emotion'>
-        {children}
-        <ReactSsrScript script={script} />
-      </body>
-    </html>
-  );
-};
-```
-
-### WIP: Supported `data-ssr-id`
+## Supported UI Framework
 
 - [x] [emotion](https://emotion.sh)
 - [ ] [styled-components](https://www.styled-components.com)
@@ -238,7 +196,7 @@ export const Layout = (props) => {
 - [ ] [antd](https://ant.design)
 - [ ] and more...
 
-#### With Emotion
+### With Emotion
 
 In order to enable SSR, we must install these dependencies:
 
@@ -292,7 +250,7 @@ export const Layout = (props) => {
       <head>
         <title>Hello Emotion</title>
       </head>
-      <body data-ssr-id='emotion'>
+      <body>
         {children}
         <ReactSsrScript script={script} />
       </body>
@@ -301,15 +259,15 @@ export const Layout = (props) => {
 };
 ```
 
-#### With styled-components
+### With styled-components
 
 WIP
 
-#### With Material UI
+### With Material UI
 
 WIP
 
-#### With Ant Design
+### With Ant Design
 
 WIP
 
