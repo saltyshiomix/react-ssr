@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import Page from './__REACT_SSR_PAGE_NAME__';
 
-React.useLayoutEffect = React.useEffect;
-
 const props = JSON.parse('__REACT_SSR_PROPS__');
 const html = ReactDOMServer.renderToString(<Page {...props} />);
 
@@ -47,7 +45,9 @@ switch (ssrId) {
     if (withHtml) {
       ReactDOM.hydrate(<MuiApp />, document);
     } else {
-      ReactDOM.hydrate(<MuiApp />, document.getElementById('react-ssr-root'));
+      if (typeof window !== 'undefined') {
+        ReactDOM.hydrate(<MuiApp />, document.getElementById('react-ssr-root'));
+      }
     }
     break;
 
