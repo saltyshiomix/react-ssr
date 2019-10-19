@@ -27,37 +27,30 @@ export default (props: SsrProps) => {
 
   switch (ssrId) {
     case 'mui':
+      const { ServerStyleSheets } = require('@material-ui/core/styles');
+      const sheets = new ServerStyleSheets();
       if (withHtml) {
-        // const { ServerStyleSheets } = require('@material-ui/core/styles');
-        // const sheets = new ServerStyleSheets();
-        // const html = ReactDOMServer.renderToString(
-        //   sheets.collect(
-        //     React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` }),
-        //   ),
-        // );
-        // const css = sheets.toString();
-        // const $ = cheerio.load(html);
-        // const htmlAttr = $('html').attr();
-        // const bodyAttr = $('body').attr();
-        // const head = $('head').html();
-        // const body = $('body').html();
-        // return (
-        //   <html {...htmlAttr}>
-        //     <head>
-        //       {head ? ReactHtmlParser(head) : null}
-        //       <style id="jss-server-side">{css}</style>
-        //     </head>
-        //     <body {...bodyAttr}>
-        //       {body ? ReactHtmlParser(body) : null}
-        //       <script src={`${script}&ssrid=${ssrId}`}></script>
-        //       {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-        //     </body>
-        //   </html>
-        // );
-        return React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` });
+        const html = ReactDOMServer.renderToString(sheets.collect(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` })));
+        const css = sheets.toString();
+        const $ = cheerio.load(html);
+        const htmlAttr = $('html').attr();
+        const bodyAttr = $('body').attr();
+        const head = $('head').html();
+        const body = $('body').html();
+        return (
+          <html {...htmlAttr}>
+            <head>
+              {head ? ReactHtmlParser(head) : null}
+              <style id="jss-server-side">{css}</style>
+            </head>
+            <body {...bodyAttr}>
+              {body ? ReactHtmlParser(body) : null}
+              <script src={`${script}&ssrid=${ssrId}`}></script>
+              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+            </body>
+          </html>
+        );
       } else {
-        const { ServerStyleSheets } = require('@material-ui/core/styles');
-        const sheets = new ServerStyleSheets();
         const html = ReactDOMServer.renderToString(sheets.collect(children));
         const css = sheets.toString();
 

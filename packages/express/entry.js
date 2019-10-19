@@ -33,6 +33,7 @@ switch (ssrId) {
     break;
 
   case 'mui':
+    React.useLayoutEffect = React.useEffect;
     function MuiApp() {
       React.useEffect(() => {
         const jssStyles = document.getElementById('jss-server-side');
