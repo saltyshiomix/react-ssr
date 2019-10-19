@@ -27,6 +27,9 @@ export default (props: SsrProps) => {
       const sheets = new ServerStyleSheets();
       if (withHtml) {
         const html = ReactDOMServer.renderToStaticMarkup(sheets.collect(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` })));
+
+        console.log(html);
+
         const $ = cheerio.load(html);
         const htmlAttr = $('html').attr();
         const bodyAttr = $('body').attr();
