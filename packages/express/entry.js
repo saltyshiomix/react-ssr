@@ -5,14 +5,6 @@ import Page from './__REACT_SSR_PAGE_NAME__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 const html = ReactDOMServer.renderToStaticMarkup(<Page {...props} />);
-
-const hydrateByEmotion = (html) => {
-  const { hydrate } = require('emotion');
-  const { extractCritical } = require('emotion-server');
-  const { ids } = extractCritical(html);
-  hydrate(ids);
-};
-
 const withHtml = 0 <= html.indexOf('html');
 const ssrSrc = document.getElementById('react-ssr-script').src;
 const ssrQuery = '?' + ssrSrc.split('?')[1];
@@ -21,7 +13,10 @@ const ssrId = ssrQueryObject['ssrid'];
 
 switch (ssrId) {
   case 'emotion':
-    hydrateByEmotion(html);
+    const { hydrate } = require('emotion');
+    const { extractCritical } = require('emotion-server');
+    const { ids } = extractCritical(html);
+    hydrate(ids);
     break;
 
   case 'mui':
