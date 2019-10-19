@@ -12,6 +12,10 @@ const useStyles = makeStyles((theme) =>
       textAlign: 'center',
       paddingTop: theme.spacing(4),
     },
+    logo: {
+      width: 200,
+      margin: theme.spacing(2),
+    },
   })
 );
 
@@ -38,7 +42,11 @@ const Index = (props) => {
         <Typography variant="subtitle1" gutterBottom>
           with @react-ssr/express
         </Typography>
-        <img src="/images/logo.svg" />
+        <img
+          className={classes.logo}
+          src="/images/logo.svg"
+        />
+        <br />
         <Button
           variant="contained"
           color="primary"
@@ -46,6 +54,7 @@ const Index = (props) => {
         >
           CLICK ME
         </Button>
+        <br />
         <Typography gutterBottom>
           Hello {message}!
         </Typography>
