@@ -14,7 +14,7 @@ export default (props: SsrProps) => {
     script,
   } = props;
 
-  const html: string = ReactDOMServer.renderToString(<React.Fragment>{children}</React.Fragment>).toLowerCase();
+  const html: string = ReactDOMServer.renderToStaticMarkup(<React.Fragment>{children}</React.Fragment>).toLowerCase();
   const withHtml: boolean = 0 <= html.indexOf('html');
 
   let ssrId: string = 'default';
@@ -30,7 +30,7 @@ export default (props: SsrProps) => {
       const { ServerStyleSheets } = require('@material-ui/core/styles');
       const sheets = new ServerStyleSheets();
       if (withHtml) {
-        const html = ReactDOMServer.renderToString(sheets.collect(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` })));
+        const html = ReactDOMServer.renderToStaticMarkup(sheets.collect(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` })));
         const css = sheets.toString();
         const $ = cheerio.load(html);
         const htmlAttr = $('html').attr();
@@ -51,7 +51,7 @@ export default (props: SsrProps) => {
           </html>
         );
       } else {
-        const html = ReactDOMServer.renderToString(sheets.collect(children));
+        const html = ReactDOMServer.renderToStaticMarkup(sheets.collect(children));
         const css = sheets.toString();
         return (
           <html>

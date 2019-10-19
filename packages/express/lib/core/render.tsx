@@ -13,7 +13,7 @@ const render = async (file: string, props: object, config: Config): Promise<stri
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
-  html += ReactDOMServer.renderToString(
+  html += ReactDOMServer.renderToStaticMarkup(
     <SSR script={script}>
       <Page {...props} />
     </SSR>
