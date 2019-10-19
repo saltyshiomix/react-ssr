@@ -4,7 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 import Page from './__REACT_SSR_PAGE_NAME__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
-const html = ReactDOMServer.renderToString(<Page {...props} />);
+const html = ReactDOMServer.renderToStaticMarkup(<Page {...props} />);
 
 const hydrateByEmotion = (html) => {
   const { hydrate } = require('emotion');
