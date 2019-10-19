@@ -79,11 +79,11 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
       ],
     },
     optimization: {
-      nodeEnv: 'production',
+      nodeEnv: 'development',
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify('development'),
+        'process.env.NODE_ENV': JSON.stringify('production'),
       }),
     ],
   };
