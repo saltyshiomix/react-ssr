@@ -8,6 +8,4 @@ function ReactSsrExpress(options?: Config) {
   return app;
 };
 
-ReactSsrExpress.prototype = Object.create(express.prototype);
-
 export default ReactSsrExpress;
