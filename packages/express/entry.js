@@ -35,7 +35,10 @@ switch (ssrId) {
   case 'mui':
     function MuiApp() {
       React.useEffect(() => {
-        const jssStyles = document.querySelector('#jss-server-side');
+        const jssStyles = document.getElementById('jss-server-side');
+
+        console.log(jssStyles);
+
         if (jssStyles) {
           jssStyles.parentNode.removeChild(jssStyles);
         }
