@@ -85,7 +85,54 @@ const app = express({
 
 ### `ssr.config.js`
 
-WIP
+```js
+module.exports = {
+  webpack: (config, env) => {
+    // we can override default webpack config here
+    return config;
+  },
+};
+```
+
+For example, let's consider we want to import css files directly:
+
+**views/index.jsx**
+
+```jsx
+import '../styles/index.css';
+```
+
+**styles/index.css**
+
+```css
+body {
+  background-color: burlywood;
+}
+```
+
+Then, we must override the default webpack config like this:
+
+**ssr.config.js**
+
+```js
+module.exports = {
+  webpack: (config, env) => {
+    config.module.rules = [
+      ...(config.module.rules),
+      {
+        test: /\.css$/i,
+        use: [
+          'style-loader',
+          'css-loader',
+        ],
+      },
+    ];
+    return config;
+  },
+};
+```
+
+A working example is here: [examples/basic-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-css)
 
 ## Custom Layout
 
