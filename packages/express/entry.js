@@ -33,20 +33,20 @@ switch (ssrId) {
     break;
 
   case 'mui':
-    function MuiApp() {
-      React.useEffect(() => {
-        const jssStyles = document.getElementById('jss-server-side');
-        if (jssStyles) {
-          jssStyles.parentNode.removeChild(jssStyles);
-        }
-      }, []);
-      return <Page {...props} />;
-    }
-    if (withHtml) {
-      ReactDOM.hydrate(<MuiApp />, document);
-    } else {
-      ReactDOM.hydrate(<MuiApp />, document.getElementById('react-ssr-root'));
-    }
+    // function MuiApp() {
+    //   React.useEffect(() => {
+    //     const jssStyles = document.getElementById('jss-server-side');
+    //     if (jssStyles) {
+    //       jssStyles.parentNode.removeChild(jssStyles);
+    //     }
+    //   }, []);
+    //   return <Page {...props} />;
+    // }
+    // if (withHtml) {
+    //   ReactDOM.hydrate(<MuiApp />, document);
+    // } else {
+    //   ReactDOM.hydrate(<MuiApp />, document.getElementById('react-ssr-root'));
+    // }
     break;
 
   default:
