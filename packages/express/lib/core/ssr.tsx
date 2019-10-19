@@ -56,7 +56,8 @@ export default (props: SsrProps) => {
         return (
           <html>
             <head>
-              <style id="jss-server-side">${css}</style>
+              {/* <style id="jss-server-side">${css}</style> */}
+              {sheets.getStyleElement()}
             </head>
             <body>
               <div id="react-ssr-root">
