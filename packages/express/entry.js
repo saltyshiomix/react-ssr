@@ -35,11 +35,8 @@ switch (ssrId) {
   case 'mui':
     React.useLayoutEffect = React.useEffect;
     function MuiApp() {
-      React.useEffect(() => {
+      React.useLayoutEffect(() => {
         const jssStyles = document.getElementById('jss-server-side');
-
-        console.log(jssStyles);
-
         if (jssStyles) {
           jssStyles.parentNode.removeChild(jssStyles);
         }
