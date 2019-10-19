@@ -33,10 +33,19 @@ switch (ssrId) {
     break;
 
   case 'mui':
+    function MuiApp() {
+      React.useEffect(() => {
+        const jssStyles = document.querySelector('#jss-server-side');
+        if (jssStyles) {
+          jssStyles.parentNode.removeChild(jssStyles);
+        }
+      }, []);
+      return <Page {...props} />;
+    }
     if (withHtml) {
       ReactDOM.hydrate(<Page {...props} />, document);
     } else {
-      ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));
+      ReactDOM.hydrate(<MuiApp />, document.getElementById('react-ssr-root'));
     }
     break;
 

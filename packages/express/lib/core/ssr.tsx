@@ -30,26 +30,34 @@ export default (props: SsrProps) => {
       if (withHtml) {
         return React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` });
       } else {
-        const html = ReactDOMServer.renderToString(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` }));
+        const { ServerStyleSheets } = require('@material-ui/core/styles');
+        const sheets = new ServerStyleSheets();
+        const html = ReactDOMServer.renderToString(
+          sheets.collect(
+            React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` }),
+          ),
+        );
         const $ = cheerio.load(html);
         const htmlAttr = $('html').attr();
         const bodyAttr = $('body').attr();
         const head = $('head').html();
         const body = $('body').html();
+        const css = sheets.toString();
 
-        console.log(head);
-
-        console.log('');
-
-        console.log($('head style').html());
+        console.log(css);
 
         return (
           <html {...htmlAttr}>
             <head>
               {head ? ReactHtmlParser(head) : null}
+              <style id="jss-server-side">{css}</style>
             </head>
             <body {...bodyAttr}>
-              {body ? ReactHtmlParser(body) : null}
+              <div id="react-ssr-root">
+                {body ? ReactHtmlParser(body) : null}
+              </div>
+              <script src={`${script}&ssrid=${ssrId}`}></script>
+              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
             </body>
           </html>
         );
