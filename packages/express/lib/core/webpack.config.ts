@@ -64,6 +64,7 @@ export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration =
 
   let config: webpack.Configuration = {
     mode: 'development',
+    // target: 'web',
     context: cwd,
     entry,
     output: {

@@ -45,7 +45,7 @@ export default (props: SsrProps) => {
             </head>
             <body {...bodyAttr}>
               {body ? ReactHtmlParser(body) : null}
-              <script src={`${script}&ssrid=${ssrId}`}></script>
+              <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
               {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
             </body>
           </html>
@@ -62,7 +62,7 @@ export default (props: SsrProps) => {
               <div id="react-ssr-root">
                 {ReactHtmlParser(html)}
               </div>
-              <script src={`${script}&ssrid=${ssrId}`}></script>
+              <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
               {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
             </body>
           </html>
@@ -79,7 +79,7 @@ export default (props: SsrProps) => {
               <div id="react-ssr-root">
                 {children}
               </div>
-              <script src={`${script}&ssrid=${ssrId}`}></script>
+              <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
               {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
             </body>
           </html>
