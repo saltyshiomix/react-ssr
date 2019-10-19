@@ -1,8 +1,10 @@
 const express = require('@react-ssr/express');
 const app = express();
 
+app.use(express.static('public'));
+
 app.get('/', (req, res) => {
-  const user = { name: 'World' };
+  const user = { name: 'Material UI' };
   res.render('index', { user });
 });
 

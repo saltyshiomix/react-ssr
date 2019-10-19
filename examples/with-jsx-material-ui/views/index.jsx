@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const Index = ({ user }) => {
+const Index = (props) => {
   const {
     user,
     script, // injected by @react-ssr/express
@@ -38,7 +38,7 @@ const Index = ({ user }) => {
         <Typography variant="subtitle1" gutterBottom>
           with @react-ssr/express
         </Typography>
-        <img src="/static/logo.png" />
+        <img src="/images/logo.svg" />
         <Button
           variant="contained"
           color="primary"

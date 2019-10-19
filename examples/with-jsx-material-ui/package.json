@@ -7,8 +7,10 @@
   "dependencies": {
     "@material-ui/core": "^4.5.1",
     "@react-ssr/express": "canary",
+    "fontfaceobserver": "^2.1.0",
     "react": "^16.10.2",
-    "react-dom": "^16.10.2"
+    "react-dom": "^16.10.2",
+    "typeface-roboto": "^0.0.75"
   },
   "devDependencies": {
     "babel-plugin-transform-imports": "^2.0.0"
