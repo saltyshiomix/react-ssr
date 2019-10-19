@@ -41,7 +41,7 @@ export default (props: SsrProps) => {
           <html {...htmlAttr}>
             <head>
               {head ? ReactHtmlParser(head) : null}
-              <style id="jss-server-side">{css}</style>
+              {/* <style id="jss-server-side">{css}</style> */}
             </head>
             <body {...bodyAttr}>
               {body ? ReactHtmlParser(body) : null}
@@ -54,9 +54,9 @@ export default (props: SsrProps) => {
         const html = ReactDOMServer.renderToString(sheets.collect(children));
         return (
           <html>
-            <head>
+            {/* <head>
               {sheets.getStyleElement()}
-            </head>
+            </head> */}
             <body>
               <div id="react-ssr-root">
                 {ReactHtmlParser(html)}
