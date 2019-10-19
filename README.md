@@ -368,7 +368,14 @@ export default function Index({ message }: IndexProps) {
 
 ## Examples
 
-See the [examples](./examples) folder.
+- [examples/basic-blogging](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-blogging)
+- [examples/basic-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-css)
+- [examples/basic-jsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx)
+- [examples/basic-tsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx)
+- [examples/custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-babelrc)
+- [examples/custom-layout](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-layout)
+- [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
+- [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
 
 Each example uses `@react-ssr/express@canary` by default, so it may have some bugs.
 

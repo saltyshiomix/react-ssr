@@ -368,6 +368,29 @@ export default function Index({ message }: IndexProps) {
 }
 ```
 
+## Examples
+
+- [examples/basic-blogging](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-blogging)
+- [examples/basic-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-css)
+- [examples/basic-jsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx)
+- [examples/basic-tsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx)
+- [examples/custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-babelrc)
+- [examples/custom-layout](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-layout)
+- [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
+- [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
+
+Each example uses `@react-ssr/express@canary` by default, so it may have some bugs.
+
+To use the stable version, please rewrite to `@react-ssr/express@latest`:
+
+```json
+{
+  "dependencies": {
+    "@react-ssr/express": "latest"
+  }
+}
+```
+
 ## Articles
 
 [The React View Template Engine for Express](https://dev.to/saltyshiomix/the-react-view-template-engine-for-express-42f0)
