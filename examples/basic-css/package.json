@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "basic-jsx",
+  "name": "basic-css",
   "scripts": {
     "start": "node server.js"
   },

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "basic-jsx",
+  "name": "with-jsx-emotion",
   "scripts": {
     "start": "node server.js"
   },

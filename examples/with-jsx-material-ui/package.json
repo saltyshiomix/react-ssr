@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "basic-jsx",
+  "name": "with-jsx-material-ui",
   "scripts": {
     "start": "node server.js"
   },
