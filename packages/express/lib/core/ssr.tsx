@@ -75,7 +75,7 @@ export default (props: SsrProps) => {
       const { ServerStyleSheet, StyleSheetManager } = require('styled-components');
       const sheet = new ServerStyleSheet();
       let html;
-      let styleTags;
+      let styleElement;
       if (withHtml) {
         //
       } else {
@@ -85,20 +85,17 @@ export default (props: SsrProps) => {
               {children}
             </StyleSheetManager>
           );
-          styleTags = sheet.getStyleTags();
+          styleElement = sheet.getStyleElement();
         } catch (error) {
           console.error(error);
           return <html><body>{error}</body></html>;
         } finally {
           sheet.seal();
         }
-
-        console.log(styleTags);
-
         return (
           <html>
             <head>
-              {ReactHtmlParser(styleTags)}
+              {styleElement}
             </head>
             <body>
               <div id="react-ssr-root">

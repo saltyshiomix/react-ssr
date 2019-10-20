@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
-
-const GlobalStyle = createGlobalStyle`
-  body: {
-    margin: 0;
-    padding: 0;
-  }
-`;
+import styled from 'styled-components';
 
 const Wrapper = styled.section`
   padding: 4em;
@@ -33,7 +26,6 @@ const Index = ({ user }) => {
 
   return (
     <Wrapper>
-      <GlobalStyle />
       <Paragraph>Hello {user.name}!</Paragraph>
       <Button onClick={onClick}>Click Me</Button>
       <Paragraph>Message from state: {message}</Paragraph>
