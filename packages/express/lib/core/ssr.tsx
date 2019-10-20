@@ -3,6 +3,14 @@ import ReactDOMServer from 'react-dom/server';
 import cheerio from 'cheerio';
 import ReactHtmlParser from 'react-html-parser';
 
+const getSsrId = (html: string): string => {
+  let ssrId: string = 'default';
+  0 <= html.indexOf('"mui') && (ssrId = 'material-ui');
+  0 <= html.indexOf('data-emotion-css') && (ssrId = 'emotion');
+  0 <= html.indexOf('"views__') && (ssrId = 'styled-components');
+  return ssrId;
+}
+
 interface SsrProps {
   children: any;
   script: string;
@@ -16,11 +24,7 @@ export default (props: SsrProps) => {
 
   const html: string = ReactDOMServer.renderToStaticMarkup(<React.Fragment>{children}</React.Fragment>).toLowerCase();
   const withHtml: boolean = 0 <= html.indexOf('html');
-
-  let ssrId: string = 'default';
-  0 <= html.indexOf('"mui') && (ssrId = 'material-ui');
-  0 <= html.indexOf('data-emotion-css') && (ssrId = 'emotion');
-  0 <= html.indexOf('"views__') && (ssrId = 'styled-components');
+  const ssrId = getSsrId(html);
 
   switch (ssrId) {
     case 'material-ui': {
