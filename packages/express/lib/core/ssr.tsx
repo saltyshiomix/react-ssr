@@ -31,7 +31,9 @@ export default (props: SsrProps) => {
       const { ServerStyleSheets } = require('@material-ui/core/styles');
       const sheets = new ServerStyleSheets();
       if (withHtml) {
-        const html = ReactDOMServer.renderToStaticMarkup(sheets.collect(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` })));
+        const html = ReactDOMServer.renderToStaticMarkup(
+          sheets.collect(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` }))
+        );
         const $ = cheerio.load(html);
         const htmlAttr = $('html').attr();
         const bodyAttr = $('body').attr();
