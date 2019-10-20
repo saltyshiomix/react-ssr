@@ -1,6 +1,11 @@
 import ReactSsrScript from '@react-ssr/express/script';
 import styled from 'styled-components';
 
+const Body = styled.body`
+  margin: 0;
+  padding: 0;
+`;
+
 const Wrapper = styled.section`
   padding: 4em;
   background: papayawhip;
@@ -18,15 +23,12 @@ export const Layout = (props) => {
       <head>
         <title>{title}</title>
       </head>
-      <body style={{
-        margin: 0,
-        padding: 0,
-      }}>
+      <Body>
         <Wrapper>
           {children}
         </Wrapper>
         <ReactSsrScript script={script} />
-      </body>
+      </Body>
     </html>
   );
 };
