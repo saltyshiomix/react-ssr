@@ -154,7 +154,7 @@ import ReactSsrScript from '@react-ssr/express/script';
 export const Layout = (props) => {
   const {
     children,
-    script, // script source: passed from the server
+    script, // passed from the entry point (./views/index.jsx)
   } = props;
 
   return (
@@ -180,9 +180,7 @@ import React from 'react';
 import { Layout } from '../components/layout';
 
 const Index = (props) => {
-  const {
-    script, // injected by @react-ssr/express
-  } = props;
+  const { script } = props; // `props.script` is injected by @react-ssr/express automatically
 
   return (
     <Layout
@@ -201,7 +199,7 @@ A working example is here: [examples/custom-layout](https://github.com/saltyshio
 ## Supported UI Framework
 
 - [x] [emotion](https://emotion.sh)
-- [ ] [styled-components](https://www.styled-components.com)
+- [x] [styled-components](https://www.styled-components.com)
 - [x] [material-ui](https://material-ui.com)
 - [ ] [antd](https://ant.design)
 - [ ] and more...
@@ -225,11 +223,13 @@ A minimal `package.json` is like this:
     "@emotion/core": "latest",
     "@emotion/styled": "latest",
     "@react-ssr/express": "latest",
-    "babel-plugin-emotion": "latest",
     "emotion": "latest",
     "emotion-server": "latest",
     "react": "latest",
     "react-dom": "latest"
+  },
+  "devDependencies": {
+    "babel-plugin-emotion": "latest"
   }
 }
 ```
@@ -247,7 +247,7 @@ And then, populate `.babelrc` in your project root:
 }
 ```
 
-Finally, if we use custom layout, specify `data-ssr-id` in the body tag:
+Finally, with custom layout, inject `@react-ssr/express/script` at the bottom of the body tag:
 
 ```jsx
 import ReactSsrScript from '@react-ssr/express/script';
@@ -269,9 +269,67 @@ export const Layout = (props) => {
 };
 ```
 
+A working example is here: [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
+
 ### With styled-components
 
-WIP
+In order to enable SSR, we must install `babel-plugin-styled-components` as devDependencies:
+
+A minimal `package.json` is like this:
+
+```json
+{
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@react-ssr/express": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "styled-components": "latest"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "latest"
+  }
+}
+```
+
+And then, populate `.babelrc` in your project root:
+
+```json
+{
+  "presets": [
+    "@react-ssr/express/babel"
+  ],
+  "plugins": [
+    "styled-components"
+  ]
+}
+```
+
+Finally, with custom layout, inject `@react-ssr/express/script` at the bottom of the body tag:
+
+```jsx
+import ReactSsrScript from '@react-ssr/express/script';
+
+export const Layout = (props) => {
+  const { script } = props;
+
+  return (
+    <html>
+      <head>
+        <title>Hello styled-components</title>
+      </head>
+      <body>
+        {children}
+        <ReactSsrScript script={script} />
+      </body>
+    </html>
+  );
+};
+```
+
+A working example is here: [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
 
 ### With Material UI
 
@@ -341,6 +399,7 @@ export default function Index({ message }: IndexProps) {
 - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
 - [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
 - [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
+- [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
 
 Each example uses `@react-ssr/express@canary` by default, so it may have some bugs.
 
@@ -354,6 +413,10 @@ To use the stable version, please rewrite to `@react-ssr/express@latest`:
 }
 ```
 
+## Starters
+
+- [react-ssr-starter](https://github.com/saltyshiomix/react-ssr-starter)
+
 ## Articles
 
 [The React View Template Engine for Express](https://dev.to/saltyshiomix/the-react-view-template-engine-for-express-42f0)
@@ -365,7 +428,5 @@ To use the stable version, please rewrite to `@react-ssr/express@latest`:
 WIP
 
 ## Related
-
-[saltyshiomix/react-ssr-starter](https://github.com/saltyshiomix/react-ssr-starter)
 
 [reactjs/express-react-views](https://github.com/reactjs/express-react-views)
