@@ -74,8 +74,6 @@ You'll see `Hello World!`.
   - Don't create other components in the views directory
 - The each view's extension must be either `.jsx` or `.tsx`
   - We can decide freely with other components' extension
-- With a Layout component (explain it later), we must specify `data-ssr-id`
-  - e.g. `<body data-ssr-id='emotion'>`
 
 ## Configuration
 
