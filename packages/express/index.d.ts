@@ -1,4 +1,4 @@
-import express = require('express');
+import express from 'express';
 
 declare function reactSsrExpress(config?: reactSsrExpress.Config): express.Express;
 
