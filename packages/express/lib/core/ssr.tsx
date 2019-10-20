@@ -74,18 +74,18 @@ export default (props: SsrProps) => {
     case 'styled-components': {
       const { ServerStyleSheet, StyleSheetManager } = require('styled-components');
       const sheet = new ServerStyleSheet();
+      let html;
+      let styleTags;
       if (withHtml) {
         //
       } else {
-        let html;
-        let styleElement;
         try {
           html = ReactDOMServer.renderToStaticMarkup(
             <StyleSheetManager sheet={sheet.instance}>
               {children}
             </StyleSheetManager>
           );
-          styleElement = sheet.getStyleElement();
+          styleTags = sheet.getStyleTags();
         } catch (error) {
           console.error(error);
           return <html><body>{error}</body></html>;
@@ -95,7 +95,7 @@ export default (props: SsrProps) => {
         return (
           <html>
             <head>
-              {styleElement}
+              {ReactHtmlParser(styleTags)}
             </head>
             <body>
               <div id="react-ssr-root">
