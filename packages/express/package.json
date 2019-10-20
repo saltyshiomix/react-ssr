@@ -31,6 +31,8 @@
     "dist",
     "index.js",
     "index.d.ts",
+    "register.js",
+    "register.d.ts",
     "script.js",
     "entry.js",
     "babel.js",

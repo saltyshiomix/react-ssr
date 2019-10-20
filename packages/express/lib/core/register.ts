@@ -11,7 +11,9 @@ import {
 
 const escaperegexp = require('lodash.escaperegexp');
 
-const register = async (app: express.Application, config: Config): Promise<void> => {
+const register = async (app: express.Application, overrideConfig?: Config): Promise<void> => {
+  const config: Config = Object.assign(new Config, overrideConfig || {});
+
   let babelRegistered = false;
   let moduleDetectRegEx: RegExp;
 

@@ -2,9 +2,9 @@ import express from 'express';
 import register from './register';
 import Config from './config';
 
-function ReactSsrExpress(options?: Config) {
+function ReactSsrExpress(config?: Config) {
   const app = express();
-  register(app, Object.assign(new Config, options || {}));
+  register(app, config);
   return app;
 };
 
