@@ -11,6 +11,24 @@ const getSsrId = (html: string): string => {
   return ssrId;
 }
 
+const convertAttrToJsxStyle = (attr: any) => {
+  const jsxAttr: any = {};
+  const keys = Object.keys(attr);
+  for (let i = 0; i < keys.length; i++) {
+    let key = keys[i];
+    if (key === 'class') {
+      key = 'className';
+    }
+    if (0 <= key.indexOf('-')) {
+      if (!key.startsWith('data-')) {
+        key = key.replace(/-([a-z])/g, g => g[1].toUpperCase());
+      }
+    }
+    jsxAttr[key] = attr[keys[i]];
+  }
+  return jsxAttr;
+}
+
 interface SsrProps {
   children: any;
   script: string;
@@ -40,12 +58,12 @@ export default (props: SsrProps) => {
         const head = $('head').html();
         const body = $('body').html();
         return (
-          <html {...htmlAttr}>
+          <html {...convertAttrToJsxStyle(htmlAttr)}>
             <head>
               {head ? ReactHtmlParser(head) : null}
               {sheets.getStyleElement()}
             </head>
-            <body {...bodyAttr}>
+            <body {...convertAttrToJsxStyle(bodyAttr)}>
               {body ? ReactHtmlParser(body) : null}
               <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
               {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
@@ -96,12 +114,12 @@ export default (props: SsrProps) => {
         const head = $('head').html();
         const body = $('body').html();
         return (
-          <html {...htmlAttr}>
+          <html {...convertAttrToJsxStyle(htmlAttr)}>
             <head>
               {head ? ReactHtmlParser(head) : null}
               {styleElement}
             </head>
-            <body {...bodyAttr}>
+            <body {...convertAttrToJsxStyle(bodyAttr)}>
               {body ? ReactHtmlParser(body) : null}
               <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
               {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
