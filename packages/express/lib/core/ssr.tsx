@@ -64,6 +64,36 @@ export default (props: SsrProps) => {
         );
       }
 
+    case 'styled-components':
+      const { ServerStyleSheet } = require('styled-components');
+      const sheet = new ServerStyleSheet();
+      if (withHtml) {
+        //
+      } else {
+        try {
+          const html = ReactDOMServer.renderToStaticMarkup(sheets.collectStyles(children));
+          return (
+            <html>
+              <head>
+                {sheet.getStyleTags()}
+              </head>
+              <body>
+                <div id="react-ssr-root">
+                  {ReactHtmlParser(html)}
+                </div>
+                <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
+                {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+              </body>
+            </html>
+          );
+        } catch (error) {
+          console.error(error);
+        } finally {
+          sheet.seal();
+        }
+      }
+      break;
+
     default:
       if (withHtml) {
         return React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` });
