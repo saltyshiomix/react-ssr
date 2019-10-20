@@ -22,6 +22,8 @@ export default (props: SsrProps) => {
   0 <= html.indexOf('data-emotion-css') && (ssrId = 'emotion');
   0 <= html.indexOf('"views__') && (ssrId = 'styled-components');
 
+  console.log(ssrId);
+
   switch (ssrId) {
     case 'material-ui':
       const { ServerStyleSheets } = require('@material-ui/core/styles');
@@ -70,6 +72,7 @@ export default (props: SsrProps) => {
       const sheet = new ServerStyleSheet();
       if (withHtml) {
         //
+        console.log('hoge');
       } else {
         try {
           const html = ReactDOMServer.renderToStaticMarkup(sheets.collectStyles(children));
