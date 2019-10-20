@@ -1,11 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ReactSsrScript from '@react-ssr/express/script';
-import {
-  // initializeFonts,
-  theme,
-} from '../../lib';
+import { theme } from '../../lib';
 
 export const Layout = (props) => {
   const {
@@ -13,10 +10,6 @@ export const Layout = (props) => {
     children,
     script,
   } = props;
-
-  // useEffect(() => {
-  //   initializeFonts();
-  // }, []);
 
   return (
     <html lang="en">

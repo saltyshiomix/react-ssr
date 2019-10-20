@@ -17,6 +17,8 @@ export default (props: SsrProps) => {
   const html: string = ReactDOMServer.renderToStaticMarkup(<React.Fragment>{children}</React.Fragment>).toLowerCase();
   const withHtml: boolean = 0 <= html.indexOf('html');
 
+  console.log(html);
+
   let ssrId: string = 'default';
   0 <= html.indexOf('"mui') && (ssrId = 'mui');
   0 <= html.indexOf('emotion') && (ssrId = 'emotion');
