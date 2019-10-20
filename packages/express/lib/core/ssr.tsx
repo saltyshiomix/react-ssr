@@ -65,6 +65,7 @@ export default (props: SsrProps) => {
       }
 
     case 'styled-components':
+      console.log(html);
       const { ServerStyleSheet } = require('styled-components');
       const sheet = new ServerStyleSheet();
       if (withHtml) {
@@ -72,6 +73,8 @@ export default (props: SsrProps) => {
       } else {
         try {
           const html = ReactDOMServer.renderToStaticMarkup(sheets.collectStyles(children));
+
+          console.log(sheet.getStyleTags());
           return (
             <html>
               <head>
