@@ -74,29 +74,31 @@ export default (props: SsrProps) => {
         //
         console.log('hoge');
       } else {
+        let html;
+        let styleTags;
         try {
-          const html = ReactDOMServer.renderToStaticMarkup(sheets.collectStyles(children));
-
-          console.log(sheet.getStyleTags());
-          return (
-            <html>
-              <head>
-                {sheet.getStyleTags()}
-              </head>
-              <body>
-                <div id="react-ssr-root">
-                  {ReactHtmlParser(html)}
-                </div>
-                <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-                {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-              </body>
-            </html>
-          );
+          html = ReactDOMServer.renderToStaticMarkup(sheets.collectStyles(children));
+          styleTags = sheet.getStyleTags();
         } catch (error) {
           console.error(error);
+          return null;
         } finally {
           sheet.seal();
         }
+        return (
+          <html>
+            <head>
+              {styleTags}
+            </head>
+            <body>
+              <div id="react-ssr-root">
+                {ReactHtmlParser(html)}
+              </div>
+              <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
+              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+            </body>
+          </html>
+        );
       }
       break;
 
