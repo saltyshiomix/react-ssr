@@ -72,14 +72,14 @@ export default (props: SsrProps) => {
         //
       } else {
         let html;
-        let styleTags;
+        let styleElement;
         try {
           html = ReactDOMServer.renderToStaticMarkup(
             <StyleSheetManager sheet={sheet.instance}>
               {children}
             </StyleSheetManager>
           );
-          styleTags = sheet.getStyleTags();
+          styleElement = sheet.getStyleElement();
         } catch (error) {
           console.error(error);
           return <html><body>{error}</body></html>;
@@ -89,7 +89,7 @@ export default (props: SsrProps) => {
         return (
           <html>
             <head>
-              {styleTags}
+              {styleElement}
             </head>
             <body>
               <div id="react-ssr-root">
