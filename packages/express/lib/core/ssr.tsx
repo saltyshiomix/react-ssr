@@ -22,10 +22,8 @@ export default (props: SsrProps) => {
   0 <= html.indexOf('data-emotion-css') && (ssrId = 'emotion');
   0 <= html.indexOf('"views__') && (ssrId = 'styled-components');
 
-  console.log(ssrId);
-
   switch (ssrId) {
-    case 'material-ui':
+    case 'material-ui': {
       const { ServerStyleSheets } = require('@material-ui/core/styles');
       const sheets = new ServerStyleSheets();
       if (withHtml) {
@@ -65,24 +63,26 @@ export default (props: SsrProps) => {
           </html>
         );
       }
+    }
 
-    case 'styled-components':
-      const { ServerStyleSheet } = require('styled-components');
+    case 'styled-components': {
+      const { ServerStyleSheet, StyleSheetManager } = require('styled-components');
       const sheet = new ServerStyleSheet();
-
-      console.log(sheet);
-
       if (withHtml) {
         //
       } else {
         let html;
         let styleTags;
         try {
-          html = ReactDOMServer.renderToStaticMarkup(sheets.collectStyles(children));
+          html = ReactDOMServer.renderToStaticMarkup(
+            <StyleSheetManager sheet={sheet.instance}>
+              {children}
+            </StyleSheetManager>
+          );
           styleTags = sheet.getStyleTags();
         } catch (error) {
           console.error(error);
-          return null;
+          return <html><body>{error}</body></html>;
         } finally {
           sheet.seal();
         }
@@ -102,8 +102,9 @@ export default (props: SsrProps) => {
         );
       }
       break;
+    }
 
-    default:
+    default: {
       if (withHtml) {
         return React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` });
       } else {
@@ -119,5 +120,6 @@ export default (props: SsrProps) => {
           </html>
         );
       }
+    }
   }
 };
