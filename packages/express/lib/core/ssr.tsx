@@ -67,12 +67,13 @@ export default (props: SsrProps) => {
       }
 
     case 'styled-components':
-      console.log(html);
       const { ServerStyleSheet } = require('styled-components');
       const sheet = new ServerStyleSheet();
+
+      console.log(sheet);
+
       if (withHtml) {
         //
-        console.log('hoge');
       } else {
         let html;
         let styleTags;
