@@ -17,14 +17,13 @@ export default (props: SsrProps) => {
   const html: string = ReactDOMServer.renderToStaticMarkup(<React.Fragment>{children}</React.Fragment>).toLowerCase();
   const withHtml: boolean = 0 <= html.indexOf('html');
 
-  console.log(html);
-
   let ssrId: string = 'default';
-  0 <= html.indexOf('"mui') && (ssrId = 'mui');
-  0 <= html.indexOf('emotion') && (ssrId = 'emotion');
+  0 <= html.indexOf('"mui') && (ssrId = 'material-ui');
+  0 <= html.indexOf('data-emotion-css') && (ssrId = 'emotion');
+  0 <= html.indexOf('"views__') && (ssrId = 'styled-components');
 
   switch (ssrId) {
-    case 'mui':
+    case 'material-ui':
       const { ServerStyleSheets } = require('@material-ui/core/styles');
       const sheets = new ServerStyleSheets();
       if (withHtml) {
