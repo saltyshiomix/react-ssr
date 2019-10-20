@@ -101,8 +101,8 @@ export default (props: SsrProps) => {
               <div id="react-ssr-root">
                 {ReactHtmlParser(html)}
               </div>
-              <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+              {/* <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
+              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>} */}
             </body>
           </html>
         );
