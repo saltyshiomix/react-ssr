@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
-  body: {
+  html, body: {
+    margin: 0;
     padding: 0;
   }
 `;
