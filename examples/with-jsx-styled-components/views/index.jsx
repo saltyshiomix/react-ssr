@@ -1,13 +1,28 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
-const Paragraph = styled.p`
-  color: palevioletred;
+const GlobalStyle = createGlobalStyle`
+  body: {
+    padding: 0;
+  }
 `;
 
 const Wrapper = styled.section`
   padding: 4em;
   background: papayawhip;
+`;
+
+const Paragraph = styled.p`
+  color: palevioletred;
+`;
+
+const Button = styled.button`
+  color: palevioletred;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid palevioletred;
+  border-radius: 3px;
 `;
 
 const Index = ({ user }) => {
@@ -17,8 +32,9 @@ const Index = ({ user }) => {
 
   return (
     <Wrapper>
+      <GlobalStyle />
       <Paragraph>Hello {user.name}!</Paragraph>
-      <button onClick={onClick}>Click Me</button>
+      <Button onClick={onClick}>Click Me</Button>
       <Paragraph>Message from state: {message}</Paragraph>
     </Wrapper>
   );
