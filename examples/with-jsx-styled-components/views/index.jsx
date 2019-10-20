@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
-const Wrapper = styled.section`
-  padding: 4em;
-  background: papayawhip;
-`;
+import { Layout } from '../components';
 
 const Paragraph = styled.p`
   color: palevioletred;
@@ -19,17 +15,25 @@ const Button = styled.button`
   border-radius: 3px;
 `;
 
-const Index = ({ user }) => {
+const Index = (props) => {
+  const {
+    user,
+    script, // injected by @react-ssr/express
+  } = props;
+
   const [message, setMessage] = useState('waiting...');
 
   const onClick = () => setMessage('This is a react-ssr!');
 
   return (
-    <Wrapper>
+    <Layout
+      title="with-jsx-styled-components - @react-ssr/express"
+      script={script} // pass it for dynamic SSR
+    >
       <Paragraph>Hello {user.name}!</Paragraph>
       <Button onClick={onClick}>Click Me</Button>
       <Paragraph>Message from state: {message}</Paragraph>
-    </Wrapper>
+    </Layout>
   );
 };
 
