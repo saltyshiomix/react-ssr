@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "with-jsx-styled-components",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@react-ssr/express": "canary",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "styled-components": "^4.4.0"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.6"
+  }
+}
