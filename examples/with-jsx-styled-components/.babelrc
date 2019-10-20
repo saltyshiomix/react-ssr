@@ -3,6 +3,6 @@
     "@react-ssr/express/babel"
   ],
   "plugins": [
-    "babel-plugin-styled-components"
+    "styled-components"
   ]
 }
