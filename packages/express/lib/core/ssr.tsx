@@ -92,6 +92,9 @@ export default (props: SsrProps) => {
         } finally {
           sheet.seal();
         }
+
+        console.log(styleTags);
+
         return (
           <html>
             <head>
