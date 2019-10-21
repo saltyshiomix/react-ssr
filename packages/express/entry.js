@@ -1,3 +1,1 @@
-import WebpackEntry from '@react-ssr/core/webpack/entry';
-
-export default WebpackEntry;
+module.exports = require('@react-ssr/core/webpack/entry');

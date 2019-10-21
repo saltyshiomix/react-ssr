@@ -1,3 +1,1 @@
-import ReactSsrScript from '@react-ssr/core/ssr/script';
-
-export default ReactSsrScript;
+module.exports = require('@react-ssr/core/ssr/script');

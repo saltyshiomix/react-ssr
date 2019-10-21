@@ -1,6 +1,6 @@
-import React from 'react';
+const React = require('react');
 
-export default ({ script }) => {
+module.exports = ({ script }) => {
   const mountable = typeof window === 'undefined';
   const reloadable = process.env.NODE_ENV !== 'production';
 
