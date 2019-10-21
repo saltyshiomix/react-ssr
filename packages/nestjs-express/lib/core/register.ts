@@ -51,17 +51,20 @@ const register = async (app: NestExpressApplication, overrideConfig?: Config): P
   const engine: 'jsx' | 'tsx' = getEngine();
 
   app.engine(engine, renderFile);
-  app.set('views', path.join(process.cwd(), config.viewsDir));
-  app.set('view engine', engine);
+  app.setBaseViewsDir(path.join(process.cwd(), config.viewsDir));
+  app.setViewEngine(engine);
 
-  app.listen = function() {
-    const args: any = arguments;
-    const server = app.getHttpServer();
-    optimize(app, server, config).then((server) => {
-      server.listen.apply(server, args);
-    });
-    return server;
-  };
+  const server = app.getHttpServer();
+  await optimize(app, server, config);
+
+  // app.listen = function() {
+  //   const args: any = arguments;
+  //   const server = app.getHttpServer();
+  //   optimize(app, server, config).then((server) => {
+  //     server.listen.apply(server, args);
+  //   });
+  //   return server;
+  // };
 };
 
 export default register;
