@@ -9,10 +9,7 @@ const codec = require('json-url')('lzw');
 export const render = async (file: string, props: object, config: Config): Promise<string> => {
   const script = `/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`;
 
-  let Page = require(file);
-
-  console.log('test');
-
+  let Page = await import(file);
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
