@@ -19,12 +19,14 @@ export const render = async (file: string, props: object, config: Config): Promi
     babelRegistered = true;
   }
 
+  const script = `/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`;
+
   let Page = require(file);
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
   html += ReactDOMServer.renderToStaticMarkup(
-    <SsrProvider script={`/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`}>
+    <SsrProvider script={script}>
       <Page {...props} />
     </SsrProvider>
   );
