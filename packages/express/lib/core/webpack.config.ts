@@ -7,7 +7,7 @@ import {
   hasUserBabelrc,
   getBabelrc,
   getBabelRule,
-} from './helpers';
+} from './utils';
 
 const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
@@ -51,7 +51,7 @@ const getUserWebpack = () => {
   }
 };
 
-export const configure = (entry: webpack.Entry, cacheDir: string): webpack.Configuration => {
+export default (entry: webpack.Entry, cacheDir: string): webpack.Configuration => {
   if (env === 'development') {
     if (hasUserBabelrc()) {
       console.log(`[ info ] custom babelrc in: ${getBabelrc()}`);

@@ -2,6 +2,7 @@ module.exports = (api) => {
   api.cache.never();
 
   const presets = [
+    require('@babel/preset-react'),
     require('@babel/preset-typescript'),
   ];
 

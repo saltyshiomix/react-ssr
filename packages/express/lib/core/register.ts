@@ -1,13 +1,13 @@
 import path from 'path';
 import http from 'http';
 import express from 'express';
-import render from '@react-ssr/core/express/render';
-import Config from '@react-ssr/core/express/config';
+import render from './render';
+import optimize from './optimize';
+import Config from './config';
 import {
   getBabelrc,
   getEngine,
-} from '@react-ssr/core/helpers';
-import optimize from './optimize';
+} from './utils';
 
 const escaperegexp = require('lodash.escaperegexp');
 

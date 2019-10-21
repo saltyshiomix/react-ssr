@@ -6,8 +6,8 @@ import net from 'net';
 import http from 'http';
 import express from 'express';
 import webpack from 'webpack';
-import Config from '@react-ssr/core/express/config';
-import configure from '@react-ssr/core/webpack/configure';
+import configure from './webpack.config';
+import Config from './config';
 import {
   getEngine,
   getPages,
@@ -15,7 +15,7 @@ import {
   readFileWithProps,
   gracefullyShutDown,
   sleep,
-} from '@react-ssr/core/helpers';
+} from './utils';
 
 const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
