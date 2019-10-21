@@ -12,9 +12,13 @@ import {
 const escaperegexp = require('lodash.escaperegexp');
 
 const register = async (app: express.Application, overrideConfig?: Config): Promise<void> => {
+  require('@babel/register')({
+    extends: getBabelrc(),
+  });
+
   const config: Config = Object.assign(new Config, overrideConfig || {});
 
-  let babelRegistered = false;
+  // let babelRegistered = false;
   let moduleDetectRegEx: RegExp;
 
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
@@ -23,12 +27,12 @@ const register = async (app: express.Application, overrideConfig?: Config): Prom
       moduleDetectRegEx = new RegExp(pattern);
     }
 
-    if (!babelRegistered) {
-      require('@babel/register')({
-        extends: getBabelrc(),
-      });
-      babelRegistered = true;
-    }
+    // if (!babelRegistered) {
+    //   require('@babel/register')({
+    //     extends: getBabelrc(),
+    //   });
+    //   babelRegistered = true;
+    // }
 
     const { settings, cache, _locals, ...props } = options;
 
