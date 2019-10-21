@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactDOMServer from 'react-dom/server';
-import Page from './__REACT_SSR_PAGE_NAME__';
+const React = require('react');
+const ReactDOM = require('react-dom');
+const ReactDOMServer = require('react-dom/server');
+const Page = require('./__REACT_SSR_PAGE_NAME__');
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 const html = ReactDOMServer.renderToString(<Page {...props} />);

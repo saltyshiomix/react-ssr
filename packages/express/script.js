@@ -1,3 +1,1 @@
-const s = require('./dist/script');
-module.exports = s;
-module.exports.default = s;
+module.exports = require('@react-ssr/core/ssr/script');

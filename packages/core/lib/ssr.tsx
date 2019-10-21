@@ -29,12 +29,12 @@ const convertAttrToJsxStyle = (attr: any) => {
   return jsxAttr;
 }
 
-interface SsrProps {
+interface SsrProviderProps {
   children: any;
   script: string;
 }
 
-export default (props: SsrProps) => {
+export const SsrProvider = (props: SsrProviderProps) => {
   const {
     children,
     script,
@@ -155,7 +155,6 @@ export default (props: SsrProps) => {
           </html>
         );
       }
-      break;
     }
 
     default: {

@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import SSR from './ssr';
-import Config from './config';
-import { getPageId } from './utils';
+import { SsrProvider } from './ssr';
+import { Config } from './config';
+import { getPageId } from './helpers';
 
 const codec = require('json-url')('lzw');
 
-const render = async (file: string, props: object, config: Config): Promise<string> => {
+export const render = async (file: string, props: object, config: Config): Promise<string> => {
   const script = `/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`;
 
   let Page = require(file);
@@ -14,12 +14,10 @@ const render = async (file: string, props: object, config: Config): Promise<stri
 
   let html = '<!DOCTYPE html>';
   html += ReactDOMServer.renderToStaticMarkup(
-    <SSR script={script}>
+    <SsrProvider script={script}>
       <Page {...props} />
-    </SSR>
+    </SsrProvider>
   );
 
   return html;
 };
-
-export default render;

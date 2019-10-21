@@ -10,8 +10,7 @@ import {
   basename,
   extname,
 } from 'path';
-import readdir from 'recursive-readdir';
-import Config from './config';
+import { Config } from './config';
 
 const cwd: string = process.cwd();
 
@@ -25,7 +24,7 @@ export const getBabelrc = (): string => {
   if (existsSync(join(cwd, '.babelrc'))) return join(cwd, '.babelrc');
   if (existsSync(join(cwd, '.babelrc.js'))) return join(cwd, '.babelrc.js');
   if (existsSync(join(cwd, 'babel.config.js'))) return join(cwd, 'babel.config.js');
-  return resolve(__dirname, '../babel.config.default.js');
+  return resolve(__dirname, '../babel/babel.default.js');
 };
 
 export const getBabelRule = () => {
@@ -42,7 +41,7 @@ export const getBabelRule = () => {
   };
 };
 
-export const gracefullyShutDown = async (getPort: () => number) => {
+export const gracefullyShutDown = async (getPort: () => number): Promise<void> => {
   let run = false;
   const wrapper = () => {
     if (!run) {
@@ -80,6 +79,7 @@ const ignoreNodeModules = (file: string, stats: Stats) => {
 };
 
 export const getPages = async (config: Config): Promise<string[][]> => {
+  const readdir = require('recursive-readdir');
   const allPages = await readdir(cwd, [ignoreNodeModules, ignoreDotDir, ...ignores]);
   const entryPages = await readdir(join(cwd, config.viewsDir), [ignoreDotDir, ...ignores]);
   const otherPages = [];
@@ -100,7 +100,7 @@ export const getPageId = (page: string, config: Config, separator: string = '_')
   return rest.join(separator);
 };
 
-export const readFileWithProps = (file: string, props: any) => {
+export const readFileWithProps = (file: string, props: any): string => {
   return readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
 };
 
