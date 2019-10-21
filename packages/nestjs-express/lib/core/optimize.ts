@@ -114,7 +114,7 @@ export default async (app: NestExpressApplication, server: http.Server, config: 
   let reloadable: any = false;
   if (env === 'development') {
     const reload = require('reload');
-    reloadable = await reload(app);
+    reloadable = await reload(app.getHttpAdapter());
   }
 
   fse.removeSync(path.join(cwd, config.cacheDir));
