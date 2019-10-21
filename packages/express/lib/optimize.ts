@@ -35,7 +35,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app: express.Applica
 async function bundle(config: Config, ufs: any, memfs: any, app?: express.Application) {
   const entry: webpack.Entry = {};
   const [entryPages, otherPages] = await getPages(config);
-  const template = fse.readFileSync(path.join(__dirname, '../entry.js')).toString();
+  const template = fse.readFileSync(require.resolve('@babel/core/webpack/entry')).toString();
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
