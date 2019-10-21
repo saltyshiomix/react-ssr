@@ -85,7 +85,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: NestExpressApp
 
         console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
 
-        app.getHttpAdapter().get(route, async (req, res) => {
+        app.getHttpAdapter().getInstance().get(route, async (req: any, res: any) => {
           const props = await codec.decompress(req.query.props);
           if (env === 'development') {
             console.log('[ info ] the props below is rendered from the server side');
