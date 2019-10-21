@@ -14,20 +14,16 @@ const escaperegexp = require('lodash.escaperegexp');
 const register = async (app: express.Application, overrideConfig?: Config): Promise<void> => {
   const config: Config = Object.assign(new Config, overrideConfig || {});
 
-  let babelRegistered = false;
+  require('@babel/register')({
+    extends: getBabelrc(),
+  });
+
   let moduleDetectRegEx: RegExp;
 
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
       const pattern = [].concat(options.settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');
       moduleDetectRegEx = new RegExp(pattern);
-    }
-
-    if (!babelRegistered) {
-      require('@babel/register')({
-        extends: getBabelrc(),
-      });
-      babelRegistered = true;
     }
 
     const { settings, cache, _locals, ...props } = options;
