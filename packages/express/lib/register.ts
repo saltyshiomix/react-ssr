@@ -3,13 +3,20 @@ import http from 'http';
 import express from 'express';
 import render from '@react-ssr/core/express/render';
 import Config from '@react-ssr/core/express/config';
-import { getEngine } from '@react-ssr/core/helpers';
+import {
+  getBabelrc,
+  getEngine,
+} from '@react-ssr/core/helpers';
 import optimize from './optimize';
 
 const escaperegexp = require('lodash.escaperegexp');
 
 const register = async (app: express.Application, overrideConfig?: Config): Promise<void> => {
   const config: Config = Object.assign(new Config, overrideConfig || {});
+
+  require('@babel/register')({
+    extends: getBabelrc(),
+  });
 
   let moduleDetectRegEx: RegExp;
 
