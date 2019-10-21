@@ -51,7 +51,6 @@ const register = async (app: NestExpressApplication, overrideConfig?: Config): P
   const engine: 'jsx' | 'tsx' = getEngine();
 
   const expressInstance = app.getHttpAdapter().getInstance()
-  expressInstance.setViewEngine(engine);
   expressInstance.set('views', path.join(process.cwd(), config.viewsDir));
   expressInstance.set('view engine', engine);
 
