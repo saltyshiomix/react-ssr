@@ -1,7 +1,7 @@
 import fs from 'fs';
 import fse from 'fs-extra';
 import MemoryFileSystem from 'memory-fs';
-import path, { sep } from 'path';
+import path from 'path';
 import net from 'net';
 import http from 'http';
 import express from 'express';
@@ -35,7 +35,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app: express.Applica
 async function bundle(config: Config, ufs: any, memfs: any, app?: express.Application) {
   const entry: webpack.Entry = {};
   const [entryPages, otherPages] = await getPages(config);
-  const template = fse.readFileSync(require.resolve('@react-ssr/core/webpack/entry')).toString();
+  const template = fse.readFileSync(path.resolve(__dirname, '../../core/webpack/entry')).toString();
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
@@ -147,7 +147,7 @@ export default async (app: express.Application, server: http.Server, config: Con
       await bundle(config, ufs, memfs);
       reloadable.reload();
 
-      const [, ...rest] = p.replace(cwd, '').split(sep);
+      const [, ...rest] = p.replace(cwd, '').split(path.sep);
       console.log(`[ info ] reloaded (onchange: ${rest.join('/')})`);
     });
 
