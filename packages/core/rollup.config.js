@@ -10,7 +10,7 @@ const configure = (input, output) => ({
   input,
   output: {
     file: output,
-    format: 'esm',
+    format: 'cjs',
   },
   plugins: [
     external(),
