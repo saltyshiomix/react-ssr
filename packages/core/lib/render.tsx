@@ -22,9 +22,6 @@ export const render = async (file: string, props: object, config: Config): Promi
   const script = `/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`;
 
   let Page = require(file);
-
-  console.log('test');
-
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
