@@ -147,12 +147,16 @@ const requireFromString = (code: string, filename?: string) => {
 }
 
 export const babelRequire = (file: string) => {
-  const { code } = require("@babel/core").transform(readFileSync(file).toString(), {
+  const rawCode: string = readFileSync(file).toString();
+
+  console.log(rawCode);
+
+  const { code } = require("@babel/core").transform(`
+${rawCode}
+`, {
     filename: file,
     ...(getBabelPresetsAndPlugins()),
   });
-
-  // console.log(code);
 
   return requireFromString(code);
 };
