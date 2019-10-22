@@ -184,8 +184,8 @@ Module._load = function(request: string, parent: NodeModule) {
 
   const [file, isUserDefinedModule] = getPathInfo(request, parent.filename);
   if (isAbsolute(file)) {
-    const userDefined: boolean = !(/node_modules/.test(file));
-    if (userDefined) {
+    const isUserDefined: boolean = !(/node_modules/.test(file) || /package\.json/.test(file));
+    if (isUserDefined) {
       console.log(file);
       try {
         return babelRequire(file);
@@ -213,5 +213,8 @@ export function babelRequire(filename: string) {
     filename,
     ...(getBabelPresetsAndPlugins()),
   });
+
+  console.log(code);
+
   return requireFromString(code);
 };
