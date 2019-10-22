@@ -136,6 +136,21 @@ const Module = require('module');
 
 const originalRequire = Module.prototype.require;
 
+const originalLoader = Module._load;
+
+let mockExports = {};
+let pendingMockExports = {};
+
+Module._load = function(request: string, parent: NodeModule) {
+  if (!parent) return originalLoader.apply(this, arguments);
+
+  const fullFilePath = getFullPathNormalized(request, parent.filename);
+
+  console.log(fullFilePath);
+
+  return originalLoader.apply(this, arguments);
+};
+
 const requireFromString = (code: string, filename?: string) => {
   const f = filename || '';
   const p = module.parent;
@@ -157,22 +172,22 @@ export function babelRequire(filename: string) {
   });
 
   // console.log(code);
-  Module.prototype.require = function() {
-    // console.log(arguments);
-    // const aPath = getFullPath(arguments[0], getCallerFile());
+  // Module.prototype.require = function() {
+  //   // console.log(arguments);
+  //   // const aPath = getFullPath(arguments[0], getCallerFile());
 
-    // const hoge = isInNodePath(aPath);
+  //   // const hoge = isInNodePath(aPath);
 
-    console.log(require.main!.filename);
+  //   console.log(require.main!.filename);
 
-    // console.log(getCallerFile());
+  //   // console.log(getCallerFile());
 
-    // const isLocalModule = /^\.{1,2}[/\\]?/.test(p);
+  //   // const isLocalModule = /^\.{1,2}[/\\]?/.test(p);
 
-    // console.log(isLocalModule, p);
+  //   // console.log(isLocalModule, p);
 
-    return originalRequire.apply(this, arguments);
-  };
+  //   return originalRequire.apply(this, arguments);
+  // };
 
   return requireFromString(result.code);
 
