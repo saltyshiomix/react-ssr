@@ -149,9 +149,12 @@ const requireFromString = (code: string, filename?: string) => {
 export const babelRequire = (file: string) => {
   const rawCode: string = readFileSync(file).toString();
 
-  // console.log(rawCode);
+  const result = require("@babel/core").transform(rawCode, {
+    filename: file,
+    ...(getBabelPresetsAndPlugins()),
+  });
 
-  const result = require("@babel/core").transform(`
+  const code = `
 require('@babel/register')({
   presets: [
     require('@babel/preset-env'),
@@ -175,13 +178,10 @@ require('@babel/register')({
     }],
   ],
 });
-${rawCode}
-`, {
-    filename: file,
-    ...(getBabelPresetsAndPlugins()),
-  });
+${result.code}
+`;
 
-  console.log(result);
+  console.log(code);
 
-  return requireFromString(result.code);
+  return requireFromString(code);
 };
