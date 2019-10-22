@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import SSR from './ssr';
 import Config from './config';
-import { getPageId, getBabelRule } from './utils';
+import { getPageId, getBabelrc } from './utils';
 
 const codec = require('json-url')('lzw');
 
