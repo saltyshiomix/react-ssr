@@ -134,6 +134,14 @@ const getBabelPresetsAndPlugins = () => {
 
 const Module = require('module');
 
+const requireResolve = (filename: string): string | undefined => {
+  let resolved: string | undefined = undefined;
+  try {
+    resolved = require.resolve(filename);
+  } catch (ignore) {}
+  return resolved;
+};
+
 const isInNodePath = (p?: string): boolean => {
   if (!p) return false;
   return Module.globalPaths
@@ -144,18 +152,14 @@ const isInNodePath = (p?: string): boolean => {
 const isModuleNotFoundError = (e: any) => e.code && e.code === 'MODULE_NOT_FOUND';
 
 const getFilePath = (path: string, calledFrom: string): string => {
-  let resolvedPath: string | undefined = undefined;
-  try {
-    resolvedPath = require.resolve(path);
-  } catch (ignore) {}
-
+  const resolved: string | undefined = requireResolve(path);
   const isLocalModule = /^\.{1,2}[/\\]?/.test(path);
-  const isSystemModule = resolvedPath === path;
-  const isInNode = isInNodePath(resolvedPath);
-  const isInNodeModule = !isLocalModule && /[/\\]node_modules[/\\]/.test(resolvedPath || '');
+  const isSystemModule = resolved === path;
+  const isInNode = isInNodePath(resolved);
+  const isInNodeModule = !isLocalModule && /[/\\]node_modules[/\\]/.test(resolved || '');
 
   if (isSystemModule || isInNode || isInNodeModule) {
-    return resolvedPath as string;
+    return resolved as string;
   }
 
   if (!isLocalModule) {
@@ -194,7 +198,7 @@ const performBabelRequire = (filename: string) => {
     filename,
     ...(getBabelPresetsAndPlugins()),
   });
-  return requireFromString(code);
+  return requireFromString(code, filename);
 };
 
 export const babelRequire = (filename: string) => {
@@ -224,10 +228,7 @@ Module._load = function(request: string, parent: NodeModule) {
           return performBabelRequire(file);
         } catch (ignore) {}
       } else {
-        let resolved: string | undefined = undefined;
-        try {
-          resolved = require.resolve(file);
-        } catch (ignore) {}
+        const resolved: string | undefined = requireResolve(file);
         if (resolved) {
           console.log('resolved: ' + resolved);
           return originalLoader.apply(this, arguments);
