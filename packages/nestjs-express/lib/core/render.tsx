@@ -6,26 +6,22 @@ import { getPageId, getBabelrc } from './utils';
 
 const codec = require('json-url')('lzw');
 
-let babelRegistered = false;
+// let babelRegistered = false;
 
 const render = async (file: string, props: object, config: Config): Promise<string> => {
-  if (!babelRegistered) {
-    require('@babel/register')({
-      // presets: ["@babel/preset-react", "@babel/preset-env"]
-      babelrc: false,
-      extends: getBabelrc(),
-      // ignore: [/node_modules/],
-      // only: [process.cwd()],
-    });
-    // require('@babel/polyfill')
-    babelRegistered = true;
-  }
+  // if (!babelRegistered) {
+  //   require('@babel/register')({
+  //     // presets: ["@babel/preset-react", "@babel/preset-env"]
+  //     babelrc: false,
+  //     extends: getBabelrc(),
+  //     // ignore: [/node_modules/],
+  //     // only: [process.cwd()],
+  //   });
+  //   // require('@babel/polyfill')
+  //   babelRegistered = true;
+  // }
 
   const script = `/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`;
-
-  console.log('debug 1');
-  console.log(getBabelrc());
-  console.log(babelRegistered);
 
   let Page;
   try {
