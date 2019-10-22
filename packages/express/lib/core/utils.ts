@@ -186,7 +186,7 @@ const requireFromString = (code: string, filename?: string) => {
   return _exports;
 }
 
-let workingBabelRequire = false;
+let workingParentFile: string | undefined = undefined;
 
 const performBabelRequire = (filename: string) => {
   const { code } = require('@babel/core').transform(readFileSync(filename).toString(), {
@@ -197,11 +197,11 @@ const performBabelRequire = (filename: string) => {
 };
 
 export const babelRequire = (filename: string) => {
-  workingBabelRequire = true;
+  workingParentFile = filename;
   try {
     return performBabelRequire(filename);
   } finally {
-    workingBabelRequire = false;
+    workingParentFile = undefined;
   }
 };
 
@@ -215,8 +215,8 @@ Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
   const file = getFilePath(request, parent.filename);
-  const requireFn = workingBabelRequire ? performBabelRequire : babelRequire;
-  if (workingBabelRequire) {
+  const requireFn = workingParentFile ? performBabelRequire : babelRequire;
+  if (workingParentFile) {
     if (isUserDefined(file)) {
       if (isAbsolute(file)) {
         console.log('absolute: ' + file);
@@ -229,12 +229,12 @@ Module._load = function(request: string, parent: NodeModule) {
           console.log('resolved: ' + resolvedPath);
         } else {
           console.log('raw file: ' + file);
-          console.log('getFilePath(file, parent.filename): ' + getFilePath(file, parent.filename));
+          console.log('workingParentFile: ' + workingParentFile);
+          console.log('getFilePath(file, workingParentFile): ' + getFilePath(file, workingParentFile));
         }
       }
     }
     if (isAbsolute(file) && isUserDefined(file)) {
-      console.log('file 2: ' + file);
       try {
         return performBabelRequire(file);
       } catch (ignore) {}
