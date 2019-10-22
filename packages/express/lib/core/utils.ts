@@ -182,7 +182,6 @@ const getPathInfo = (path: string, calledFrom: string): [string, boolean] => {
 }
 
 const originalLoader = Module._load;
-const originalRequire = Module.prototype.require;
 
 Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
@@ -217,7 +216,7 @@ const requireFromString = (code: string, filename?: string) => {
 export function babelRequire(filename: string) {
   const rawCode: string = readFileSync(filename).toString();
 
-  const result = originalRequire("@babel/core").transform(rawCode, {
+  const result = require("@babel/core").transform(rawCode, {
     filename,
     ...(getBabelPresetsAndPlugins()),
   });
