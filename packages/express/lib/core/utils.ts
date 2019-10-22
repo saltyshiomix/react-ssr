@@ -194,7 +194,7 @@ Module._load = function(request: string, parent: NodeModule) {
 
     Module.prototype.require = function() {
       const request: string = arguments[0];
-      const resolved: string = isAbsolute(request) ? request : resolve(dirname(file), request);
+      let resolved: string = isAbsolute(request) ? request : resolve(dirname(file), request);
 
       console.log('resolved: ' + resolved);
 
@@ -227,7 +227,7 @@ const requireFromString = (code: string, filename?: string) => {
 export function babelRequire(filename: string) {
   const rawCode: string = readFileSync(filename).toString();
 
-  const result = require("@babel/core").transform(rawCode, {
+  const result = originalRequire("@babel/core").transform(rawCode, {
     filename,
     ...(getBabelPresetsAndPlugins()),
   });
