@@ -221,9 +221,9 @@ Module._load = function(request: string, parent: NodeModule) {
     if (isUserDefined(file)) {
       if (isAbsolute(file)) {
         console.log('absolute: ' + file);
-        // try {
-        //   return performBabelRequire(file);
-        // } catch (ignore) {}
+        try {
+          return performBabelRequire(file);
+        } catch (ignore) {}
       } else {
         let resolved: string | undefined = undefined;
         try {
@@ -231,14 +231,14 @@ Module._load = function(request: string, parent: NodeModule) {
         } catch (ignore) {}
         if (resolved) {
           console.log('resolved: ' + resolved);
-          // return originalLoader.apply(this, arguments);
+          return originalLoader.apply(this, arguments);
         } else {
           console.log('raw file: ' + file);
           console.log('workingParentFile: ' + workingParentFile);
-          console.log('getFilePath(file, workingParentFile): ' + getFilePath(file, workingParentFile));
-          // try {
-          //   return performBabelRequire(file);
-          // } catch (ignore) {}
+          console.log('resolve(dirname(workingParentFile), file): ' + resolve(dirname(workingParentFile), file));
+          try {
+            return performBabelRequire(file);
+          } catch (ignore) {}
         }
       }
     }
