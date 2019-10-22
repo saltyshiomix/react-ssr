@@ -189,6 +189,7 @@ const requireFromString = (code: string, filename?: string) => {
 let workingParentFile: string | undefined = undefined;
 
 const performBabelRequire = (filename: string) => {
+  workingParentFile = filename;
   const { code } = require('@babel/core').transform(readFileSync(filename).toString(), {
     filename,
     ...(getBabelPresetsAndPlugins()),
@@ -220,25 +221,32 @@ Module._load = function(request: string, parent: NodeModule) {
     if (isUserDefined(file)) {
       if (isAbsolute(file)) {
         console.log('absolute: ' + file);
+        // try {
+        //   return performBabelRequire(file);
+        // } catch (ignore) {}
       } else {
-        let resolvedPath: string | undefined = undefined;
+        let resolved: string | undefined = undefined;
         try {
-          resolvedPath = require.resolve(file);
+          resolved = require.resolve(file);
         } catch (ignore) {}
-        if (resolvedPath) {
-          console.log('resolved: ' + resolvedPath);
+        if (resolved) {
+          console.log('resolved: ' + resolved);
+          // return originalLoader.apply(this, arguments);
         } else {
           console.log('raw file: ' + file);
           console.log('workingParentFile: ' + workingParentFile);
           console.log('getFilePath(file, workingParentFile): ' + getFilePath(file, workingParentFile));
+          // try {
+          //   return performBabelRequire(file);
+          // } catch (ignore) {}
         }
       }
     }
-    if (isAbsolute(file) && isUserDefined(file)) {
-      try {
-        return performBabelRequire(file);
-      } catch (ignore) {}
-    }
+    // if (isAbsolute(file) && isUserDefined(file)) {
+    //   try {
+    //     return performBabelRequire(file);
+    //   } catch (ignore) {}
+    // }
   } else {
     if (isAbsolute(file) && isUserDefined(file)) {
       try {
