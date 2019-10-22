@@ -179,7 +179,7 @@ const originalLoader = Module._load;
 Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
-  const [file, isUserDefinedModule] = getFilePath(request, parent.filename);
+  const file = getFilePath(request, parent.filename);
   if (isAbsolute(file)) {
     const isUserDefined: boolean = !(/node_modules/.test(file) || /package\.json/.test(file));
     if (isUserDefined) {
