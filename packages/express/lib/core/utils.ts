@@ -167,12 +167,6 @@ export function babelRequire(filename: string) {
       return originalRequire.apply(this, arguments);
     }
 
-    try {
-      // console.log(Module._resolveFilename(arguments[0]));
-      console.log(require.resolve(arguments[0]));
-    } catch (error) {
-    }
-
     let p;
     const localModuleName = join(dirname(module.parent.filename), arguments[0]);
     try {
