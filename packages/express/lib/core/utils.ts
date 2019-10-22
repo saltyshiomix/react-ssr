@@ -167,10 +167,13 @@ const getFullPath = (path: string, calledFrom: string): [string, boolean] => {
 
   const localModuleName = join(dirname(calledFrom), path);
   try {
-    return [Module._resolveFilename(localModuleName), true];
+    const resolved: string = Module._resolveFilename(localModuleName);
+    const inNodeModules: boolean = /node_modules/.test(resolved);
+    return [resolved, !inNodeModules];
   } catch (e) {
     if (isModuleNotFoundError(e)) {
-      return [localModuleName, false];
+      const inNodeModules: boolean = /node_modules/.test(localModuleName);
+      return [localModuleName, !inNodeModules];
     } else {
       throw e;
     }
