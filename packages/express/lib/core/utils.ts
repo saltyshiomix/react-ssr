@@ -132,7 +132,7 @@ const getBabelPresetsAndPlugins = () => {
   return { presets, plugins };
 };
 
-const Module = require('module');
+const {Module, toRealPath} = require('module');
 
 const requireResolve = (filename: string): string | undefined => {
   let resolved: string | undefined = undefined;
@@ -183,8 +183,7 @@ const requireFromString = (code: string, filename?: string) => {
   const p = module.parent;
   const m = new Module(f, p);
   m.filename = f;
-  // m.paths = Module._nodeModulePaths(dirname(f));
-  Module._preloadModules(Module._nodeModulePaths(dirname(f)));
+  m.paths = Module._nodeModulePaths(dirname(f));
   m._compile(code, f);
   const _exports = m.exports;
   p && p.children && p.children.splice(p.children.indexOf(m), 1);
@@ -220,6 +219,8 @@ const originalLoader = Module._load;
 
 Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
+
+  console.log(toRealPath(request));
 
   const file = getFilePath(request, parent.filename);
   if (workingParentFile) {
