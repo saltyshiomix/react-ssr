@@ -192,20 +192,10 @@ Module._load = function(request: string, parent: NodeModule) {
   if (isAbsolute(file) && isUserDefinedModule) {
     console.log('file: ' + file);
 
-    Module.prototype.require = function() {
-      const request: string = arguments[0];
-      let resolved: string = isAbsolute(request) ? request : resolve(dirname(file), request);
-
-      console.log('resolved: ' + resolved);
-
-      return originalRequire(resolved);
-    };
     try {
       return babelRequire(file);
-    } finally {
-      Module.prototype.require = function() {
-        return originalRequire.apply(this, arguments);
-      };
+    } catch (ignore) {
+      return originalLoader.apply(this, arguments);
     }
   }
 
