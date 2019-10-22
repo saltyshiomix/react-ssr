@@ -159,7 +159,11 @@ export function babelRequire(filename: string) {
   // console.log(code);
   Module.prototype.require = function() {
     // console.log(arguments);
-    console.log(getFullPathNormalized(arguments[0], module.parent!.filename));
+    const aPath = getFullPathNormalized(arguments[0], module.parent!.filename);
+
+    const hoge = isInNodePath(aPath);
+
+    console.log(hoge, aPath);
     return originalRequire.apply(this, arguments);
   };
 
