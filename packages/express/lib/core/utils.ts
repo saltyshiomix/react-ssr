@@ -132,7 +132,9 @@ const getBabelPresetsAndPlugins = () => {
   return { presets, plugins };
 };
 
-const {Module, toRealPath} = require('module');
+const Module = require('module');
+
+console.log(Module);
 
 const requireResolve = (filename: string): string | undefined => {
   let resolved: string | undefined = undefined;
@@ -220,7 +222,7 @@ const originalLoader = Module._load;
 Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
-  console.log(toRealPath(request));
+  // console.log(toRealPath(request));
 
   const file = getFilePath(request, parent.filename);
   if (workingParentFile) {
