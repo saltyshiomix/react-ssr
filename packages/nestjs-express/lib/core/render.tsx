@@ -19,6 +19,9 @@ const render = async (file: string, props: object, config: Config): Promise<stri
   const script = `/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`;
 
   console.log('debug 1');
+  console.log(getBabelrc());
+  console.log(babelRegistered);
+
   let Page = require(file);
   console.log('debug 2');
 
