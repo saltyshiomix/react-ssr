@@ -12,6 +12,7 @@ const escaperegexp = require('lodash.escaperegexp');
 
 const register = async (app: NestExpressApplication, overrideConfig?: Config): Promise<void> => {
   require('@babel/register')({
+    babelrc: false,
     extends: getBabelrc(),
   });
 

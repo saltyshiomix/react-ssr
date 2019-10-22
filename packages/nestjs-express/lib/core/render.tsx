@@ -12,6 +12,7 @@ const render = async (file: string, props: object, config: Config): Promise<stri
   if (!babelRegistered) {
     require('@babel/register')({
       // presets: ["@babel/preset-react", "@babel/preset-env"]
+      babelrc: false,
       extends: getBabelrc(),
       // ignore: [/node_modules/],
       // only: [process.cwd()],
