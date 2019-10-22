@@ -168,7 +168,8 @@ export function babelRequire(filename: string) {
     // }
 
     try {
-      console.log(Module._resolveFilename(arguments[0]));
+      // console.log(Module._resolveFilename(arguments[0]));
+      console.log(require.resolve(arguments[0]));
     } catch (error) {
     }
     
