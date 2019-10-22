@@ -146,7 +146,7 @@ const isInNodePath = (p?: string): boolean => {
 
 const isModuleNotFoundError = (e: any) => e.code && e.code === 'MODULE_NOT_FOUND';
 
-const getFullPath = (path: string, calledFrom: string): [string, boolean] => {
+const getPathInfo = (path: string, calledFrom: string): [string, boolean] => {
   let resolvedPath: string | undefined = undefined;
   try {
     resolvedPath = require.resolve(path);
@@ -185,9 +185,13 @@ const originalLoader = Module._load;
 Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
-  const [fullFilePath, isUserDefinedModule] = getFullPath(request, parent.filename);
+  const [fullFilePath, isUserDefinedModule] = getPathInfo(request, parent.filename);
 
   console.log(isUserDefinedModule, fullFilePath);
+
+  if (isUserDefinedModule) {
+    return babelRequire(fullFilePath);
+  }
 
   return originalLoader.apply(this, arguments);
 };
