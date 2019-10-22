@@ -163,9 +163,17 @@ export function babelRequire(filename: string) {
 
     // const hoge = isInNodePath(aPath);
 
-    const isLocalModule = /^\.{1,2}[/\\]?/.test(arguments[0]);
+    let p;
+    if (module.parent) {
+      p = getFullPathNormalized(arguments[0], module.parent.filename);
+    } else {
+      console.log('getCallerFile()' + getCallerFile());
+      p = getFullPathNormalized(arguments[0], getCallerFile())
+    }
 
-    console.log(isLocalModule, arguments[0]);
+    const isLocalModule = /^\.{1,2}[/\\]?/.test(p);
+
+    console.log(isLocalModule, p);
 
     return originalRequire.apply(this, arguments);
   };
