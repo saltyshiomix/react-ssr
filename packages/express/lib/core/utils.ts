@@ -233,7 +233,8 @@ Module._load = function(request: string, parent: NodeModule) {
 
   const filename = Module._resolveFilename(request, parent, /* isMain */ false);
 
-  if (isUserDefined(filename)) {
+  const resolved = requireResolve(filename);
+  if (resolved && isUserDefined(filename)) {
     console.log(filename);
   }
 
