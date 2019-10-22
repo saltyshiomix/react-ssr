@@ -190,6 +190,15 @@ const requireFromString = (code: string, filename?: string) => {
   return _exports;
 }
 
+const __babelRequire = (filename: string) => {
+  const { code } = require('@babel/core').transform(readFileSync(filename).toString(), {
+    filename,
+    ...(getBabelPresetsAndPlugins()),
+  });
+  return requireFromString(code, filename);
+  // return requireFromString(code);
+};
+
 let workingParentFile: string | undefined = undefined;
 
 const performBabelRequire = (filename: string) => {
@@ -218,7 +227,15 @@ const isUserDefined = (file: string): boolean => {
 const originalLoader = Module._load;
 
 Module._load = function(request: string, parent: NodeModule) {
-  if (!parent) return originalLoader.apply(this, arguments);
+  if (!parent) {
+    return originalLoader.apply(this, arguments);
+  }
+
+  const filename = Module._resolveFilename(request, parent, /* isMain */ false);
+
+  if (isUserDefined(filename)) {
+    console.log(filename);
+  }
 
   const file = getFilePath(request, parent.filename);
   if (workingParentFile) {
