@@ -132,6 +132,9 @@ const getBabelPresetsAndPlugins = () => {
   return { presets, plugins };
 };
 
+const getCallerFile = require('get-caller-file');
+const normalize = require('normalize-path');
+
 const Module = require('module');
 
 const originalRequire = Module.prototype.require;
@@ -216,8 +219,7 @@ export function babelRequire(filename: string) {
 
 
 
-const getCallerFile = require('get-caller-file');
-const normalize = require('normalize-path');
+
 
 function isInNodePath(resolvedPath?: string) {
   if (!resolvedPath) return false;
