@@ -215,19 +215,17 @@ Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
   const file = getFilePath(request, parent.filename);
-  if (isAbsolute(file) && isUserDefined(file)) {
-    try {
-      return babelRequire(file);
-    } catch (ignore) {}
-  }
-
   if (workingBabelRequire) {
-    const file = getFilePath(request, parent.filename);
-    console.log('file 1: ' + file);
     if (isAbsolute(file) && isUserDefined(file)) {
       console.log('file 2: ' + file);
       try {
         return performBabelRequire(file);
+      } catch (ignore) {}
+    }
+  } else {
+    if (isAbsolute(file) && isUserDefined(file)) {
+      try {
+        return babelRequire(file);
       } catch (ignore) {}
     }
   }
