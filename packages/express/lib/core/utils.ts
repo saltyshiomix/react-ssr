@@ -157,16 +157,22 @@ export function babelRequire(filename: string) {
   });
 
   // console.log(code);
-
   Module.prototype.require = function() {
-    return babelRequire.apply(this, arguments as any);
+    console.log(arguments);
+    return originalRequire.apply(this, arguments);
   };
-  try {
-    return requireFromString(result.code);
-  } finally {
-    Module.prototype.require = function() {
-      return originalRequire.apply(this, arguments);
-    };
-  }
+
+  return requireFromString(result.code);
+
+  // Module.prototype.require = function() {
+  //   return babelRequire.apply(this, arguments as any);
+  // };
+  // try {
+  //   return requireFromString(result.code);
+  // } finally {
+  //   Module.prototype.require = function() {
+  //     return originalRequire.apply(this, arguments);
+  //   };
+  // }
 };
 
