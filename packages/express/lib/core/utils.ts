@@ -170,7 +170,7 @@ const getFullPath = (path: string, calledFrom: string): [string, boolean] => {
     return [Module._resolveFilename(localModuleName), true];
   } catch (e) {
     if (isModuleNotFoundError(e)) {
-      return [localModuleName, true];
+      return [localModuleName, false];
     } else {
       throw e;
     }
@@ -182,9 +182,9 @@ const originalLoader = Module._load;
 Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
-  const [fullFilePath, isLocalModule] = getFullPath(request, parent.filename);
+  const [fullFilePath, isUserDefinedModule] = getFullPath(request, parent.filename);
 
-  console.log(isLocalModule, fullFilePath);
+  console.log(isUserDefinedModule, fullFilePath);
 
   return originalLoader.apply(this, arguments);
 };
