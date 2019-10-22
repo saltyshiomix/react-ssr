@@ -218,7 +218,15 @@ Module._load = function(request: string, parent: NodeModule) {
   const requireFn = workingBabelRequire ? performBabelRequire : babelRequire;
   if (workingBabelRequire) {
     if (isUserDefined(file)) {
-      console.log(file);
+      let resolvedPath: string | undefined = undefined;
+      try {
+        resolvedPath = require.resolve(file);
+      } catch (ignore) {}
+      if (resolvedPath) {
+        console.log('resolved: ' + resolvedPath);
+      } else {
+        console.log(file);
+      }
     }
     if (isAbsolute(file) && isUserDefined(file)) {
       console.log('file 2: ' + file);
