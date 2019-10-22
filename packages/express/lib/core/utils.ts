@@ -132,24 +132,59 @@ const getBabelPresetsAndPlugins = () => {
   return { presets, plugins };
 };
 
-const getCallerFile = require('get-caller-file');
-const normalize = require('normalize-path');
+// const getCallerFile = require('get-caller-file');
+// const normalize = require('normalize-path');
 
 const Module = require('module');
 
-const originalRequire = Module.prototype.require;
+const isInNodePath = (p?: string): boolean => {
+  if (!p) return false;
+  return Module.globalPaths
+    .map((nodePath: string) => resolve(process.cwd(), nodePath) + sep)
+    .some((fullNodePath: string) => p.indexOf(fullNodePath) === 0);
+}
+
+const isModuleNotFoundError = (e: any) => e.code && e.code === 'MODULE_NOT_FOUND';
+
+const getFullPath = (path: string, calledFrom: string): [string, boolean] => {
+  let resolvedPath: string | undefined = undefined;
+  try {
+    resolvedPath = require.resolve(path);
+  } catch (ignore) {}
+
+  const isLocalModule = /^\.{1,2}[/\\]?/.test(path);
+  const isSystemModule = resolvedPath === path;
+  const isInNode = isInNodePath(resolvedPath);
+  const isInNodeModule = !isLocalModule && /[/\\]node_modules[/\\]/.test(resolvedPath || '');
+
+  if (isSystemModule || isInNode || isInNodeModule) {
+    return [resolvedPath as string, false];
+  }
+
+  if (!isLocalModule) {
+    return [path, false];
+  }
+
+  const localModuleName = join(dirname(calledFrom), path);
+  try {
+    return [Module._resolveFilename(localModuleName), true];
+  } catch (e) {
+    if (isModuleNotFoundError(e)) {
+      return [localModuleName, true];
+    } else {
+      throw e;
+    }
+  }
+}
 
 const originalLoader = Module._load;
-
-let mockExports = {};
-let pendingMockExports = {};
 
 Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
-  const fullFilePath = getFullPathNormalized(request, parent.filename);
+  const [fullFilePath, isLocalModule] = getFullPath(request, parent.filename);
 
-  console.log(fullFilePath);
+  console.log(isLocalModule, fullFilePath);
 
   return originalLoader.apply(this, arguments);
 };
@@ -174,98 +209,5 @@ export function babelRequire(filename: string) {
     ...(getBabelPresetsAndPlugins()),
   });
 
-  // console.log(code);
-  // Module.prototype.require = function() {
-  //   // console.log(arguments);
-  //   // const aPath = getFullPath(arguments[0], getCallerFile());
-
-  //   // const hoge = isInNodePath(aPath);
-
-  //   console.log(require.main!.filename);
-
-  //   // console.log(getCallerFile());
-
-  //   // const isLocalModule = /^\.{1,2}[/\\]?/.test(p);
-
-  //   // console.log(isLocalModule, p);
-
-  //   return originalRequire.apply(this, arguments);
-  // };
-
   return requireFromString(result.code);
-
-  // Module.prototype.require = function() {
-  //   return babelRequire.apply(this, arguments as any);
-  // };
-  // try {
-  //   return requireFromString(result.code);
-  // } finally {
-  //   Module.prototype.require = function() {
-  //     return originalRequire.apply(this, arguments);
-  //   };
-  // }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function isInNodePath(resolvedPath?: string) {
-  if (!resolvedPath) return false;
-
-  return Module.globalPaths
-    .map((nodePath: string) => {
-      return resolve(process.cwd(), nodePath) + sep;
-    })
-    .some((fullNodePath: string) => {
-      return resolvedPath.indexOf(fullNodePath) === 0;
-    });
-}
-
-function getFullPath(path: string, calledFrom: string) {
-  let resolvedPath: string | undefined = undefined;
-  try {
-    resolvedPath = require.resolve(path);
-  } catch (e) {
-    // do nothing
-  }
-
-  const isLocalModule = /^\.{1,2}[/\\]?/.test(path);
-  const isInPath = isInNodePath(resolvedPath);
-  const isExternal = !isLocalModule && /[/\\]node_modules[/\\]/.test(resolvedPath || '');
-  const isSystemModule = resolvedPath === path;
-
-  if (isExternal || isSystemModule || isInPath) {
-    return resolvedPath;
-  }
-
-  if (!isLocalModule) {
-    return path;
-  }
-
-  const localModuleName = join(dirname(calledFrom), path);
-  try {
-    return Module._resolveFilename(localModuleName);
-  } catch (e) {
-    if (isModuleNotFoundError(e)) { return localModuleName; } else { throw e; }
-  }
-}
-
-function getFullPathNormalized(path: string, calledFrom: string) {
-  return normalize(getFullPath(path, calledFrom));
-}
-
-function isModuleNotFoundError(e: any) {
-  return e.code && e.code === 'MODULE_NOT_FOUND';
-}
