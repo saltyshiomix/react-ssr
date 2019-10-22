@@ -12,6 +12,8 @@ const render = async (file: string, props: object, config: Config): Promise<stri
   let Page = babelRequire(file);
   Page = Page.default || Page;
 
+  console.log(Page);
+
   let html = '<!DOCTYPE html>';
   html += ReactDOMServer.renderToStaticMarkup(
     <SSR script={script}>
