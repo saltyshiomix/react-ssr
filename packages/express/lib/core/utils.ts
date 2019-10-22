@@ -182,15 +182,31 @@ const getPathInfo = (path: string, calledFrom: string): [string, boolean] => {
 }
 
 const originalLoader = Module._load;
+const originalRequire = Module.prototype.require;
 
 Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
-  const [fullFilePath, isUserDefinedModule] = getPathInfo(request, parent.filename);
+  const [file, isUserDefinedModule] = getPathInfo(request, parent.filename);
 
-  if (isUserDefinedModule && isAbsolute(fullFilePath)) {
-    console.log(fullFilePath);
-    return babelRequire(fullFilePath);
+  if (isAbsolute(file) && isUserDefinedModule) {
+    console.log('file: ' + file);
+
+    Module.prototype.require = function() {
+      const request: string = arguments[0];
+      const resolved: string = isAbsolute(request) ? request : resolve(dirname(file), request);
+
+      console.log('resolved: ' + resolved);
+
+      return originalRequire(resolved);
+    };
+    try {
+      return babelRequire(file);
+    } finally {
+      Module.prototype.require = function() {
+        return originalRequire.apply(this, arguments);
+      };
+    }
   }
 
   return originalLoader.apply(this, arguments);
