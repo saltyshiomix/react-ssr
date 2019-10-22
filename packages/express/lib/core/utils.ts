@@ -218,14 +218,19 @@ Module._load = function(request: string, parent: NodeModule) {
   const requireFn = workingBabelRequire ? performBabelRequire : babelRequire;
   if (workingBabelRequire) {
     if (isUserDefined(file)) {
-      let resolvedPath: string | undefined = undefined;
-      try {
-        resolvedPath = require.resolve(file);
-      } catch (ignore) {}
-      if (resolvedPath) {
-        console.log('resolved: ' + resolvedPath);
+      if (isAbsolute(file)) {
+        console.log('absolute: ' + file);
       } else {
-        console.log(file);
+        let resolvedPath: string | undefined = undefined;
+        try {
+          resolvedPath = require.resolve(file);
+        } catch (ignore) {}
+        if (resolvedPath) {
+          console.log('resolved: ' + resolvedPath);
+        } else {
+          console.log('raw file: ' + file);
+          console.log('getFilePath(file, parent.filename): ' + getFilePath(file, parent.filename));
+        }
       }
     }
     if (isAbsolute(file) && isUserDefined(file)) {
