@@ -10,6 +10,7 @@ import {
   basename,
   extname,
   dirname,
+  isAbsolute,
 } from 'path';
 import readdir from 'recursive-readdir';
 import Config from './config';
@@ -187,9 +188,8 @@ Module._load = function(request: string, parent: NodeModule) {
 
   const [fullFilePath, isUserDefinedModule] = getPathInfo(request, parent.filename);
 
-  console.log(isUserDefinedModule, fullFilePath);
-
-  if (isUserDefinedModule) {
+  if (isUserDefinedModule && isAbsolute(fullFilePath)) {
+    console.log(fullFilePath);
     return babelRequire(fullFilePath);
   }
 
