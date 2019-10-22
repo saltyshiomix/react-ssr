@@ -9,6 +9,7 @@ import {
   sep,
   basename,
   extname,
+  dirname,
 } from 'path';
 import readdir from 'recursive-readdir';
 import Config from './config';
@@ -131,12 +132,18 @@ const getBabelPresetsAndPlugins = () => {
   return { presets, plugins };
 };
 
+const Module = require('module');
+
 const requireFromString = (code: string, filename?: string) => {
-  const Module = require('module');
-  const m = new Module();
-  m.paths = module.paths;
-  m._compile(code, filename);
-  return m.exports;
+  const f = filename || '';
+  const p = module.parent;
+  const m = new Module(f, p);
+  m.filename = f;
+  m.paths = Module._nodeModulePaths(dirname(f));
+  m._compile(code, f);
+  const _exports = m.exports;
+  p && p.children && p.children.splice(p.children.indexOf(m), 1);
+  return _exports;
 }
 
 export const babelRequire = (file: string) => {
@@ -145,7 +152,7 @@ export const babelRequire = (file: string) => {
     ...(getBabelPresetsAndPlugins()),
   });
 
-  console.log(code);
+  // console.log(code);
 
   return requireFromString(code);
 };
