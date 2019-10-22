@@ -2,49 +2,48 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import SSR from './ssr';
 import Config from './config';
-import { getPageId, getBabelrc } from './utils';
+import {
+  getPageId,
+  babelRequire,
+} from './utils';
 
 const codec = require('json-url')('lzw');
-
-// let babelRegistered = false;
+const escaperegexp = require('lodash.escaperegexp');
 
 const render = async (file: string, props: object, config: Config): Promise<string> => {
-  // if (!babelRegistered) {
-  //   require('@babel/register')({
-  //     // presets: ["@babel/preset-react", "@babel/preset-env"]
-  //     babelrc: false,
-  //     extends: getBabelrc(),
-  //     // ignore: [/node_modules/],
-  //     // only: [process.cwd()],
-  //   });
-  //   // require('@babel/polyfill')
-  //   babelRegistered = true;
-  // }
-
-  const script = `/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`;
-
-  let Page;
-  try {
-    Page = require(file);
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-  
-  console.log('debug 2');
-
+  let Page = babelRequire(file);
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
   html += ReactDOMServer.renderToStaticMarkup(
-    <SSR script={script}>
+    <SSR script={`/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`}>
       <Page {...props} />
     </SSR>
   );
 
-  console.log(html);
-
   return html;
 };
 
-export default render;
+let moduleDetectRegEx: RegExp;
+
+const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
+  if (!moduleDetectRegEx) {
+    const pattern = [].concat(options.settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');
+    moduleDetectRegEx = new RegExp(pattern);
+  }
+
+  const { settings, cache, _locals, ...props } = options;
+  try {
+    return cb(undefined, await render(file, props, config));
+  } catch (e) {
+    return cb(e);
+  } finally {
+    Object.keys(require.cache).forEach((filename) => {
+      if (moduleDetectRegEx.test(filename)) {
+        delete require.cache[filename];
+      }
+    });
+  }
+};
+
+export default renderFile;

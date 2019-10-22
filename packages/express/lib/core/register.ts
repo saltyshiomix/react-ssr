@@ -1,54 +1,13 @@
 import path from 'path';
 import http from 'http';
 import express from 'express';
-import render from './render';
+import renderFile from './render';
 import optimize from './optimize';
 import Config from './config';
-import {
-  getBabelrc,
-  getEngine,
-} from './utils';
-
-const escaperegexp = require('lodash.escaperegexp');
+import { getEngine } from './utils';
 
 const register = async (app: express.Application, overrideConfig?: Config): Promise<void> => {
-  require('@babel/register')({
-    extends: getBabelrc(),
-  });
-
   const config: Config = Object.assign(new Config, overrideConfig || {});
-
-  // let babelRegistered = false;
-  let moduleDetectRegEx: RegExp;
-
-  const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
-    if (!moduleDetectRegEx) {
-      const pattern = [].concat(options.settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');
-      moduleDetectRegEx = new RegExp(pattern);
-    }
-
-    // if (!babelRegistered) {
-    //   require('@babel/register')({
-    //     extends: getBabelrc(),
-    //   });
-    //   babelRegistered = true;
-    // }
-
-    const { settings, cache, _locals, ...props } = options;
-
-    try {
-      return cb(undefined, await render(file, props, config));
-    } catch (e) {
-      return cb(e);
-    } finally {
-      Object.keys(require.cache).forEach((filename) => {
-        if (moduleDetectRegEx.test(filename)) {
-          delete require.cache[filename];
-        }
-      });
-    }
-  };
-
   const engine: 'jsx' | 'tsx' = getEngine();
 
   app.engine(engine, renderFile);
