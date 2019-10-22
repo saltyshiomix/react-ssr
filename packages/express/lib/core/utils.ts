@@ -143,7 +143,7 @@ const isInNodePath = (p?: string): boolean => {
 
 const isModuleNotFoundError = (e: any) => e.code && e.code === 'MODULE_NOT_FOUND';
 
-const getPathInfo = (path: string, calledFrom: string): [string, boolean] => {
+const getFilePath = (path: string, calledFrom: string): string => {
   let resolvedPath: string | undefined = undefined;
   try {
     resolvedPath = require.resolve(path);
@@ -155,22 +155,19 @@ const getPathInfo = (path: string, calledFrom: string): [string, boolean] => {
   const isInNodeModule = !isLocalModule && /[/\\]node_modules[/\\]/.test(resolvedPath || '');
 
   if (isSystemModule || isInNode || isInNodeModule) {
-    return [resolvedPath as string, false];
+    return resolvedPath as string;
   }
 
   if (!isLocalModule) {
-    return [path, false];
+    return path;
   }
 
   const localModuleName = join(dirname(calledFrom), path);
   try {
-    const resolved: string = Module._resolveFilename(localModuleName);
-    const inNodeModules: boolean = /node_modules/.test(resolved);
-    return [resolved, !inNodeModules];
+    return Module._resolveFilename(localModuleName);
   } catch (e) {
     if (isModuleNotFoundError(e)) {
-      const inNodeModules: boolean = /node_modules/.test(localModuleName);
-      return [localModuleName, !inNodeModules];
+      return localModuleName
     } else {
       throw e;
     }
@@ -182,7 +179,7 @@ const originalLoader = Module._load;
 Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
-  const [file, isUserDefinedModule] = getPathInfo(request, parent.filename);
+  const [file, isUserDefinedModule] = getFilePath(request, parent.filename);
   if (isAbsolute(file)) {
     const isUserDefined: boolean = !(/node_modules/.test(file) || /package\.json/.test(file));
     if (isUserDefined) {
@@ -193,10 +190,13 @@ Module._load = function(request: string, parent: NodeModule) {
   }
 
   if (requiringWithBabel) {
-    console.log(file);
-    try {
-      return babelRequire(file);
-    } catch (ignore) {}
+    const isUserDefined: boolean = !(/node_modules/.test(file) || /package\.json/.test(file));
+    if (isUserDefined) {
+      console.log(file);
+      try {
+        return babelRequire(file);
+      } catch (ignore) {}
+    }
   }
 
   return originalLoader.apply(this, arguments);
