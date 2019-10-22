@@ -223,8 +223,9 @@ Module._load = function(request: string, parent: NodeModule) {
 
   if (workingBabelRequire) {
     const file = getFilePath(request, parent.filename);
+    console.log('file 1: ' + file);
     if (isAbsolute(file) && isUserDefined(file)) {
-      console.log(file);
+      console.log('file 2: ' + file);
       try {
         return performBabelRequire(file);
       } catch (ignore) {}
