@@ -19,7 +19,9 @@ Module._load = function(request: string, parent: NodeModule) {
   }
 
   if (!babelRegistered) {
-    require('@babel/register')({
+    const m = new Module('@babel/register');
+    m.load('@babel/register');
+    m.exports({
       ...(getBabelPresetsAndPlugins()),
     });
     babelRegistered = true;
