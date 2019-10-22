@@ -190,7 +190,9 @@ Module._load = function(request: string, parent: NodeModule) {
   }
 
   if (isAbsolute(file)) {
-    console.log(file);
+    if (!isUserDefinedModule) {
+      console.log(file);
+    }
   }
 
   return originalLoader.apply(this, arguments);
