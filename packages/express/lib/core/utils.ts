@@ -134,6 +134,7 @@ const getBabelPresetsAndPlugins = () => {
 const requireFromString = (code: string, filename?: string) => {
   const Module = require('module').constructor;
   const m = new Module();
+  m.paths = module.paths;
   m._compile(code, filename);
   return m.exports;
 }
@@ -146,5 +147,5 @@ export const babelRequire = (file: string) => {
 
   console.log(code);
 
-  return requireFromString(code, file);
+  return requireFromString(code);
 };
