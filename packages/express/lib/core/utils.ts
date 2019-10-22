@@ -231,12 +231,16 @@ Module._load = function(request: string, parent: NodeModule) {
     return originalLoader.apply(this, arguments);
   }
 
-  const filename = Module._resolveFilename(request, parent, /* isMain */ false);
+  require('@babel/register')({
+    ...(getBabelPresetsAndPlugins()),
+  });
 
-  const resolved = requireResolve(filename);
-  if (!resolved && isUserDefined(filename)) {
-    console.log(filename);
-  }
+  // const filename = Module._resolveFilename(request, parent, /* isMain */ false);
+
+  // const resolved = requireResolve(filename);
+  // if (!resolved && isUserDefined(filename)) {
+  //   console.log(filename);
+  // }
 
   // const file = getFilePath(request, parent.filename);
   // if (workingParentFile) {
