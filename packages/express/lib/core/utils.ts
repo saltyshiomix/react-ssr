@@ -163,16 +163,30 @@ export function babelRequire(filename: string) {
 
     // const hoge = isInNodePath(aPath);
 
-    // if (!module.parent) {
-    //   return originalRequire.apply(this, arguments);
-    // }
+    if (!module.parent) {
+      return originalRequire.apply(this, arguments);
+    }
 
     try {
       // console.log(Module._resolveFilename(arguments[0]));
       console.log(require.resolve(arguments[0]));
     } catch (error) {
     }
-    
+
+    let p;
+    const localModuleName = join(dirname(module.parent.filename), arguments[0]);
+    try {
+      p = Module._resolveFilename(localModuleName);
+    } catch (e) {
+      if (isModuleNotFoundError(e)) {
+        p = localModuleName;
+      } else {
+        throw e;
+      }
+    }
+
+    console.log(p);
+
     // console.log(getCallerFile());
 
     // const isLocalModule = /^\.{1,2}[/\\]?/.test(p);
