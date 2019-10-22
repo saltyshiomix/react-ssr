@@ -146,5 +146,5 @@ export const babelRequire = (file: string) => {
 
   console.log(code);
 
-  return requireFromString(code);
+  return requireFromString(code, file);
 };
