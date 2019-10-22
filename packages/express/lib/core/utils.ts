@@ -184,7 +184,7 @@ const requireFromString = (code: string, filename?: string) => {
   const m = new Module(f, p);
   m.filename = f;
   // m.paths = Module._nodeModulePaths(dirname(f));
-  m._preloadModules(Module._nodeModulePaths(dirname(f)));
+  Module._preloadModules(Module._nodeModulePaths(dirname(f)));
   m._compile(code, f);
   const _exports = m.exports;
   p && p.children && p.children.splice(p.children.indexOf(m), 1);
