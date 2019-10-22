@@ -122,7 +122,6 @@ const getBabelPresetsAndPlugins = () => {
     [require('@babel/plugin-proposal-object-rest-spread'), {
       useBuiltIns: true,
     }],
-    // require('@babel/plugin-transform-react-jsx'),
     [require('@babel/plugin-transform-runtime'), {
       corejs: 2,
       helpers: true,
@@ -184,15 +183,10 @@ Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
   const [file, isUserDefinedModule] = getPathInfo(request, parent.filename);
-
   if (isAbsolute(file) && isUserDefinedModule) {
-    console.log('file: ' + file);
-
     try {
       return babelRequire(file);
-    } catch (ignore) {
-      return originalLoader.apply(this, arguments);
-    }
+    } catch (ignore) {}
   }
 
   return originalLoader.apply(this, arguments);
