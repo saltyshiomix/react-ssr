@@ -183,15 +183,13 @@ Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
   const [file, isUserDefinedModule] = getPathInfo(request, parent.filename);
-  if (isAbsolute(file) && isUserDefinedModule) {
-    try {
-      return babelRequire(file);
-    } catch (ignore) {}
-  }
-
   if (isAbsolute(file)) {
-    if (!isUserDefinedModule) {
+    const userDefined: boolean = !(/node_modules/.test(file));
+    if (userDefined) {
       console.log(file);
+      try {
+        return babelRequire(file);
+      } catch (ignore) {}
     }
   }
 
