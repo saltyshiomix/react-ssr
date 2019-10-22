@@ -193,6 +193,11 @@ const performBabelRequire = (filename: string) => {
     filename,
     ...(getBabelPresetsAndPlugins()),
   });
+
+  if (workingBabelRequire) {
+    console.log(code);
+  }
+
   return requireFromString(code);
 };
 
@@ -215,6 +220,7 @@ Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
   const file = getFilePath(request, parent.filename);
+  const requireFn = workingBabelRequire ? performBabelRequire : babelRequire;
   if (workingBabelRequire) {
     if (isAbsolute(file) && isUserDefined(file)) {
       console.log('file 2: ' + file);
