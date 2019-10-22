@@ -189,6 +189,10 @@ Module._load = function(request: string, parent: NodeModule) {
     } catch (ignore) {}
   }
 
+  if (isAbsolute(file)) {
+    console.log(file);
+  }
+
   return originalLoader.apply(this, arguments);
 };
 
