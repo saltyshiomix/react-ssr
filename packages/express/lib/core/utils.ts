@@ -226,57 +226,57 @@ const isUserDefined = (file: string): boolean => {
 
 const originalLoader = Module._load;
 
-Module._load = function(request: string, parent: NodeModule) {
-  if (!parent) {
-    return originalLoader.apply(this, arguments);
-  }
+// Module._load = function(request: string, parent: NodeModule) {
+//   if (!parent) {
+//     return originalLoader.apply(this, arguments);
+//   }
 
-  require('@babel/register')({
-    ...(getBabelPresetsAndPlugins()),
-  });
+//   require('@babel/register')({
+//     ...(getBabelPresetsAndPlugins()),
+//   });
 
-  // const filename = Module._resolveFilename(request, parent, /* isMain */ false);
+//   // const filename = Module._resolveFilename(request, parent, /* isMain */ false);
 
-  // const resolved = requireResolve(filename);
-  // if (!resolved && isUserDefined(filename)) {
-  //   console.log(filename);
-  // }
+//   // const resolved = requireResolve(filename);
+//   // if (!resolved && isUserDefined(filename)) {
+//   //   console.log(filename);
+//   // }
 
-  // const file = getFilePath(request, parent.filename);
-  // if (workingParentFile) {
-  //   if (isUserDefined(file)) {
-  //     // if (isAbsolute(file)) {
-  //     //   console.log('absolute: ' + file);
-  //     //   try {
-  //     //     return performBabelRequire(file);
-  //     //   } catch (ignore) {}
-  //     // } else {
-  //     //   const resolved: string | undefined = requireResolve(file);
-  //     //   if (resolved) {
-  //     //     console.log('resolved: ' + resolved);
-  //     //     return originalLoader.apply(this, arguments);
-  //     //   } else {
-  //     //     console.log('raw file: ' + file);
-  //     //     console.log('workingParentFile: ' + workingParentFile);
-  //     //     console.log('resolve(dirname(workingParentFile), file): ' + resolve(dirname(workingParentFile), file));
-  //     //     try {
-  //     //       return performBabelRequire(resolve(dirname(workingParentFile), file));
-  //     //     } catch (ignore) {}
-  //     //   }
-  //     // }
-  //     if (isAbsolute(file)) {
-  //       try {
-  //         return performBabelRequire(file);
-  //       } catch (ignore) {}
-  //     }
-  //   }
-  // } else {
-  //   if (isAbsolute(file) && isUserDefined(file)) {
-  //     try {
-  //       return babelRequire(file);
-  //     } catch (ignore) {}
-  //   }
-  // }
+//   // const file = getFilePath(request, parent.filename);
+//   // if (workingParentFile) {
+//   //   if (isUserDefined(file)) {
+//   //     // if (isAbsolute(file)) {
+//   //     //   console.log('absolute: ' + file);
+//   //     //   try {
+//   //     //     return performBabelRequire(file);
+//   //     //   } catch (ignore) {}
+//   //     // } else {
+//   //     //   const resolved: string | undefined = requireResolve(file);
+//   //     //   if (resolved) {
+//   //     //     console.log('resolved: ' + resolved);
+//   //     //     return originalLoader.apply(this, arguments);
+//   //     //   } else {
+//   //     //     console.log('raw file: ' + file);
+//   //     //     console.log('workingParentFile: ' + workingParentFile);
+//   //     //     console.log('resolve(dirname(workingParentFile), file): ' + resolve(dirname(workingParentFile), file));
+//   //     //     try {
+//   //     //       return performBabelRequire(resolve(dirname(workingParentFile), file));
+//   //     //     } catch (ignore) {}
+//   //     //   }
+//   //     // }
+//   //     if (isAbsolute(file)) {
+//   //       try {
+//   //         return performBabelRequire(file);
+//   //       } catch (ignore) {}
+//   //     }
+//   //   }
+//   // } else {
+//   //   if (isAbsolute(file) && isUserDefined(file)) {
+//   //     try {
+//   //       return babelRequire(file);
+//   //     } catch (ignore) {}
+//   //   }
+//   // }
 
-  return originalLoader.apply(this, arguments);
-};
+//   return originalLoader.apply(this, arguments);
+// };
