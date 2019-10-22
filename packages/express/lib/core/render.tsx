@@ -8,27 +8,31 @@ import {
 } from './utils';
 
 const codec = require('json-url')('lzw');
-const Module = require('module');
+// const Module = require('module');
 
-const originalLoader = Module._load;
-let babelRegistered = false;
+// const originalLoader = Module._load;
+// let babelRegistered = false;
 
-Module._load = function(request: string, parent: NodeModule) {
-  if (!parent) {
-    return originalLoader.apply(this, arguments);
-  }
+// Module._load = function(request: string, parent: NodeModule) {
+//   if (!parent) {
+//     return originalLoader.apply(this, arguments);
+//   }
 
-  if (!babelRegistered) {
-    const m = new Module('@babel/register');
-    m.load('@babel/register');
-    m.exports({
-      ...(getBabelPresetsAndPlugins()),
-    });
-    babelRegistered = true;
-  }
+//   if (!babelRegistered) {
+//     const m = new Module('@babel/register');
+//     m.load('@babel/register');
+//     m.exports({
+//       ...(getBabelPresetsAndPlugins()),
+//     });
+//     babelRegistered = true;
+//   }
 
-  return originalLoader.apply(this, arguments);
-};
+//   return originalLoader.apply(this, arguments);
+// };
+
+require('@babel/register')({
+  ...(getBabelPresetsAndPlugins()),
+})
 
 const render = async (file: string, props: object, config: Config): Promise<string> => {
   let Page = require(file);
