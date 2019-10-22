@@ -122,7 +122,7 @@ const getBabelPresetsAndPlugins = () => {
     [require('@babel/plugin-proposal-object-rest-spread'), {
       useBuiltIns: true,
     }],
-    require('@babel/plugin-transform-react-jsx'),
+    // require('@babel/plugin-transform-react-jsx'),
     [require('@babel/plugin-transform-runtime'), {
       corejs: 2,
       helpers: true,
@@ -132,9 +132,6 @@ const getBabelPresetsAndPlugins = () => {
   ];
   return { presets, plugins };
 };
-
-// const getCallerFile = require('get-caller-file');
-// const normalize = require('normalize-path');
 
 const Module = require('module');
 
