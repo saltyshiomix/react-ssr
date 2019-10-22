@@ -105,3 +105,45 @@ export const readFileWithProps = (file: string, props: any) => {
 };
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+const getBabelPresetsAndPlugins = () => {
+  const presets = [
+    require('@babel/preset-env'),
+    require('@babel/preset-react'),
+    require('@babel/preset-typescript'),
+  ];
+  const plugins = [
+    require('babel-plugin-react-require'),
+    require('babel-plugin-css-modules-transform'),
+    require('@babel/plugin-syntax-dynamic-import'),
+    require('@babel/plugin-proposal-class-properties'),
+    [require('@babel/plugin-proposal-object-rest-spread'), {
+      useBuiltIns: true,
+    }],
+    require('@babel/plugin-transform-react-jsx'),
+    [require('@babel/plugin-transform-runtime'), {
+      corejs: 2,
+      helpers: true,
+      regenerator: true,
+      useESModules: false,
+    }],
+  ];
+  return { presets, plugins };
+};
+
+const requireFromString = (code: string, filename?: string) => {
+  // const Module = module.constructor;
+  const Module = module.constructor;
+  const m = Module();
+  m._compile(code, filename);
+  return m.exports;
+}
+
+export const babelRequire = (file: string) => {
+  let code: string = readFileSync(file).toString();
+  code = require("@babel/core").transform(code, getBabelPresetsAndPlugins());
+
+  console.log(code);
+
+  return requireFromString(code);
+};
