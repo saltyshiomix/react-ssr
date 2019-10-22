@@ -216,7 +216,6 @@ Module._load = function(request: string, parent: NodeModule) {
   if (!parent) return originalLoader.apply(this, arguments);
 
   const file = getFilePath(request, parent.filename);
-  const requireFn = workingParentFile ? performBabelRequire : babelRequire;
   if (workingParentFile) {
     if (isUserDefined(file)) {
       if (isAbsolute(file)) {
@@ -237,16 +236,11 @@ Module._load = function(request: string, parent: NodeModule) {
           console.log('workingParentFile: ' + workingParentFile);
           console.log('resolve(dirname(workingParentFile), file): ' + resolve(dirname(workingParentFile), file));
           try {
-            return performBabelRequire(file);
+            return performBabelRequire(resolve(dirname(workingParentFile), file));
           } catch (ignore) {}
         }
       }
     }
-    // if (isAbsolute(file) && isUserDefined(file)) {
-    //   try {
-    //     return performBabelRequire(file);
-    //   } catch (ignore) {}
-    // }
   } else {
     if (isAbsolute(file) && isUserDefined(file)) {
       try {
