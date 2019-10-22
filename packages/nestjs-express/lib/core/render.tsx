@@ -8,7 +8,6 @@ import {
 } from './utils';
 
 const codec = require('json-url')('lzw');
-const escaperegexp = require('lodash.escaperegexp');
 
 const render = async (file: string, props: object, config: Config): Promise<string> => {
   let Page = babelRequire(file);
@@ -24,26 +23,4 @@ const render = async (file: string, props: object, config: Config): Promise<stri
   return html;
 };
 
-let moduleDetectRegEx: RegExp;
-
-const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
-  if (!moduleDetectRegEx) {
-    const pattern = [].concat(options.settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');
-    moduleDetectRegEx = new RegExp(pattern);
-  }
-
-  const { settings, cache, _locals, ...props } = options;
-  try {
-    return cb(undefined, await render(file, props, config));
-  } catch (e) {
-    return cb(e);
-  } finally {
-    Object.keys(require.cache).forEach((filename) => {
-      if (moduleDetectRegEx.test(filename)) {
-        delete require.cache[filename];
-      }
-    });
-  }
-};
-
-export default renderFile;
+export default render;
