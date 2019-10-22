@@ -108,7 +108,7 @@ export const readFileWithProps = (file: string, props: any) => {
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const getBabelPresetsAndPlugins = () => {
+export const getBabelPresetsAndPlugins = () => {
   const presets = [
     require('@babel/preset-env'),
     require('@babel/preset-react'),
