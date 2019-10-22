@@ -186,11 +186,17 @@ Module._load = function(request: string, parent: NodeModule) {
   if (isAbsolute(file)) {
     const isUserDefined: boolean = !(/node_modules/.test(file) || /package\.json/.test(file));
     if (isUserDefined) {
-      console.log(file);
       try {
         return babelRequire(file);
       } catch (ignore) {}
     }
+  }
+
+  if (requiringWithBabel) {
+    console.log(file);
+    try {
+      return babelRequire(file);
+    } catch (ignore) {}
   }
 
   return originalLoader.apply(this, arguments);
@@ -208,13 +214,17 @@ const requireFromString = (code: string, filename?: string) => {
   return _exports;
 }
 
+let requiringWithBabel = false;
+
 export function babelRequire(filename: string) {
-  const { code } = require('@babel/core').transform(readFileSync(filename).toString(), {
-    filename,
-    ...(getBabelPresetsAndPlugins()),
-  });
-
-  console.log(code);
-
-  return requireFromString(code);
+  requiringWithBabel = true;
+  try {
+    const { code } = require('@babel/core').transform(readFileSync(filename).toString(), {
+      filename,
+      ...(getBabelPresetsAndPlugins()),
+    });
+    return requireFromString(code);
+  } finally {
+    requiringWithBabel = true;
+  }
 };
