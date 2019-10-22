@@ -199,6 +199,7 @@ const performBabelRequire = (filename: string) => {
     ...(getBabelPresetsAndPlugins()),
   });
   return requireFromString(code, filename);
+  // return requireFromString(code);
 };
 
 export const babelRequire = (filename: string) => {
@@ -222,24 +223,29 @@ Module._load = function(request: string, parent: NodeModule) {
   const file = getFilePath(request, parent.filename);
   if (workingParentFile) {
     if (isUserDefined(file)) {
+      // if (isAbsolute(file)) {
+      //   console.log('absolute: ' + file);
+      //   try {
+      //     return performBabelRequire(file);
+      //   } catch (ignore) {}
+      // } else {
+      //   const resolved: string | undefined = requireResolve(file);
+      //   if (resolved) {
+      //     console.log('resolved: ' + resolved);
+      //     return originalLoader.apply(this, arguments);
+      //   } else {
+      //     console.log('raw file: ' + file);
+      //     console.log('workingParentFile: ' + workingParentFile);
+      //     console.log('resolve(dirname(workingParentFile), file): ' + resolve(dirname(workingParentFile), file));
+      //     try {
+      //       return performBabelRequire(resolve(dirname(workingParentFile), file));
+      //     } catch (ignore) {}
+      //   }
+      // }
       if (isAbsolute(file)) {
-        console.log('absolute: ' + file);
         try {
           return performBabelRequire(file);
         } catch (ignore) {}
-      } else {
-        const resolved: string | undefined = requireResolve(file);
-        if (resolved) {
-          console.log('resolved: ' + resolved);
-          return originalLoader.apply(this, arguments);
-        } else {
-          console.log('raw file: ' + file);
-          console.log('workingParentFile: ' + workingParentFile);
-          console.log('resolve(dirname(workingParentFile), file): ' + resolve(dirname(workingParentFile), file));
-          try {
-            return performBabelRequire(resolve(dirname(workingParentFile), file));
-          } catch (ignore) {}
-        }
       }
     }
   } else {
