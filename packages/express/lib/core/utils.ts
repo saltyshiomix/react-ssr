@@ -174,35 +174,6 @@ const getFilePath = (path: string, calledFrom: string): string => {
   }
 }
 
-const originalLoader = Module._load;
-
-Module._load = function(request: string, parent: NodeModule) {
-  if (!parent) return originalLoader.apply(this, arguments);
-
-  const file = getFilePath(request, parent.filename);
-  if (isAbsolute(file)) {
-    const isUserDefined: boolean = !(/node_modules/.test(file) || /package\.json/.test(file));
-    if (isUserDefined) {
-      try {
-        return babelRequire(file);
-      } catch (ignore) {}
-    }
-  }
-
-  if (workingBabelRequire) {
-    const file = getFilePath(request, parent.filename);
-    const isUserDefined: boolean = !(/node_modules/.test(file) || /package\.json/.test(file));
-    if (isUserDefined) {
-      console.log(file);
-      try {
-        return performBabelRequire(file);
-      } catch (ignore) {}
-    }
-  }
-
-  return originalLoader.apply(this, arguments);
-};
-
 const requireFromString = (code: string, filename?: string) => {
   const f = filename || '';
   const p = module.parent;
@@ -232,4 +203,33 @@ export const babelRequire = (filename: string) => {
   } finally {
     workingBabelRequire = false;
   }
+};
+
+const isUserDefined = (file: string): boolean => {
+  return !(/node_modules/.test(file) || /package\.json/.test(file));
+};
+
+const originalLoader = Module._load;
+
+Module._load = function(request: string, parent: NodeModule) {
+  if (!parent) return originalLoader.apply(this, arguments);
+
+  const file = getFilePath(request, parent.filename);
+  if (isAbsolute(file) && isUserDefined(file)) {
+    try {
+      return babelRequire(file);
+    } catch (ignore) {}
+  }
+
+  if (workingBabelRequire) {
+    const file = getFilePath(request, parent.filename);
+    if (isAbsolute(file) && isUserDefined(file)) {
+      console.log(file);
+      try {
+        return performBabelRequire(file);
+      } catch (ignore) {}
+    }
+  }
+
+  return originalLoader.apply(this, arguments);
 };
