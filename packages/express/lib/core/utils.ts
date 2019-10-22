@@ -9,8 +9,6 @@ import {
   sep,
   basename,
   extname,
-  dirname,
-  isAbsolute,
 } from 'path';
 import readdir from 'recursive-readdir';
 import Config from './config';
@@ -108,30 +106,6 @@ export const readFileWithProps = (file: string, props: any) => {
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// export const getBabelPresetsAndPlugins = () => {
-//   const presets = [
-//     require('@babel/preset-env'),
-//     require('@babel/preset-react'),
-//     require('@babel/preset-typescript'),
-//   ];
-//   const plugins = [
-//     require('babel-plugin-react-require'),
-//     require('babel-plugin-css-modules-transform'),
-//     require('@babel/plugin-syntax-dynamic-import'),
-//     require('@babel/plugin-proposal-class-properties'),
-//     [require('@babel/plugin-proposal-object-rest-spread'), {
-//       useBuiltIns: true,
-//     }],
-//     [require('@babel/plugin-transform-runtime'), {
-//       corejs: 2,
-//       helpers: true,
-//       regenerator: true,
-//       useESModules: false,
-//     }],
-//   ];
-//   return { presets, plugins };
-// };
-
 export const getBabelPresetsAndPlugins = () => {
   const presets = [
     '@babel/preset-env',
@@ -156,151 +130,16 @@ export const getBabelPresetsAndPlugins = () => {
   return { presets, plugins };
 };
 
-const Module = require('module');
+// const Module = require('module');
 
-const requireResolve = (filename: string): string | undefined => {
-  let resolved: string | undefined = undefined;
-  try {
-    resolved = require.resolve(filename);
-  } catch (ignore) {}
-  return resolved;
-};
-
-const isInNodePath = (p?: string): boolean => {
-  if (!p) return false;
-  return Module.globalPaths
-    .map((nodePath: string) => resolve(process.cwd(), nodePath) + sep)
-    .some((fullNodePath: string) => p.indexOf(fullNodePath) === 0);
-}
-
-const isModuleNotFoundError = (e: any) => e.code && e.code === 'MODULE_NOT_FOUND';
-
-const getFilePath = (path: string, calledFrom: string): string => {
-  const resolved: string | undefined = requireResolve(path);
-  const isLocalModule = /^\.{1,2}[/\\]?/.test(path);
-  const isSystemModule = resolved === path;
-  const isInNode = isInNodePath(resolved);
-  const isInNodeModule = !isLocalModule && /[/\\]node_modules[/\\]/.test(resolved || '');
-
-  if (isSystemModule || isInNode || isInNodeModule) {
-    return resolved as string;
-  }
-
-  if (!isLocalModule) {
-    return path;
-  }
-
-  const localModuleName = join(dirname(calledFrom), path);
-  try {
-    return Module._resolveFilename(localModuleName);
-  } catch (e) {
-    if (isModuleNotFoundError(e)) {
-      return localModuleName
-    } else {
-      throw e;
-    }
-  }
-}
-
-const requireFromString = (code: string, filename?: string) => {
-  const f = filename || '';
-  const p = module.parent;
-  const m = new Module(f, p);
-  m.filename = f;
-  m.paths = Module._nodeModulePaths(dirname(f));
-  m._compile(code, f);
-  const _exports = m.exports;
-  p && p.children && p.children.splice(p.children.indexOf(m), 1);
-  return _exports;
-}
-
-const __babelRequire = (filename: string) => {
-  const { code } = require('@babel/core').transform(readFileSync(filename).toString(), {
-    filename,
-    ...(getBabelPresetsAndPlugins()),
-  });
-  return requireFromString(code, filename);
-  // return requireFromString(code);
-};
-
-let workingParentFile: string | undefined = undefined;
-
-const performBabelRequire = (filename: string) => {
-  workingParentFile = filename;
-  const { code } = require('@babel/core').transform(readFileSync(filename).toString(), {
-    filename,
-    ...(getBabelPresetsAndPlugins()),
-  });
-  return requireFromString(code, filename);
-  // return requireFromString(code);
-};
-
-export const babelRequire = (filename: string) => {
-  workingParentFile = filename;
-  try {
-    return performBabelRequire(filename);
-  } finally {
-    workingParentFile = undefined;
-  }
-};
-
-const isUserDefined = (file: string): boolean => {
-  return !(/node_modules/.test(file) || /package\.json/.test(file));
-};
-
-const originalLoader = Module._load;
-
-// Module._load = function(request: string, parent: NodeModule) {
-//   if (!parent) {
-//     return originalLoader.apply(this, arguments);
-//   }
-
-//   require('@babel/register')({
-//     ...(getBabelPresetsAndPlugins()),
-//   });
-
-//   // const filename = Module._resolveFilename(request, parent, /* isMain */ false);
-
-//   // const resolved = requireResolve(filename);
-//   // if (!resolved && isUserDefined(filename)) {
-//   //   console.log(filename);
-//   // }
-
-//   // const file = getFilePath(request, parent.filename);
-//   // if (workingParentFile) {
-//   //   if (isUserDefined(file)) {
-//   //     // if (isAbsolute(file)) {
-//   //     //   console.log('absolute: ' + file);
-//   //     //   try {
-//   //     //     return performBabelRequire(file);
-//   //     //   } catch (ignore) {}
-//   //     // } else {
-//   //     //   const resolved: string | undefined = requireResolve(file);
-//   //     //   if (resolved) {
-//   //     //     console.log('resolved: ' + resolved);
-//   //     //     return originalLoader.apply(this, arguments);
-//   //     //   } else {
-//   //     //     console.log('raw file: ' + file);
-//   //     //     console.log('workingParentFile: ' + workingParentFile);
-//   //     //     console.log('resolve(dirname(workingParentFile), file): ' + resolve(dirname(workingParentFile), file));
-//   //     //     try {
-//   //     //       return performBabelRequire(resolve(dirname(workingParentFile), file));
-//   //     //     } catch (ignore) {}
-//   //     //   }
-//   //     // }
-//   //     if (isAbsolute(file)) {
-//   //       try {
-//   //         return performBabelRequire(file);
-//   //       } catch (ignore) {}
-//   //     }
-//   //   }
-//   // } else {
-//   //   if (isAbsolute(file) && isUserDefined(file)) {
-//   //     try {
-//   //       return babelRequire(file);
-//   //     } catch (ignore) {}
-//   //   }
-//   // }
-
-//   return originalLoader.apply(this, arguments);
-// };
+// const requireFromString = (code: string, filename?: string) => {
+//   const f = filename || '';
+//   const p = module.parent;
+//   const m = new Module(f, p);
+//   m.filename = f;
+//   m.paths = Module._nodeModulePaths(dirname(f));
+//   m._compile(code, f);
+//   const _exports = m.exports;
+//   p && p.children && p.children.splice(p.children.indexOf(m), 1);
+//   return _exports;
+// }

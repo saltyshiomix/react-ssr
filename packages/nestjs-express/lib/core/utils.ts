@@ -9,8 +9,6 @@ import {
   sep,
   basename,
   extname,
-  dirname,
-  isAbsolute,
 } from 'path';
 import readdir from 'recursive-readdir';
 import Config from './config';
@@ -108,21 +106,21 @@ export const readFileWithProps = (file: string, props: any) => {
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const getBabelPresetsAndPlugins = () => {
+export const getBabelPresetsAndPlugins = () => {
   const presets = [
-    require('@babel/preset-env'),
-    require('@babel/preset-react'),
-    require('@babel/preset-typescript'),
+    '@babel/preset-env',
+    '@babel/preset-react',
+    '@babel/preset-typescript',
   ];
   const plugins = [
-    require('babel-plugin-react-require'),
-    require('babel-plugin-css-modules-transform'),
-    require('@babel/plugin-syntax-dynamic-import'),
-    require('@babel/plugin-proposal-class-properties'),
-    [require('@babel/plugin-proposal-object-rest-spread'), {
+    'babel-plugin-react-require',
+    'babel-plugin-css-modules-transform',
+    '@babel/plugin-syntax-dynamic-import',
+    '@babel/plugin-proposal-class-properties',
+    ['@babel/plugin-proposal-object-rest-spread', {
       useBuiltIns: true,
     }],
-    [require('@babel/plugin-transform-runtime'), {
+    ['@babel/plugin-transform-runtime', {
       corejs: 2,
       helpers: true,
       regenerator: true,
@@ -132,85 +130,16 @@ const getBabelPresetsAndPlugins = () => {
   return { presets, plugins };
 };
 
-const Module = require('module');
+// const Module = require('module');
 
-const isInNodePath = (p?: string): boolean => {
-  if (!p) return false;
-  return Module.globalPaths
-    .map((nodePath: string) => resolve(process.cwd(), nodePath) + sep)
-    .some((fullNodePath: string) => p.indexOf(fullNodePath) === 0);
-}
-
-const isModuleNotFoundError = (e: any) => e.code && e.code === 'MODULE_NOT_FOUND';
-
-const getPathInfo = (path: string, calledFrom: string): [string, boolean] => {
-  let resolvedPath: string | undefined = undefined;
-  try {
-    resolvedPath = require.resolve(path);
-  } catch (ignore) {}
-
-  const isLocalModule = /^\.{1,2}[/\\]?/.test(path);
-  const isSystemModule = resolvedPath === path;
-  const isInNode = isInNodePath(resolvedPath);
-  const isInNodeModule = !isLocalModule && /[/\\]node_modules[/\\]/.test(resolvedPath || '');
-
-  if (isSystemModule || isInNode || isInNodeModule) {
-    return [resolvedPath as string, false];
-  }
-
-  if (!isLocalModule) {
-    return [path, false];
-  }
-
-  const localModuleName = join(dirname(calledFrom), path);
-  try {
-    const resolved: string = Module._resolveFilename(localModuleName);
-    const inNodeModules: boolean = /node_modules/.test(resolved);
-    return [resolved, !inNodeModules];
-  } catch (e) {
-    if (isModuleNotFoundError(e)) {
-      const inNodeModules: boolean = /node_modules/.test(localModuleName);
-      return [localModuleName, !inNodeModules];
-    } else {
-      throw e;
-    }
-  }
-}
-
-const originalLoader = Module._load;
-
-Module._load = function(request: string, parent: NodeModule) {
-  if (!parent) return originalLoader.apply(this, arguments);
-
-  const [file, isUserDefinedModule] = getPathInfo(request, parent.filename);
-  if (isAbsolute(file) && isUserDefinedModule) {
-    try {
-      return babelRequire(file);
-    } catch (ignore) {}
-  }
-
-  return originalLoader.apply(this, arguments);
-};
-
-const requireFromString = (code: string, filename?: string) => {
-  const f = filename || '';
-  const p = module.parent;
-  const m = new Module(f, p);
-  m.filename = f;
-  m.paths = Module._nodeModulePaths(dirname(f));
-  m._compile(code, f);
-  const _exports = m.exports;
-  p && p.children && p.children.splice(p.children.indexOf(m), 1);
-  return _exports;
-}
-
-export function babelRequire(filename: string) {
-  const rawCode: string = readFileSync(filename).toString();
-
-  const { code } = require("@babel/core").transform(rawCode, {
-    filename,
-    ...(getBabelPresetsAndPlugins()),
-  });
-
-  return requireFromString(code);
-};
+// const requireFromString = (code: string, filename?: string) => {
+//   const f = filename || '';
+//   const p = module.parent;
+//   const m = new Module(f, p);
+//   m.filename = f;
+//   m.paths = Module._nodeModulePaths(dirname(f));
+//   m._compile(code, f);
+//   const _exports = m.exports;
+//   p && p.children && p.children.splice(p.children.indexOf(m), 1);
+//   return _exports;
+// }

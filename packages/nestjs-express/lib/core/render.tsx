@@ -4,13 +4,17 @@ import SSR from './ssr';
 import Config from './config';
 import {
   getPageId,
-  babelRequire,
+  getBabelPresetsAndPlugins,
 } from './utils';
+
+require('@babel/register')({
+  ...(getBabelPresetsAndPlugins()),
+});
 
 const codec = require('json-url')('lzw');
 
 const render = async (file: string, props: object, config: Config): Promise<string> => {
-  let Page = babelRequire(file);
+  let Page = require(file);
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
