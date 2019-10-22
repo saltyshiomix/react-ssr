@@ -2,11 +2,20 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import SSR from './ssr';
 import Config from './config';
-import { getPageId } from './utils';
+import { getPageId, getBabelRule } from './utils';
 
 const codec = require('json-url')('lzw');
 
+let babelRegistered = false;
+
 const render = async (file: string, props: object, config: Config): Promise<string> => {
+  if (!babelRegistered) {
+    require('@babel/register')({
+      extends: getBabelrc(),
+    });
+    babelRegistered = true;
+  }
+
   const script = `/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`;
 
   let Page = require(file);
