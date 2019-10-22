@@ -11,12 +11,12 @@ let babelRegistered = false;
 const render = async (file: string, props: object, config: Config): Promise<string> => {
   if (!babelRegistered) {
     require('@babel/register')({
-      presets: ["@babel/preset-react", "@babel/preset-env"]
-      // extends: getBabelrc(),
+      // presets: ["@babel/preset-react", "@babel/preset-env"]
+      extends: getBabelrc(),
       // ignore: [/node_modules/],
       // only: [process.cwd()],
     });
-    require('@babel/polyfill')
+    // require('@babel/polyfill')
     babelRegistered = true;
   }
 
