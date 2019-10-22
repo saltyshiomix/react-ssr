@@ -18,7 +18,10 @@ const render = async (file: string, props: object, config: Config): Promise<stri
 
   const script = `/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`;
 
+  console.log('debug 1');
   let Page = require(file);
+  console.log('debug 2');
+
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
