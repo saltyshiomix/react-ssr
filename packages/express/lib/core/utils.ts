@@ -163,23 +163,7 @@ export function babelRequire(filename: string) {
 
     // const hoge = isInNodePath(aPath);
 
-    if (!module.parent) {
-      return originalRequire.apply(this, arguments);
-    }
-
-    let p;
-    const localModuleName = join(dirname(module.parent.filename), arguments[0]);
-    try {
-      p = Module._resolveFilename(localModuleName);
-    } catch (e) {
-      if (isModuleNotFoundError(e)) {
-        p = localModuleName;
-      } else {
-        throw e;
-      }
-    }
-
-    console.log(p);
+    console.log(require.main!.filename);
 
     // console.log(getCallerFile());
 
