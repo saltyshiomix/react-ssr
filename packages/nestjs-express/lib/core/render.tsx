@@ -26,7 +26,14 @@ const render = async (file: string, props: object, config: Config): Promise<stri
   console.log(getBabelrc());
   console.log(babelRegistered);
 
-  let Page = require(file);
+  let Page;
+  try {
+    Page = require(file);
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+  
   console.log('debug 2');
 
   Page = Page.default || Page;
