@@ -211,6 +211,7 @@ const requireFromString = (code: string, filename?: string) => {
 const babelTransform = (filenameOrCode: string, initial: boolean = false): string => {
   if (existsSync(filenameOrCode)) {
     if (initial) {
+      initial = false;
       injecting = true;
       workingParentFile = filenameOrCode;
       const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
