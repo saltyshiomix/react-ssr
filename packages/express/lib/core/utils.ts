@@ -190,7 +190,7 @@ const escaperegexp = require('lodash.escaperegexp');
 // let workingParentFile: string | undefined = undefined;
 
 export const babelRequire = (filename: string) => {
-  const code = babelTransform(filename, filename);
+  const code = babelTransform(filename, filename, /* initial */ true);
 
   console.log(code);
 
@@ -227,13 +227,12 @@ const performBabelTransform = (filename: string): string => {
 
   console.log(minified);
 
-  return minified;
+  return minified.code;
 }
 
 const babelTransform = (filenameOrCode: string, parentFile: string, initial: boolean = false): string => {
   if (existsSync(filenameOrCode)) {
     if (initial) {
-      initial = false;
       const code = performBabelTransform(filenameOrCode);
       return `
 function requireFromString(code, filename) {
