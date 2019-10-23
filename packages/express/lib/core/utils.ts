@@ -1,6 +1,7 @@
 import {
   existsSync,
   readFileSync,
+  lstatSync,
   Stats,
 } from 'fs';
 import {
@@ -206,14 +207,20 @@ const babelTransform = (filenameOrCode: string): string => {
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
         const relativePath = value.match(/[\"\']\..+[\"\']/)![0].replace(/"/g, '');
-        const absolutePath = resolve(dirname(workingParentFile as string), relativePath);
+        let absolutePath = resolve(dirname(workingParentFile as string), relativePath);
+        if (lstatSync(absolutePath).isDirectory()) {
+          absolutePath = join(absolutePath, 'index.js');
+        }
         const transformed = `requireFromString(${babelTransform(absolutePath)}, ${absolutePath})`;
+
+        console.log(transformed);
+
         filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
       }
 
       console.log(filenameOrCode);
 
-      return filenameOrCode;
+      return babelTransform(filenameOrCode);
     } else {
       console.log('not match');
     }
