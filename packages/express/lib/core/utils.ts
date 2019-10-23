@@ -134,7 +134,7 @@ const getBabelPresetsAndPlugins = () => {
 
 const Module = require('module');
 
-console.log(Module.builtinModules);
+// console.log(Module.builtinModules);
 
 const requireResolve = (filename: string): string | undefined => {
   let resolved: string | undefined = undefined;
@@ -214,7 +214,7 @@ function requireFromString(code: string, filename?: string) {
 }
 `;
     console.log(filenameOrCode);
-    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"|\']\.[.+][\"|\']\)/g);
+    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\.[.+][\"\']\)/g);
     if (Matches) {
       console.log(Matches[0]);
     } else {
