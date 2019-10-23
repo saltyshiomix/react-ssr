@@ -115,7 +115,6 @@ const getBabelPresetsAndPlugins = () => {
     require('@babel/preset-env'),
     require('@babel/preset-react'),
     require('@babel/preset-typescript'),
-    require('babel-preset-minify'),
   ];
   const plugins = [
     require('babel-plugin-react-require'),
@@ -214,14 +213,21 @@ const requireFromString = (code: string, filename?: string) => {
   return _exports;
 }
 
+const Terser = require('terser');
+
+const performBabelTransform = (filename: string): string => {
+  const { code } = require('@babel/core').transform(readFileSync(filename).toString(), {
+    filename,
+    ...(getBabelPresetsAndPlugins()),
+  });
+  return Terser.minify(code).code;
+}
+
 const babelTransform = (filenameOrCode: string, parentFile: string, initial: boolean = false): string => {
   if (existsSync(filenameOrCode)) {
     if (initial) {
       initial = false;
-      const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
-        filename: filenameOrCode,
-        ...(getBabelPresetsAndPlugins()),
-      });
+      const code = performBabelTransform(filenameOrCode);
       return `
 function requireFromString(code, filename) {
   const f = filename || '';
@@ -237,11 +243,7 @@ function requireFromString(code, filename) {
 ${babelTransform(code, parentFile)}
 `;
     } else {
-      const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
-        filename: filenameOrCode,
-        ...(getBabelPresetsAndPlugins()),
-      });
-      return babelTransform(code, parentFile);
+      return babelTransform(performBabelTransform(filenameOrCode), parentFile);
     }
   } else {
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
@@ -279,11 +281,11 @@ ${babelTransform(code, parentFile)}
     } else {
       if (isAbsolute(filenameOrCode)) {
         // return babelTransform(filenameOrCode, filenameOrCode);
-        const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
-          filename: filenameOrCode,
-          ...(getBabelPresetsAndPlugins()),
-        });
-        return babelTransform(code, parentFile);
+        // const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
+        //   filename: filenameOrCode,
+        //   ...(getBabelPresetsAndPlugins()),
+        // });
+        return babelTransform(performBabelTransform(filenameOrCode), parentFile);
       }
       console.log('finished');
     }
