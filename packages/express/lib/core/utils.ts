@@ -134,73 +134,30 @@ const getBabelPresetsAndPlugins = () => {
   return { presets, plugins };
 };
 
-// const Module = require('module');
-
-// // console.log(Module.builtinModules);
-
-// const requireResolve = (filename: string): string | undefined => {
-//   let resolved: string | undefined = undefined;
-//   try {
-//     resolved = require.resolve(filename);
-//   } catch (ignore) {}
-//   return resolved;
-// };
-
-// const isInNodePath = (p?: string): boolean => {
-//   if (!p) return false;
-//   return Module.globalPaths
-//     .map((nodePath: string) => resolve(process.cwd(), nodePath) + sep)
-//     .some((fullNodePath: string) => p.indexOf(fullNodePath) === 0);
-// }
-
-// const isModuleNotFoundError = (e: any) => e.code && e.code === 'MODULE_NOT_FOUND';
-
-// const getFilePath = (path: string, calledFrom: string): string => {
-//   const resolved: string | undefined = requireResolve(path);
-//   const isLocalModule = /^\.{1,2}[/\\]?/.test(path);
-//   const isSystemModule = resolved === path;
-//   const isInNode = isInNodePath(resolved);
-//   const isInNodeModule = !isLocalModule && /[/\\]node_modules[/\\]/.test(resolved || '');
-
-//   if (isSystemModule || isInNode || isInNodeModule) {
-//     return resolved as string;
-//   }
-
-//   if (!isLocalModule) {
-//     return path;
-//   }
-
-//   const localModuleName = join(dirname(calledFrom), path);
-//   try {
-//     return Module._resolveFilename(localModuleName);
-//   } catch (e) {
-//     if (isModuleNotFoundError(e)) {
-//       return localModuleName
-//     } else {
-//       throw e;
-//     }
-//   }
-// }
-
 const Module = require('module');
 const Terser = require('terser');
 const escaperegexp = require('lodash.escaperegexp');
 
-// let injecting = false;
-// let workingParentFile: string | undefined = undefined;
-
 export const babelRequire = (filename: string) => {
   let code = babelTransform(filename, filename, /* initial */ true);
 
-  console.log(code);
+  // console.log(code);
 
   const keys = Object.keys(cache);
+
+  console.log(keys);
+
   for (let i = keys.length - 1; 0 <= i; i--) {
     const [absolutePath, transformed] = cache[keys[i]];
-    // console.log(absolutePath, transformed);
     code = code.replace(`__${i}__`, `JSON.parse(\`${JSON.stringify(requireFromString(transformed, absolutePath))}\`)`)
   }
   cache = {};
+
+  console.log('=====');
+  console.log('');
+  console.log(code);
+  console.log('');
+  console.log('=====');
 
   return requireFromString(code, filename);
   // workingParentFile = filename;
@@ -228,14 +185,7 @@ const performBabelTransform = (filename: string): string => {
     filename,
     ...(getBabelPresetsAndPlugins()),
   });
-  // const singlified = code.replace(/\r\n/g, '').replace(/\n/g, '');
-  // console.log(singlified);
-  // return singlified;
-  const minified = Terser.minify(code);
-
-  // console.log(minified);
-
-  return minified.code;
+  return Terser.minify(code).code;
 }
 
 let index = 0;
@@ -246,20 +196,6 @@ const babelTransform = (filenameOrCode: string, parentFile: string, initial: boo
     if (initial) {
       const code = performBabelTransform(filenameOrCode);
       return babelTransform(code, parentFile);
-//       return `
-// function requireFromString(code, filename) {
-//   const f = filename || '';
-//   const p = module.parent;
-//   const m = new Module(f, p);
-//   m.filename = f;
-//   m.paths = Module._nodeModulePaths(dirname(f));
-//   m._compile(code, f);
-//   const _exports = m.exports;
-//   p && p.children && p.children.splice(p.children.indexOf(m), 1);
-//   return _exports;
-// }
-// ${babelTransform(code, parentFile)}
-// `;
     } else {
       return babelTransform(performBabelTransform(filenameOrCode), parentFile);
     }
@@ -275,7 +211,6 @@ const babelTransform = (filenameOrCode: string, parentFile: string, initial: boo
           for (let i = 0; i < files.length; i++) {
             const file = files[i];
             if (possibles.includes(file)) {
-              console.log(join(absolutePath, file));
               absolutePath = join(absolutePath, file);
             }
           }
@@ -288,73 +223,11 @@ const babelTransform = (filenameOrCode: string, parentFile: string, initial: boo
       return babelTransform(filenameOrCode, parentFile);
     } else {
       if (isAbsolute(filenameOrCode)) {
-        // return babelTransform(filenameOrCode, filenameOrCode);
-        // const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
-        //   filename: filenameOrCode,
-        //   ...(getBabelPresetsAndPlugins()),
-        // });
         return babelTransform(performBabelTransform(filenameOrCode), parentFile);
       }
-      console.log('finished');
+      // console.log('finished');
     }
 
     return filenameOrCode;
   }
 }
-
-
-
-// const performBabelRequire = (filename: string) => {
-//   workingParentFile = filename;
-//   return requireFromString(babelTransform(filename), filename);
-// };
-
-// const isUserDefined = (file: string): boolean => {
-//   return !(/node_modules/.test(file) || /package\.json/.test(file));
-// };
-
-// const originalLoader = Module._load;
-
-// Module._load = function(request: string, parent: NodeModule) {
-//   if (!parent) return originalLoader.apply(this, arguments);
-
-//   // console.log(toRealPath(request));
-
-//   const file = getFilePath(request, parent.filename);
-//   if (isAbsolute(file) && isUserDefined(file)) {
-//     try {
-//       return babelRequire(file);
-//     } catch (ignore) {}
-//   }
-//   // if (workingParentFile) {
-//   //   if (isUserDefined(file)) {
-//   //     if (isAbsolute(file)) {
-//   //       console.log('absolute: ' + file);
-//   //       try {
-//   //         return performBabelRequire(file);
-//   //       } catch (ignore) {}
-//   //     } else {
-//   //       const resolved: string | undefined = requireResolve(file);
-//   //       if (resolved) {
-//   //         console.log('resolved: ' + resolved);
-//   //         return originalLoader.apply(this, arguments);
-//   //       } else {
-//   //         console.log('raw file: ' + file);
-//   //         console.log('workingParentFile: ' + workingParentFile);
-//   //         console.log('resolve(dirname(workingParentFile), file): ' + resolve(dirname(workingParentFile), file));
-//   //         try {
-//   //           return performBabelRequire(resolve(dirname(workingParentFile), file));
-//   //         } catch (ignore) {}
-//   //       }
-//   //     }
-//   //   }
-//   // } else {
-//   //   if (isAbsolute(file) && isUserDefined(file)) {
-//   //     try {
-//   //       return babelRequire(file);
-//   //     } catch (ignore) {}
-//   //   }
-//   // }
-
-//   return originalLoader.apply(this, arguments);
-// };
