@@ -244,12 +244,16 @@ ${babelTransform(code)}
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
-        // const depth: number = Array.from(value.match(/\.+\//)!.values())[0].replace('/', '').length - 1;
-        // console.log(depth);
         const relativePath = value.match(/[\"\']\..+[\"\']/)![0].replace(/"/g, '');
         let absolutePath = resolve(dirname(workingParentFile as string), relativePath);
         if (lstatSync(absolutePath).isDirectory()) {
           absolutePath = join(absolutePath, 'index.js');
+        }
+
+        const depth: number = Array.from(value.match(/\.+\//)!.values())[0].replace('/', '').length - 1;
+        console.log(depth);
+        if (depth !== 0) {
+          workingParentFile = absolutePath;
         }
 
         console.log(absolutePath);
