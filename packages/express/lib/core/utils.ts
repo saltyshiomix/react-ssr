@@ -197,11 +197,32 @@ const escaperegexp = require('lodash.escaperegexp');
 
 const babelTransform = (filenameOrCode: string, injecting: boolean = false): string => {
   if (existsSync(filenameOrCode)) {
-    const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
-      filename: filenameOrCode,
-      ...(getBabelPresetsAndPlugins()),
-    });
-    return babelTransform(code);
+    if (injecting) {
+      const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
+        filename: filenameOrCode,
+        ...(getBabelPresetsAndPlugins()),
+      });
+      return babelTransform(code);
+    } else {
+      const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
+        filename: filenameOrCode,
+        ...(getBabelPresetsAndPlugins()),
+      });
+      return `
+function requireFromString(code, filename) {
+  const f = filename || '';
+  const p = module.parent;
+  const m = new Module(f, p);
+  m.filename = f;
+  m.paths = Module._nodeModulePaths(dirname(f));
+  m._compile(code, f);
+  const _exports = m.exports;
+  p && p.children && p.children.splice(p.children.indexOf(m), 1);
+  return _exports;
+}
+${babelTransform(code)}
+`;
+    }
   } else {
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
     if (Matches) {
@@ -215,13 +236,13 @@ const babelTransform = (filenameOrCode: string, injecting: boolean = false): str
         console.log(absolutePath);
 
         if (injecting) {
-          const transformed = `requireFromString(${babelTransform(absolutePath, true)}, ${absolutePath})`;
+          const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, ${absolutePath})`;
           filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
         } else {
           const originalWorkingParentFile = workingParentFile;
           workingParentFile = absolutePath;
           try {
-            const transformed = `requireFromString("${babelTransform(absolutePath, true)}", ${absolutePath})`;
+            const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, ${absolutePath})`;
             filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
           } finally {
             workingParentFile = originalWorkingParentFile;
@@ -236,25 +257,11 @@ const babelTransform = (filenameOrCode: string, injecting: boolean = false): str
       console.log('not match');
     }
 
-    if (injecting) {
-      injecting = false;
-      return filenameOrCode;
-    } else {
-      return `
-function requireFromString(code, filename) {
-  const f = filename || '';
-  const p = module.parent;
-  const m = new Module(f, p);
-  m.filename = f;
-  m.paths = Module._nodeModulePaths(dirname(f));
-  m._compile(code, f);
-  const _exports = m.exports;
-  p && p.children && p.children.splice(p.children.indexOf(m), 1);
-  return _exports;
-}
-${filenameOrCode}
-`;
-    }
+    // if (injecting) {
+    //   injecting = false;
+    // }
+
+    return filenameOrCode;
   }
 }
 
