@@ -183,17 +183,17 @@ const getFilePath = (path: string, calledFrom: string): string => {
 
 const escaperegexp = require('lodash.escaperegexp');
 
-let injecting = false;
-let workingParentFile: string | undefined = undefined;
+// let injecting = false;
+// let workingParentFile: string | undefined = undefined;
 
 export const babelRequire = (filename: string) => {
-  // return requireFromString(babelTransform(filename), filename);
-  workingParentFile = filename;
-  try {
-    return requireFromString(babelTransform(filename), filename);
-  } finally {
-    workingParentFile = undefined;
-  }
+  return requireFromString(babelTransform(filename, filename), filename);
+  // workingParentFile = filename;
+  // try {
+  //   return requireFromString(babelTransform(filename, filename), filename);
+  // } finally {
+  //   workingParentFile = undefined;
+  // }
 };
 
 const requireFromString = (code: string, filename?: string) => {
@@ -208,12 +208,12 @@ const requireFromString = (code: string, filename?: string) => {
   return _exports;
 }
 
-const babelTransform = (filenameOrCode: string, initial: boolean = false): string => {
+const babelTransform = (filenameOrCode: string, parentFile: string, initial: boolean = false): string => {
   if (existsSync(filenameOrCode)) {
     if (initial) {
       initial = false;
-      injecting = true;
-      workingParentFile = filenameOrCode;
+      // injecting = true;
+      // workingParentFile = filenameOrCode;
       const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
         filename: filenameOrCode,
         ...(getBabelPresetsAndPlugins()),
@@ -230,35 +230,35 @@ function requireFromString(code, filename) {
   p && p.children && p.children.splice(p.children.indexOf(m), 1);
   return _exports;
 }
-${babelTransform(code)}
+${babelTransform(code, parentFile)}
 `;
     } else {
-      workingParentFile = injecting ? filenameOrCode : workingParentFile;
+      // workingParentFile = injecting ? filenameOrCode : workingParentFile;
       const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
         filename: filenameOrCode,
         ...(getBabelPresetsAndPlugins()),
       });
-      return babelTransform(code);
+      return babelTransform(code, parentFile);
     }
   } else {
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
         const relativePath = value.match(/[\"\']\..+[\"\']/)![0].replace(/"/g, '');
-        let absolutePath = resolve(dirname(workingParentFile as string), relativePath);
+        let absolutePath = resolve(dirname(parentFile), relativePath);
         if (lstatSync(absolutePath).isDirectory()) {
           absolutePath = join(absolutePath, 'index.js');
         }
 
-        const depth: number = Array.from(value.match(/\.+\//)!.values())[0].replace('/', '').length - 1;
-        console.log(depth);
-        if (depth !== 0) {
-          workingParentFile = absolutePath;
-        }
+        // const depth: number = Array.from(value.match(/\.+\//)!.values())[0].replace('/', '').length - 1;
+        // console.log(depth);
+        // if (depth !== 0) {
+        //   workingParentFile = absolutePath;
+        // }
 
         console.log(absolutePath);
 
-        const transformed = `requireFromString(\`${babelTransform(absolutePath)}\`, '${absolutePath}')`;
+        const transformed = `requireFromString(\`${babelTransform(absolutePath, absolutePath)}\`, '${absolutePath}')`;
         filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
         // if (injecting) {
         //   const transformed = `requireFromString(\`${babelTransform(absolutePath)}\`, '${absolutePath}')`;
@@ -277,16 +277,10 @@ ${babelTransform(code)}
 
       // console.log(filenameOrCode);
 
-      return babelTransform(filenameOrCode);
+      return babelTransform(filenameOrCode, parentFile);
     } else {
       console.log('finished');
     }
-
-    // if (injecting) {
-    //   injecting = false;
-    // }
-
-    injecting = false;
 
     return filenameOrCode;
   }
