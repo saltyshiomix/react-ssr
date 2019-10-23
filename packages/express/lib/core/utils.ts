@@ -192,8 +192,14 @@ const escaperegexp = require('lodash.escaperegexp');
 export const babelRequire = (filename: string) => {
   const code = babelTransform(filename, filename, /* initial */ true);
 
-  console.log('1');
   console.log(code);
+
+  const keys = Object.keys(cache);
+  for (let i = 0; i < keys.length; i++) {
+    const [absolutePath, transformed] = cache[keys[i]];
+    console.log(absolutePath, transformed);
+  }
+  cache = {};
 
   return requireFromString(code, filename);
   // workingParentFile = filename;
@@ -231,34 +237,37 @@ const performBabelTransform = (filename: string): string => {
   return minified.code;
 }
 
+const hoge = requireFromString("var hoge = 0; requireFromString(\"requireFromString(\"\")\");");
+
+let index = 0;
+let cache: any = {};
+
 const babelTransform = (filenameOrCode: string, parentFile: string, initial: boolean = false): string => {
   if (isAbsolute(filenameOrCode) && existsSync(filenameOrCode)) {
     if (initial) {
       const code = performBabelTransform(filenameOrCode);
-      return `
-function requireFromString(code, filename) {
-  const f = filename || '';
-  const p = module.parent;
-  const m = new Module(f, p);
-  m.filename = f;
-  m.paths = Module._nodeModulePaths(dirname(f));
-  m._compile(code, f);
-  const _exports = m.exports;
-  p && p.children && p.children.splice(p.children.indexOf(m), 1);
-  return _exports;
-}
-${babelTransform(code, parentFile)}
-`;
+      return babelTransform(code, parentFile);
+//       return `
+// function requireFromString(code, filename) {
+//   const f = filename || '';
+//   const p = module.parent;
+//   const m = new Module(f, p);
+//   m.filename = f;
+//   m.paths = Module._nodeModulePaths(dirname(f));
+//   m._compile(code, f);
+//   const _exports = m.exports;
+//   p && p.children && p.children.splice(p.children.indexOf(m), 1);
+//   return _exports;
+// }
+// ${babelTransform(code, parentFile)}
+// `;
     } else {
       return babelTransform(performBabelTransform(filenameOrCode), parentFile);
     }
   } else {
-    console.log(filenameOrCode);
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\.(.+?)[\"\']\)/gm);
-    console.log(Matches);
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
-        // console.log(value);
         const relativePath = value.match(/[\"\']\..+[\"\']/)![0].replace(/"/g, '');
         let absolutePath = resolve(dirname(parentFile), relativePath);
         if (lstatSync(absolutePath).isDirectory()) {
@@ -272,21 +281,11 @@ ${babelTransform(code, parentFile)}
             }
           }
         }
-
-        // const depth: number = Array.from(value.match(/\.+\//)!.values())[0].replace('/', '').length - 1;
-        // console.log(depth);
-        // if (depth !== 0) {
-        //   workingParentFile = absolutePath;
-        // }
-
-        console.log(absolutePath);
-
-        const transformed = `requireFromString('${babelTransform(absolutePath, absolutePath)}', '${absolutePath}')`;
-        filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
+        const transformed = babelTransform(absolutePath, absolutePath);
+        cache[index] = [absolutePath, transformed];
+        filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), `__${index}__`);
+        index++;
       }
-
-      console.log(filenameOrCode);
-
       return babelTransform(filenameOrCode, parentFile);
     } else {
       if (isAbsolute(filenameOrCode)) {
