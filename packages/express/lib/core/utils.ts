@@ -212,8 +212,6 @@ const babelTransform = (filenameOrCode: string, parentFile: string, initial: boo
   if (existsSync(filenameOrCode)) {
     if (initial) {
       initial = false;
-      // injecting = true;
-      // workingParentFile = filenameOrCode;
       const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
         filename: filenameOrCode,
         ...(getBabelPresetsAndPlugins()),
@@ -233,7 +231,6 @@ function requireFromString(code, filename) {
 ${babelTransform(code, parentFile)}
 `;
     } else {
-      // workingParentFile = injecting ? filenameOrCode : workingParentFile;
       const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
         filename: filenameOrCode,
         ...(getBabelPresetsAndPlugins()),
@@ -256,22 +253,20 @@ ${babelTransform(code, parentFile)}
         //   workingParentFile = absolutePath;
         // }
 
-
         // console.log(absolutePath);
 
         const transformed = `requireFromString(\`${babelTransform(absolutePath, absolutePath)}\`, '${absolutePath}')`;
         filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
       }
 
-      console.log(filenameOrCode);
+      // console.log(filenameOrCode);
 
       return babelTransform(filenameOrCode, parentFile);
     } else {
+      if (isAbsolute(filenameOrCode)) {
+        return babelTransform(filenameOrCode, filenameOrCode);
+      }
       console.log('finished');
-    }
-
-    if (isAbsolute(filenameOrCode)) {
-      return babelTransform(filenameOrCode, parentFile);
     }
 
     return filenameOrCode;
@@ -285,11 +280,9 @@ ${babelTransform(code, parentFile)}
 //   return requireFromString(babelTransform(filename), filename);
 // };
 
-
-
-const isUserDefined = (file: string): boolean => {
-  return !(/node_modules/.test(file) || /package\.json/.test(file));
-};
+// const isUserDefined = (file: string): boolean => {
+//   return !(/node_modules/.test(file) || /package\.json/.test(file));
+// };
 
 // const originalLoader = Module._load;
 
