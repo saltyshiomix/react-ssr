@@ -134,7 +134,7 @@ const getBabelPresetsAndPlugins = () => {
 
 const Module = require('module');
 
-console.log(Module);
+console.log(Module.builtinModules);
 
 const requireResolve = (filename: string): string | undefined => {
   let resolved: string | undefined = undefined;
@@ -192,14 +192,27 @@ const requireFromString = (code: string, filename?: string) => {
   return _exports;
 }
 
+const babelTransform = (filenameOrCode: string): string => {
+  if (existsSync(filenameOrCode)) {
+    const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
+      filename: filenameOrCode,
+      ...(getBabelPresetsAndPlugins()),
+    });
+    return babelTransform(code);
+  } else {
+    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\(\.\/.+\)/g);
+    if (Matches) {
+      console.log(Matches[0]);
+    }
+    return filenameOrCode;
+  }
+}
+
 let workingParentFile: string | undefined = undefined;
 
 const performBabelRequire = (filename: string) => {
-  workingParentFile = filename;
-  const { code } = require('@babel/core').transform(readFileSync(filename).toString(), {
-    filename,
-    ...(getBabelPresetsAndPlugins()),
-  });
+  // workingParentFile = filename;
+  const code = babelTransform(filename);
   return requireFromString(code, filename);
   // return requireFromString(code);
 };
