@@ -213,6 +213,7 @@ function requireFromString(code: string, filename?: string) {
   return _exports;
 }
 `;
+    console.log(filenameOrCode);
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\(\.\/(.+)\)/g);
     if (Matches) {
       console.log(Matches[0]);
