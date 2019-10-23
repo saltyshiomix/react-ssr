@@ -194,6 +194,7 @@ const requireFromString = (code: string, filename?: string) => {
 }
 
 const escaperegexp = require('lodash.escaperegexp');
+let originalWorkingParentFile: string | undefined = undefined;
 
 const babelTransform = (filenameOrCode: string, injecting: boolean = false): string => {
   if (existsSync(filenameOrCode)) {
@@ -202,13 +203,16 @@ const babelTransform = (filenameOrCode: string, injecting: boolean = false): str
         filename: filenameOrCode,
         ...(getBabelPresetsAndPlugins()),
       });
-      return babelTransform(code);
+      return babelTransform(code, true);
     } else {
       const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
         filename: filenameOrCode,
         ...(getBabelPresetsAndPlugins()),
       });
-      return `
+      originalWorkingParentFile = filenameOrCode;
+      workingParentFile = filenameOrCode;
+      try {
+        return `
 function requireFromString(code, filename) {
   const f = filename || '';
   const p = module.parent;
@@ -222,6 +226,10 @@ function requireFromString(code, filename) {
 }
 ${babelTransform(code, true)}
 `;
+      } finally {
+        injecting = false;
+        workingParentFile = originalWorkingParentFile;
+      }
     }
   } else {
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
@@ -239,14 +247,14 @@ ${babelTransform(code, true)}
           const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, '${absolutePath}')`;
           filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
         } else {
-          const originalWorkingParentFile = workingParentFile;
-          workingParentFile = absolutePath;
-          try {
-            const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, '${absolutePath}')`;
-            filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
-          } finally {
-            workingParentFile = originalWorkingParentFile;
-          }
+          // const originalWorkingParentFile = workingParentFile;
+          // workingParentFile = absolutePath;
+          // try {
+          //   const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, '${absolutePath}')`;
+          //   filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
+          // } finally {
+          //   workingParentFile = originalWorkingParentFile;
+          // }
         }
       }
 
@@ -257,9 +265,9 @@ ${babelTransform(code, true)}
       console.log('not match');
     }
 
-    if (injecting) {
-      injecting = false;
-    }
+    // if (injecting) {
+    //   injecting = false;
+    // }
 
     return filenameOrCode;
   }
