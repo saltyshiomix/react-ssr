@@ -214,13 +214,18 @@ const babelTransform = (filenameOrCode: string, injecting: boolean = false): str
 
         console.log(absolutePath);
 
-        const originalWorkingParentFile = workingParentFile;
-        workingParentFile = absolutePath;
-        try {
-          const transformed = `requireFromString(${babelTransform(absolutePath)}, ${absolutePath})`;
+        if (injecting) {
+          const transformed = `requireFromString(${babelTransform(absolutePath, true)}, ${absolutePath})`;
           filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
-        } finally {
-          workingParentFile = originalWorkingParentFile;
+        } else {
+          const originalWorkingParentFile = workingParentFile;
+          workingParentFile = absolutePath;
+          try {
+            const transformed = `requireFromString(${babelTransform(absolutePath, true)}, ${absolutePath})`;
+            filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
+          } finally {
+            workingParentFile = originalWorkingParentFile;
+          }
         }
       }
 
@@ -231,8 +236,12 @@ const babelTransform = (filenameOrCode: string, injecting: boolean = false): str
       console.log('not match');
     }
 
-    return `
-function requireFromString(code: string, filename?: string) {
+    if (injecting) {
+      injecting = false;
+      return filenameOrCode;
+    } else {
+      return `
+function requireFromString(code, filename) {
   const f = filename || '';
   const p = module.parent;
   const m = new Module(f, p);
@@ -245,6 +254,7 @@ function requireFromString(code: string, filename?: string) {
 }
 ${filenameOrCode}
 `;
+    }
   }
 }
 
