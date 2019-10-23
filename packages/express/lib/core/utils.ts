@@ -214,7 +214,7 @@ function requireFromString(code: string, filename?: string) {
 }
 `;
     console.log(filenameOrCode);
-    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\(\.\/(.+)\)/g);
+    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\(\.[.+]\)/g);
     if (Matches) {
       console.log(Matches[0]);
     } else {
@@ -227,19 +227,18 @@ function requireFromString(code: string, filename?: string) {
 let workingParentFile: string | undefined = undefined;
 
 const performBabelRequire = (filename: string) => {
-  // workingParentFile = filename;
-  const code = babelTransform(filename);
-  return requireFromString(code, filename);
-  // return requireFromString(code);
+  workingParentFile = filename;
+  return requireFromString(babelTransform(filename), filename);
 };
 
 export const babelRequire = (filename: string) => {
-  workingParentFile = filename;
-  try {
-    return performBabelRequire(filename);
-  } finally {
-    workingParentFile = undefined;
-  }
+  return requireFromString(babelTransform(filename), filename);
+  // workingParentFile = filename;
+  // try {
+  //   return performBabelRequire(filename);
+  // } finally {
+  //   workingParentFile = undefined;
+  // }
 };
 
 const isUserDefined = (file: string): boolean => {
@@ -254,35 +253,40 @@ Module._load = function(request: string, parent: NodeModule) {
   // console.log(toRealPath(request));
 
   const file = getFilePath(request, parent.filename);
-  if (workingParentFile) {
-    if (isUserDefined(file)) {
-      if (isAbsolute(file)) {
-        console.log('absolute: ' + file);
-        try {
-          return performBabelRequire(file);
-        } catch (ignore) {}
-      } else {
-        const resolved: string | undefined = requireResolve(file);
-        if (resolved) {
-          console.log('resolved: ' + resolved);
-          return originalLoader.apply(this, arguments);
-        } else {
-          console.log('raw file: ' + file);
-          console.log('workingParentFile: ' + workingParentFile);
-          console.log('resolve(dirname(workingParentFile), file): ' + resolve(dirname(workingParentFile), file));
-          try {
-            return performBabelRequire(resolve(dirname(workingParentFile), file));
-          } catch (ignore) {}
-        }
-      }
-    }
-  } else {
-    if (isAbsolute(file) && isUserDefined(file)) {
-      try {
-        return babelRequire(file);
-      } catch (ignore) {}
-    }
+  if (isAbsolute(file) && isUserDefined(file)) {
+    try {
+      return babelRequire(file);
+    } catch (ignore) {}
   }
+  // if (workingParentFile) {
+  //   if (isUserDefined(file)) {
+  //     if (isAbsolute(file)) {
+  //       console.log('absolute: ' + file);
+  //       try {
+  //         return performBabelRequire(file);
+  //       } catch (ignore) {}
+  //     } else {
+  //       const resolved: string | undefined = requireResolve(file);
+  //       if (resolved) {
+  //         console.log('resolved: ' + resolved);
+  //         return originalLoader.apply(this, arguments);
+  //       } else {
+  //         console.log('raw file: ' + file);
+  //         console.log('workingParentFile: ' + workingParentFile);
+  //         console.log('resolve(dirname(workingParentFile), file): ' + resolve(dirname(workingParentFile), file));
+  //         try {
+  //           return performBabelRequire(resolve(dirname(workingParentFile), file));
+  //         } catch (ignore) {}
+  //       }
+  //     }
+  //   }
+  // } else {
+  //   if (isAbsolute(file) && isUserDefined(file)) {
+  //     try {
+  //       return babelRequire(file);
+  //     } catch (ignore) {}
+  //   }
+  // }
 
   return originalLoader.apply(this, arguments);
 };
