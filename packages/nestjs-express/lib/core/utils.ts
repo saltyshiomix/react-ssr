@@ -42,6 +42,30 @@ export const getBabelRule = () => {
   };
 };
 
+export const getBabelPresetsAndPlugins = () => {
+  const presets = [
+    '@babel/preset-env',
+    '@babel/preset-react',
+    '@babel/preset-typescript',
+  ];
+  const plugins = [
+    'babel-plugin-react-require',
+    'babel-plugin-css-modules-transform',
+    '@babel/plugin-syntax-dynamic-import',
+    '@babel/plugin-proposal-class-properties',
+    ['@babel/plugin-proposal-object-rest-spread', {
+      useBuiltIns: true,
+    }],
+    ['@babel/plugin-transform-runtime', {
+      corejs: 2,
+      helpers: true,
+      regenerator: true,
+      useESModules: false,
+    }],
+  ];
+  return { presets, plugins };
+};
+
 export const gracefullyShutDown = async (getPort: () => number) => {
   let run = false;
   const wrapper = () => {
@@ -105,41 +129,3 @@ export const readFileWithProps = (file: string, props: any) => {
 };
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-export const getBabelPresetsAndPlugins = () => {
-  const presets = [
-    '@babel/preset-env',
-    '@babel/preset-react',
-    '@babel/preset-typescript',
-  ];
-  const plugins = [
-    'babel-plugin-react-require',
-    'babel-plugin-css-modules-transform',
-    '@babel/plugin-syntax-dynamic-import',
-    '@babel/plugin-proposal-class-properties',
-    ['@babel/plugin-proposal-object-rest-spread', {
-      useBuiltIns: true,
-    }],
-    ['@babel/plugin-transform-runtime', {
-      corejs: 2,
-      helpers: true,
-      regenerator: true,
-      useESModules: false,
-    }],
-  ];
-  return { presets, plugins };
-};
-
-// const Module = require('module');
-
-// const requireFromString = (code: string, filename?: string) => {
-//   const f = filename || '';
-//   const p = module.parent;
-//   const m = new Module(f, p);
-//   m.filename = f;
-//   m.paths = Module._nodeModulePaths(dirname(f));
-//   m._compile(code, f);
-//   const _exports = m.exports;
-//   p && p.children && p.children.splice(p.children.indexOf(m), 1);
-//   return _exports;
-// }

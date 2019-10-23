@@ -4,14 +4,13 @@ import SSR from './ssr';
 import Config from './config';
 import {
   getPageId,
-  babelRequire,
   getBabelPresetsAndPlugins,
 } from './utils';
 
 const codec = require('json-url')('lzw');
 
 require('@babel/register')({
-  extensions: ['.ts', '.js', '.tsx', '.jsx'],
+  extensions: ['.js', '.jsx', '.ts', '.tsx',],
   ...(getBabelPresetsAndPlugins())
 })
 
