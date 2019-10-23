@@ -250,33 +250,35 @@ ${babelTransform(code)}
 
         console.log(absolutePath);
 
-        if (injecting) {
-          const transformed = `requireFromString(\`${babelTransform(absolutePath)}\`, '${absolutePath}')`;
-          filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
-        } else {
-          // const originalWorkingParentFile = workingParentFile;
-          // workingParentFile = absolutePath;
-          // try {
-          //   const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, '${absolutePath}')`;
-          //   filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
-          // } finally {
-          //   workingParentFile = originalWorkingParentFile;
-          // }
-        }
+        const transformed = `requireFromString(\`${babelTransform(absolutePath)}\`, '${absolutePath}')`;
+        filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
+        // if (injecting) {
+        //   const transformed = `requireFromString(\`${babelTransform(absolutePath)}\`, '${absolutePath}')`;
+        //   filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
+        // } else {
+        //   // const originalWorkingParentFile = workingParentFile;
+        //   // workingParentFile = absolutePath;
+        //   // try {
+        //   //   const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, '${absolutePath}')`;
+        //   //   filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
+        //   // } finally {
+        //   //   workingParentFile = originalWorkingParentFile;
+        //   // }
+        // }
       }
 
       // console.log(filenameOrCode);
 
-      injecting = false;
-
       return babelTransform(filenameOrCode);
     } else {
-      console.log('not match');
+      console.log('finished');
     }
 
     // if (injecting) {
     //   injecting = false;
     // }
+
+    injecting = false;
 
     return filenameOrCode;
   }
