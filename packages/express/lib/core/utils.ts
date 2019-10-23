@@ -138,10 +138,6 @@ const Module = require('module');
 const Terser = require('terser');
 const escaperegexp = require('lodash.escaperegexp');
 
-const hoge = `
-JSON.parse(\`hoge; JSON.parse(\`JSON.parse(\`aaa\`)\`);\`);
-`;
-
 let cacheIndex = 0;
 let cacheDepth = 0;
 let cacheMap = new Map<number, [string, string]>();
