@@ -208,17 +208,11 @@ const requireFromString = (code: string, filename?: string) => {
   return _exports;
 }
 
-const babelTransform = (filenameOrCode: string): string => {
+const babelTransform = (filenameOrCode: string, initial: boolean = false): string => {
   if (existsSync(filenameOrCode)) {
-    if (injecting) {
-      workingParentFile = filenameOrCode;
-      const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
-        filename: filenameOrCode,
-        ...(getBabelPresetsAndPlugins()),
-      });
-      return babelTransform(code);
-    } else {
+    if (initial) {
       injecting = true;
+      workingParentFile = filenameOrCode;
       const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
         filename: filenameOrCode,
         ...(getBabelPresetsAndPlugins()),
@@ -237,11 +231,20 @@ function requireFromString(code, filename) {
 }
 ${babelTransform(code)}
 `;
+    } else {
+      workingParentFile = injecting ? filenameOrCode : workingParentFile;
+      const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
+        filename: filenameOrCode,
+        ...(getBabelPresetsAndPlugins()),
+      });
+      return babelTransform(code);
     }
   } else {
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
+        // const depth: number = Array.from(value.match(/\.+\//)!.values())[0].replace('/', '').length - 1;
+        // console.log(depth);
         const relativePath = value.match(/[\"\']\..+[\"\']/)![0].replace(/"/g, '');
         let absolutePath = resolve(dirname(workingParentFile as string), relativePath);
         if (lstatSync(absolutePath).isDirectory()) {
