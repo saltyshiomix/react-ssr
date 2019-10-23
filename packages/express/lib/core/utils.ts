@@ -200,9 +200,24 @@ const babelTransform = (filenameOrCode: string): string => {
     });
     return babelTransform(code);
   } else {
-    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\(\.\/.+\)/g);
+    let code = `
+function requireFromString(code: string, filename?: string) {
+  const f = filename || '';
+  const p = module.parent;
+  const m = new Module(f, p);
+  m.filename = f;
+  m.paths = Module._nodeModulePaths(dirname(f));
+  m._compile(code, f);
+  const _exports = m.exports;
+  p && p.children && p.children.splice(p.children.indexOf(m), 1);
+  return _exports;
+}
+`;
+    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\(\.\/(.+)\)/g);
     if (Matches) {
       console.log(Matches[0]);
+    } else {
+      console.log('not match');
     }
     return filenameOrCode;
   }
