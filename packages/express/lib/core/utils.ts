@@ -115,6 +115,7 @@ const getBabelPresetsAndPlugins = () => {
     require('@babel/preset-env'),
     require('@babel/preset-react'),
     require('@babel/preset-typescript'),
+    require('babel-preset-minify'),
   ];
   const plugins = [
     require('babel-plugin-react-require'),
