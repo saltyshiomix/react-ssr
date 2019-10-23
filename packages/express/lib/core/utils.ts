@@ -236,13 +236,13 @@ ${babelTransform(code)}
         console.log(absolutePath);
 
         if (injecting) {
-          const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, ${absolutePath})`;
+          const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, '${absolutePath}')`;
           filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
         } else {
           const originalWorkingParentFile = workingParentFile;
           workingParentFile = absolutePath;
           try {
-            const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, ${absolutePath})`;
+            const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, '${absolutePath}')`;
             filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
           } finally {
             workingParentFile = originalWorkingParentFile;
