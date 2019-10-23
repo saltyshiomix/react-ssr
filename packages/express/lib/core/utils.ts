@@ -217,8 +217,9 @@ function requireFromString(code: string, filename?: string) {
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
         console.log(value);
-        console.log(value.match(/[\"\']\..+[\"\']/)![0]);
-        console.log(resolve(dirname(workingParentFile as string), value.match(/[\"\']\..+[\"\']/)![0]))
+        const relativePath = value.match(/[\"\']\..+[\"\']/)![0].replace(/"/g, '');
+        console.log(relativePath);
+        console.log(resolve(dirname(workingParentFile as string), relativePath))
       }
       // console.log(Matches.values[0].match(/[\"\']\..+[\"\']/));
       // console.log(resolve(dirname(workingParentFile as string), Matches[0]))
