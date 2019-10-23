@@ -220,7 +220,7 @@ const performBabelTransform = (filename: string): string => {
     filename,
     ...(getBabelPresetsAndPlugins()),
   });
-  return Terser.minify(code).code;
+  return code.replace(/\n/g, '');
 }
 
 const babelTransform = (filenameOrCode: string, parentFile: string, initial: boolean = false): string => {
