@@ -237,8 +237,6 @@ const performBabelTransform = (filename: string): string => {
   return minified.code;
 }
 
-const hoge = requireFromString("var hoge = 0; requireFromString(\"requireFromString(\"\")\");");
-
 let index = 0;
 let cache: any = {};
 
