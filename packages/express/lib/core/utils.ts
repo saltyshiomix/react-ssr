@@ -197,7 +197,6 @@ const escaperegexp = require('lodash.escaperegexp');
 
 const babelTransform = (filenameOrCode: string): string => {
   if (existsSync(filenameOrCode)) {
-    workingParentFile = filenameOrCode;
     const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
       filename: filenameOrCode,
       ...(getBabelPresetsAndPlugins()),
@@ -215,6 +214,7 @@ const babelTransform = (filenameOrCode: string): string => {
 
         console.log(absolutePath);
 
+        workingParentFile = absolutePath;
         const transformed = `requireFromString(${babelTransform(absolutePath)}, ${absolutePath})`;
 
         filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
@@ -246,10 +246,10 @@ ${filenameOrCode}
 
 let workingParentFile: string | undefined = undefined;
 
-const performBabelRequire = (filename: string) => {
-  workingParentFile = filename;
-  return requireFromString(babelTransform(filename), filename);
-};
+// const performBabelRequire = (filename: string) => {
+//   workingParentFile = filename;
+//   return requireFromString(babelTransform(filename), filename);
+// };
 
 export const babelRequire = (filename: string) => {
   // return requireFromString(babelTransform(filename), filename);
