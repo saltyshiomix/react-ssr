@@ -5,12 +5,17 @@ import Config from './config';
 import {
   getPageId,
   babelRequire,
+  getBabelPresetsAndPlugins,
 } from './utils';
 
 const codec = require('json-url')('lzw');
 
+require('@babel/register')({
+  ...(getBabelPresetsAndPlugins())
+})
+
 const render = async (file: string, props: object, config: Config): Promise<string> => {
-  let Page = babelRequire(file);
+  let Page = require(file);
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
