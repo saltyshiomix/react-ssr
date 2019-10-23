@@ -141,6 +141,7 @@ const escaperegexp = require('lodash.escaperegexp');
 export const babelRequire = (filename: string) => {
   let code = babelTransform(filename, filename, /* initial */ true);
 
+  const cacheMap = new Map();
   // console.log(code);
 
   const keys = Object.keys(cache);
@@ -149,8 +150,18 @@ export const babelRequire = (filename: string) => {
 
   for (let i = keys.length - 1; 0 <= i; i--) {
     const [absolutePath, transformed] = cache[keys[i]];
-    code = code.replace(`__${i}__`, `JSON.parse(\`${JSON.stringify(requireFromString(transformed, absolutePath))}\`)`)
+
+    if (cacheMap.has(absolutePath)) {
+      code = code.replace(`__${i}__`, `JSON.parse(\`${cacheMap.get(absolutePath)}\`)`);
+    } else {
+      const serializedExports = JSON.stringify(requireFromString(transformed, absolutePath));
+      cacheMap.set(absolutePath, serializedExports);
+      code = code.replace(`__${i}__`, `JSON.parse(\`${serializedExports}\`)`);
+    }
   }
+
+  console.log(cacheMap);
+
   cache = {};
 
   console.log('=====');
@@ -160,12 +171,6 @@ export const babelRequire = (filename: string) => {
   console.log('=====');
 
   return requireFromString(code, filename);
-  // workingParentFile = filename;
-  // try {
-  //   return requireFromString(babelTransform(filename, filename), filename);
-  // } finally {
-  //   workingParentFile = undefined;
-  // }
 };
 
 const requireFromString = (code: string, filename?: string) => {
