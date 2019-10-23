@@ -212,8 +212,6 @@ const babelTransform = (filenameOrCode: string, parentFile: string, initial: boo
   if (existsSync(filenameOrCode)) {
     if (initial) {
       initial = false;
-      // injecting = true;
-      // workingParentFile = filenameOrCode;
       const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
         filename: filenameOrCode,
         ...(getBabelPresetsAndPlugins()),
@@ -233,7 +231,6 @@ function requireFromString(code, filename) {
 ${babelTransform(code, parentFile)}
 `;
     } else {
-      // workingParentFile = injecting ? filenameOrCode : workingParentFile;
       const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
         filename: filenameOrCode,
         ...(getBabelPresetsAndPlugins()),
@@ -250,32 +247,13 @@ ${babelTransform(code, parentFile)}
           absolutePath = join(absolutePath, 'index.js');
         }
 
-        // const depth: number = Array.from(value.match(/\.+\//)!.values())[0].replace('/', '').length - 1;
-        // console.log(depth);
-        // if (depth !== 0) {
-        //   workingParentFile = absolutePath;
-        // }
-
-        console.log(absolutePath);
+        // console.log(absolutePath);
 
         const transformed = `requireFromString(\`${babelTransform(absolutePath, absolutePath)}\`, '${absolutePath}')`;
         filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
-        // if (injecting) {
-        //   const transformed = `requireFromString(\`${babelTransform(absolutePath)}\`, '${absolutePath}')`;
-        //   filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
-        // } else {
-        //   // const originalWorkingParentFile = workingParentFile;
-        //   // workingParentFile = absolutePath;
-        //   // try {
-        //   //   const transformed = `requireFromString(\`${babelTransform(absolutePath, true)}\`, '${absolutePath}')`;
-        //   //   filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
-        //   // } finally {
-        //   //   workingParentFile = originalWorkingParentFile;
-        //   // }
-        // }
       }
 
-      // console.log(filenameOrCode);
+      console.log(filenameOrCode);
 
       return babelTransform(filenameOrCode, parentFile);
     } else {
@@ -286,18 +264,9 @@ ${babelTransform(code, parentFile)}
   }
 }
 
-
-
-// const performBabelRequire = (filename: string) => {
-//   workingParentFile = filename;
-//   return requireFromString(babelTransform(filename), filename);
+// const isUserDefined = (file: string): boolean => {
+//   return !(/node_modules/.test(file) || /package\.json/.test(file));
 // };
-
-
-
-const isUserDefined = (file: string): boolean => {
-  return !(/node_modules/.test(file) || /package\.json/.test(file));
-};
 
 // const originalLoader = Module._load;
 
