@@ -139,21 +139,17 @@ const Terser = require('terser');
 const escaperegexp = require('lodash.escaperegexp');
 
 export const babelRequire = (filename: string) => {
-  let code = babelTransform(filename, filename, /* initial */ true);
-
   const cacheMap = new Map();
-  // console.log(code);
-
   const keys = Object.keys(cache);
 
-  console.log(keys);
-
+  let code = babelTransform(filename, filename, /* initial */ true);
   for (let i = keys.length - 1; 0 <= i; i--) {
+    console.log(keys[i]);
     const [absolutePath, transformed] = cache[keys[i]];
-
     if (cacheMap.has(absolutePath)) {
       code = code.replace(`__${i}__`, `JSON.parse(\`${cacheMap.get(absolutePath)}\`)`);
     } else {
+      console.log(transformed);
       const serializedExports = JSON.stringify(requireFromString(transformed, absolutePath));
       cacheMap.set(absolutePath, serializedExports);
       code = code.replace(`__${i}__`, `JSON.parse(\`${serializedExports}\`)`);
