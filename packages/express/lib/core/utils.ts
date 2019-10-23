@@ -269,7 +269,11 @@ ${babelTransform(code, parentFile)}
     } else {
       if (isAbsolute(filenameOrCode)) {
         // return babelTransform(filenameOrCode, filenameOrCode);
-        return babelTransform(filenameOrCode, parentFile);
+        const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
+          filename: filenameOrCode,
+          ...(getBabelPresetsAndPlugins()),
+        });
+        return babelTransform(code, parentFile);
       }
       console.log('finished');
     }
