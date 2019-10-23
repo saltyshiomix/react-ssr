@@ -214,7 +214,7 @@ function requireFromString(code: string, filename?: string) {
 }
 `;
     console.log(filenameOrCode);
-    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\(\.[.+]\)/g);
+    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"|\']\.[.+][\"|\']\)/g);
     if (Matches) {
       console.log(Matches[0]);
     } else {
