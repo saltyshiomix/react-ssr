@@ -139,7 +139,7 @@ const Terser = require('terser');
 const escaperegexp = require('lodash.escaperegexp');
 
 const hoge = `
-JSON.parse(\`hoge; JSON.parse(\`a\`);\`);
+JSON.parse(\`hoge; JSON.parse(\`JSON.parse(\`aaa\`)\`);\`);
 `;
 
 let cacheIndex = 0;
@@ -181,6 +181,7 @@ export const babelRequire = (filename: string) => {
     if (_cacheMap.has(absolutePath)) {
       code = code.replace(`__${i}__`, `JSON.parse(\`${_cacheMap.get(absolutePath)}\`)`);
     } else {
+      cacheDepth = 1;
       const serializedExports = resolveAsSerializedExports(transformed, absolutePath);
       code = code.replace(`__${i}__`, `JSON.parse(\`${serializedExports}\`)`);
     }
@@ -189,7 +190,7 @@ export const babelRequire = (filename: string) => {
   console.log(_cacheMap);
 
   cacheIndex = 0;
-  cacheDepth = 0;
+  // cacheDepth = 0;
   cacheMap = new Map<number, [string, string]>();
   _cacheMap = new Map<string, string>();
 
