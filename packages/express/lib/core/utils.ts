@@ -253,6 +253,7 @@ ${babelTransform(code, parentFile)}
     }
   } else {
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
+    console.log(Matches);
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
         console.log(value);
