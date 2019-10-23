@@ -215,11 +215,10 @@ function requireFromString(code: string, filename?: string) {
 `;
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
     if (Matches) {
-      console.log(Matches.values());
-      // console.log(Matches.values()[0]);
       for (const value of Array.from(Matches.values())) {
         console.log(value);
         console.log(value.match(/[\"\']\..+[\"\']/)![0]);
+        console.log(resolve(dirname(workingParentFile as string), value.match(/[\"\']\..+[\"\']/)![0]))
       }
       // console.log(Matches.values[0].match(/[\"\']\..+[\"\']/));
       // console.log(resolve(dirname(workingParentFile as string), Matches[0]))
@@ -238,13 +237,13 @@ const performBabelRequire = (filename: string) => {
 };
 
 export const babelRequire = (filename: string) => {
-  return requireFromString(babelTransform(filename), filename);
-  // workingParentFile = filename;
-  // try {
-  //   return performBabelRequire(filename);
-  // } finally {
-  //   workingParentFile = undefined;
-  // }
+  // return requireFromString(babelTransform(filename), filename);
+  workingParentFile = filename;
+  try {
+    return requireFromString(babelTransform(filename), filename);
+  } finally {
+    workingParentFile = undefined;
+  }
 };
 
 const isUserDefined = (file: string): boolean => {
