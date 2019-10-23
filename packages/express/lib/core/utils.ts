@@ -225,7 +225,7 @@ const performBabelTransform = (filename: string): string => {
   // return singlified;
   const minified = Terser.minify(code);
 
-  console.log(minified);
+  // console.log(minified);
 
   return minified.code;
 }
@@ -252,8 +252,6 @@ ${babelTransform(code, parentFile)}
       return babelTransform(performBabelTransform(filenameOrCode), parentFile);
     }
   } else {
-    console.log(filenameOrCode);
-
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
@@ -278,13 +276,13 @@ ${babelTransform(code, parentFile)}
         //   workingParentFile = absolutePath;
         // }
 
-        // console.log(absolutePath);
+        console.log(absolutePath);
 
         const transformed = `requireFromString('${babelTransform(absolutePath, absolutePath)}', '${absolutePath}')`;
         filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
       }
 
-      // console.log(filenameOrCode);
+      console.log(filenameOrCode);
 
       return babelTransform(filenameOrCode, parentFile);
     } else {
