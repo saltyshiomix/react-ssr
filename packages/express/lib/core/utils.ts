@@ -231,7 +231,7 @@ const performBabelTransform = (filename: string): string => {
 }
 
 const babelTransform = (filenameOrCode: string, parentFile: string, initial: boolean = false): string => {
-  if (existsSync(filenameOrCode)) {
+  if (isAbsolute(filenameOrCode) && existsSync(filenameOrCode)) {
     if (initial) {
       const code = performBabelTransform(filenameOrCode);
       return `
