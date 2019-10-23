@@ -220,7 +220,7 @@ function requireFromString(code, filename) {
   p && p.children && p.children.splice(p.children.indexOf(m), 1);
   return _exports;
 }
-${babelTransform(code)}
+${babelTransform(code, true)}
 `;
     }
   } else {
@@ -250,16 +250,16 @@ ${babelTransform(code)}
         }
       }
 
-      console.log(filenameOrCode);
+      // console.log(filenameOrCode);
 
       return babelTransform(filenameOrCode, true);
     } else {
       console.log('not match');
     }
 
-    // if (injecting) {
-    //   injecting = false;
-    // }
+    if (injecting) {
+      injecting = false;
+    }
 
     return filenameOrCode;
   }
