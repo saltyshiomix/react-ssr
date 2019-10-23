@@ -253,11 +253,12 @@ ${babelTransform(code, parentFile)}
       return babelTransform(performBabelTransform(filenameOrCode), parentFile);
     }
   } else {
+    console.log(filenameOrCode);
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
-    // console.log(Matches);
+    console.log(Matches);
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
-        console.log(value);
+        // console.log(value);
         const relativePath = value.match(/[\"\']\..+[\"\']/)![0].replace(/"/g, '');
         let absolutePath = resolve(dirname(parentFile), relativePath);
         if (lstatSync(absolutePath).isDirectory()) {
