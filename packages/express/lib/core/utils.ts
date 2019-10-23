@@ -256,6 +256,7 @@ ${babelTransform(code, parentFile)}
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
+        console.log(value);
         const relativePath = value.match(/[\"\']\..+[\"\']/)![0].replace(/"/g, '');
         let absolutePath = resolve(dirname(parentFile), relativePath);
         if (lstatSync(absolutePath).isDirectory()) {
