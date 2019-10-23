@@ -138,27 +138,50 @@ const Module = require('module');
 const Terser = require('terser');
 const escaperegexp = require('lodash.escaperegexp');
 
+let cacheIndex = 0;
+let cacheMap = new Map<number, [string, string]>();
+let _cacheMap = new Map<string, string>();
+
+const resolveAsSerializedExports = (transformed: string, absolutePath: string): string => {
+  const Matches = transformed.match(/__(\d*?)__/gm);
+  if (Matches) {
+    const values = Array.from(Matches.values());
+    for (let i = 0; i < values.length; i++) {
+      const value = values[i];
+      const index = parseInt(value.replace(/__/g, ''), 10);
+      let [_absolutePath, _transformed] = cacheMap.get(index) as [string, string];
+      if (_cacheMap.has(_absolutePath)) {
+        transformed = transformed.replace(`__${index}__`, `JSON.parse(\`${_cacheMap.get(_absolutePath)}\`)`);
+      } else {
+        transformed = transformed.replace(`__${index}__`, `JSON.parse(\`${resolveAsSerializedExports(_transformed, _absolutePath)}\`)`);
+      }
+    }
+    return resolveAsSerializedExports(transformed, absolutePath);
+  } else {
+    const serializedExports = JSON.stringify(requireFromString(transformed, absolutePath));
+    _cacheMap.set(absolutePath, serializedExports);
+    return serializedExports;
+  }
+};
+
 export const babelRequire = (filename: string) => {
   let code = babelTransform(filename, filename, /* initial */ true);
 
-  const cacheMap = new Map();
-  const keys = Object.keys(cache);
-  for (let i = keys.length - 1; 0 <= i; i--) {
-    console.log(keys[i]);
-    const [absolutePath, transformed] = cache[keys[i]];
-    if (cacheMap.has(absolutePath)) {
-      code = code.replace(`__${i}__`, `JSON.parse(\`${cacheMap.get(absolutePath)}\`)`);
+  
+  const keys = Array.from(cacheMap.keys());
+  for (let i = 0; i < keys.length; i++) {
+    const [absolutePath, transformed] = cacheMap.get(keys[i]) as [string, string];
+    if (_cacheMap.has(absolutePath)) {
+      code = code.replace(`__${i}__`, `JSON.parse(\`${_cacheMap.get(absolutePath)}\`)`);
     } else {
-      console.log(transformed);
-      const serializedExports = JSON.stringify(requireFromString(transformed, absolutePath));
-      cacheMap.set(absolutePath, serializedExports);
+      const serializedExports = resolveAsSerializedExports(transformed, absolutePath);
       code = code.replace(`__${i}__`, `JSON.parse(\`${serializedExports}\`)`);
     }
   }
 
-  console.log(cacheMap);
+  console.log(_cacheMap);
 
-  cache = {};
+  cacheMap = new Map<number, [string, string]>();
 
   console.log('=====');
   console.log('');
@@ -189,9 +212,6 @@ const performBabelTransform = (filename: string): string => {
   return Terser.minify(code).code;
 }
 
-let index = 0;
-let cache: any = {};
-
 const babelTransform = (filenameOrCode: string, parentFile: string, initial: boolean = false): string => {
   if (isAbsolute(filenameOrCode) && existsSync(filenameOrCode)) {
     if (initial) {
@@ -217,9 +237,9 @@ const babelTransform = (filenameOrCode: string, parentFile: string, initial: boo
           }
         }
         const transformed = babelTransform(absolutePath, absolutePath);
-        cache[index] = [absolutePath, transformed];
-        filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), `__${index}__`);
-        index++;
+        cacheMap.set(cacheIndex, [absolutePath, transformed]);
+        filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), `__${cacheIndex}__`);
+        cacheIndex++;
       }
       return babelTransform(filenameOrCode, parentFile);
     } else {
