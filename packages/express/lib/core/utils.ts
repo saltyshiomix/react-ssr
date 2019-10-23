@@ -221,7 +221,7 @@ const babelTransform = (filenameOrCode: string, injecting: boolean = false): str
           const originalWorkingParentFile = workingParentFile;
           workingParentFile = absolutePath;
           try {
-            const transformed = `requireFromString(${babelTransform(absolutePath, true)}, ${absolutePath})`;
+            const transformed = `requireFromString("${babelTransform(absolutePath, true)}", ${absolutePath})`;
             filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
           } finally {
             workingParentFile = originalWorkingParentFile;
@@ -231,7 +231,7 @@ const babelTransform = (filenameOrCode: string, injecting: boolean = false): str
 
       console.log(filenameOrCode);
 
-      return babelTransform(filenameOrCode);
+      return babelTransform(filenameOrCode, true);
     } else {
       console.log('not match');
     }
