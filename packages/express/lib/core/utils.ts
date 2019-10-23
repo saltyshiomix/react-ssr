@@ -220,7 +220,9 @@ const performBabelTransform = (filename: string): string => {
     filename,
     ...(getBabelPresetsAndPlugins()),
   });
-  return code.replace(/\n/g, '');
+  // return code.replace(/\n/g, '');
+  console.log(code);
+  return code;
 }
 
 const babelTransform = (filenameOrCode: string, parentFile: string, initial: boolean = false): string => {
