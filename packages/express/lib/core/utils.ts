@@ -134,54 +134,56 @@ const getBabelPresetsAndPlugins = () => {
   return { presets, plugins };
 };
 
+// const Module = require('module');
+
+// // console.log(Module.builtinModules);
+
+// const requireResolve = (filename: string): string | undefined => {
+//   let resolved: string | undefined = undefined;
+//   try {
+//     resolved = require.resolve(filename);
+//   } catch (ignore) {}
+//   return resolved;
+// };
+
+// const isInNodePath = (p?: string): boolean => {
+//   if (!p) return false;
+//   return Module.globalPaths
+//     .map((nodePath: string) => resolve(process.cwd(), nodePath) + sep)
+//     .some((fullNodePath: string) => p.indexOf(fullNodePath) === 0);
+// }
+
+// const isModuleNotFoundError = (e: any) => e.code && e.code === 'MODULE_NOT_FOUND';
+
+// const getFilePath = (path: string, calledFrom: string): string => {
+//   const resolved: string | undefined = requireResolve(path);
+//   const isLocalModule = /^\.{1,2}[/\\]?/.test(path);
+//   const isSystemModule = resolved === path;
+//   const isInNode = isInNodePath(resolved);
+//   const isInNodeModule = !isLocalModule && /[/\\]node_modules[/\\]/.test(resolved || '');
+
+//   if (isSystemModule || isInNode || isInNodeModule) {
+//     return resolved as string;
+//   }
+
+//   if (!isLocalModule) {
+//     return path;
+//   }
+
+//   const localModuleName = join(dirname(calledFrom), path);
+//   try {
+//     return Module._resolveFilename(localModuleName);
+//   } catch (e) {
+//     if (isModuleNotFoundError(e)) {
+//       return localModuleName
+//     } else {
+//       throw e;
+//     }
+//   }
+// }
+
 const Module = require('module');
-
-// console.log(Module.builtinModules);
-
-const requireResolve = (filename: string): string | undefined => {
-  let resolved: string | undefined = undefined;
-  try {
-    resolved = require.resolve(filename);
-  } catch (ignore) {}
-  return resolved;
-};
-
-const isInNodePath = (p?: string): boolean => {
-  if (!p) return false;
-  return Module.globalPaths
-    .map((nodePath: string) => resolve(process.cwd(), nodePath) + sep)
-    .some((fullNodePath: string) => p.indexOf(fullNodePath) === 0);
-}
-
-const isModuleNotFoundError = (e: any) => e.code && e.code === 'MODULE_NOT_FOUND';
-
-const getFilePath = (path: string, calledFrom: string): string => {
-  const resolved: string | undefined = requireResolve(path);
-  const isLocalModule = /^\.{1,2}[/\\]?/.test(path);
-  const isSystemModule = resolved === path;
-  const isInNode = isInNodePath(resolved);
-  const isInNodeModule = !isLocalModule && /[/\\]node_modules[/\\]/.test(resolved || '');
-
-  if (isSystemModule || isInNode || isInNodeModule) {
-    return resolved as string;
-  }
-
-  if (!isLocalModule) {
-    return path;
-  }
-
-  const localModuleName = join(dirname(calledFrom), path);
-  try {
-    return Module._resolveFilename(localModuleName);
-  } catch (e) {
-    if (isModuleNotFoundError(e)) {
-      return localModuleName
-    } else {
-      throw e;
-    }
-  }
-}
-
+const Terser = require('terser');
 const escaperegexp = require('lodash.escaperegexp');
 
 // let injecting = false;
@@ -212,8 +214,6 @@ const requireFromString = (code: string, filename?: string) => {
   p && p.children && p.children.splice(p.children.indexOf(m), 1);
   return _exports;
 }
-
-const Terser = require('terser');
 
 const performBabelTransform = (filename: string): string => {
   const { code } = require('@babel/core').transform(readFileSync(filename).toString(), {
@@ -253,6 +253,8 @@ ${babelTransform(code, parentFile)}
       return babelTransform(performBabelTransform(filenameOrCode), parentFile);
     }
   } else {
+    console.log(filenameOrCode);
+
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
