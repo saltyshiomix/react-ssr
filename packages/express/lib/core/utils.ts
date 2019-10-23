@@ -254,7 +254,7 @@ ${babelTransform(code, parentFile)}
     }
   } else {
     console.log(filenameOrCode);
-    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
+    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\.(.+?)[\"\']\)/gm);
     console.log(Matches);
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
