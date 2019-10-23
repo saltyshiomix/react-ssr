@@ -220,10 +220,14 @@ const performBabelTransform = (filename: string): string => {
     filename,
     ...(getBabelPresetsAndPlugins()),
   });
-  // return code.replace(/\n/g, '');
-  const singlified = code.replace(/\r\n/g, '').replace(/\n/g, '');
-  console.log(singlified);
-  return singlified;
+  // const singlified = code.replace(/\r\n/g, '').replace(/\n/g, '');
+  // console.log(singlified);
+  // return singlified;
+  const minified = Terser.minify(code);
+
+  console.log(minified);
+
+  return minified;
 }
 
 const babelTransform = (filenameOrCode: string, parentFile: string, initial: boolean = false): string => {
