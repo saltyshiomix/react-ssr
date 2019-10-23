@@ -221,7 +221,7 @@ const performBabelTransform = (filename: string): string => {
     ...(getBabelPresetsAndPlugins()),
   });
   // return code.replace(/\n/g, '');
-  console.log(code);
+  console.log(code.replace(/\n/g, ''));
   return code;
 }
 
