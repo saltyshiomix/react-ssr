@@ -221,8 +221,9 @@ const performBabelTransform = (filename: string): string => {
     ...(getBabelPresetsAndPlugins()),
   });
   // return code.replace(/\n/g, '');
-  console.log(code.replace(/\n/g, ''));
-  return code;
+  const singlified = code.replace(/\r\n/g, '').replace(/\n/g, '');
+  console.log(singlified);
+  return singlified;
 }
 
 const babelTransform = (filenameOrCode: string, parentFile: string, initial: boolean = false): string => {
