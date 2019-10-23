@@ -153,9 +153,9 @@ const resolveAsSerializedExports = (transformed: string, absolutePath: string): 
       const index = parseInt(value.replace(/__/g, ''), 10);
       let [_absolutePath, _transformed] = cacheMap.get(index) as [string, string];
       if (_cacheMap.has(_absolutePath)) {
-        transformed = transformed.replace(`__${index}__`, `JSON.parse(${quote + _cacheMap.get(_absolutePath) + quote})`);
+        transformed = transformed.replace(`__${index}__`, `JSON.parse(\`${_cacheMap.get(_absolutePath)}\`)`);
       } else {
-        transformed = transformed.replace(`__${index}__`, `JSON.parse(${quote + resolveAsSerializedExports(_transformed, _absolutePath) + quote})`);
+        transformed = transformed.replace(`__${index}__`, `JSON.parse(\`${resolveAsSerializedExports(_transformed, _absolutePath)}\`)`);
       }
     }
     cacheDepth++;
