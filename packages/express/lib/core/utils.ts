@@ -249,7 +249,14 @@ ${babelTransform(code, parentFile)}
 
         // console.log(absolutePath);
 
-        const transformed = `requireFromString(\`${babelTransform(absolutePath, absolutePath)}\`, '${absolutePath}')`;
+        const hoge = babelTransform(absolutePath, absolutePath);
+
+        if (isAbsolute(hoge)) {
+          console.log('parent: ' + parentFile);
+          console.log('absolute: ' + absolutePath);
+        }
+
+        const transformed = `requireFromString(\`${hoge}\`, '${absolutePath}')`;
         filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
       }
 
