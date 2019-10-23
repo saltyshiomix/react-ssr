@@ -215,9 +215,14 @@ function requireFromString(code: string, filename?: string) {
 `;
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
     if (Matches) {
-      console.log(Matches[0]);
-      console.log(Matches[0].match(/[\"\']\..+[\"\']/));
-      console.log(resolve(dirname(workingParentFile as string), Matches[0]))
+      console.log(Matches.values());
+      // console.log(Matches.values()[0]);
+      for (const value of Array.from(Matches.values())) {
+        console.log(value);
+        console.log(value.match(/[\"\']\..+[\"\']/)![0]);
+      }
+      // console.log(Matches.values[0].match(/[\"\']\..+[\"\']/));
+      // console.log(resolve(dirname(workingParentFile as string), Matches[0]))
     } else {
       console.log('not match');
     }
