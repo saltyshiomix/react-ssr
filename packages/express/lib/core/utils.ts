@@ -254,8 +254,8 @@ ${babelTransform(code, parentFile)}
           for (let i = 0; i < files.length; i++) {
             const file = files[i];
             if (possibles.includes(file)) {
-              console.log(file);
-              absolutePath = file;
+              console.log(join(absolutePath, file));
+              absolutePath = join(absolutePath, file);
             }
           }
         }
