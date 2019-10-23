@@ -192,6 +192,7 @@ const escaperegexp = require('lodash.escaperegexp');
 export const babelRequire = (filename: string) => {
   const code = babelTransform(filename, filename, /* initial */ true);
 
+  console.log('1');
   console.log(code);
 
   return requireFromString(code, filename);
@@ -253,7 +254,7 @@ ${babelTransform(code, parentFile)}
     }
   } else {
     const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
-    console.log(Matches);
+    // console.log(Matches);
     if (Matches) {
       for (const value of Array.from(Matches.values())) {
         console.log(value);
