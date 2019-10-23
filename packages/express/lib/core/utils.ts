@@ -187,7 +187,11 @@ const escaperegexp = require('lodash.escaperegexp');
 // let workingParentFile: string | undefined = undefined;
 
 export const babelRequire = (filename: string) => {
-  return requireFromString(babelTransform(filename, filename), filename);
+  const code = babelTransform(filename, filename);
+
+  console.log(code);
+
+  return requireFromString(code, filename);
   // workingParentFile = filename;
   // try {
   //   return requireFromString(babelTransform(filename, filename), filename);
@@ -264,7 +268,8 @@ ${babelTransform(code, parentFile)}
       return babelTransform(filenameOrCode, parentFile);
     } else {
       if (isAbsolute(filenameOrCode)) {
-        return babelTransform(filenameOrCode, filenameOrCode);
+        // return babelTransform(filenameOrCode, filenameOrCode);
+        return babelTransform(filenameOrCode, parentFile);
       }
       console.log('finished');
     }
