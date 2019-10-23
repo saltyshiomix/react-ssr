@@ -138,12 +138,18 @@ const Module = require('module');
 const Terser = require('terser');
 const escaperegexp = require('lodash.escaperegexp');
 
+const hoge = `
+JSON.parse(\`hoge; JSON.parse(\`a\`);\`);
+`;
+
 let cacheIndex = 0;
+let cacheDepth = 0;
 let cacheMap = new Map<number, [string, string]>();
 let _cacheMap = new Map<string, string>();
 
 const resolveAsSerializedExports = (transformed: string, absolutePath: string): string => {
   const Matches = transformed.match(/__(\d*?)__/gm);
+  const quote = '\`'.repeat(cacheDepth + 1);
   if (Matches) {
     const values = Array.from(Matches.values());
     for (let i = 0; i < values.length; i++) {
@@ -151,15 +157,17 @@ const resolveAsSerializedExports = (transformed: string, absolutePath: string): 
       const index = parseInt(value.replace(/__/g, ''), 10);
       let [_absolutePath, _transformed] = cacheMap.get(index) as [string, string];
       if (_cacheMap.has(_absolutePath)) {
-        transformed = transformed.replace(`__${index}__`, `JSON.parse(${_cacheMap.get(_absolutePath)})`);
+        transformed = transformed.replace(`__${index}__`, `JSON.parse(${quote + _cacheMap.get(_absolutePath) + quote})`);
       } else {
-        transformed = transformed.replace(`__${index}__`, `JSON.parse(${resolveAsSerializedExports(_transformed, _absolutePath)})`);
+        transformed = transformed.replace(`__${index}__`, `JSON.parse(${quote + resolveAsSerializedExports(_transformed, _absolutePath) + quote})`);
       }
     }
+    cacheDepth++;
     return resolveAsSerializedExports(transformed, absolutePath);
   } else {
     const serializedExports = JSON.stringify(requireFromString(transformed, absolutePath));
     _cacheMap.set(absolutePath, serializedExports);
+    cacheDepth++;
     return serializedExports;
   }
 };
@@ -167,20 +175,21 @@ const resolveAsSerializedExports = (transformed: string, absolutePath: string): 
 export const babelRequire = (filename: string) => {
   let code = babelTransform(filename, filename, /* initial */ true);
 
-  
   const keys = Array.from(cacheMap.keys());
   for (let i = 0; i < keys.length; i++) {
     const [absolutePath, transformed] = cacheMap.get(keys[i]) as [string, string];
     if (_cacheMap.has(absolutePath)) {
-      code = code.replace(`__${i}__`, `JSON.parse(${_cacheMap.get(absolutePath)})`);
+      code = code.replace(`__${i}__`, `JSON.parse(\`${_cacheMap.get(absolutePath)}\`)`);
     } else {
       const serializedExports = resolveAsSerializedExports(transformed, absolutePath);
-      code = code.replace(`__${i}__`, `JSON.parse(${serializedExports})`);
+      code = code.replace(`__${i}__`, `JSON.parse(\`${serializedExports}\`)`);
     }
   }
 
   console.log(_cacheMap);
 
+  cacheIndex = 0;
+  cacheDepth = 0;
   cacheMap = new Map<number, [string, string]>();
   _cacheMap = new Map<string, string>();
 
