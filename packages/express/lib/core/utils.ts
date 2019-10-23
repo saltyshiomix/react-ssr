@@ -1,6 +1,7 @@
 import {
   existsSync,
   readFileSync,
+  readdirSync,
   lstatSync,
   Stats,
 } from 'fs';
@@ -248,7 +249,15 @@ ${babelTransform(code, parentFile)}
         const relativePath = value.match(/[\"\']\..+[\"\']/)![0].replace(/"/g, '');
         let absolutePath = resolve(dirname(parentFile), relativePath);
         if (lstatSync(absolutePath).isDirectory()) {
-          absolutePath = join(absolutePath, 'index.js');
+          const possibles = ['index.js', 'index.jsx', 'index.ts', 'index.tsx'];
+          const files = readdirSync(absolutePath);
+          for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (possibles.includes(file)) {
+              console.log(file);
+              absolutePath = file;
+            }
+          }
         }
 
         // const depth: number = Array.from(value.match(/\.+\//)!.values())[0].replace('/', '').length - 1;
