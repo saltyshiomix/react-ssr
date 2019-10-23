@@ -192,6 +192,8 @@ const requireFromString = (code: string, filename?: string) => {
   return _exports;
 }
 
+const escaperegexp = require('lodash.escaperegexp');
+
 const babelTransform = (filenameOrCode: string): string => {
   if (existsSync(filenameOrCode)) {
     const { code } = require('@babel/core').transform(readFileSync(filenameOrCode).toString(), {
@@ -200,7 +202,23 @@ const babelTransform = (filenameOrCode: string): string => {
     });
     return babelTransform(code);
   } else {
-    let code = `
+    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
+    if (Matches) {
+      for (const value of Array.from(Matches.values())) {
+        const relativePath = value.match(/[\"\']\..+[\"\']/)![0].replace(/"/g, '');
+        const absolutePath = resolve(dirname(workingParentFile as string), relativePath);
+        const transformed = `requireFromString(${babelTransform(absolutePath)}, ${absolutePath})`;
+        filenameOrCode = filenameOrCode.replace(new RegExp(escaperegexp(value)), transformed);
+      }
+
+      console.log(filenameOrCode);
+
+      return filenameOrCode;
+    } else {
+      console.log('not match');
+    }
+
+    return `
 function requireFromString(code: string, filename?: string) {
   const f = filename || '';
   const p = module.parent;
@@ -212,21 +230,8 @@ function requireFromString(code: string, filename?: string) {
   p && p.children && p.children.splice(p.children.indexOf(m), 1);
   return _exports;
 }
+${filenameOrCode}
 `;
-    const Matches: RegExpMatchArray | null = filenameOrCode.match(/require\([\"\']\..+[\"\']\)/gm);
-    if (Matches) {
-      for (const value of Array.from(Matches.values())) {
-        console.log(value);
-        const relativePath = value.match(/[\"\']\..+[\"\']/)![0].replace(/"/g, '');
-        console.log(relativePath);
-        console.log(resolve(dirname(workingParentFile as string), relativePath))
-      }
-      // console.log(Matches.values[0].match(/[\"\']\..+[\"\']/));
-      // console.log(resolve(dirname(workingParentFile as string), Matches[0]))
-    } else {
-      console.log('not match');
-    }
-    return filenameOrCode;
   }
 }
 
