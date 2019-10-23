@@ -7,11 +7,12 @@ import {
   getBabelPresetsAndPlugins,
 } from './utils';
 
-require('@babel/register')({
-  ...(getBabelPresetsAndPlugins()),
-});
-
 const codec = require('json-url')('lzw');
+
+require('@babel/register')({
+  extensions: ['.ts', '.js', '.tsx', '.jsx'],
+  ...(getBabelPresetsAndPlugins())
+})
 
 const render = async (file: string, props: object, config: Config): Promise<string> => {
   let Page = require(file);
