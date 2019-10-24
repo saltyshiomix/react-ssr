@@ -69,7 +69,7 @@ Install it:
 $ npm install --save @nestjs/core @nestjs/common @nestjs/platform-express
 
 # install @react-ssr/nestjs-express
-$ npm install --save @react-ssr/express react react-dom
+$ npm install --save @react-ssr/nestjs-express react react-dom
 ```
 
 and add a script to your package.json like this:
