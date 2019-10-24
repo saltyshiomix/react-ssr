@@ -211,7 +211,7 @@ and then just run `npm start` and go to `http://localhost:3000`, you'll see `Hel
 
 ## Configuration
 
-### Constructor Configuration
+### Constructor Configuration (@react-ssr/express)
 
 ```js
 const express = require('@react-ssr/express');
@@ -221,6 +221,33 @@ const app = express({
   viewsDir: 'views',
   cacheDir: '.cache',
 });
+```
+
+### Registrar Configuration (@react-ssr/nestjs-express)
+
+**`./server/main.ts`**
+
+```ts
+import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import register from '@react-ssr/nestjs-express/register';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // default configuration
+  await register(app, {
+    viewsDir: 'views',
+    cacheDir: '.cache',
+  });
+
+  app.listen(3000, async () => {
+    console.log(`> Ready on http://localhost:3000`);
+  });
+}
+
+bootstrap();
 ```
 
 ### `ssr.config.js`
