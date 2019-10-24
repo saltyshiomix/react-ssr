@@ -72,7 +72,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
   }
 
   let compiled = false;
-  const webpackConfig: webpack.Configuration = configure(entry, config.cacheDir);
+  const webpackConfig: webpack.Configuration = configure(entry, config.distDir);
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
   compiler.run(async (err: Error) => {
@@ -93,9 +93,9 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
             console.log(props);
           }
 
-          const filename = path.join(cwd, config.cacheDir, env, `${getPageId(page, config, '_')}.js`);
+          const filename = path.join(cwd, config.distDir, env, `${getPageId(page, config, '_')}.js`);
           const script = readFileWithProps(filename, props);
-          res.type('.js').send(script);
+          res.status(200).type('.js').send(script);
         });
       }
     }
@@ -118,7 +118,7 @@ export default async (app: express.Application, server: http.Server, config: Con
     reloadable = await reload(app);
   }
 
-  fse.removeSync(path.join(cwd, config.cacheDir));
+  fse.removeSync(path.join(cwd, config.distDir));
 
   memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
@@ -132,7 +132,7 @@ export default async (app: express.Application, server: http.Server, config: Con
         /node_modules/i,
         /package\.json/i,
         /readme\.md/i,
-        new RegExp(escaperegexp(config.cacheDir)),
+        new RegExp(escaperegexp(config.distDir)),
       ],
     });
 
@@ -144,7 +144,7 @@ export default async (app: express.Application, server: http.Server, config: Con
     process.on('exit', closeWatching);
 
     watcher.on('change', async (p: string) => {
-      fse.removeSync(path.join(cwd, config.cacheDir));
+      fse.removeSync(path.join(cwd, config.distDir));
       await bundle(config, ufs, memfs);
       reloadable.reload();
 

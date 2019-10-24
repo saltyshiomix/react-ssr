@@ -51,7 +51,7 @@ const getUserWebpack = () => {
   }
 };
 
-export const configure = (entry: webpack.Entry, cacheDir: string): webpack.Configuration => {
+export const configure = (entry: webpack.Entry, distDir: string): webpack.Configuration => {
   if (env === 'development') {
     if (hasUserBabelrc()) {
       console.log(`[ info ] custom babelrc in: ${getBabelrc()}`);
@@ -63,7 +63,7 @@ export const configure = (entry: webpack.Entry, cacheDir: string): webpack.Confi
     context: cwd,
     entry,
     output: {
-      path: path.join(cwd, cacheDir, env),
+      path: path.join(cwd, distDir, env),
       filename: '[name].js',
     },
     resolve: {
