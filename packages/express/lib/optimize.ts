@@ -2,7 +2,7 @@ import fs from 'fs';
 import fse from 'fs-extra';
 import MemoryFileSystem from 'memory-fs';
 import path from 'path';
-import net from 'net';
+// import net from 'net';
 import http from 'http';
 import express from 'express';
 import webpack from 'webpack';
@@ -13,7 +13,7 @@ import {
   getPages,
   getPageId,
   readFileWithProps,
-  gracefullyShutDown,
+  // gracefullyShutDown,
   sleep,
 } from '@react-ssr/core';
 
@@ -155,15 +155,15 @@ export default async (app: express.Application, server: http.Server, config: Con
     console.log('[ info ] enabled hot reloading');
   }
 
-  gracefullyShutDown(() => {
-    console.log('[ info ] gracefully shutting down. please wait...');
+  // gracefullyShutDown(() => {
+  //   console.log('[ info ] gracefully shutting down. please wait...');
 
-    process.on('SIGINT', () => {
-      process.exit(0);
-    });
+  //   process.on('SIGINT', () => {
+  //     process.exit(0);
+  //   });
 
-    return (server.address() as net.AddressInfo).port;
-  });
+  //   return (server.address() as net.AddressInfo).port;
+  // });
 
   return server;
 };
