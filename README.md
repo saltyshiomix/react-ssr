@@ -312,7 +312,7 @@ And then, populate `.babelrc` in your project root:
 ```json
 {
   "presets": [
-    "@react-ssr/nestjs-express/babel"
+    "@react-ssr/express/babel"
   ],
   "plugins": [
     "emotion"
@@ -320,10 +320,10 @@ And then, populate `.babelrc` in your project root:
 }
 ```
 
-Finally, with custom layout, inject `@react-ssr/nestjs-express/script` at the bottom of the body tag:
+Finally, with custom layout, inject `@react-ssr/express/script` at the bottom of the body tag:
 
 ```tsx
-import ReactSsrScript from '@react-ssr/nestjs-express/script';
+import ReactSsrScript from '@react-ssr/express/script';
 
 export const Layout = (props) => {
   const { script } = props;
@@ -353,7 +353,7 @@ And then, populate `.babelrc` in your project root:
 ```json
 {
   "presets": [
-    "@react-ssr/nestjs-express/babel"
+    "@react-ssr/express/babel"
   ],
   "plugins": [
     "styled-components"
@@ -361,10 +361,10 @@ And then, populate `.babelrc` in your project root:
 }
 ```
 
-Finally, with custom layout, inject `@react-ssr/nestjs-express/script` at the bottom of the body tag:
+Finally, with custom layout, inject `@react-ssr/express/script` at the bottom of the body tag:
 
 ```jsx
-import ReactSsrScript from '@react-ssr/nestjs-express/script';
+import ReactSsrScript from '@react-ssr/express/script';
 
 export const Layout = (props) => {
   const { script } = props;
