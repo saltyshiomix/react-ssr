@@ -83,7 +83,7 @@ const express = require('@react-ssr/express');
 // default configuration
 const app = express({
   viewsDir: 'views',
-  cacheDir: '.cache',
+  distDir: '.ssr',
 });
 ```
 

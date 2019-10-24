@@ -118,8 +118,7 @@ Populate files below inside your project:
   },
   "exclude": [
     "node_modules",
-    "dist",
-    ".cache"
+    ".ssr"
   ]
 }
 ```
@@ -130,8 +129,7 @@ Populate files below inside your project:
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "outDir": "dist"
+    "module": "commonjs"
   },
   "include": [
     "server"
@@ -246,56 +244,6 @@ To use the stable version, please rewrite to `@react-ssr/{express|nestjs-express
   - Suitable for dynamic routes like blogging
 - Hot relaoding when `process.env.NODE_ENV !== 'production'`
 - TypeScript support
-
-## Usage
-
-Install it:
-
-```bash
-$ npm install --save @react-ssr/express react react-dom
-```
-
-and add a script to your package.json like this:
-
-```json
-{
-  "scripts": {
-    "start": "node server.js"
-  }
-}
-```
-
-Populate files below inside your project:
-
-**`./server.js`**
-
-```js
-const express = require('@react-ssr/express');
-const app = express();
-
-app.get('/', (req, res) => {
-  const message = 'Hello World!';
-  res.render('index', { message });
-});
-
-app.listen(3000, () => {
-  console.log('> Ready on http://localhost:3000');
-});
-```
-
-**`./views/index.jsx`**
-
-```jsx
-import React from 'react';
-
-export default function Index({ message }) {
-  return <p>{message}</p>;
-}
-```
-
-and then just run `npm start` and go to `http://localhost:3000`.
-
-You'll see `Hello World!`.
 
 ## Rules
 

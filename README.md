@@ -109,8 +109,7 @@ Populate files below inside your project:
   },
   "exclude": [
     "node_modules",
-    "dist",
-    ".cache"
+    ".ssr"
   ]
 }
 ```
@@ -121,8 +120,7 @@ Populate files below inside your project:
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "outDir": "dist"
+    "module": "commonjs"
   },
   "include": [
     "server"
@@ -219,7 +217,7 @@ const express = require('@react-ssr/express');
 // default configuration
 const app = express({
   viewsDir: 'views',
-  cacheDir: '.cache',
+  distDir: '.ssr',
 });
 ```
 
@@ -239,7 +237,7 @@ async function bootstrap() {
   // default configuration
   await register(app, {
     viewsDir: 'views',
-    cacheDir: '.cache',
+    distDir: '.ssr',
   });
 
   app.listen(3000, async () => {

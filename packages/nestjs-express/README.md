@@ -67,8 +67,7 @@ Populate files below inside your project:
   },
   "exclude": [
     "node_modules",
-    "dist",
-    ".cache"
+    ".ssr"
   ]
 }
 ```
@@ -79,8 +78,7 @@ Populate files below inside your project:
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "outDir": "dist"
+    "module": "commonjs"
   },
   "include": [
     "server"
@@ -186,7 +184,7 @@ async function bootstrap() {
   // default configuration
   await register(app, {
     viewsDir: 'views',
-    cacheDir: '.cache',
+    distDir: '.ssr',
   });
 
   app.listen(3000, async () => {
