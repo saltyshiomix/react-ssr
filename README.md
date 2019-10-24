@@ -301,104 +301,20 @@ module.exports = {
 
 A working example is here: [examples/basic-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-css)
 
-## Custom Layout
-
-In the layout, we must inject `@react-ssr/express/script` in the body tag:
-
-**./components/layout.jsx**
-
-```jsx
-import ReactSsrScript from '@react-ssr/express/script';
-
-export const Layout = (props) => {
-  const {
-    children,
-    script, // passed from the entry point (./views/index.jsx)
-  } = props;
-
-  return (
-    <html>
-      <head>
-        <title>Hello Layout</title>
-      </head>
-      <body>
-        {children}
-        <ReactSsrScript script={script} />
-      </body>
-    </html>
-  );
-};
-```
-
-And then, just use it like before:
-
-**./views/index.jsx**
-
-```jsx
-import React from 'react';
-import { Layout } from '../components/layout';
-
-const Index = (props) => {
-  const { script } = props; // `props.script` is injected by @react-ssr/express automatically
-
-  return (
-    <Layout
-      script={script} // pass it to the layout component for the dynamic SSR
-    >
-      <p>Hello Layout!</p>
-    </Layout>
-  );
-};
-
-export default Index;
-```
-
-A working example is here: [examples/custom-layout](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-layout)
-
-## Supported UI Framework
-
-- [x] [emotion](https://emotion.sh)
-- [x] [styled-components](https://www.styled-components.com)
-- [x] [material-ui](https://material-ui.com)
-- [ ] [antd](https://ant.design)
-- [ ] and more...
-
 ### With Emotion
 
 In order to enable SSR, we must install these dependencies:
 
-- `babel-plugin-emotion`
-- `emotion`
-- `emotion-server`
-
-A minimal `package.json` is like this:
-
-```json
-{
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "@emotion/core": "latest",
-    "@emotion/styled": "latest",
-    "@react-ssr/express": "latest",
-    "emotion": "latest",
-    "emotion-server": "latest",
-    "react": "latest",
-    "react-dom": "latest"
-  },
-  "devDependencies": {
-    "babel-plugin-emotion": "latest"
-  }
-}
-```
+- `babel-plugin-emotion` (devDependencies)
+- `emotion` (dependencies)
+- `emotion-server` (dependencies)
 
 And then, populate `.babelrc` in your project root:
 
 ```json
 {
   "presets": [
-    "@react-ssr/express/babel"
+    "@react-ssr/nestjs-express/babel"
   ],
   "plugins": [
     "emotion"
@@ -406,10 +322,10 @@ And then, populate `.babelrc` in your project root:
 }
 ```
 
-Finally, with custom layout, inject `@react-ssr/express/script` at the bottom of the body tag:
+Finally, with custom layout, inject `@react-ssr/nestjs-express/script` at the bottom of the body tag:
 
-```jsx
-import ReactSsrScript from '@react-ssr/express/script';
+```tsx
+import ReactSsrScript from '@react-ssr/nestjs-express/script';
 
 export const Layout = (props) => {
   const { script } = props;
@@ -432,33 +348,14 @@ A working example is here: [examples/with-jsx-emotion](https://github.com/saltys
 
 ### With styled-components
 
-In order to enable SSR, we must install `babel-plugin-styled-components` as devDependencies:
-
-A minimal `package.json` is like this:
-
-```json
-{
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "@react-ssr/express": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "styled-components": "latest"
-  },
-  "devDependencies": {
-    "babel-plugin-styled-components": "latest"
-  }
-}
-```
+In order to enable SSR, we must install `babel-plugin-styled-components` as devDependencies.
 
 And then, populate `.babelrc` in your project root:
 
 ```json
 {
   "presets": [
-    "@react-ssr/express/babel"
+    "@react-ssr/nestjs-express/babel"
   ],
   "plugins": [
     "styled-components"
@@ -466,10 +363,10 @@ And then, populate `.babelrc` in your project root:
 }
 ```
 
-Finally, with custom layout, inject `@react-ssr/express/script` at the bottom of the body tag:
+Finally, with custom layout, inject `@react-ssr/nestjs-express/script` at the bottom of the body tag:
 
 ```jsx
-import ReactSsrScript from '@react-ssr/express/script';
+import ReactSsrScript from '@react-ssr/nestjs-express/script';
 
 export const Layout = (props) => {
   const { script } = props;
