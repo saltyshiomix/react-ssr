@@ -2,8 +2,8 @@ import fs from 'fs';
 import fse from 'fs-extra';
 import MemoryFileSystem from 'memory-fs';
 import path from 'path';
-// import net from 'net';
-// import http from 'http';
+import net from 'net';
+import http from 'http';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import webpack from 'webpack';
 import {
@@ -13,7 +13,7 @@ import {
   getPages,
   getPageId,
   readFileWithProps,
-  // gracefullyShutDown,
+  gracefullyShutDown,
   sleep,
 } from '@react-ssr/core';
 
@@ -111,7 +111,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: NestExpressApp
   }
 };
 
-export default async (app: NestExpressApplication, config: Config): Promise<void> => {
+export default async (app: NestExpressApplication, server: http.Server, config: Config): Promise<http.Server> => {
   let reloadable: any = false;
   if (env === 'development') {
     const reload = require('reload');
@@ -155,13 +155,15 @@ export default async (app: NestExpressApplication, config: Config): Promise<void
     console.log('[ info ] enabled hot reloading');
   }
 
-  // gracefullyShutDown(() => {
-  //   console.log('[ info ] gracefully shutting down. please wait...');
+  gracefullyShutDown(() => {
+    console.log('[ info ] gracefully shutting down. please wait...');
 
-  //   process.on('SIGINT', () => {
-  //     process.exit(0);
-  //   });
+    process.on('SIGINT', () => {
+      process.exit(0);
+    });
 
-  //   return (server.address() as net.AddressInfo).port;
-  // });
+    return (server.address() as net.AddressInfo).port;
+  });
+
+  return server;
 };

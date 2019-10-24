@@ -66,24 +66,24 @@ export const getBabelConfig = () => {
   return { presets, plugins };
 };
 
-// export const gracefullyShutDown = async (getPort: () => number) => {
-//   let run = false;
-//   const wrapper = () => {
-//     if (!run) {
-//       run = true;
-//       const resolve = require('resolve-as-bin');
-//       const spawn = require('cross-spawn');
-//       const port = getPort();
-//       spawn.sync(resolve('fkill'), ['-f', `:${port}`], {
-//         cwd,
-//         stdio: 'inherit',
-//       });
-//     }
-//   };
-//   process.on('SIGINT', wrapper);
-//   process.on('SIGTERM', wrapper);
-//   process.on('exit', wrapper);
-// };
+export const gracefullyShutDown = async (getPort: () => number) => {
+  let run = false;
+  const wrapper = () => {
+    if (!run) {
+      run = true;
+      const resolve = require('resolve-as-bin');
+      const spawn = require('cross-spawn');
+      const port = getPort();
+      spawn.sync(resolve('fkill'), ['-f', `:${port}`], {
+        cwd,
+        stdio: 'inherit',
+      });
+    }
+  };
+  process.on('SIGINT', wrapper);
+  process.on('SIGTERM', wrapper);
+  process.on('exit', wrapper);
+};
 
 const ignores = [
   '.*',

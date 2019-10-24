@@ -40,7 +40,7 @@ const register = async (app: NestExpressApplication, overrideConfig?: Config): P
   expressApp.set('views', path.join(process.cwd(), config.viewsDir));
   expressApp.set('view engine', engine);
 
-  await optimize(app, config);
+  await optimize(app, app.getHttpServer(), config);
 };
 
 export default register;
