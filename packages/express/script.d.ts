@@ -4,6 +4,6 @@ interface ScriptComponentProps {
   script: string;
 }
 
-declare function ScriptComponent(props: ScriptComponentProps): React.Component;
+declare function ScriptComponent(props: ScriptComponentProps): React.ComponentType<ScriptComponentProps>;
 
 export = ScriptComponent;
