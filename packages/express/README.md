@@ -64,9 +64,7 @@ export default function Index({ message }) {
 }
 ```
 
-and then just run `npm start` and go to `http://localhost:3000`.
-
-You'll see `Hello World!`.
+and then just run `npm start` and go to `http://localhost:3000`, you'll see `Hello World!`.
 
 ## Rules
 
@@ -94,7 +92,7 @@ const app = express({
 ```js
 module.exports = {
   webpack: (config, env) => {
-    // we can override default webpack config here
+    // we can override the default webpack config here
     return config;
   },
 };
@@ -102,18 +100,18 @@ module.exports = {
 
 For example, let's consider we want to import css files directly:
 
-**views/index.jsx**
-
-```jsx
-import '../styles/index.css';
-```
-
 **styles/index.css**
 
 ```css
 body {
   background-color: burlywood;
 }
+```
+
+**views/index.jsx**
+
+```jsx
+import '../styles/index.css';
 ```
 
 Then, we must override the default webpack config like this:
@@ -142,7 +140,7 @@ A working example is here: [examples/basic-css](https://github.com/saltyshiomix/
 
 ## Custom Layout
 
-In the layout, we must inject `@react-ssr/express/script` in the body tag:
+In the layout, we must inject `@react-ssr/express/script` at the bottom of the body tag:
 
 **./components/layout.jsx**
 
