@@ -34,7 +34,7 @@ interface SsrProps {
   script: string;
 }
 
-export default (props: SsrProps) => {
+export const Ssr = (props: SsrProps) => {
   const {
     children,
     script,

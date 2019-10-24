@@ -1,0 +1,96 @@
+{
+  "name": "@react-ssr/core",
+  "version": "0.5.15",
+  "description": "React SSR as a view template engine",
+  "repository": "git@github.com:saltyshiomix/react-ssr.git",
+  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/saltyshiomix/react-ssr/tree/master/packages/core/README.md",
+  "keywords": [
+    "react",
+    "reactjs",
+    "react.js",
+    "express",
+    "expressjs",
+    "nest",
+    "nestjs",
+    "view",
+    "template",
+    "engine",
+    "view-template-engine",
+    "ssr",
+    "server-side-rendering"
+  ],
+  "bugs": {
+    "url": "https://github.com/saltyshiomix/react-ssr/issues",
+    "email": "shiono.yoshihide@gmail.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "babel",
+    "dist",
+    "ssr",
+    "webpack"
+  ],
+  "scripts": {
+    "build": "rimraf dist && rollup -c",
+    "prepublishOnly": "cross-env NODE_ENV=production npm run build"
+  },
+  "dependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "@babel/preset-typescript": "^7.6.0",
+    "@babel/register": "^7.6.2",
+    "@babel/runtime-corejs2": "^7.6.3",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-css-modules-transform": "^1.6.2",
+    "babel-plugin-react-require": "^3.1.1",
+    "cheerio": "^1.0.0-rc.3",
+    "cross-spawn": "^7.0.1",
+    "fkill-cli": "^5.2.0",
+    "fs-extra": "^8.1.0",
+    "json-url": "^2.4.2",
+    "lodash.escaperegexp": "^4.1.2",
+    "react-html-parser": "^2.0.2",
+    "recursive-readdir": "^2.2.2",
+    "resolve-as-bin": "^2.1.0",
+    "terser-webpack-plugin": "^2.2.1",
+    "webpack": "^4.41.2",
+    "webpack-merge": "^4.2.2"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.13",
+    "@types/fs-extra": "^8.0.1",
+    "@types/node": "^12.11.6",
+    "@types/react": "^16.9.9",
+    "@types/react-dom": "^16.9.2",
+    "@types/react-html-parser": "^2.0.1",
+    "@types/recursive-readdir": "^2.2.0",
+    "@types/terser-webpack-plugin": "^1.2.1",
+    "@types/webpack": "^4.39.5",
+    "@types/webpack-merge": "^4.1.5",
+    "cross-env": "^6.0.3",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "rimraf": "^3.0.0",
+    "rollup": "^1.25.2",
+    "rollup-plugin-auto-external": "^2.0.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "typescript": "^3.6.4"
+  },
+  "peerDependencies": {
+    "react": "^16",
+    "react-dom": "^16"
+  }
+}

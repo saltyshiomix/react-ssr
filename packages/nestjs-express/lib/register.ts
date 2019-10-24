@@ -1,16 +1,17 @@
 import path from 'path';
-import http from 'http';
-import express from 'express';
-import render from './render';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import {
+  Config,
+  render,
+  getEngine,
+} from '@react-ssr/core';
 import optimize from './optimize';
-import Config from './config';
-import { getEngine } from './utils';
 
 const escaperegexp = require('lodash.escaperegexp');
 
 let moduleDetectRegEx: RegExp;
 
-const register = async (app: express.Application, overrideConfig?: Config): Promise<void> => {
+const register = async (app: NestExpressApplication, overrideConfig?: Config): Promise<void> => {
   const config: Config = Object.assign(new Config, overrideConfig || {});
 
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
@@ -34,18 +35,12 @@ const register = async (app: express.Application, overrideConfig?: Config): Prom
   };
 
   const engine: 'jsx' | 'tsx' = getEngine();
-  app.engine(engine, renderFile);
-  app.set('views', path.join(process.cwd(), config.viewsDir));
-  app.set('view engine', engine);
+  const expressApp = app.getHttpAdapter().getInstance()
+  expressApp.engine(engine, renderFile)
+  expressApp.set('views', path.join(process.cwd(), config.viewsDir));
+  expressApp.set('view engine', engine);
 
-  app.listen = function() {
-    const args: any = arguments;
-    const server = http.createServer(app);
-    optimize(app, server, config).then((server) => {
-      server.listen.apply(server, args);
-    });
-    return server;
-  };
+  await optimize(app, app.getHttpServer(), config);
 };
 
 export default register;

@@ -1,6 +1,6 @@
 import express from 'express';
+import { Config } from '@react-ssr/core';
 import register from './register';
-import Config from './config';
 
 function ReactSsrExpress(config?: Config) {
   const app = express();

@@ -11,7 +11,7 @@ import {
   extname,
 } from 'path';
 import readdir from 'recursive-readdir';
-import Config from './config';
+import { Config } from './config';
 
 const cwd: string = process.cwd();
 
@@ -25,7 +25,7 @@ export const getBabelrc = (): string => {
   if (existsSync(join(cwd, '.babelrc'))) return join(cwd, '.babelrc');
   if (existsSync(join(cwd, '.babelrc.js'))) return join(cwd, '.babelrc.js');
   if (existsSync(join(cwd, 'babel.config.js'))) return join(cwd, 'babel.config.js');
-  return resolve(__dirname, '../babel.config.default.js');
+  return resolve(__dirname, '../babel/babel.default.js');
 };
 
 export const getBabelRule = () => {
@@ -42,7 +42,7 @@ export const getBabelRule = () => {
   };
 };
 
-export const getBabelPresetsAndPlugins = () => {
+export const getBabelConfig = () => {
   const presets = [
     '@babel/preset-env',
     '@babel/preset-react',
