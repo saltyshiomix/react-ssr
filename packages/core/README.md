@@ -19,6 +19,198 @@ This package is internally used by [@react-ssr/express](https://npm.im/@react-ss
 | [@react-ssr/express](https://github.com/saltyshiomix/react-ssr/blob/master/packages/express/README.md) | ![@react-ssr/express](https://img.shields.io/npm/v/@react-ssr/express.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/express.svg) |
 | [@react-ssr/nestjs-express](https://github.com/saltyshiomix/react-ssr/blob/master/packages/nestjs-express/README.md) | ![@react-ssr/nestjs-express](https://img.shields.io/npm/v/@react-ssr/nestjs-express.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/nestjs-express.svg) |
 
+## Usage
+
+### With @react-ssr/express
+
+Install it:
+
+```bash
+$ npm install --save @react-ssr/express react react-dom
+```
+
+and add a script to your package.json like this:
+
+```json
+{
+  "scripts": {
+    "start": "node server.js"
+  }
+}
+```
+
+Populate files below inside your project:
+
+**`./server.js`**
+
+```js
+const express = require('@react-ssr/express');
+const app = express();
+
+app.get('/', (req, res) => {
+  const message = 'Hello World!';
+  res.render('index', { message });
+});
+
+app.listen(3000, () => {
+  console.log('> Ready on http://localhost:3000');
+});
+```
+
+**`./views/index.jsx`**
+
+```jsx
+export default function Index({ message }) {
+  return <p>{message}</p>;
+}
+```
+
+and then just run `npm start` and go to `http://localhost:3000`.
+
+You'll see `Hello World!`.
+
+### With @react-ssr/nestjs-express
+
+Install it:
+
+```bash
+# install NestJS dependencies
+$ npm install --save @nestjs/core @nestjs/common @nestjs/platform-express
+
+# install @react-ssr/nestjs-express
+$ npm install --save @react-ssr/express react react-dom
+```
+
+and add a script to your package.json like this:
+
+```json
+{
+  "scripts": {
+    "start": "ts-node --project tsconfig.server.json server/main.ts"
+  }
+}
+```
+
+Populate files below inside your project:
+
+**`./tsconfig.json`**
+
+```json
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "strict": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".cache"
+  ]
+}
+```
+
+**`./tsconfig.server.json`**
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "dist"
+  },
+  "include": [
+    "server"
+  ]
+}
+```
+
+**`./server/main.ts`**
+
+```ts
+import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import register from '@react-ssr/nestjs-express/register';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // enable `.tsx` view template engine
+  await register(app);
+
+  app.listen(3000, async () => {
+    console.log(`> Ready on http://localhost:3000`);
+  });
+}
+
+bootstrap();
+```
+
+**`./server/app.module.ts`**
+
+```ts
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+
+@Module({
+  controllers: [
+    AppController,
+  ],
+})
+export class AppModule {}
+```
+
+**`./server/app.controller.ts`**
+
+```ts
+import {
+  Controller,
+  Get,
+  Render,
+} from '@nestjs/common';
+
+@Controller()
+export class AppController {
+  @Get()
+  @Render('index') // this will render `views/index.tsx`
+  public showHome() {
+    const user = { name: 'NestJS' };
+    return { user };
+  }
+}
+```
+
+**`./views/index.tsx`**
+
+```tsx
+interface IndexProps {
+  user: any;
+}
+
+const Index = ({ user }: IndexProps) => {
+  return <p>Hello {user.name}!</p>;
+};
+
+export default Index;
+```
+
+and then just run `npm start` and go to `http://localhost:3000`, you'll see `Hello NestJS!`.
+
 ## Examples
 
 - [examples/basic-blogging](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-blogging)

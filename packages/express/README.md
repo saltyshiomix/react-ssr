@@ -172,7 +172,6 @@ And then, just use it like before:
 **./views/index.jsx**
 
 ```jsx
-import React from 'react';
 import { Layout } from '../components/layout';
 
 const Index = (props) => {
@@ -204,31 +203,9 @@ A working example is here: [examples/custom-layout](https://github.com/saltyshio
 
 In order to enable SSR, we must install these dependencies:
 
-- `babel-plugin-emotion`
-- `emotion`
-- `emotion-server`
-
-A minimal `package.json` is like this:
-
-```json
-{
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "@emotion/core": "latest",
-    "@emotion/styled": "latest",
-    "@react-ssr/express": "latest",
-    "emotion": "latest",
-    "emotion-server": "latest",
-    "react": "latest",
-    "react-dom": "latest"
-  },
-  "devDependencies": {
-    "babel-plugin-emotion": "latest"
-  }
-}
-```
+- `babel-plugin-emotion` (devDependencies)
+- `emotion` (dependencies)
+- `emotion-server` (dependencies)
 
 And then, populate `.babelrc` in your project root:
 
@@ -269,26 +246,7 @@ A working example is here: [examples/with-jsx-emotion](https://github.com/saltys
 
 ### With styled-components
 
-In order to enable SSR, we must install `babel-plugin-styled-components` as devDependencies:
-
-A minimal `package.json` is like this:
-
-```json
-{
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "@react-ssr/express": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "styled-components": "latest"
-  },
-  "devDependencies": {
-    "babel-plugin-styled-components": "latest"
-  }
-}
-```
+In order to enable SSR, we must install `babel-plugin-styled-components` as devDependencies.
 
 And then, populate `.babelrc` in your project root:
 
@@ -373,8 +331,6 @@ app.listen(3000, () => {
 **`./views/index.tsx`**
 
 ```tsx
-import React from 'react';
-
 interface IndexProps {
   message: string;
 }
