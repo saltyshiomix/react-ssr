@@ -369,7 +369,8 @@ To use the stable version, please rewrite to `@react-ssr/{express|nestjs-express
 
 ## Starters
 
-- [react-ssr-starter](https://github.com/saltyshiomix/react-ssr-starter)
+- [react-ssr-jsx-starter](https://github.com/saltyshiomix/react-ssr-jsx-starter)
+- [react-ssr-tsx-starter](https://github.com/saltyshiomix/react-ssr-tsx-starter)
 - [react-ssr-nestjs-starter](https://github.com/saltyshiomix/react-ssr-nestjs-starter)
 
 ## Articles

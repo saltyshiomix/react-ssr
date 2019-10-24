@@ -306,7 +306,8 @@ You'll see `Hello World!`.
 
 ## Starters
 
-- [react-ssr-starter](https://github.com/saltyshiomix/react-ssr-starter)
+- [react-ssr-jsx-starter](https://github.com/saltyshiomix/react-ssr-jsx-starter)
+- [react-ssr-tsx-starter](https://github.com/saltyshiomix/react-ssr-tsx-starter)
 - [react-ssr-nestjs-starter](https://github.com/saltyshiomix/react-ssr-nestjs-starter)
 
 ## Articles
