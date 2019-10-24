@@ -34,9 +34,8 @@
     "register.js",
     "register.d.ts",
     "script.js",
-    "entry.js",
-    "babel.js",
-    "babel.config.default.js"
+    "script.d.ts",
+    "babel.js"
   ],
   "scripts": {
     "build": "rimraf dist && rollup -c",

@@ -32,6 +32,7 @@
     "index.js",
     "index.d.ts",
     "script.js",
+    "script.d.ts",
     "babel.js"
   ],
   "scripts": {
