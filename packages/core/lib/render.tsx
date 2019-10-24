@@ -12,7 +12,7 @@ const codec = require('json-url')('lzw');
 require('@babel/register')({
   extensions: ['.js', '.jsx', '.ts', '.tsx',],
   ...(getBabelConfig()),
-})
+});
 
 export const render = async (file: string, props: object, config: Config): Promise<string> => {
   let Page = require(file);
