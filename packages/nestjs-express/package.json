@@ -1,6 +1,6 @@
 {
   "name": "@react-ssr/nestjs-express",
-  "version": "0.5.15",
+  "version": "0.6.0",
   "description": "React SSR as a view template engine",
   "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
@@ -43,7 +43,7 @@
     "prepublishOnly": "cross-env NODE_ENV=production npm run build"
   },
   "dependencies": {
-    "@react-ssr/core": "^0.5.15",
+    "@react-ssr/core": "^0.6.0",
     "chokidar": "^3.2.2",
     "fs-extra": "^8.1.0",
     "json-url": "^2.4.2",
