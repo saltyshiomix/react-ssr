@@ -1,4 +1,3 @@
-export * from './config';
 export * from './helpers';
 export * from './render';
 export * from './ssr';

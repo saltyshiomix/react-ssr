@@ -10,10 +10,29 @@ import {
   basename,
   extname,
 } from 'path';
+import webpack from 'webpack';
 import readdir from 'recursive-readdir';
-import { Config } from './config';
 
 const cwd: string = process.cwd();
+
+export interface Config {
+  viewsDir: string;
+  distDir: string;
+  webpack?: (defaultConfig: webpack.Configuration, env: 'development' | 'production') => webpack.Configuration;
+}
+
+export const getSsrConfig = (): Config => {
+  const defaultConfig = {
+    viewsDir: 'views',
+    distDir: '.ssr',
+  };
+  const ssrConfigPath = join(cwd, 'ssr.config.js');
+  if (existsSync(ssrConfigPath)) {
+    return Object.assign(defaultConfig, require(ssrConfigPath));
+  } else {
+    return defaultConfig;
+  }
+};
 
 export const getEngine = (): 'jsx' | 'tsx' => existsSync(join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
 
