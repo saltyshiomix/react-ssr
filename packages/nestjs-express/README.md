@@ -182,9 +182,9 @@ module.exports = {
 
 For example, let's consider we want to import css files directly:
 
-**views/index.jsx**
+**views/index.tsx**
 
-```jsx
+```tsx
 import '../styles/index.css';
 ```
 
@@ -224,15 +224,15 @@ A working example is here: [examples/basic-css](https://github.com/saltyshiomix/
 
 In the layout, we must inject `@react-ssr/nestjs-express/script` at the bottom of the body tag:
 
-**./components/layout.jsx**
+**./components/layout.tsx**
 
-```jsx
+```tsx
 import ReactSsrScript from '@react-ssr/nestjs-express/script';
 
 export const Layout = (props) => {
   const {
     children,
-    script, // passed from the entry point (./views/index.jsx)
+    script, // passed from the entry point (./views/index.tsx)
   } = props;
 
   return (
@@ -251,9 +251,9 @@ export const Layout = (props) => {
 
 And then, just use it like before:
 
-**./views/index.jsx**
+**./views/index.tsx**
 
-```jsx
+```tsx
 import { Layout } from '../components/layout';
 
 const Index = (props) => {
