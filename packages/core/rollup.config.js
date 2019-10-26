@@ -6,52 +6,37 @@ import { terser } from 'rollup-plugin-terser';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
-export default [
-  {
-    input: 'lib/index.ts',
-    output: {
-      file: 'dist/index.js',
-      format: 'cjs',
-    },
-    plugins: [
-      external(),
-      resolve({
-        extensions,
-      }),
-      babel({
-        extensions,
-        exclude: /node_modules/,
-      }),
-      commonjs({
-        namedExports: {
-          'node_modules/react-dom/server.js': [
-            'renderToString',
-          ],
-        },
-      }),
-      (process.env.NODE_ENV === 'production' && terser()),
-    ],
-    external: [
-      'react-dom/server',
-    ],
+const config = (src, dist) => ({
+  input: src,
+  output: {
+    file: dist,
+    format: 'cjs',
   },
-  {
-    input: 'lib/script.tsx',
-    output: {
-      file: 'dist/script.js',
-      format: 'cjs',
-    },
-    plugins: [
-      external(),
-      resolve({
-        extensions,
-      }),
-      babel({
-        extensions,
-        exclude: /node_modules/,
-      }),
-      commonjs(),
-      (process.env.NODE_ENV === 'production' && terser()),
-    ],
-  }
+  plugins: [
+    external(),
+    resolve({
+      extensions,
+    }),
+    babel({
+      extensions,
+      exclude: /node_modules/,
+    }),
+    commonjs({
+      namedExports: {
+        'node_modules/react-dom/server.js': [
+          'renderToString',
+        ],
+      },
+    }),
+    (process.env.NODE_ENV === 'production' && terser()),
+  ],
+  external: [
+    'react-dom/server',
+  ],
+});
+
+export default [
+  config('lib/index.ts', 'dist/index.js'),
+  config('lib/head.tsx', 'dist/head.js'),
+  config('lib/script.tsx', 'dist/script.js'),
 ];

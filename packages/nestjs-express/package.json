@@ -33,6 +33,8 @@
     "dist",
     "register.js",
     "register.d.ts",
+    "head.js",
+    "head.d.ts",
     "script.js",
     "script.d.ts",
     "babel.js"
