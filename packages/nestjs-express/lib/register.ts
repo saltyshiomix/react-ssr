@@ -1,9 +1,9 @@
 import path from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import {
-  Config,
   render,
   getEngine,
+  getSsrConfig,
 } from '@react-ssr/core';
 import optimize from './optimize';
 
@@ -11,8 +11,8 @@ const escaperegexp = require('lodash.escaperegexp');
 
 let moduleDetectRegEx: RegExp;
 
-const register = async (app: NestExpressApplication, overrideConfig?: Config): Promise<void> => {
-  const config: Config = Object.assign(new Config, overrideConfig || {});
+const register = async (app: NestExpressApplication): Promise<void> => {
+  const config = getSsrConfig();
 
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
@@ -22,7 +22,7 @@ const register = async (app: NestExpressApplication, overrideConfig?: Config): P
   
     const { settings, cache, _locals, ...props } = options;
     try {
-      return cb(undefined, await render(file, props, config));
+      return cb(undefined, await render(file, props));
     } catch (e) {
       return cb(e);
     } finally {

@@ -7,6 +7,7 @@ import {
   hasUserBabelrc,
   getBabelrc,
   getBabelRule,
+  getSsrConfig,
 } from './helpers';
 
 const cwd = process.cwd();
@@ -42,16 +43,9 @@ const prodConfig: webpack.Configuration = {
   ],
 };
 
-const getUserWebpack = () => {
-  const userConfigPath = path.join(cwd, 'ssr.config.js');
-  if (fs.existsSync(userConfigPath)) {
-    return require(userConfigPath).webpack;
-  } else {
-    return undefined;
-  }
-};
+export const configureWebpack = (entry: webpack.Entry): webpack.Configuration => {
+  const ssrConfig = getSsrConfig();
 
-export const configure = (entry: webpack.Entry, distDir: string): webpack.Configuration => {
   if (env === 'development') {
     if (hasUserBabelrc()) {
       console.log(`[ info ] custom babelrc in: ${getBabelrc()}`);
@@ -63,7 +57,7 @@ export const configure = (entry: webpack.Entry, distDir: string): webpack.Config
     context: cwd,
     entry,
     output: {
-      path: path.join(cwd, distDir, env),
+      path: path.join(cwd, ssrConfig.distDir, env),
       filename: '[name].js',
     },
     resolve: {
@@ -88,10 +82,9 @@ export const configure = (entry: webpack.Entry, distDir: string): webpack.Config
     config = merge(config, prodConfig);
   }
 
-  const userWebpack = getUserWebpack();
-  if (userWebpack) {
-    if (typeof userWebpack === 'function') {
-      config = userWebpack(config, env);
+  if (ssrConfig.webpack) {
+    if (typeof ssrConfig.webpack === 'function') {
+      config = ssrConfig.webpack(config, env);
     } else {
       console.warn('[ warn ] ssr.config.js#webpack must be a function');
     }

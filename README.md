@@ -207,52 +207,14 @@ and then just run `npm start` and go to `http://localhost:3000`, you'll see `Hel
 - The each view's extension must be either `.jsx` or `.tsx`
   - We can decide freely with other components' extension
 
-## Configuration
-
-### Constructor Configuration (@react-ssr/express)
+## Configuration: `ssr.config.js`
 
 ```js
-const express = require('@react-ssr/express');
-
-// default configuration
-const app = express({
-  viewsDir: 'views',
-  distDir: '.ssr',
-});
-```
-
-### Registrar Configuration (@react-ssr/nestjs-express)
-
-**`./server/main.ts`**
-
-```ts
-import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import register from '@react-ssr/nestjs-express/register';
-import { AppModule } from './app.module';
-
-async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
-  // default configuration
-  await register(app, {
-    viewsDir: 'views',
-    distDir: '.ssr',
-  });
-
-  app.listen(3000, async () => {
-    console.log(`> Ready on http://localhost:3000`);
-  });
-}
-
-bootstrap();
-```
-
-### `ssr.config.js`
-
-```js
+// default config
 module.exports = {
-  webpack: (config, env) => {
+  viewsDir: 'views',
+  distDir: '.ssr', // we should ignore this by .gitignore
+  webpack: (config /* webpack.Configuration */, env /* 'development' | 'production' */) => {
     // we can override default webpack config here
     return config;
   },

@@ -1,10 +1,9 @@
 import express from 'express';
-import { Config } from '@react-ssr/core';
 import register from './register';
 
-function ReactSsrExpress(config?: Config) {
+function ReactSsrExpress() {
   const app = express();
-  register(app, config);
+  register(app);
   return app;
 };
 

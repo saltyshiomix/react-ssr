@@ -4,7 +4,6 @@ import { Ssr } from './ssr';
 import {
   getPageId,
   getBabelConfig,
-  Config,
 } from './helpers';
 
 const codec = require('json-url')('lzw');
@@ -14,13 +13,13 @@ require('@babel/register')({
   ...(getBabelConfig()),
 });
 
-export const render = async (file: string, props: object, config: Config): Promise<string> => {
+export const render = async (file: string, props: object): Promise<string> => {
   let Page = require(file);
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
   html += ReactDOMServer.renderToStaticMarkup(
-    <Ssr script={`/_react-ssr/${getPageId(file, config, '/')}.js?props=${await codec.compress(props)}`}>
+    <Ssr script={`/_react-ssr/${getPageId(file, '/')}.js?props=${await codec.compress(props)}`}>
       <Page {...props} />
     </Ssr>
   );

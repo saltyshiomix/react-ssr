@@ -1,12 +1,8 @@
 import express from 'express';
 
-declare function reactSsrExpress(config?: reactSsrExpress.Config): express.Express;
+declare function reactSsrExpress(): express.Express;
 
 declare namespace reactSsrExpress {
-  interface Config {
-    viewsDir: string;
-    cacheDir: string;
-  }
   var json: typeof express.json;
   var raw: typeof express.raw;
   var text: typeof express.text;

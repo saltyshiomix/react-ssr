@@ -2,9 +2,10 @@ import path from 'path';
 import http from 'http';
 import express from 'express';
 import {
-  Config,
   render,
+  getSsrConfig,
   getEngine,
+  Config,
 } from '@react-ssr/core';
 import optimize from './optimize';
 
@@ -12,8 +13,8 @@ const escaperegexp = require('lodash.escaperegexp');
 
 let moduleDetectRegEx: RegExp;
 
-const register = async (app: express.Application, overrideConfig?: Config): Promise<void> => {
-  const config: Config = Object.assign(new Config, overrideConfig || {});
+const register = async (app: express.Application): Promise<void> => {
+  const config: Config = getSsrConfig();
 
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
@@ -23,7 +24,7 @@ const register = async (app: express.Application, overrideConfig?: Config): Prom
   
     const { settings, cache, _locals, ...props } = options;
     try {
-      return cb(undefined, await render(file, props, config));
+      return cb(undefined, await render(file, props));
     } catch (e) {
       return cb(e);
     } finally {
@@ -43,7 +44,7 @@ const register = async (app: express.Application, overrideConfig?: Config): Prom
   app.listen = function() {
     const args: any = arguments;
     const server = http.createServer(app);
-    optimize(app, server, config).then((server) => {
+    optimize(app, server).then((server) => {
       server.listen.apply(server, args);
     });
     return server;

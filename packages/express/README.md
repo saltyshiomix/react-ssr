@@ -73,26 +73,15 @@ and then just run `npm start` and go to `http://localhost:3000`, you'll see `Hel
 - The each view's extension must be either `.jsx` or `.tsx`
   - We can decide freely with other components' extension
 
-## Configuration
-
-### Constructor Configuration
+## Configuration: `ssr.config.js`
 
 ```js
-const express = require('@react-ssr/express');
-
-// default configuration
-const app = express({
-  viewsDir: 'views',
-  distDir: '.ssr',
-});
-```
-
-### `ssr.config.js`
-
-```js
+// default config
 module.exports = {
-  webpack: (config, env) => {
-    // we can override the default webpack config here
+  viewsDir: 'views',
+  distDir: '.ssr', // we should ignore this by .gitignore
+  webpack: (config /* webpack.Configuration */, env /* 'development' | 'production' */) => {
+    // we can override default webpack config here
     return config;
   },
 };
@@ -100,18 +89,18 @@ module.exports = {
 
 For example, let's consider we want to import css files directly:
 
+**views/index.jsx**
+
+```jsx
+import '../styles/index.css';
+```
+
 **styles/index.css**
 
 ```css
 body {
   background-color: burlywood;
 }
-```
-
-**views/index.jsx**
-
-```jsx
-import '../styles/index.css';
 ```
 
 Then, we must override the default webpack config like this:

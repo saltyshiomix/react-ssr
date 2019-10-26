@@ -166,41 +166,15 @@ and then just run `npm start` and go to `http://localhost:3000`, you'll see `Hel
   - Don't create other components in the views directory
 - The each view's extension must be `.tsx`
 
-## Configuration
-
-### Registrar Configuration
-
-**`./server/main.ts`**
-
-```ts
-import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import register from '@react-ssr/nestjs-express/register';
-import { AppModule } from './app.module';
-
-async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
-  // default configuration
-  await register(app, {
-    viewsDir: 'views',
-    distDir: '.ssr',
-  });
-
-  app.listen(3000, async () => {
-    console.log(`> Ready on http://localhost:3000`);
-  });
-}
-
-bootstrap();
-```
-
-### `ssr.config.js`
+## Configuration: `ssr.config.js`
 
 ```js
+// default config
 module.exports = {
-  webpack: (config, env) => {
-    // we can override the default webpack config here
+  viewsDir: 'views',
+  distDir: '.ssr', // we should ignore this by .gitignore
+  webpack: (config /* webpack.Configuration */, env /* 'development' | 'production' */) => {
+    // we can override default webpack config here
     return config;
   },
 };
@@ -208,18 +182,18 @@ module.exports = {
 
 For example, let's consider we want to import css files directly:
 
+**views/index.jsx**
+
+```jsx
+import '../styles/index.css';
+```
+
 **styles/index.css**
 
 ```css
 body {
   background-color: burlywood;
 }
-```
-
-**views/index.tsx**
-
-```tsx
-import '../styles/index.css';
 ```
 
 Then, we must override the default webpack config like this:

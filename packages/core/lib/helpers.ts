@@ -122,7 +122,9 @@ const ignoreNodeModules = (file: string, stats: Stats) => {
   return stats.isDirectory() && basename(file) == 'node_modules';
 };
 
-export const getPages = async (config: Config): Promise<string[][]> => {
+const config: Config = getSsrConfig();
+
+export const getPages = async (): Promise<string[][]> => {
   const allPages = await readdir(cwd, [ignoreNodeModules, ignoreDotDir, ...ignores]);
   const entryPages = await readdir(join(cwd, config.viewsDir), [ignoreDotDir, ...ignores]);
   const otherPages = [];
@@ -136,7 +138,7 @@ export const getPages = async (config: Config): Promise<string[][]> => {
   return [entryPages, otherPages];
 };
 
-export const getPageId = (page: string, config: Config, separator: string = '_'): string => {
+export const getPageId = (page: string, separator: string = '_'): string => {
   const [, ...rest] = page.replace(join(cwd, config.viewsDir), '')
                           .replace(extname(page), '')
                           .split(sep);

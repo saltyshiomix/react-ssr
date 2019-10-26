@@ -7,14 +7,15 @@ import http from 'http';
 import express from 'express';
 import webpack from 'webpack';
 import {
-  Config,
-  configure,
+  configureWebpack,
+  getSsrConfig,
   getEngine,
   getPages,
   getPageId,
   readFileWithProps,
   gracefullyShutDown,
   sleep,
+  Config,
 } from '@react-ssr/core';
 
 const cwd = process.cwd();
@@ -34,13 +35,13 @@ async function bundle(config: Config, ufs: any, memfs: any, app: express.Applica
 
 async function bundle(config: Config, ufs: any, memfs: any, app?: express.Application) {
   const entry: webpack.Entry = {};
-  const [entryPages, otherPages] = await getPages(config);
+  const [entryPages, otherPages] = await getPages();
   const entryPath = path.resolve(require.resolve('@react-ssr/core'), '../webpack/entry.js');
   const template = fse.readFileSync(entryPath).toString();
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
-    const pageId = getPageId(page, config, '/');
+    const pageId = getPageId(page, '/');
     const dir = path.dirname(pageId);
     const name = path.basename(pageId);
     if (dir !== '.') {
@@ -54,12 +55,12 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
       path.join(cwd, `react-ssr-src/${path.join(dir, name + ext)}`),
       fse.readFileSync(page),
     );
-    entry[getPageId(page, config, '_')] = `./react-ssr-src/${path.join(dir, `entry-${name}${ext}`)}`;
+    entry[getPageId(page, '_')] = `./react-ssr-src/${path.join(dir, `entry-${name}${ext}`)}`;
   }
 
   for (let i = 0; i < otherPages.length; i++) {
     const page = otherPages[i];
-    const pageId = getPageId(page, config, '/');
+    const pageId = getPageId(page, '/');
     const dir = path.dirname(pageId);
     const name = path.basename(pageId);
     if (dir !== '.') {
@@ -72,8 +73,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
   }
 
   let compiled = false;
-  const webpackConfig: webpack.Configuration = configure(entry, config.distDir);
-  const compiler: webpack.Compiler = webpack(webpackConfig);
+  const compiler: webpack.Compiler = webpack(configureWebpack(entry));
   compiler.inputFileSystem = ufs;
   compiler.run(async (err: Error) => {
     err && console.error(err.stack || err);
@@ -81,7 +81,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
     if (app) {
       for (let i = 0; i < entryPages.length; i++) {
         const page = entryPages[i];
-        const pageId = getPageId(page, config, '/');
+        const pageId = getPageId(page, '/');
         const route = `/_react-ssr/${pageId}.js`;
 
         console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
@@ -93,7 +93,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
             console.log(props);
           }
 
-          const filename = path.join(cwd, config.distDir, env, `${getPageId(page, config, '_')}.js`);
+          const filename = path.join(cwd, config.distDir, env, `${getPageId(page, '_')}.js`);
           const script = readFileWithProps(filename, props);
           res.status(200).type('.js').send(script);
         });
@@ -111,7 +111,9 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
   }
 };
 
-export default async (app: express.Application, server: http.Server, config: Config): Promise<http.Server> => {
+export default async (app: express.Application, server: http.Server): Promise<http.Server> => {
+  const config: Config = getSsrConfig();
+
   let reloadable: any = false;
   if (env === 'development') {
     const reload = require('reload');
