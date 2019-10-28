@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { Ssr } from './ssr';
+import { Ssr, Head } from './ssr';
 import { getPageId } from './helpers/core';
 import { getBabelConfig } from './helpers/babel';
 
@@ -21,6 +21,8 @@ export const render = async (file: string, props: object): Promise<string> => {
       <Page {...props} />
     </Ssr>
   );
+
+  console.log(Head.elements);
 
   return html;
 };
