@@ -2,6 +2,12 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import cheerio from 'cheerio';
 import ReactHtmlParser from 'react-html-parser';
+import {
+  createTitleComponent,
+  createMetaDescriptionComponent,
+  useTitle,
+  useMeta,
+} from './helpers';
 
 const getSsrId = (html: string): string => {
   let ssrId: string = 'default';
@@ -41,138 +47,196 @@ export const Ssr = (props: SsrProps) => {
   } = props;
 
   const html: string = ReactDOMServer.renderToStaticMarkup(<React.Fragment>{children}</React.Fragment>).toLowerCase();
-  const withHtml: boolean = 0 <= html.indexOf('html');
+  const withHtml: boolean = 0 <= html.toLowerCase().indexOf('html');
   const ssrId = getSsrId(html);
 
-  switch (ssrId) {
-    case 'material-ui': {
-      const { ServerStyleSheets } = require('@material-ui/core/styles');
-      const sheets = new ServerStyleSheets();
-      if (withHtml) {
-        const html = ReactDOMServer.renderToStaticMarkup(
-          sheets.collect(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` }))
-        );
-        const $ = cheerio.load(html);
-        const htmlAttr = $('html').attr();
-        const bodyAttr = $('body').attr();
-        const head = $('head').html();
-        const body = $('body').html();
-        return (
-          <html {...convertAttrToJsxStyle(htmlAttr)}>
-            <head>
-              {head ? ReactHtmlParser(head) : null}
-              {sheets.getStyleElement()}
-            </head>
-            <body {...convertAttrToJsxStyle(bodyAttr)}>
-              {body ? ReactHtmlParser(body) : null}
-              <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-            </body>
-          </html>
-        );
-      } else {
-        const html = ReactDOMServer.renderToStaticMarkup(sheets.collect(children));
-        return (
-          <html>
-            <head>
-              {sheets.getStyleElement()}
-            </head>
-            <body>
-              <div id="react-ssr-root">
-                {ReactHtmlParser(html)}
-              </div>
-              <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-            </body>
-          </html>
-        );
-      }
-    }
+  let Title = undefined;
+  let MetaDescription = undefined;
+  if (0 < Head.elements.length) {
+    Title = createTitleComponent(Head.elements);
+    MetaDescription = createMetaDescriptionComponent(Head.elements);
+  }
 
-    case 'styled-components': {
-      const { ServerStyleSheet, StyleSheetManager } = require('styled-components');
-      const sheet = new ServerStyleSheet();
-      let html;
-      let styleElement;
-      if (withHtml) {
-        try {
-          html = ReactDOMServer.renderToStaticMarkup(
-            <StyleSheetManager sheet={sheet.instance}>
-              {React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` })}
-            </StyleSheetManager>
+  try {
+    switch (ssrId) {
+      case 'material-ui': {
+        const { ServerStyleSheets } = require('@material-ui/core/styles');
+        const sheets = new ServerStyleSheets();
+        if (withHtml) {
+          const html = ReactDOMServer.renderToStaticMarkup(
+            sheets.collect(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` }))
           );
-          styleElement = sheet.getStyleElement();
-        } catch (error) {
-          console.error(error);
-          return <html><body>{error}</body></html>;
-        } finally {
-          sheet.seal();
-        }
-        const $ = cheerio.load(html);
-        const htmlAttr = $('html').attr();
-        const bodyAttr = $('body').attr();
-        const head = $('head').html();
-        const body = $('body').html();
-        return (
-          <html {...convertAttrToJsxStyle(htmlAttr)}>
-            <head>
-              {head ? ReactHtmlParser(head) : null}
-              {styleElement}
-            </head>
-            <body {...convertAttrToJsxStyle(bodyAttr)}>
-              {body ? ReactHtmlParser(body) : null}
-              <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-            </body>
-          </html>
-        );
-      } else {
-        try {
-          html = ReactDOMServer.renderToStaticMarkup(
-            <StyleSheetManager sheet={sheet.instance}>
-              {children}
-            </StyleSheetManager>
+          const $ = cheerio.load(html);
+          const otherHead = $('head').not('title').not('meta[name=description]').html();
+          const body = $('body').html();
+          return (
+            <html {...convertAttrToJsxStyle($('html').attr())}>
+              <head>
+                {Title ? <Title /> : ReactHtmlParser($.html($('title')))}
+                {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
+                {otherHead ? ReactHtmlParser(otherHead) : null}
+                {sheets.getStyleElement()}
+              </head>
+              <body {...convertAttrToJsxStyle($('body').attr())}>
+                {body ? ReactHtmlParser(body) : null}
+                <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
+                {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+              </body>
+            </html>
           );
-          styleElement = sheet.getStyleElement();
-        } catch (error) {
-          console.error(error);
-          return <html><body>{error}</body></html>;
-        } finally {
-          sheet.seal();
+        } else {
+          const html = ReactDOMServer.renderToStaticMarkup(sheets.collect(children));
+          return (
+            <html>
+              <head>
+                {Title && <Title />}
+                {MetaDescription && <MetaDescription />}
+                {sheets.getStyleElement()}
+              </head>
+              <body>
+                <div id="react-ssr-root">
+                  {ReactHtmlParser(html)}
+                </div>
+                <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
+                {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+              </body>
+            </html>
+          );
         }
-        return (
-          <html>
-            <head>
-              {styleElement}
-            </head>
-            <body>
-              <div id="react-ssr-root">
-                {ReactHtmlParser(html)}
-              </div>
-              <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-            </body>
-          </html>
-        );
       }
-    }
-
-    default: {
-      if (withHtml) {
-        return React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` });
-      } else {
-        return (
-          <html>
-            <body>
-              <div id="react-ssr-root">
+  
+      case 'styled-components': {
+        const { ServerStyleSheet, StyleSheetManager } = require('styled-components');
+        const sheet = new ServerStyleSheet();
+        let html;
+        let styleElement;
+        if (withHtml) {
+          try {
+            html = ReactDOMServer.renderToStaticMarkup(
+              <StyleSheetManager sheet={sheet.instance}>
+                {React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` })}
+              </StyleSheetManager>
+            );
+            styleElement = sheet.getStyleElement();
+          } catch (error) {
+            console.error(error);
+            return <html><body>{error}</body></html>;
+          } finally {
+            sheet.seal();
+          }
+          const $ = cheerio.load(html);
+          const otherHead = $('head').not('title').not('meta[name=description]').html();
+          const body = $('body').html();
+          return (
+            <html {...convertAttrToJsxStyle($('html').attr())}>
+              <head>
+                {Title ? <Title /> : ReactHtmlParser($.html($('title')))}
+                {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
+                {otherHead ? ReactHtmlParser(otherHead) : null}
+                {styleElement}
+              </head>
+              <body {...convertAttrToJsxStyle($('body').attr())}>
+                {body ? ReactHtmlParser(body) : null}
+                <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
+                {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+              </body>
+            </html>
+          );
+        } else {
+          try {
+            html = ReactDOMServer.renderToStaticMarkup(
+              <StyleSheetManager sheet={sheet.instance}>
                 {children}
-              </div>
-              <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
-            </body>
-          </html>
-        );
+              </StyleSheetManager>
+            );
+            styleElement = sheet.getStyleElement();
+          } catch (error) {
+            console.error(error);
+            return <html><body>{error}</body></html>;
+          } finally {
+            sheet.seal();
+          }
+          return (
+            <html>
+              <head>
+                {Title && <Title />}
+                {MetaDescription && <MetaDescription />}
+                {styleElement}
+              </head>
+              <body>
+                <div id="react-ssr-root">
+                  {ReactHtmlParser(html)}
+                </div>
+                <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
+                {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+              </body>
+            </html>
+          );
+        }
+      }
+  
+      default: {
+        if (withHtml) {
+          const html = ReactDOMServer.renderToStaticMarkup(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` }));
+          const $ = cheerio.load(html);
+          const body = $('body').html();
+          return (
+            <html {...convertAttrToJsxStyle($('html').attr())}>
+              <head>
+                {Title ? <Title /> : ReactHtmlParser($.html($('title')))}
+                {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
+              </head>
+              <body {...convertAttrToJsxStyle($('body').attr())}>
+                {body ? ReactHtmlParser(body) : null}
+                <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
+                {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+              </body>
+            </html>
+          );
+        } else {
+          return (
+            <html>
+              <head>
+                {Title && <Title />}
+                {MetaDescription && <MetaDescription />}
+              </head>
+              <body>
+                <div id="react-ssr-root">
+                  {children}
+                </div>
+                <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
+                {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
+              </body>
+            </html>
+          );
+        }
       }
     }
+  } finally {
+    Head.elements = [];
   }
 };
+
+export const Head = ({ children }: { children: React.ReactNode }) => {
+  const elements = React.Children.toArray(children) as React.ReactElement[];
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    Head.elements.push(element);
+
+    switch (element.type) {
+      case 'title':
+        useTitle(element.props.children);
+        break;
+
+      case 'meta':
+        useMeta(element.props);
+        break;
+
+      default:
+        break;
+    }
+  }
+  return null;
+}
+
+Head.elements = [] as React.ReactElement[];

@@ -1,9 +1,3 @@
-import React from 'react';
+import { Head } from './ssr';
 
-export default ({ children }: { children?: React.ReactNode }) => {
-  return (
-    <head>
-      {children}
-    </head>
-  );
-};
+export default Head;
