@@ -21,9 +21,11 @@ export default function Ssr(props: SsrProps) {
     script,
   } = props;
 
-  const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
+  // the Head component has React hooks, so these two lines are must be the top of this function scope
   const headElement = getHeadElement(children as React.ReactElement);
   const elements = headElement ? headElement.type.elements : [];
+
+  const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
 
   console.log(elements);
 
