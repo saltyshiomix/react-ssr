@@ -32,10 +32,10 @@ const prodConfig: webpack.Configuration = {
       maxAsyncRequests: 5,
       maxInitialRequests: 3,
     },
-    minimize: true,
-    minimizer: [
-      new TerserPlugin(),
-    ],
+    minimize: false,
+    // minimizer: [
+    //   new TerserPlugin(),
+    // ],
   },
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
@@ -72,7 +72,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify('development'),
+        'process.env.NODE_ENV': JSON.stringify('production'),
       }),
     ],
   };
