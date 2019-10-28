@@ -2,11 +2,10 @@ import React from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ReactSsrScript from '@react-ssr/express/script';
-import { theme } from '../../lib';
+import { theme } from '../../lib/theme';
 
 export const Layout = (props) => {
   const {
-    title,
     children,
     script,
   } = props;
@@ -14,7 +13,7 @@ export const Layout = (props) => {
   return (
     <html lang="en">
       <head>
-        <title>{title}</title>
+        <title>with-jsx-material-ui - @react-ssr/express</title>
       </head>
       <body>
         <ThemeProvider theme={theme}>

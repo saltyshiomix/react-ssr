@@ -4,7 +4,7 @@ import {
   Typography,
   Button,
 } from '@material-ui/core';
-import { Layout } from '../components';
+import { Layout } from '../components/Layout';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -32,7 +32,6 @@ const Index = (props) => {
 
   return (
     <Layout
-      title="with-jsx-material-ui - @react-ssr/express"
       script={script} // pass it for dynamic SSR
     >
       <div className={classes.root}>
