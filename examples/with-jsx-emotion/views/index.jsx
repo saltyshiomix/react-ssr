@@ -17,20 +17,18 @@ const Home = (props) => {
     <Layout
       script={script} // pass it for dynamic SSR
     >
-      <div>
-        <Head>
-          <title>{title}</title>
-        </Head>
-        <TitleCard>
-          {title}
-        </TitleCard>
-        <BasicCard>
-          <a href="/next">Go to next page</a>
-        </BasicCard>
-        <HoverableCard>
-          With <code>:hover</code>.
-        </HoverableCard>
-      </div>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <TitleCard>
+        {title}
+      </TitleCard>
+      <BasicCard>
+        <a href="/next">Go to next page</a>
+      </BasicCard>
+      <HoverableCard>
+        With <code>:hover</code>.
+      </HoverableCard>
     </Layout>
   );
 };
