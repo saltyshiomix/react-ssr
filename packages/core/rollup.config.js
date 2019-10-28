@@ -37,6 +37,6 @@ const config = (src, dist) => ({
 
 export default [
   config('lib/index.ts', 'dist/index.js'),
-  config('lib/head.tsx', 'dist/head.js'),
   config('lib/script.tsx', 'dist/script.js'),
+  config('lib/ssr.tsx', 'dist/ssr.js'),
 ];
