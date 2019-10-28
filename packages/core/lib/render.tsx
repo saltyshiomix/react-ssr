@@ -22,7 +22,7 @@ export const render = async (file: string, props: object): Promise<string> => {
     </Ssr>
   );
 
-  // console.log(html);
+  console.log(html);
 
   return html;
 };

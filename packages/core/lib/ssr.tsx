@@ -26,9 +26,6 @@ export default function Ssr(props: SsrProps) {
   const elements = headElement ? headElement.type.elements : [];
 
   const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
-
-  console.log(elements);
-
   const withHtml: boolean = 0 <= html.toLowerCase().indexOf('html');
   const ssrId = getSsrId(html);
 
