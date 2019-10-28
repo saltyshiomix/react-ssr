@@ -3,7 +3,7 @@ import React from 'react';
 const useTitle = (title: string) => {
   React.useEffect(() => {
     document.title = title;
-  }, [title]);
+  }, []);
 };
 
 const useMeta = (attr: any) => {
@@ -21,7 +21,7 @@ const useMeta = (attr: any) => {
       meta.setAttribute(key, attr[key]);
     }
     document.getElementsByTagName('head')[0].appendChild(meta);
-  }, [attr]);
+  }, []);
 };
 
 export default function Head({ children }: { children: React.ReactNode }) {
