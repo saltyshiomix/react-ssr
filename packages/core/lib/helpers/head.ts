@@ -31,16 +31,16 @@ let _headElement: any = undefined;
 export const getHeadElement = (child: any): any => {
   console.log(_headElement);
   if (typeof child === 'string') {
-    return child;
+    return _headElement;
   }
   if (typeof child.type === 'function') {
-    return getHeadElement(child.type(child.props))
+    if (child.type.name === 'Head') {
+      return child;
+    }
+    return getHeadElement(child.type(child.props));
   }
   if (!(child.props && child.props.children)) {
-    if (typeof child.type === 'function' && child.type.name === 'Head') {
-      return _headElement;
-    }
-    return undefined;
+    return _headElement;
   }
   React.Children.forEach(child.props.children, child => {
     if (typeof child.type === 'function' && child.type.name === 'Head') {
