@@ -47,7 +47,7 @@ export const Ssr = (props: SsrProps) => {
     script,
   } = props;
 
-  const html: string = ReactDOMServer.renderToStaticMarkup(<React.Fragment>{children}</React.Fragment>).toLowerCase();
+  const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
   const withHtml: boolean = 0 <= html.toLowerCase().indexOf('html');
   const ssrId = getSsrId(html);
 
