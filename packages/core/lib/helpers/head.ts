@@ -27,11 +27,8 @@ export const convertAttrToJsxStyle = (attr: any) => {
 }
 
 export const getHeadElement = (child: any): any => {
-  console.log(child);
+  // console.log(child);
 
-  if (typeof child.type === 'function' && child.type.name === 'Head') {
-    return child;
-  }
   if (typeof child === 'string' || child.type === 'script') {
     return undefined;
   }
@@ -39,9 +36,13 @@ export const getHeadElement = (child: any): any => {
     if (child.type.name.toLowerCase() === 'script') {
       return undefined;
     }
+    if (child.type.name.toLowerCase() === 'Head') {
+      return child;
+    }
     return getHeadElement(child.type(child.props));
   }
   if (!(child.props && child.props.children)) {
+    console.log(child);
     return undefined;
   }
 
