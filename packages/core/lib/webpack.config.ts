@@ -12,8 +12,6 @@ import {
 const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
-console.log(env);
-
 const prodConfig: webpack.Configuration = {
   performance: {
     hints: 'warning',
@@ -34,7 +32,7 @@ const prodConfig: webpack.Configuration = {
       maxAsyncRequests: 5,
       maxInitialRequests: 3,
     },
-    minimize: false,
+    minimize: true,
     minimizer: [
       new TerserPlugin(),
     ],
@@ -90,8 +88,6 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
       console.warn('[ warn ] ssr.config.js#webpack must be a function');
     }
   }
-
-  console.log(config);
 
   return config;
 };
