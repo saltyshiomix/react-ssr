@@ -12,6 +12,8 @@ import {
 const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
+process.env.NODE_ENV === 'development';
+
 const prodConfig: webpack.Configuration = {
   performance: {
     hints: 'warning',
