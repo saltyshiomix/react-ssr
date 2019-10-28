@@ -63,19 +63,16 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
     module: {
-      // noParse: [
-      //   /\.min\.js$|\.production\.min\.js$/,
-      // ],
       rules: [
         getBabelRule(),
       ],
     },
     optimization: {
-      nodeEnv: 'development',
+      nodeEnv: 'production',
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify('development'),
+        'process.env.NODE_ENV': JSON.stringify('production'),
       }),
     ],
   };
