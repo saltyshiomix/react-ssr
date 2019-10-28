@@ -37,6 +37,7 @@ const prodConfig: webpack.Configuration = {
       new TerserPlugin({
         terserOptions: {
           compress: false,
+          mangle: false,
         },
       }),
     ],
