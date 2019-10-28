@@ -31,11 +31,11 @@ let _headElement: any = undefined;
 export const getHeadElement = (child: React.ReactElement) => {
   console.log('1');
   console.log(child);
-  if (!(child.props && child.props.children)) {
-    console.log('2');
-    console.log(_headElement);
-    return _headElement;
-  }
+  // if (!(child.props && child.props.children)) {
+  //   console.log('2');
+  //   console.log(_headElement);
+  //   return _headElement;
+  // }
   React.Children.forEach(child.props.children, child => {
     console.log(child);
     if (typeof child.type === 'function' && child.type.name === 'Head') {
