@@ -25,8 +25,8 @@ export default function Ssr(props: SsrProps) {
   const headElement = getHeadElement(children as React.ReactElement);
   let elements = headElement ? headElement.type.elements : [];
 
-  // clear cache
-  elements = [];
+  // clear cache, but use the same instance
+  elements.length = 0;
 
   const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
   const withHtml: boolean = 0 <= html.toLowerCase().indexOf('html');
