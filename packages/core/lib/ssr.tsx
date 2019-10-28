@@ -21,12 +21,9 @@ export default function Ssr(props: SsrProps) {
     script,
   } = props;
 
-  const headElement = getHeadElement(children as React.ReactElement);
-  console.log(headElement);
-
-  const elements = headElement ? headElement.type.elements : [];
-
   const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
+  const headElement = getHeadElement(children as React.ReactElement);
+  const elements = headElement ? headElement.type.elements : [];
 
   console.log(elements);
 
