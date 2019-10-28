@@ -50,13 +50,16 @@ export const getHeadElement = (child: any): any => {
   // }
 
   React.Children.forEach(child.props.children, child => {
-    if (typeof child.type === 'function' && child.type.name.toLowerCase() === 'head') {
-      _headElement = child;
+    if (_headElement) {
       return;
     }
-    console.log(child);
-    _headElement = getHeadElement(child);
-    if (_headElement) {
+    const __headElement = getHeadElement(child);
+    if (__headElement) {
+      _headElement = __headElement;
+      return;
+    }
+    if (typeof child.type === 'function' && child.type.name.toLowerCase() === 'head') {
+      _headElement = child;
       return;
     }
   });
