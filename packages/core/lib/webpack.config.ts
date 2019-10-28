@@ -12,8 +12,6 @@ import {
 const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
-process.env.NODE_ENV === 'development';
-
 const prodConfig: webpack.Configuration = {
   performance: {
     hints: 'warning',
@@ -82,9 +80,9 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     ],
   };
 
-  if (env === 'production') {
-    config = merge(config, prodConfig);
-  }
+  // if (env === 'production') {
+  //   config = merge(config, prodConfig);
+  // }
 
   if (ssrConfig.webpack) {
     if (typeof ssrConfig.webpack === 'function') {
