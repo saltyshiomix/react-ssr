@@ -36,22 +36,24 @@ export const getHeadElement = (child: any): any => {
     if (child.type.name.toLowerCase() === 'script') {
       return undefined;
     }
-    if (child.type.name.toLowerCase() === 'Head') {
+    if (child.type.name.toLowerCase() === 'head') {
       return child;
     }
     return getHeadElement(child.type(child.props));
   }
-  if (!(child.props && child.props.children)) {
-    console.log(child);
-    return undefined;
-  }
+
+  // if (!(child.props && child.props.children)) {
+  //   console.log(child);
+  //   return undefined;
+  // }
 
   let _headElement: any = undefined;
   React.Children.forEach(child.props.children, child => {
-    if (typeof child.type === 'function' && child.type.name === 'Head') {
+    if (typeof child.type === 'function' && child.type.name.toLowerCase() === 'head') {
       _headElement = child;
       return;
     }
+    console.log(child);
     _headElement = getHeadElement(child);
     if (_headElement) {
       return;
