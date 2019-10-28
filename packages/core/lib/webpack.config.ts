@@ -33,9 +33,9 @@ const prodConfig: webpack.Configuration = {
       maxInitialRequests: 3,
     },
     minimize: false,
-    // minimizer: [
-    //   new TerserPlugin(),
-    // ],
+    minimizer: [
+      new TerserPlugin(),
+    ],
   },
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
@@ -80,9 +80,9 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     ],
   };
 
-  // if (env === 'production') {
-  //   config = merge(config, prodConfig);
-  // }
+  if (env === 'production') {
+    config = merge(config, prodConfig);
+  }
 
   if (ssrConfig.webpack) {
     if (typeof ssrConfig.webpack === 'function') {
