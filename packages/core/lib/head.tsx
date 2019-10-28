@@ -29,6 +29,8 @@ export default function Head({ children }: { children: React.ReactNode }) {
   for (let i = 0; i < elements.length; i++) {
     const element = elements[i];
     Head.elements.push(element);
+    console.log('pushed');
+    console.log(element);
 
     switch (element.type) {
       case 'title':
