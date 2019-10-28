@@ -34,14 +34,7 @@ const prodConfig: webpack.Configuration = {
     },
     minimize: true,
     minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          compress: false,
-          mangle: false,
-          keep_classnames: true,
-          keep_fnames: true,
-        },
-      }),
+      new TerserPlugin(),
     ],
   },
   plugins: [
@@ -79,7 +72,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify('production'),
+        'process.env.NODE_ENV': JSON.stringify('development'),
       }),
     ],
   };
