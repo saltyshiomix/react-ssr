@@ -26,22 +26,23 @@ export const convertAttrToJsxStyle = (attr: any) => {
   return jsxAttr;
 }
 
-let _headElement: any = undefined;
-
 export const getHeadElement = (child: any): any => {
-  console.log(_headElement);
+  console.log(child);
+
+  if (typeof child.type === 'function' && child.type.name === 'Head') {
+    return child;
+  }
   if (typeof child === 'string') {
-    return _headElement;
+    return undefined;
   }
   if (typeof child.type === 'function') {
-    if (child.type.name === 'Head') {
-      return child;
-    }
     return getHeadElement(child.type(child.props));
   }
   if (!(child.props && child.props.children)) {
-    return _headElement;
+    return undefined;
   }
+
+  let _headElement: any = undefined;
   React.Children.forEach(child.props.children, child => {
     if (typeof child.type === 'function' && child.type.name === 'Head') {
       _headElement = child;
