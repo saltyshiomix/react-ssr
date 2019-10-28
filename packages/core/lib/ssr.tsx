@@ -7,11 +7,9 @@ import {
   convertAttrToJsxStyle,
   createTitleComponent,
   createMetaDescriptionComponent,
-} from './helpers/head';
-import {
   useTitle,
   useMeta,
-} from './helpers/hooks';
+} from './helpers/head';
 
 interface SsrProps {
   children: any;
