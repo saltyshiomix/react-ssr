@@ -32,7 +32,7 @@ export const getHeadElement = (child: any): any => {
   if (typeof child.type === 'function' && child.type.name === 'Head') {
     return child;
   }
-  if (typeof child === 'string') {
+  if (typeof child === 'string' || child.type === 'script') {
     return undefined;
   }
   if (typeof child.type === 'function') {
