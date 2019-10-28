@@ -26,6 +26,8 @@ export const convertAttrToJsxStyle = (attr: any) => {
   return jsxAttr;
 }
 
+let _headElement: any = undefined;
+
 export const getHeadElement = (child: any): any => {
   // console.log(child);
 
@@ -47,7 +49,6 @@ export const getHeadElement = (child: any): any => {
   //   return undefined;
   // }
 
-  let _headElement: any = undefined;
   React.Children.forEach(child.props.children, child => {
     if (typeof child.type === 'function' && child.type.name.toLowerCase() === 'head') {
       _headElement = child;
