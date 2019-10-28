@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'development';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
