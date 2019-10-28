@@ -21,11 +21,11 @@ export default function Ssr(props: SsrProps) {
     script,
   } = props;
 
-  // the Head component has React hooks, so these two lines are must be the top of this function scope
+  // the dynamic Head component has React Hooks, so these two lines are must be at the top of this function scope
   const headElement = getHeadElement(children as React.ReactElement);
   let elements = headElement ? headElement.type.elements : [];
 
-  // clear cache, but use the same instance
+  // clear the cache, but use the same instance
   elements.length = 0;
 
   const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
