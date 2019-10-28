@@ -33,9 +33,6 @@ export const getHeadElement = (child: any): any => {
     return child;
   }
   if (typeof child === 'string' || child.type === 'script') {
-    if (child.type === 'script') {
-      console.log('script!!!!!!!!!!!');
-    }
     return undefined;
   }
   if (typeof child.type === 'function') {
