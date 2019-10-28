@@ -392,18 +392,6 @@ WIP
 - [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
 - [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
 
-Each example uses `@react-ssr/{express|nestjs-express}@canary` by default, so it may have some bugs.
-
-To use the stable version, please rewrite to `@react-ssr/{express|nestjs-express}@latest`:
-
-```json
-{
-  "dependencies": {
-    "@react-ssr/nestjs-express": "latest"
-  }
-}
-```
-
 ## Starters
 
 - [react-ssr-jsx-starter](https://github.com/saltyshiomix/react-ssr-jsx-starter)

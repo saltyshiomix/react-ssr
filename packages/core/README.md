@@ -224,18 +224,6 @@ and then just run `npm start` and go to `http://localhost:3000`, you'll see `Hel
 - [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
 - [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
 
-Each example uses `@react-ssr/{express|nestjs-express}@canary` by default, so it may have some bugs.
-
-To use the stable version, please rewrite to `@react-ssr/{express|nestjs-express}@latest`:
-
-```json
-{
-  "dependencies": {
-    "@react-ssr/express": "latest"
-  }
-}
-```
-
 ## Features
 
 - Blazing fast SSR (Server Side Rendering)
