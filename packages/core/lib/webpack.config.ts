@@ -38,6 +38,8 @@ const prodConfig: webpack.Configuration = {
         terserOptions: {
           compress: false,
           mangle: false,
+          keep_classnames: true,
+          keep_fnames: true,
         },
       }),
     ],

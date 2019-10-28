@@ -32,6 +32,8 @@ export default function Ssr(props: SsrProps) {
   const withHtml: boolean = 0 <= html.toLowerCase().indexOf('html');
   const ssrId = getSsrId(html);
 
+  console.log(elements);
+
   let Title = undefined;
   let MetaDescription = undefined;
   if (0 < elements.length) {
