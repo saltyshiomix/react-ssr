@@ -23,7 +23,6 @@ export default function Ssr(props: SsrProps) {
 
   // the dynamic Head component has React Hooks, so these two lines are must be at the top of this function scope
   const headElement = getHeadElement(children as React.ReactElement);
-  // console.log(headElement);
   let elements = headElement ? headElement.type.elements : [];
 
   // clear the cache, but use the same instance
@@ -32,8 +31,6 @@ export default function Ssr(props: SsrProps) {
   const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
   const withHtml: boolean = 0 <= html.toLowerCase().indexOf('html');
   const ssrId = getSsrId(html);
-
-  // console.log(elements);
 
   let Title = undefined;
   let MetaDescription = undefined;
