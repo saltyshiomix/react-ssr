@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { Ssr } from './ssr';
-import {
-  getPageId,
-  getBabelConfig,
-} from './helpers';
+import { getPageId } from './helpers/core';
+import { getBabelConfig } from './helpers/babel';
 
 const codec = require('json-url')('lzw');
 

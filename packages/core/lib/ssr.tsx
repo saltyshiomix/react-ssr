@@ -6,7 +6,7 @@ import Head from './head';
 import {
   createTitleComponent,
   createMetaDescriptionComponent,
-} from './helpers';
+} from './helpers/head';
 
 Head.elements = [] as React.ReactElement[];
 

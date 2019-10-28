@@ -2,7 +2,7 @@ import React from 'react';
 import {
   useTitle,
   useMeta,
-} from './helpers';
+} from './helpers/hooks';
 
 export default function Head({ children }: { children: React.ReactNode }) {
   const elements = React.Children.toArray(children) as React.ReactElement[];

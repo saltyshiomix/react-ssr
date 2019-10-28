@@ -1,14 +1,13 @@
-import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import { smart as merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
+import { getSsrConfig } from './helpers/core';
 import {
   hasUserBabelrc,
   getBabelrc,
   getBabelRule,
-  getSsrConfig,
-} from './helpers';
+} from './helpers/babel';
 
 const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
