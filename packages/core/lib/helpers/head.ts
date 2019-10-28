@@ -29,6 +29,7 @@ export const convertAttrToJsxStyle = (attr: any) => {
 let _headElement: any = undefined;
 
 export const getHeadElement = (child: any): any => {
+  console.log(_headElement);
   if (typeof child === 'string') {
     return child;
   }
