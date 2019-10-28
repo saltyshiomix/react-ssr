@@ -4,37 +4,13 @@ import cheerio from 'cheerio';
 import ReactHtmlParser from 'react-html-parser';
 import Head from './head';
 import {
+  getSsrId,
+  convertAttrToJsxStyle,
   createTitleComponent,
   createMetaDescriptionComponent,
 } from './helpers/head';
 
 Head.elements = [] as React.ReactElement[];
-
-const getSsrId = (html: string): string => {
-  let ssrId: string = 'default';
-  0 <= html.indexOf('"mui') && (ssrId = 'material-ui');
-  0 <= html.indexOf('data-emotion-css') && (ssrId = 'emotion');
-  0 <= html.indexOf('"views__') && (ssrId = 'styled-components');
-  return ssrId;
-}
-
-const convertAttrToJsxStyle = (attr: any) => {
-  const jsxAttr: any = {};
-  const keys = Object.keys(attr);
-  for (let i = 0; i < keys.length; i++) {
-    let key = keys[i];
-    if (key === 'class') {
-      key = 'className';
-    }
-    if (0 <= key.indexOf('-')) {
-      if (!key.startsWith('data-')) {
-        key = key.replace(/-([a-z])/g, g => g[1].toUpperCase());
-      }
-    }
-    jsxAttr[key] = attr[keys[i]];
-  }
-  return jsxAttr;
-}
 
 interface SsrProps {
   children: any;
