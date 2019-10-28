@@ -45,6 +45,7 @@ export const Ssr = (props: SsrProps) => {
           );
           const $ = cheerio.load(html);
           const meta = $.html($('head meta').filter((i, el) => $(el).attr('name') !== 'description'));
+          const styles = $.html($('head style'));
           const body = $('body').html();
           return (
             <html {...convertAttrToJsxStyle($('html').attr())}>
@@ -52,6 +53,7 @@ export const Ssr = (props: SsrProps) => {
                 {Title ? <Title /> : ReactHtmlParser($.html($('title')))}
                 {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
                 {ReactHtmlParser(meta)}
+                {ReactHtmlParser(styles)}
                 {sheets.getStyleElement()}
               </head>
               <body {...convertAttrToJsxStyle($('body').attr())}>
@@ -103,6 +105,7 @@ export const Ssr = (props: SsrProps) => {
           }
           const $ = cheerio.load(html);
           const meta = $.html($('head meta').filter((i, el) => $(el).attr('name') !== 'description'));
+          const styles = $.html($('head style'));
           const body = $('body').html();
           return (
             <html {...convertAttrToJsxStyle($('html').attr())}>
@@ -110,6 +113,7 @@ export const Ssr = (props: SsrProps) => {
                 {Title ? <Title /> : ReactHtmlParser($.html($('title')))}
                 {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
                 {ReactHtmlParser(meta)}
+                {ReactHtmlParser(styles)}
                 {styleElement}
               </head>
               <body {...convertAttrToJsxStyle($('body').attr())}>
@@ -157,6 +161,7 @@ export const Ssr = (props: SsrProps) => {
           const html = ReactDOMServer.renderToStaticMarkup(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` }));
           const $ = cheerio.load(html);
           const meta = $.html($('head meta').filter((i, el) => $(el).attr('name') !== 'description'));
+          const styles = $.html($('head style'));
           const body = $('body').html();
           return (
             <html {...convertAttrToJsxStyle($('html').attr())}>
@@ -164,6 +169,7 @@ export const Ssr = (props: SsrProps) => {
                 {Title ? <Title /> : ReactHtmlParser($.html($('title')))}
                 {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
                 {ReactHtmlParser(meta)}
+                {ReactHtmlParser(styles)}
               </head>
               <body {...convertAttrToJsxStyle($('body').attr())}>
                 {body ? ReactHtmlParser(body) : null}
