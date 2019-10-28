@@ -23,7 +23,10 @@ export default function Ssr(props: SsrProps) {
 
   // the Head component has React hooks, so these two lines are must be the top of this function scope
   const headElement = getHeadElement(children as React.ReactElement);
-  const elements = headElement ? headElement.type.elements : [];
+  let elements = headElement ? headElement.type.elements : [];
+
+  // clear cache
+  elements = [];
 
   const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
   const withHtml: boolean = 0 <= html.toLowerCase().indexOf('html');
@@ -200,8 +203,8 @@ export default function Ssr(props: SsrProps) {
       }
     }
   } finally {
-    if (headElement) {
-      headElement.type.elements = [];
-    }
+    // if (headElement) {
+    //   headElement.type.elements = [];
+    // }
   }
 };
