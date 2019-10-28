@@ -42,7 +42,7 @@ export const getHeadElement = (child: React.ReactElement) => {
       _headElement = child;
       return;
     }
-    _headElement = getHeadElement(child);
+    _headElement = getHeadElement(child.props.children);
     if (_headElement) {
       return;
     }
