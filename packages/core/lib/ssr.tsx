@@ -44,14 +44,14 @@ export const Ssr = (props: SsrProps) => {
             sheets.collect(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` }))
           );
           const $ = cheerio.load(html);
-          const otherHead = $('head').not('title').not('meta[name=description]').html();
+          const meta = $.html($('head meta').filter((i, el) => $(el).attr('name') !== 'description'));
           const body = $('body').html();
           return (
             <html {...convertAttrToJsxStyle($('html').attr())}>
               <head>
                 {Title ? <Title /> : ReactHtmlParser($.html($('title')))}
                 {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
-                {otherHead ? ReactHtmlParser(otherHead) : null}
+                {ReactHtmlParser(meta)}
                 {sheets.getStyleElement()}
               </head>
               <body {...convertAttrToJsxStyle($('body').attr())}>
@@ -102,14 +102,14 @@ export const Ssr = (props: SsrProps) => {
             sheet.seal();
           }
           const $ = cheerio.load(html);
-          const otherHead = $('head').not('title').not('meta[name=description]').html();
+          const meta = $.html($('head meta').filter((i, el) => $(el).attr('name') !== 'description'));
           const body = $('body').html();
           return (
             <html {...convertAttrToJsxStyle($('html').attr())}>
               <head>
                 {Title ? <Title /> : ReactHtmlParser($.html($('title')))}
                 {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
-                {otherHead ? ReactHtmlParser(otherHead) : null}
+                {ReactHtmlParser(meta)}
                 {styleElement}
               </head>
               <body {...convertAttrToJsxStyle($('body').attr())}>
@@ -156,12 +156,14 @@ export const Ssr = (props: SsrProps) => {
         if (withHtml) {
           const html = ReactDOMServer.renderToStaticMarkup(React.cloneElement(children, { script: `${script}&ssrid=${ssrId}` }));
           const $ = cheerio.load(html);
+          const meta = $.html($('head meta').filter((i, el) => $(el).attr('name') !== 'description'));
           const body = $('body').html();
           return (
             <html {...convertAttrToJsxStyle($('html').attr())}>
               <head>
                 {Title ? <Title /> : ReactHtmlParser($.html($('title')))}
                 {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
+                {ReactHtmlParser(meta)}
               </head>
               <body {...convertAttrToJsxStyle($('body').attr())}>
                 {body ? ReactHtmlParser(body) : null}
