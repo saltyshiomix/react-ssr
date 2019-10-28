@@ -29,8 +29,6 @@ export const convertAttrToJsxStyle = (attr: any) => {
 let _headElement: any = undefined;
 
 export const getHeadElement = (child: any): any => {
-  // console.log(child);
-
   if (typeof child === 'string' || child.type === 'script') {
     return undefined;
   }
@@ -43,12 +41,6 @@ export const getHeadElement = (child: any): any => {
     }
     return getHeadElement(child.type(child.props));
   }
-
-  // if (!(child.props && child.props.children)) {
-  //   console.log(child);
-  //   return undefined;
-  // }
-
   React.Children.forEach(child.props.children, child => {
     if (_headElement) {
       return;
