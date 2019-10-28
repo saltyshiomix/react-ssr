@@ -23,8 +23,6 @@ const env = process.env.NODE_ENV === 'production' ? 'production' : 'development'
 const ext = '.' + getEngine();
 const codec = require('json-url')('lzw');
 
-process.env.NODE_ENV = 'development';
-
 const ufs = require('unionfs').ufs;
 const memfs = new MemoryFileSystem();
 ufs.use(fs).use(memfs);
