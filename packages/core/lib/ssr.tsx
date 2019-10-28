@@ -10,7 +10,7 @@ import {
   createMetaDescriptionComponent,
 } from './helpers/head';
 
-Head.elements = [] as React.ReactElement[];
+// Head.elements = [] as React.ReactElement[];
 
 interface SsrProps {
   children: any;
@@ -24,14 +24,18 @@ export const Ssr = (props: SsrProps) => {
   } = props;
 
   const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
+  const headElements = [...(Head.elements)];
+
+  console.log(headElements);
+
   const withHtml: boolean = 0 <= html.toLowerCase().indexOf('html');
   const ssrId = getSsrId(html);
 
   let Title = undefined;
   let MetaDescription = undefined;
-  if (0 < Head.elements.length) {
-    Title = createTitleComponent(Head.elements);
-    MetaDescription = createMetaDescriptionComponent(Head.elements);
+  if (0 < headElements.length) {
+    Title = createTitleComponent(headElements);
+    MetaDescription = createMetaDescriptionComponent(headElements);
   }
 
   try {
