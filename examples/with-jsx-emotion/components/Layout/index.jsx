@@ -3,7 +3,6 @@ import { css, Global } from '@emotion/core';
 
 export const Layout = (props) => {
   const {
-    title,
     children,
     script,
   } = props;
@@ -11,7 +10,7 @@ export const Layout = (props) => {
   return (
     <html lang="en">
       <head>
-        <title>{title}</title>
+        <title>@react-ssr/express with Emotion</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content={'user-scalable=0, initial-scale=1, minimum-scale=1, width=device-width, height=device-height'} />
       </head>

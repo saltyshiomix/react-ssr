@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from '@react-ssr/express/head';
 import {
   Layout,
   BasicCard,
@@ -14,10 +15,12 @@ const Home = (props) => {
 
   return (
     <Layout
-      title={title}
       script={script} // pass it for dynamic SSR
     >
       <div>
+        <Head>
+          <title>{title}</title>
+        </Head>
         <TitleCard>
           {title}
         </TitleCard>
