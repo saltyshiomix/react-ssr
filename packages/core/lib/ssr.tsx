@@ -2,15 +2,16 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import cheerio from 'cheerio';
 import ReactHtmlParser from 'react-html-parser';
-import Head from './head';
 import {
   getSsrId,
   convertAttrToJsxStyle,
   createTitleComponent,
   createMetaDescriptionComponent,
 } from './helpers/head';
-
-// Head.elements = [] as React.ReactElement[];
+import {
+  useTitle,
+  useMeta,
+} from './helpers/hooks';
 
 interface SsrProps {
   children: any;
@@ -205,3 +206,27 @@ export const Ssr = (props: SsrProps) => {
     Head.elements = [];
   }
 };
+
+export const Head = ({ children }: { children: React.ReactNode }) => {
+  const elements = React.Children.toArray(children) as React.ReactElement[];
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    Head.elements.push(element);
+
+    switch (element.type) {
+      case 'title':
+        useTitle(element.props.children);
+        break;
+
+      case 'meta':
+        useMeta(element.props);
+        break;
+
+      default:
+        break;
+    }
+  }
+  return null;
+}
+
+Head.elements = [] as React.ReactElement[];
