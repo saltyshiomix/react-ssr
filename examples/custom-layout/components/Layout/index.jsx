@@ -11,6 +11,7 @@ export const Layout = (props) => {
     <html lang="en">
       <head>
         <title>{title}</title>
+        <meta charSet="utf-8" />
       </head>
       <body>
         {children}

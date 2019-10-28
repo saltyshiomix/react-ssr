@@ -2,7 +2,7 @@ const express = require('@react-ssr/express');
 const app = express();
 
 app.get('/', (req, res) => {
-  const user = { name: 'World' };
+  const user = { name: 'Custom Layout' };
   res.render('index', { user });
 });
 
