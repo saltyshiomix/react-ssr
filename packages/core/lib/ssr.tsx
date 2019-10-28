@@ -5,10 +5,9 @@ import ReactHtmlParser from 'react-html-parser';
 import {
   getSsrId,
   convertAttrToJsxStyle,
+  getHeadElement,
   createTitleComponent,
   createMetaDescriptionComponent,
-  useTitle,
-  useMeta,
 } from './helpers/head';
 
 interface SsrProps {
@@ -16,25 +15,26 @@ interface SsrProps {
   script: string;
 }
 
-export const Ssr = (props: SsrProps) => {
+export default function Ssr(props: SsrProps) {
   const {
     children,
     script,
   } = props;
 
   const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
-  const headElements = [...(Head.elements)];
+  const headElement = getHeadElement(children as React.ReactElement);
+  const elements = headElement ? headElement.type.elements : [];
 
-  console.log(headElements);
+  console.log(elements);
 
   const withHtml: boolean = 0 <= html.toLowerCase().indexOf('html');
   const ssrId = getSsrId(html);
 
   let Title = undefined;
   let MetaDescription = undefined;
-  if (0 < headElements.length) {
-    Title = createTitleComponent(headElements);
-    MetaDescription = createMetaDescriptionComponent(headElements);
+  if (0 < elements.length) {
+    Title = createTitleComponent(elements);
+    MetaDescription = createMetaDescriptionComponent(elements);
   }
 
   try {
@@ -201,30 +201,8 @@ export const Ssr = (props: SsrProps) => {
       }
     }
   } finally {
-    Head.elements = [];
-  }
-};
-
-export const Head = ({ children }: { children: React.ReactNode }) => {
-  const elements = React.Children.toArray(children) as React.ReactElement[];
-  for (let i = 0; i < elements.length; i++) {
-    const element = elements[i];
-    Head.elements.push(element);
-
-    switch (element.type) {
-      case 'title':
-        useTitle(element.props.children);
-        break;
-
-      case 'meta':
-        useMeta(element.props);
-        break;
-
-      default:
-        break;
+    if (headElement) {
+      headElement.type.elements = [];
     }
   }
-  return null;
-}
-
-Head.elements = [] as React.ReactElement[];
+};

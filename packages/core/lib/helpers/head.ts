@@ -26,6 +26,25 @@ export const convertAttrToJsxStyle = (attr: any) => {
   return jsxAttr;
 }
 
+let _headElement: any = undefined;
+
+export const getHeadElement = (child: React.ReactElement) => {
+  if (!(child.props && child.props.children)) {
+    return _headElement;
+  }
+  React.Children.forEach(child.props.children, child => {
+    if (typeof child.type === 'function' && child.type.name === 'Head') {
+      _headElement = child;
+      return;
+    }
+    _headElement = getHeadElement(child);
+    if (_headElement) {
+      return;
+    }
+  });
+  return _headElement;
+};
+
 const createComponent = (elements: React.ReactElement[], condition: (el: React.ReactElement) => boolean) => {
   let component = undefined;
   for (let i = 0; i < elements.length; i++) {
@@ -44,28 +63,4 @@ export const createTitleComponent = (elements: React.ReactElement[]) => {
 
 export const createMetaDescriptionComponent = (elements: React.ReactElement[]) => {
   return createComponent(elements, el => el.type === 'meta' && el.props.name === 'description');
-};
-
-export const useTitle = (title: string) => {
-  React.useEffect(() => {
-    document.title = title;
-  }, [title]);
-};
-
-export const useMeta = (attr: any) => {
-  const keys = Object.keys(attr);
-  let selector = 'meta';
-  for (let i = 0; i < keys.length; i++) {
-    const key = keys[i];
-    selector += `[${key}=${attr[key]}]`;
-  }
-
-  React.useEffect(() => {
-    const meta: HTMLMetaElement = document.querySelector(selector) || document.createElement('meta');
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      meta.setAttribute(key, attr[key]);
-    }
-    document.getElementsByTagName('head')[0].appendChild(meta);
-  }, [attr]);
 };
