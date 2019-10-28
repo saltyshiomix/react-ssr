@@ -30,6 +30,9 @@ let _headElement: any = undefined;
 
 export const getHeadElement = (child: any): any => {
   console.log(child);
+  if (typeof child === 'string') {
+    return child;
+  }
   if (typeof child.type === 'function') {
     return getHeadElement(child.type(child.props))
   }
