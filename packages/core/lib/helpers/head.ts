@@ -27,7 +27,7 @@ export const convertAttrToJsxStyle = (attr: any) => {
 }
 
 export const getHeadElement = (child: any): any => {
-  // console.log(child);
+  console.log(child);
 
   if (typeof child.type === 'function' && child.type.name === 'Head') {
     return child;
