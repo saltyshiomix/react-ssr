@@ -33,6 +33,7 @@ export const getHeadElement = (child: React.ReactElement) => {
     return _headElement;
   }
   React.Children.forEach(child.props.children, child => {
+    console.log(child);
     if (typeof child.type === 'function' && child.type.name === 'Head') {
       _headElement = child;
       return;
