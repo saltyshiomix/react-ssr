@@ -13,7 +13,7 @@ const escaperegexp = require('lodash.escaperegexp');
 let moduleDetectRegEx: RegExp;
 
 const register = async (app: NestExpressApplication): Promise<void> => {
-  await clearCache();
+  // await clearCache();
 
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
