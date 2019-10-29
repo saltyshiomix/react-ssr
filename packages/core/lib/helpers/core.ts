@@ -97,6 +97,13 @@ export const getPageId = (page: string, separator: string = '_'): string => {
   return rest.join(separator);
 };
 
+export const clearCache = async () => {
+  const [pages] = await getPages();
+  for (let i = 0; i < pages.length; i++) {
+    delete require.cache[pages[i]];
+  }
+};
+
 export const readFileWithProps = (file: string, props: any) => {
   return readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
 };
