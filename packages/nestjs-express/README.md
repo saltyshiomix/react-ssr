@@ -145,8 +145,6 @@ export class AppController {
 **`./views/index.tsx`**
 
 ```tsx
-import React from 'react';
-
 interface IndexProps {
   user: any;
 }

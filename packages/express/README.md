@@ -57,8 +57,6 @@ app.listen(3000, () => {
 **`./views/index.jsx`**
 
 ```jsx
-import React from 'react';
-
 export default function Index({ message }) {
   return <p>{message}</p>;
 }

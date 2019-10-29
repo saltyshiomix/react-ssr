@@ -487,8 +487,6 @@ app.listen(3000, () => {
 **`./views/index.tsx`**
 
 ```tsx
-import React from 'react';
-
 interface IndexProps {
   message: string;
 }
