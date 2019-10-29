@@ -79,6 +79,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
     err && console.error(err.stack || err);
 
     if (app) {
+      console.log('exists app');
       for (let i = 0; i < entryPages.length; i++) {
         const page = entryPages[i];
         const pageId = getPageId(page, '/');
@@ -113,6 +114,8 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
 
 export default async (app: express.Application, server: http.Server): Promise<http.Server> => {
   const config: Config = getSsrConfig();
+
+  console.log(app);
 
   let reloadable: any = false;
   if (env === 'development') {
