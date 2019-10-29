@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "custom-layout",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@react-ssr/express": "latest",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
+  }
+}
