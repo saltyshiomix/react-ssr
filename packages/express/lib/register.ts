@@ -3,7 +3,6 @@ import http from 'http';
 import express from 'express';
 import {
   render,
-  clearCache,
   getSsrConfig,
   getEngine,
   Config,
@@ -15,8 +14,6 @@ const escaperegexp = require('lodash.escaperegexp');
 let moduleDetectRegEx: RegExp;
 
 const register = async (app: express.Application): Promise<void> => {
-  // await clearCache();
-
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
       const pattern = [].concat(options.settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');

@@ -2,7 +2,6 @@ import path from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import {
   render,
-  clearCache,
   getEngine,
   getSsrConfig,
 } from '@react-ssr/core';
@@ -13,8 +12,6 @@ const escaperegexp = require('lodash.escaperegexp');
 let moduleDetectRegEx: RegExp;
 
 const register = async (app: NestExpressApplication): Promise<void> => {
-  // await clearCache();
-
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
       const pattern = [].concat(options.settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');
