@@ -22,6 +22,7 @@ switch (ssrId) {
 
   case 'material-ui':
     function MuiApp(props) {
+      // FIXME: it may be the bug of material-ui@4.5.1
       // React.useEffect(() => {
       //   const jssStyles = document.getElementById('jss-server-side');
       //   if (jssStyles) {
