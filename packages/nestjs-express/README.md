@@ -273,6 +273,39 @@ export default Index;
 
 A working example is here: [examples/custom-layout](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-layout)
 
+## Dynamic `Head`
+
+We can use the `@react-ssr/nestjs-express/head` component **anyware**:
+
+**./views/index.tsx**
+
+```tsx
+import Head from '@react-ssr/nestjs-express/head';
+import { Layout } from '../components/layout';
+
+const Index = (props) => {
+  return (
+    <Layout script={props.script}>
+      <Head>
+        <title>Dynamic Title</title>
+        <meta name="description" content="Dynamic Description" />
+      </Head>
+      <p>Of course, SSR Ready!</p>
+    </Layout>
+  );
+};
+
+export default Index;
+```
+
+A working example is here: [examples/dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/dynamic-head)
+
+**Note:**
+
+Because this is an experimental feature, currently it supports only `<title>` and `<meta name="description">`.
+
+If you want to use more supports, please [issue up](https://github.com/saltyshiomix/react-ssr/issues).
+
 ## Supported UI Framework
 
 - [x] [emotion](https://emotion.sh)

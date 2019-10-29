@@ -261,6 +261,100 @@ module.exports = {
 
 A working example is here: [examples/basic-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-css)
 
+## Custom Layout
+
+In the layout, we must inject `@react-ssr/express/script` at the bottom of the body tag:
+
+**./components/layout.jsx**
+
+```jsx
+import ReactSsrScript from '@react-ssr/express/script';
+
+export const Layout = (props) => {
+  const {
+    children,
+    script, // passed from the entry point (./views/index.jsx)
+  } = props;
+
+  return (
+    <html>
+      <head>
+        <title>Hello Layout</title>
+      </head>
+      <body>
+        {children}
+        <ReactSsrScript script={script} />
+      </body>
+    </html>
+  );
+};
+```
+
+And then, just use it like before:
+
+**./views/index.jsx**
+
+```jsx
+import { Layout } from '../components/layout';
+
+const Index = (props) => {
+  const { script } = props; // `props.script` is injected by @react-ssr/express automatically
+
+  return (
+    <Layout
+      script={script} // pass it to the layout component for the dynamic SSR
+    >
+      <p>Hello Layout!</p>
+    </Layout>
+  );
+};
+
+export default Index;
+```
+
+A working example is here: [examples/custom-layout](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-layout)
+
+## Dynamic `Head`
+
+We can use the `@react-ssr/express/head` component **anyware**:
+
+**./views/index.jsx**
+
+```jsx
+import Head from '@react-ssr/express/head';
+import { Layout } from '../components/layout';
+
+const Index = (props) => {
+  return (
+    <Layout script={props.script}>
+      <Head>
+        <title>Dynamic Title</title>
+        <meta name="description" content="Dynamic Description" />
+      </Head>
+      <p>Of course, SSR Ready!</p>
+    </Layout>
+  );
+};
+
+export default Index;
+```
+
+A working example is here: [examples/dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/dynamic-head)
+
+**Note:**
+
+Because this is an experimental feature, currently it supports only `<title>` and `<meta name="description">`.
+
+If you want to use more supports, please [issue up](https://github.com/saltyshiomix/react-ssr/issues).
+
+## Supported UI Framework
+
+- [x] [emotion](https://emotion.sh)
+- [x] [styled-components](https://www.styled-components.com)
+- [x] [material-ui](https://material-ui.com)
+- [ ] [antd](https://ant.design)
+- [ ] and more...
+
 ### With Emotion
 
 In order to enable SSR, we must install these dependencies:
