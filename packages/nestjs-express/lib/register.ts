@@ -16,11 +16,12 @@ const register = async (app: NestExpressApplication): Promise<void> => {
   await clearCache();
 
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
-    const { settings, cache, _locals, ...props } = options;
     if (!moduleDetectRegEx) {
-      const pattern = [].concat(settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');
+      const pattern = [].concat(options.settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');
       moduleDetectRegEx = new RegExp(pattern);
     }
+
+    const { settings, cache, _locals, ...props } = options;
     try {
       return cb(undefined, await render(file, props));
     } catch (e) {
