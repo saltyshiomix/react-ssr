@@ -99,34 +99,4 @@ export default async (app: express.Application): Promise<void> => {
   fse.removeSync(path.join(cwd, config.distDir));
 
   await bundle(config, ufs, memfs, app);
-
-  if (env === 'development') {
-    const escaperegexp = require('lodash.escaperegexp');
-    const chokidar = require('chokidar');
-    const watcher = chokidar.watch(cwd, {
-      ignored: [
-        /node_modules/i,
-        /package\.json/i,
-        /readme\.md/i,
-        new RegExp(escaperegexp(config.distDir)),
-      ],
-    });
-
-    const closeWatching = () => {
-      watcher.close();
-    };
-    process.on('SIGINT', closeWatching);
-    process.on('SIGTERM', closeWatching);
-    process.on('exit', closeWatching);
-
-    watcher.on('change', async (p: string) => {
-      fse.removeSync(path.join(cwd, config.distDir));
-      await bundle(config, ufs, memfs);
-
-      const [, ...rest] = p.replace(cwd, '').split(path.sep);
-      console.log(`[ info ] reloaded (onchange: ${rest.join('/')})`);
-    });
-
-    console.log('[ info ] enabled hot reloading');
-  }
 };
