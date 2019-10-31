@@ -1,6 +1,5 @@
 import path from 'path';
 import render from './render';
-import optimize from './optimize';
 import {
   getSsrConfig,
   getEngine,
@@ -40,7 +39,11 @@ const register = async (app: any): Promise<void> => {
   app.set('views', path.join(process.cwd(), config.viewsDir));
   app.set('view engine', engine);
 
-  await optimize(app);
+  if (process.env.NODE_ENV === 'production') {
+    await (await import('./optimize/production')).default(app);
+  } else {
+    await (await import('./optimize/development')).default(app);
+  }
 };
 
 export default register;

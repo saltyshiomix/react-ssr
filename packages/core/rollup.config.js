@@ -6,12 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
-const config = (src, dist) => ({
-  input: src,
-  output: {
-    file: dist,
-    format: 'cjs',
-  },
+const coreConfig = {
   plugins: [
     external(),
     resolve({
@@ -33,10 +28,28 @@ const config = (src, dist) => ({
   external: [
     'react-dom/server',
   ],
+};
+
+const dirConfig = (src, dist) => ({
+  input: src,
+  output: {
+    dir: 'dist',
+    format: 'cjs',
+  },
+  ...coreConfig,
+});
+
+const fileConfig = (src, dist) => ({
+  input: src,
+  output: {
+    file: dist,
+    format: 'cjs',
+  },
+  ...coreConfig,
 });
 
 export default [
-  config('src/register.ts', 'dist/register.js'),
-  config('src/ssr/head.tsx', 'dist/head.js'),
-  config('src/ssr/script.tsx', 'dist/script.js'),
+  dirConfig('src/register.ts'),
+  fileConfig('src/ssr/head.tsx', 'dist/head.js'),
+  fileConfig('src/ssr/script.tsx', 'dist/script.js'),
 ];

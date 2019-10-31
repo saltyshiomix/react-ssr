@@ -41,6 +41,6 @@ export const getPageId = (page: string, separator: string = '_'): string => {
   return rest.join(separator);
 };
 
-export const readFileWithProps = (file: string, props: any) => {
-  return fs.readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
+export const readFileWithProps = (file: string, props: any, memfs?: any) => {
+  return (memfs || fs).readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
 };

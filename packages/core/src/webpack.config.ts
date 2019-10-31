@@ -56,7 +56,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     context: path.join(cwd, 'react-ssr-src'),
     entry,
     output: {
-      path: path.join(cwd, ssrConfig.distDir, env),
+      path: path.join(cwd, ssrConfig.distDir),
       filename: '[name].js',
     },
     resolve: {

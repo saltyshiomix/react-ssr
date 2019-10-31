@@ -4,7 +4,7 @@ import MemoryFileSystem from 'memory-fs';
 import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
-import { configureWebpack } from './webpack.config';
+import { configureWebpack } from '../webpack.config';
 import {
   getSsrConfig,
   getEngine,
@@ -13,10 +13,9 @@ import {
   readFileWithProps,
   sleep,
   Config,
-} from './helpers/core';
+} from '../helpers/core';
 
 const cwd = process.cwd();
-const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const ext = '.' + getEngine();
 const config: Config = getSsrConfig();
 const codec = require('json-url')('lzw');
@@ -72,12 +71,7 @@ export default async (app: express.Application): Promise<void> => {
 
       app.get(route, async (req, res) => {
         const props = await codec.decompress(req.query.props);
-        if (env === 'development') {
-          console.log('[ info ] the props below is rendered from the server side');
-          console.log(props);
-        }
-
-        const filename = path.join(cwd, config.distDir, env, `${getPageId(page, '_')}.js`);
+        const filename = path.join(cwd, config.distDir, `${getPageId(page, '_')}.js`);
         const script = readFileWithProps(filename, props);
         res.status(200).type('.js').send(script);
       });
