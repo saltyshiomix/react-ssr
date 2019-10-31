@@ -6,6 +6,7 @@ import readdir from 'recursive-readdir';
 const cwd: string = process.cwd();
 
 export interface Config {
+  id: string;
   viewsDir: string;
   distDir: string;
   webpack?: (defaultConfig: webpack.Configuration, env: 'development' | 'production') => webpack.Configuration;
@@ -13,6 +14,7 @@ export interface Config {
 
 export const getSsrConfig = (): Config => {
   const defaultConfig = {
+    id: 'default',
     viewsDir: 'views',
     distDir: '.ssr',
   };

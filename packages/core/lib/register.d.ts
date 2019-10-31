@@ -1,3 +1,3 @@
-declare async function register(app: any): Promise<void>;
+declare function register(app: any): Promise<void>;
 
 export = register;

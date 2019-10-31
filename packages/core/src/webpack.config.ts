@@ -62,6 +62,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     output: {
       path: path.join(cwd, ssrConfig.distDir),
       filename: '[name].js',
+      publicPath: '/',
     },
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],

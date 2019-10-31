@@ -1,4 +1,5 @@
 module.exports = {
+  id: 'material-ui',
   webpack: (config, env) => {
     config.module.rules = [
       ...(config.module.rules || []),

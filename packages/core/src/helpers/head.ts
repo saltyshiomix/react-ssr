@@ -1,13 +1,5 @@
 import React from 'react';
 
-export const getSsrId = (html: string): string => {
-  let ssrId: string = 'default';
-  0 <= html.indexOf('"mui') && (ssrId = 'material-ui');
-  0 <= html.indexOf('data-emotion-css') && (ssrId = 'emotion');
-  0 <= html.indexOf('"views__') && (ssrId = 'styled-components');
-  return ssrId;
-}
-
 export const convertAttrToJsxStyle = (attr: any) => {
   const jsxAttr: any = {};
   const keys = Object.keys(attr);

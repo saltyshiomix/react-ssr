@@ -36,11 +36,13 @@ export default async (app: express.Application): Promise<void> => {
 
   const devServerPort = 8888;
   const devServer = new WebpackDevServer(compiler, {
-    hot: true,
+    hotOnly: true,
     liveReload: false,
     noInfo: true,
     stats: 'errors-only',
+    overlay: true,
     compress: true,
+    serveIndex: false,
     after: (app: express.Application, server: WebpackDevServer, compiler: webpack.Compiler) => {
       for (let i = 0; i < entryPages.length; i++) {
         const page = entryPages[i];

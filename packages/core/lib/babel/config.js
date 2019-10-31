@@ -21,6 +21,10 @@ const plugins = [
   }],
 ];
 
+if (process.env.NODE_ENV !== 'production') {
+  plugins.push(require('react-hot-loader/babel'));
+}
+
 module.exports = {
   presets,
   plugins,
