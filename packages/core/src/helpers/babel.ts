@@ -14,7 +14,7 @@ export const getBabelrc = (): string => {
   if (existsSync(join(cwd, '.babelrc'))) return join(cwd, '.babelrc');
   if (existsSync(join(cwd, '.babelrc.js'))) return join(cwd, '.babelrc.js');
   if (existsSync(join(cwd, 'babel.config.js'))) return join(cwd, 'babel.config.js');
-  return resolve(__dirname, '../../lib/babel/babel.default.js');
+  return resolve(__dirname, '../lib/babel/babel.default.js');
 };
 
 export const getBabelRule = () => {
