@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
-import Page from './__REACT_SSR_PAGE_NAME__';
+import Page from '__REACT_SSR_PAGE__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 const html = ReactDOMServer.renderToString(<Page {...props} />);
@@ -13,14 +13,15 @@ const ssrQueryObject = ssrQuery.substring(1).split('&').map((p) => p.split('='))
 const ssrId = ssrQueryObject['ssrid'];
 
 switch (ssrId) {
-  case 'emotion':
+  case 'emotion': {
     const { hydrate } = require('emotion');
     const { extractCritical } = require('emotion-server');
     const { ids } = extractCritical(html);
     hydrate(ids);
     break;
+  }
 
-  case 'material-ui':
+  case 'material-ui': {
     function MuiApp(props) {
       // FIXME: it may be the bug of material-ui@4.5.1
       // React.useEffect(() => {
@@ -33,8 +34,10 @@ switch (ssrId) {
     }
     ReactDOM.hydrate(<MuiApp {...props} />, container);
     break;
+  }
 
-  default:
+  default: {
     ReactDOM.hydrate(<Page {...props} />, container);
     break;
+  }
 }
