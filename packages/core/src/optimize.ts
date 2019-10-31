@@ -18,19 +18,16 @@ import {
 const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const ext = '.' + getEngine();
+const config: Config = getSsrConfig();
 const codec = require('json-url')('lzw');
 
 const ufs = require('unionfs').ufs;
 const memfs = new MemoryFileSystem();
 ufs.use(fs).use(memfs);
 
-// onchange bundling
-async function bundle(config: Config, ufs: any, memfs: any): Promise<void>;
+export default async (app: express.Application): Promise<void> => {
+  fse.removeSync(path.join(cwd, config.distDir));
 
-// initial bundling
-async function bundle(config: Config, ufs: any, memfs: any, app: express.Application): Promise<void>;
-
-async function bundle(config: Config, ufs: any, memfs: any, app?: express.Application) {
   const entry: webpack.Entry = {};
   const entryPages = await getPages();
   const entryPath = path.resolve(__dirname, '../lib/webpack/entry.js');
@@ -60,26 +57,24 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
     err && console.error(err.stack || err);
     stats.hasErrors() && console.error(stats.toString());
 
-    if (app) {
-      for (let i = 0; i < entryPages.length; i++) {
-        const page = entryPages[i];
-        const pageId = getPageId(page, '/');
-        const route = `/_react-ssr/${pageId}.js`;
+    for (let i = 0; i < entryPages.length; i++) {
+      const page = entryPages[i];
+      const pageId = getPageId(page, '/');
+      const route = `/_react-ssr/${pageId}.js`;
 
-        console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
+      console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
 
-        app.get(route, async (req, res) => {
-          const props = await codec.decompress(req.query.props);
-          if (env === 'development') {
-            console.log('[ info ] the props below is rendered from the server side');
-            console.log(props);
-          }
+      app.get(route, async (req, res) => {
+        const props = await codec.decompress(req.query.props);
+        if (env === 'development') {
+          console.log('[ info ] the props below is rendered from the server side');
+          console.log(props);
+        }
 
-          const filename = path.join(cwd, config.distDir, env, `${getPageId(page, '_')}.js`);
-          const script = readFileWithProps(filename, props);
-          res.status(200).type('.js').send(script);
-        });
-      }
+        const filename = path.join(cwd, config.distDir, env, `${getPageId(page, '_')}.js`);
+        const script = readFileWithProps(filename, props);
+        res.status(200).type('.js').send(script);
+      });
     }
 
     compiled = true;
@@ -91,12 +86,4 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
     }
     await sleep(100);
   }
-};
-
-export default async (app: express.Application): Promise<void> => {
-  const config: Config = getSsrConfig();
-
-  fse.removeSync(path.join(cwd, config.distDir));
-
-  await bundle(config, ufs, memfs, app);
 };
