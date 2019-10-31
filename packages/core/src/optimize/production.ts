@@ -31,6 +31,7 @@ export default async (app: express.Application): Promise<void> => {
   const [entry, entryPages] = await getEntry(memfs);
   const webpackConfig: webpack.Configuration = configureWebpack(entry);
   const compiler: webpack.Compiler = webpack(webpackConfig);
+  compiler.hooks.afterCompile.tap('finish', () => { compiled = true });
   compiler.inputFileSystem = ufs;
   compiler.run(async (err: Error, stats: webpack.Stats) => {
     err && console.error(err.stack || err);
@@ -50,8 +51,6 @@ export default async (app: express.Application): Promise<void> => {
         res.status(200).type('.js').send(script);
       });
     }
-
-    compiled = true;
   });
 
   while (true) {
