@@ -28,25 +28,6 @@ export const getEngine = (): 'jsx' | 'tsx' => fs.existsSync(path.join(cwd, 'tsco
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const gracefullyShutDown = async (getPort: () => number) => {
-  let run = false;
-  const wrapper = () => {
-    if (!run) {
-      run = true;
-      const resolve = require('resolve-as-bin');
-      const spawn = require('cross-spawn');
-      const port = getPort();
-      spawn.sync(resolve('fkill'), ['-f', `:${port}`], {
-        cwd,
-        stdio: 'inherit',
-      });
-    }
-  };
-  process.on('SIGINT', wrapper);
-  process.on('SIGTERM', wrapper);
-  process.on('exit', wrapper);
-};
-
 const config: Config = getSsrConfig();
 
 export const getPages = async (): Promise<string[]> => {

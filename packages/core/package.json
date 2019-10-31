@@ -30,13 +30,9 @@
   },
   "main": "index.js",
   "files": [
-    "babel",
     "dist",
     "lib",
-    "ssr",
-    "webpack",
-    "index.js",
-    "index.d.ts"
+    "index.js"
   ],
   "scripts": {
     "build": "rimraf dist && rollup -c",
@@ -57,21 +53,22 @@
     "babel-plugin-css-modules-transform": "^1.6.2",
     "babel-plugin-react-require": "^3.1.1",
     "cheerio": "^1.0.0-rc.3",
-    "cross-spawn": "^7.0.1",
-    "fkill-cli": "^5.2.0",
+    "express": "^4.17.1",
     "fs-extra": "^8.1.0",
     "json-url": "^2.4.2",
     "lodash.escaperegexp": "^4.1.2",
+    "memory-fs": "^0.5.0",
     "react-html-parser": "^2.0.2",
     "recursive-readdir": "^2.2.2",
-    "resolve-as-bin": "^2.1.0",
     "terser-webpack-plugin": "^2.2.1",
     "webpack": "^4.41.2",
     "webpack-merge": "^4.2.2"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.13",
+    "@types/express": "^4.17.1",
     "@types/fs-extra": "^8.0.1",
+    "@types/memory-fs": "^0.3.2",
     "@types/node": "^12.11.6",
     "@types/react": "^16.9.9",
     "@types/react-dom": "^16.9.2",
@@ -93,7 +90,7 @@
     "typescript": "^3.6.4"
   },
   "peerDependencies": {
-    "react": "^16",
-    "react-dom": "^16"
+    "react": "^16.8",
+    "react-dom": "^16.8"
   }
 }

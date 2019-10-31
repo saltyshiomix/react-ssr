@@ -30,55 +30,26 @@
   },
   "main": "index.js",
   "files": [
-    "dist",
+    "babel.js",
     "register.js",
     "register.d.ts",
     "head.js",
     "head.d.ts",
     "script.js",
-    "script.d.ts",
-    "babel.js"
+    "script.d.ts"
   ],
-  "scripts": {
-    "build": "rimraf dist && rollup -c",
-    "prepublishOnly": "cross-env NODE_ENV=production npm run build"
-  },
   "dependencies": {
-    "@react-ssr/core": "^0.8.0",
-    "chokidar": "^3.2.2",
-    "fs-extra": "^8.1.0",
-    "json-url": "^2.4.2",
-    "lodash.escaperegexp": "^4.1.2",
-    "memory-fs": "^0.5.0",
-    "reload": "^3.0.3",
-    "unionfs": "^4.2.0",
-    "webpack": "^4.41.2"
+    "@react-ssr/core": "^0.8.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
-    "@babel/preset-typescript": "^7.6.0",
-    "@nestjs/common": "^6.8.3",
-    "@nestjs/core": "^6.8.3",
-    "@nestjs/platform-express": "^6.8.3",
-    "@types/fs-extra": "^8.0.1",
-    "@types/memory-fs": "^0.3.2",
-    "@types/node": "^12.11.6",
-    "@types/webpack": "^4.39.5",
-    "cross-env": "^6.0.3",
+    "@nestjs/common": "^6.8.5",
+    "@nestjs/core": "^6.8.5",
+    "@nestjs/platform-express": "^6.8.5",
+    "@types/react": "^16.9.11",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.0",
-    "rollup": "^1.25.2",
-    "rollup-plugin-auto-external": "^2.0.0",
-    "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-terser": "^5.1.2",
-    "rxjs": "^6.5.3",
-    "typescript": "^3.6.4"
+    "rxjs": "^6.5.3"
   },
   "peerDependencies": {
     "@nestjs/platform-express": "^6"

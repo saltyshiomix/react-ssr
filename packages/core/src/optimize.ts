@@ -2,20 +2,18 @@ import fs from 'fs';
 import fse from 'fs-extra';
 import MemoryFileSystem from 'memory-fs';
 import path from 'path';
-import net from 'net';
-import http from 'http';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import express from 'express';
 import webpack from 'webpack';
+import { configureWebpack } from './webpack.config';
 import {
-  configureWebpack,
+  getSsrConfig,
   getEngine,
   getPages,
   getPageId,
   readFileWithProps,
-  gracefullyShutDown,
   sleep,
   Config,
-} from '@react-ssr/core';
+} from './helpers/core';
 
 const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
@@ -30,12 +28,12 @@ ufs.use(fs).use(memfs);
 async function bundle(config: Config, ufs: any, memfs: any): Promise<void>;
 
 // initial bundling
-async function bundle(config: Config, ufs: any, memfs: any, app: NestExpressApplication): Promise<void>;
+async function bundle(config: Config, ufs: any, memfs: any, app: express.Application): Promise<void>;
 
-async function bundle(config: Config, ufs: any, memfs: any, app?: NestExpressApplication) {
+async function bundle(config: Config, ufs: any, memfs: any, app?: express.Application) {
   const entry: webpack.Entry = {};
   const entryPages = await getPages();
-  const entryPath = path.resolve(require.resolve('@react-ssr/core'), '../webpack/entry.js');
+  const entryPath = path.resolve(__dirname, '../webpack/entry.js');
   const template = fse.readFileSync(entryPath).toString();
 
   memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
@@ -70,7 +68,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: NestExpressApp
 
         console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
 
-        app.getHttpAdapter().getInstance().get(route, async (req: any, res: any) => {
+        app.get(route, async (req, res) => {
           const props = await codec.decompress(req.query.props);
           if (env === 'development') {
             console.log('[ info ] the props below is rendered from the server side');
@@ -79,7 +77,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: NestExpressApp
 
           const filename = path.join(cwd, config.distDir, env, `${getPageId(page, '_')}.js`);
           const script = readFileWithProps(filename, props);
-          res.type('.js').send(script);
+          res.status(200).type('.js').send(script);
         });
       }
     }
@@ -95,11 +93,13 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: NestExpressApp
   }
 };
 
-export default async (app: NestExpressApplication, server: http.Server, config: Config): Promise<http.Server> => {
+export default async (app: express.Application): Promise<void> => {
+  const config: Config = getSsrConfig();
+
   let reloadable: any = false;
   if (env === 'development') {
     const reload = require('reload');
-    reloadable = await reload(app.getHttpAdapter().getInstance());
+    reloadable = await reload(app);
   }
 
   fse.removeSync(path.join(cwd, config.distDir));
@@ -136,16 +136,4 @@ export default async (app: NestExpressApplication, server: http.Server, config: 
 
     console.log('[ info ] enabled hot reloading');
   }
-
-  gracefullyShutDown(() => {
-    console.log('[ info ] gracefully shutting down. please wait...');
-
-    process.on('SIGINT', () => {
-      process.exit(0);
-    });
-
-    return (server.address() as net.AddressInfo).port;
-  });
-
-  return server;
 };

@@ -11,7 +11,7 @@ require('@babel/register')({
   ...(getBabelConfig()),
 });
 
-export const render = async (file: string, props: object): Promise<string> => {
+export default async function render(file: string, props: object): Promise<string> {
   let Page = require(file);
   Page = Page.default || Page;
 

@@ -1,1 +1,1 @@
-module.exports = require('@react-ssr/core/babel/babel');
+module.exports = require('@react-ssr/core/lib/babel/babel');

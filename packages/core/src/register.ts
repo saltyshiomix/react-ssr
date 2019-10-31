@@ -1,19 +1,17 @@
 import path from 'path';
-import http from 'http';
-import express from 'express';
+import render from './render';
+import optimize from './optimize';
 import {
-  render,
   getSsrConfig,
   getEngine,
   Config,
-} from '@react-ssr/core';
-import optimize from './optimize';
+} from './helpers/core';
 
 const escaperegexp = require('lodash.escaperegexp');
 
 let moduleDetectRegEx: RegExp;
 
-const register = async (app: express.Application): Promise<void> => {
+const register = async (app: any): Promise<void> => {
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
       const pattern = [].concat(options.settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');
@@ -42,14 +40,7 @@ const register = async (app: express.Application): Promise<void> => {
   app.set('views', path.join(process.cwd(), config.viewsDir));
   app.set('view engine', engine);
 
-  app.listen = function() {
-    const args: any = arguments;
-    const server = http.createServer(app);
-    optimize(app, server).then((server) => {
-      server.listen.apply(server, args);
-    });
-    return server;
-  };
+  await optimize(app);
 };
 
 export default register;
