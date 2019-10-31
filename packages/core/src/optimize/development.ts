@@ -4,6 +4,8 @@ import MemoryFileSystem from 'memory-fs';
 import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
+import proxy from 'http-proxy-middleware';
 import { configureWebpack } from '../webpack.config';
 import {
   getSsrConfig,
@@ -57,37 +59,57 @@ export default async (app: express.Application): Promise<void> => {
   const [entry, entryPages] = await getEntry();
   const webpackConfig: webpack.Configuration = configureWebpack(entry);
   const compiler: webpack.Compiler = webpack(webpackConfig);
+  compiler.hooks.afterCompile.tap('finish', () => { compiled = true });
   compiler.inputFileSystem = ufs;
-  compiler.outputFileSystem = memfs;
-  compiler.run(async (err: Error, stats: webpack.Stats) => {
-    err && console.error(err.stack || err);
-    stats.hasErrors() && console.error(stats.toString());
 
-    for (let i = 0; i < entryPages.length; i++) {
-      const page = entryPages[i];
-      const pageId = getPageId(page, '/');
-      const route = `/_react-ssr/${pageId}.js`;
-
-      console.log(`[ info ] optimized "${config.viewsDir}/${pageId}${ext}"`);
-
-      app.get(route, async (req, res) => {
-        const props = await codec.decompress(req.query.props);
-        console.log('[ info ] the props below is rendered from the server side');
-        console.log(props);
-
-        const filename = path.join(cwd, config.distDir, `${getPageId(page, '_')}.js`);
-        const script = readFileWithProps(filename, props, memfs);
-        res.status(200).type('.js').send(script);
-      });
-    }
-
-    compiled = true;
+  const devServerPort = 8888;
+  const devServer = new WebpackDevServer(compiler, {
+    hot: true,
+    liveReload: false,
+    noInfo: true,
+    stats: 'errors-only',
+    compress: true,
+    after: (app: express.Application, server: WebpackDevServer, compiler: webpack.Compiler) => {
+      for (let i = 0; i < entryPages.length; i++) {
+        const page = entryPages[i];
+        const pageId = getPageId(page, '/');
+        const route = `/_react-ssr/${pageId}.js`;
+        app.get(route, async (req, res) => {
+          const props = await codec.decompress(req.query.props);
+          console.log('[ info ] the props below is rendered from the server side');
+          console.log(props);
+          const filename = path.join(cwd, config.distDir, `${getPageId(page, '_')}.js`);
+          const script = readFileWithProps(filename, props, compiler.outputFileSystem);
+          res.status(200).type('.js').send(script);
+        });
+      }
+    },
   });
+
+  (async () => {
+    devServer.listen(devServerPort);
+  })();
 
   while (true) {
     if (compiled) {
       break;
     }
     await sleep(100);
+  }
+
+  const proxyMiddleware = proxy({
+    target: `http://localhost:${devServerPort}`,
+    ws: true,
+    changeOrigin: true,
+    logLevel: 'error',
+  });
+
+  app.use('/sockjs-node*', proxyMiddleware);
+
+  for (let i = 0; i < entryPages.length; i++) {
+    const page = entryPages[i];
+    const pageId = getPageId(page, '/');
+    const route = `/_react-ssr/${pageId}.js`;
+    app.use(route, proxyMiddleware);
   }
 };

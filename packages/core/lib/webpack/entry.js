@@ -41,3 +41,7 @@ switch (ssrId) {
     break;
   }
 }
+
+if (module.hot) {
+  module.hot.accept();
+}

@@ -20,6 +20,7 @@ const prodConfig: webpack.Configuration = {
     pathinfo: false,
   },
   optimization: {
+    nodeEnv: 'production',
     namedModules: false,
     namedChunks: false,
     flagIncludedChunks: true,
@@ -38,6 +39,9 @@ const prodConfig: webpack.Configuration = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
     new webpack.optimize.ModuleConcatenationPlugin(),
   ],
 };
@@ -67,14 +71,6 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
         getBabelRule(),
       ],
     },
-    optimization: {
-      nodeEnv: 'production',
-    },
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify('production'),
-      }),
-    ],
   };
 
   if (env === 'production') {
