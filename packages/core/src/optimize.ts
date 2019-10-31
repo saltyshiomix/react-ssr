@@ -25,9 +25,7 @@ const ufs = require('unionfs').ufs;
 const memfs = new MemoryFileSystem();
 ufs.use(fs).use(memfs);
 
-export default async (app: express.Application): Promise<void> => {
-  fse.removeSync(path.join(cwd, config.distDir));
-
+const getEntry = async (): Promise<[webpack.Entry, string[]]> => {
   const entry: webpack.Entry = {};
   const entryPages = await getPages();
   const entryPath = path.resolve(__dirname, '../lib/webpack/entry.js');
@@ -50,8 +48,16 @@ export default async (app: express.Application): Promise<void> => {
     entry[getPageId(page, '_')] = `./${path.join(dir, `entry-${name}${ext}`)}`;
   }
 
+  return [entry, entryPages];
+};
+
+export default async (app: express.Application): Promise<void> => {
+  fse.removeSync(path.join(cwd, config.distDir));
+
   let compiled = false;
-  const compiler: webpack.Compiler = webpack(configureWebpack(entry));
+  const [entry, entryPages] = await getEntry();
+  const webpackConfig: webpack.Configuration = configureWebpack(entry);
+  const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
   compiler.run(async (err: Error, stats: webpack.Stats) => {
     err && console.error(err.stack || err);
