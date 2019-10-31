@@ -24,25 +24,34 @@ const useMeta = (attr: any) => {
   }, []);
 };
 
-export default function Head({ children }: { children: React.ReactNode }) {
-  const elements = React.Children.toArray(children) as React.ReactElement[];
+const useWhat = (elements: React.ReactElement[]) => {
+  let title = undefined;
+  let meta = undefined;
   for (let i = 0; i < elements.length; i++) {
     const element = elements[i];
     Head.elements.push(element);
 
     switch (element.type) {
       case 'title':
-        useTitle(element.props.children);
+        title = element;
         break;
 
       case 'meta':
-        useMeta(element.props);
+        meta = element;
         break;
 
       default:
         break;
     }
   }
+  return [title, meta];
+};
+
+export default function Head({ children }: { children: React.ReactNode }) {
+  const elements = React.Children.toArray(children) as React.ReactElement[];
+  const [title, meta] = useWhat(elements);
+  title && useTitle(title.props.children);
+  meta && useMeta(meta.props);
   return null;
 }
 
