@@ -96,12 +96,6 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: express.Applic
 export default async (app: express.Application): Promise<void> => {
   const config: Config = getSsrConfig();
 
-  let reloadable: any = false;
-  if (env === 'development') {
-    const reload = require('reload');
-    reloadable = await reload(app);
-  }
-
   fse.removeSync(path.join(cwd, config.distDir));
 
   await bundle(config, ufs, memfs, app);
@@ -128,7 +122,6 @@ export default async (app: express.Application): Promise<void> => {
     watcher.on('change', async (p: string) => {
       fse.removeSync(path.join(cwd, config.distDir));
       await bundle(config, ufs, memfs);
-      reloadable.reload();
 
       const [, ...rest] = p.replace(cwd, '').split(path.sep);
       console.log(`[ info ] reloaded (onchange: ${rest.join('/')})`);

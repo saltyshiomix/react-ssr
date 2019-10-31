@@ -60,7 +60,6 @@
     "memory-fs": "^0.5.0",
     "react-html-parser": "^2.0.2",
     "recursive-readdir": "^2.2.2",
-    "reload": "^3.0.3",
     "terser-webpack-plugin": "^2.2.1",
     "unionfs": "^4.2.0",
     "webpack": "^4.41.2",

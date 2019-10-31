@@ -63,7 +63,6 @@ export default function Ssr(props: SsrProps) {
             <body {...convertAttrToJsxStyle($('body').attr())}>
               {body ? ReactHtmlParser(body) : null}
               <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
             </body>
           </html>
         );
@@ -81,7 +80,6 @@ export default function Ssr(props: SsrProps) {
                 {ReactHtmlParser(html)}
               </div>
               <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
             </body>
           </html>
         );
@@ -123,7 +121,6 @@ export default function Ssr(props: SsrProps) {
             <body {...convertAttrToJsxStyle($('body').attr())}>
               {body ? ReactHtmlParser(body) : null}
               <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
             </body>
           </html>
         );
@@ -153,7 +150,6 @@ export default function Ssr(props: SsrProps) {
                 {ReactHtmlParser(html)}
               </div>
               <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
             </body>
           </html>
         );
@@ -178,7 +174,6 @@ export default function Ssr(props: SsrProps) {
             <body {...convertAttrToJsxStyle($('body').attr())}>
               {body ? ReactHtmlParser(body) : null}
               <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
             </body>
           </html>
         );
@@ -194,7 +189,6 @@ export default function Ssr(props: SsrProps) {
                 {children}
               </div>
               <script id="react-ssr-script" src={`${script}&ssrid=${ssrId}`}></script>
-              {process.env.NODE_ENV === 'production' ? null : <script src="/reload/reload.js"></script>}
             </body>
           </html>
         );
