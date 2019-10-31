@@ -1,11 +1,17 @@
-const express = require('@react-ssr/express');
+const express = require('express');
+const register = require('@react-ssr/express/register');
+
 const app = express();
 
-app.get('/', (req, res) => {
-  const user = { name: 'World' };
-  res.render('index', { user });
-});
+(async () => {
+  await register(app);
 
-app.listen(3000, () => {
-  console.log('> Ready on http://localhost:3000');
-});
+  app.get('/', (req, res) => {
+    const user = { name: 'World' };
+    res.render('index', { user });
+  });
+  
+  app.listen(3000, () => {
+    console.log('> Ready on http://localhost:3000');
+  });
+})();
