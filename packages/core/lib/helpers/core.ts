@@ -1,14 +1,5 @@
-import {
-  existsSync,
-  readFileSync,
-  Stats,
-} from 'fs';
-import {
-  join,
-  sep,
-  basename,
-  extname,
-} from 'path';
+import fs from 'fs';
+import path from 'path';
 import webpack from 'webpack';
 import readdir from 'recursive-readdir';
 
@@ -25,15 +16,15 @@ export const getSsrConfig = (): Config => {
     viewsDir: 'views',
     distDir: '.ssr',
   };
-  const ssrConfigPath = join(cwd, 'ssr.config.js');
-  if (existsSync(ssrConfigPath)) {
+  const ssrConfigPath = path.join(cwd, 'ssr.config.js');
+  if (fs.existsSync(ssrConfigPath)) {
     return Object.assign(defaultConfig, require(ssrConfigPath));
   } else {
     return defaultConfig;
   }
 };
 
-export const getEngine = (): 'jsx' | 'tsx' => existsSync(join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
+export const getEngine = (): 'jsx' | 'tsx' => fs.existsSync(path.join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -59,16 +50,16 @@ export const gracefullyShutDown = async (getPort: () => number) => {
 const config: Config = getSsrConfig();
 
 export const getPages = async (): Promise<string[]> => {
-  return readdir(join(cwd, config.viewsDir));
+  return readdir(path.join(cwd, config.viewsDir));
 };
 
 export const getPageId = (page: string, separator: string = '_'): string => {
-  const [, ...rest] = page.replace(join(cwd, config.viewsDir), '')
-                          .replace(extname(page), '')
-                          .split(sep);
+  const [, ...rest] = page.replace(path.join(cwd, config.viewsDir), '')
+                          .replace(path.extname(page), '')
+                          .split(path.sep);
   return rest.join(separator);
 };
 
 export const readFileWithProps = (file: string, props: any) => {
-  return readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
+  return fs.readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
 };
