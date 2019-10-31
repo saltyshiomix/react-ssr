@@ -21,16 +21,11 @@ export default function Ssr(props: SsrProps) {
     script,
   } = props;
 
-  // the dynamic Head component has React Hooks, so these two lines are must be at the top of this function scope
   const headElement = getHeadElement(children as React.ReactElement);
   let elements = headElement ? headElement.type.elements : [];
 
   // clear the cache, but use the same instance
   elements.length = 0;
-
-  const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
-  const withHtml: boolean = 0 <= html.toLowerCase().indexOf('html');
-  const ssrId = getSsrId(html);
 
   let Title = undefined;
   let MetaDescription = undefined;
@@ -38,6 +33,10 @@ export default function Ssr(props: SsrProps) {
     Title = createTitleComponent(elements);
     MetaDescription = createMetaDescriptionComponent(elements);
   }
+
+  const html: string = ReactDOMServer.renderToStaticMarkup(children).toLowerCase();
+  const withHtml: boolean = 0 <= html.toLowerCase().indexOf('html');
+  const ssrId = getSsrId(html);
 
   switch (ssrId) {
     case 'material-ui': {
