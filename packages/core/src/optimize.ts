@@ -33,7 +33,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app: express.Applica
 async function bundle(config: Config, ufs: any, memfs: any, app?: express.Application) {
   const entry: webpack.Entry = {};
   const entryPages = await getPages();
-  const entryPath = path.resolve(__dirname, '../webpack/entry.js');
+  const entryPath = path.resolve(__dirname, '../lib/webpack/entry.js');
   const template = fse.readFileSync(entryPath).toString();
 
   memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
