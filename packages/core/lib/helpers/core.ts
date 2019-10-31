@@ -56,38 +56,10 @@ export const gracefullyShutDown = async (getPort: () => number) => {
   process.on('exit', wrapper);
 };
 
-const ignores = [
-  '.*',
-  '*.json',
-  '*.lock',
-  '*.md',
-  '*.txt',
-  '*.yml',
-  'LICENSE',
-];
-
-const ignoreDotDir = (file: string, stats: Stats) => {
-  return stats.isDirectory() && basename(file).startsWith('.');
-};
-
-const ignoreNodeModules = (file: string, stats: Stats) => {
-  return stats.isDirectory() && basename(file) == 'node_modules';
-};
-
 const config: Config = getSsrConfig();
 
-export const getPages = async (): Promise<string[][]> => {
-  const allPages = await readdir(cwd, [ignoreNodeModules, ignoreDotDir, ...ignores]);
-  const entryPages = await readdir(join(cwd, config.viewsDir), [ignoreDotDir, ...ignores]);
-  const otherPages = [];
-  for (let i = 0; i < allPages.length; i++) {
-    const p = allPages[i];
-    if (entryPages.includes(p)) {
-      continue;
-    }
-    otherPages.push(p);
-  }
-  return [entryPages, otherPages];
+export const getPages = async (): Promise<string[]> => {
+  return readdir(join(cwd, config.viewsDir));
 };
 
 export const getPageId = (page: string, separator: string = '_'): string => {

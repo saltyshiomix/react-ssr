@@ -34,7 +34,7 @@ async function bundle(config: Config, ufs: any, memfs: any, app: NestExpressAppl
 
 async function bundle(config: Config, ufs: any, memfs: any, app?: NestExpressApplication) {
   const entry: webpack.Entry = {};
-  const [entryPages, otherPages] = await getPages();
+  const entryPages = await getPages();
   const entryPath = path.resolve(require.resolve('@react-ssr/core'), '../webpack/entry.js');
   const template = fse.readFileSync(entryPath).toString();
 
