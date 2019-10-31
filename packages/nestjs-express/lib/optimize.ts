@@ -38,44 +38,29 @@ async function bundle(config: Config, ufs: any, memfs: any, app?: NestExpressApp
   const entryPath = path.resolve(require.resolve('@react-ssr/core'), '../webpack/entry.js');
   const template = fse.readFileSync(entryPath).toString();
 
+  memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
+
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
     const pageId = getPageId(page, '/');
     const dir = path.dirname(pageId);
     const name = path.basename(pageId);
     if (dir !== '.') {
-      memfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
+      memfs.mkdirpSync(path.join(cwd, 'react-ssr-src', dir));
     }
     memfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${path.join(dir, `entry-${name}${ext}`)}`),
-      template.replace('__REACT_SSR_PAGE_NAME__', name),
+      path.join(cwd, 'react-ssr-src', path.join(dir, `entry-${name}${ext}`)),
+      template.replace('__REACT_SSR_PAGE__', page),
     );
-    memfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${path.join(dir, name + ext)}`),
-      fse.readFileSync(page),
-    );
-    entry[getPageId(page, '_')] = `./react-ssr-src/${path.join(dir, `entry-${name}${ext}`)}`;
-  }
-
-  for (let i = 0; i < otherPages.length; i++) {
-    const page = otherPages[i];
-    const pageId = getPageId(page, '/');
-    const dir = path.dirname(pageId);
-    const name = path.basename(pageId);
-    if (dir !== '.') {
-      memfs.mkdirpSync(path.join(cwd, `react-ssr-src/${dir}`));
-    }
-    memfs.writeFileSync(
-      path.join(cwd, `react-ssr-src/${path.join(dir, name + ext)}`),
-      fse.readFileSync(page),
-    );
+    entry[getPageId(page, '_')] = `./${path.join(dir, `entry-${name}${ext}`)}`;
   }
 
   let compiled = false;
   const compiler: webpack.Compiler = webpack(configureWebpack(entry));
   compiler.inputFileSystem = ufs;
-  compiler.run(async (err: Error) => {
+  compiler.run(async (err: Error, stats: webpack.Stats) => {
     err && console.error(err.stack || err);
+    stats.hasErrors() && console.error(stats.toString());
 
     if (app) {
       for (let i = 0; i < entryPages.length; i++) {
@@ -118,8 +103,6 @@ export default async (app: NestExpressApplication, server: http.Server, config: 
   }
 
   fse.removeSync(path.join(cwd, config.distDir));
-
-  memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
   await bundle(config, ufs, memfs, app);
 
