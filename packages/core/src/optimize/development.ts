@@ -3,14 +3,13 @@ import fse from 'fs-extra';
 import MemoryFileSystem from 'memory-fs';
 import path from 'path';
 import express from 'express';
+import proxy from 'http-proxy-middleware';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import proxy from 'http-proxy-middleware';
 import { configureWebpack } from '../webpack.config';
+import { getEntry } from './helpers';
 import {
   getSsrConfig,
-  getEngine,
-  getPages,
   getPageId,
   readFileWithProps,
   sleep,
@@ -18,7 +17,6 @@ import {
 } from '../helpers/core';
 
 const cwd = process.cwd();
-const ext = '.' + getEngine();
 const config: Config = getSsrConfig();
 const codec = require('json-url')('lzw');
 
@@ -26,37 +24,11 @@ const ufs = require('unionfs').ufs;
 const memfs = new MemoryFileSystem();
 ufs.use(fs).use(memfs);
 
-const getEntry = async (): Promise<[webpack.Entry, string[]]> => {
-  const entry: webpack.Entry = {};
-  const entryPages = await getPages();
-  const entryPath = path.resolve(__dirname, '../lib/webpack/entry.js');
-  const template = fse.readFileSync(entryPath).toString();
-
-  memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
-
-  for (let i = 0; i < entryPages.length; i++) {
-    const page = entryPages[i];
-    const pageId = getPageId(page, '/');
-    const dir = path.dirname(pageId);
-    const name = path.basename(pageId);
-    if (dir !== '.') {
-      memfs.mkdirpSync(path.join(cwd, 'react-ssr-src', dir));
-    }
-    memfs.writeFileSync(
-      path.join(cwd, 'react-ssr-src', path.join(dir, `entry-${name}${ext}`)),
-      template.replace('__REACT_SSR_PAGE__', page),
-    );
-    entry[getPageId(page, '_')] = `./${path.join(dir, `entry-${name}${ext}`)}`;
-  }
-
-  return [entry, entryPages];
-};
-
 export default async (app: express.Application): Promise<void> => {
   fse.removeSync(path.join(cwd, config.distDir));
 
   let compiled = false;
-  const [entry, entryPages] = await getEntry();
+  const [entry, entryPages] = await getEntry(memfs);
   const webpackConfig: webpack.Configuration = configureWebpack(entry);
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.hooks.afterCompile.tap('finish', () => { compiled = true });
