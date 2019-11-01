@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   Typography,
@@ -20,20 +20,13 @@ const useStyles = makeStyles((theme) =>
 );
 
 const Index = (props) => {
-  const {
-    user,
-    script, // injected by @react-ssr/express
-  } = props;
-
   const classes = useStyles({});
-  const [message, setMessage] = useState(user.name);
+  const [message, setMessage] = React.useState(props.user.name);
 
   const onClick = () => setMessage('@react-ssr/express');
 
   return (
-    <Layout
-      script={script} // pass it for dynamic SSR
-    >
+    <Layout>
       <div className={classes.root}>
         <Typography variant="h4" gutterBottom>
           Material UI

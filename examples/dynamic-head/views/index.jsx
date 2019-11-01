@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Head from '@react-ssr/express/head';
 import { Layout } from '../components/Layout';
 
 const Index = (props) => {
-  const [message, setMessage] = useState('waiting...');
+  const [message, setMessage] = React.useState('waiting...');
 
   const onClick = () => setMessage('This is a react-ssr!');
 
   return (
-    <Layout script={props.script}>
+    <Layout>
       <Head>
-        <title>Overrided Title</title>
+        <title>Dynamic Title</title>
       </Head>
       <p>Hello {props.user.name}!</p>
       <button onClick={onClick}>Click Me</button>

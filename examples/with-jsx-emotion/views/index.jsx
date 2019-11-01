@@ -8,15 +8,10 @@ import {
 } from '../components';
 
 const Home = (props) => {
-  const {
-    title,
-    script, // injected by @react-ssr/express
-  } = props;
+  const { title } = props;
 
   return (
-    <Layout
-      script={script} // pass it for dynamic SSR
-    >
+    <Layout>
       <Head>
         <title>{title}</title>
       </Head>

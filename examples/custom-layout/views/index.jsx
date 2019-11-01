@@ -1,22 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
+import Head from '@react-ssr/express/head';
 import { Layout } from '../components/Layout';
 
 const Index = (props) => {
-  const {
-    user,
-    script, // injected by @react-ssr/express
-  } = props;
-
-  const [message, setMessage] = useState('waiting...');
+  const [message, setMessage] = React.useState('waiting...');
 
   const onClick = () => setMessage('This is a react-ssr!');
 
   return (
-    <Layout
-      title="An example of @react-ssr/express"
-      script={script} // pass it for dynamic SSR
-    >
-      <p>Hello {user.name}!</p>
+    <Layout>
+      <Head>
+        <title>An example of @react-ssr/express</title>
+      </Head>
+      <p>Hello {props.user.name}!</p>
       <button onClick={onClick}>Click Me</button>
       <p>Message from state: {message}</p>
     </Layout>

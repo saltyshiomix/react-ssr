@@ -1,4 +1,3 @@
-import ReactSsrScript from '@react-ssr/express/script';
 import styled from 'styled-components';
 
 const Body = styled.body`
@@ -9,25 +8,19 @@ const Body = styled.body`
 const Wrapper = styled.section`
   padding: 4em;
   background: papayawhip;
+  min-height: 100vh;
 `;
 
 export const Layout = (props) => {
-  const {
-    title,
-    children,
-    script,
-  } = props;
-
   return (
     <html lang="en">
       <head>
-        <title>{title}</title>
+        <meta charSet="utf-8" />
       </head>
       <Body>
         <Wrapper>
-          {children}
+          {props.children}
         </Wrapper>
-        <ReactSsrScript script={script} />
       </Body>
     </html>
   );
