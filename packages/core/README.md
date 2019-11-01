@@ -11,6 +11,14 @@
 
 This package is internally used by [@react-ssr/express](https://npm.im/@react-ssr/express) and [@react-ssr/nestjs-express](https://npm.im/@react-ssr/nestjs-express).
 
+## Overview
+
+- Blazing fast SSR (Server Side Rendering)
+- Passing the server data to the client `props`
+- Dynamic `props` without caring about SSR
+  - Suitable for dynamic routes like blogging
+- HMR when `process.env.NODE_ENV !== 'production'`
+
 ## Packages
 
 | package | version |
@@ -26,10 +34,10 @@ This package is internally used by [@react-ssr/express](https://npm.im/@react-ss
 Install it:
 
 ```bash
-$ npm install --save @react-ssr/express react react-dom
+$ npm install --save @react-ssr/express express react react-dom
 ```
 
-and add a script to your package.json like this:
+And add a script to your package.json like this:
 
 ```json
 {
@@ -44,17 +52,24 @@ Populate files below inside your project:
 **`./server.js`**
 
 ```js
-const express = require('@react-ssr/express');
+const express = require('express');
+const register = require('@react-ssr/express/register');
+
 const app = express();
 
-app.get('/', (req, res) => {
-  const message = 'Hello World!';
-  res.render('index', { message });
-});
+(async () => {
+  // register `.jsx` or `.tsx` as a view template engine
+  await register(app);
 
-app.listen(3000, () => {
-  console.log('> Ready on http://localhost:3000');
-});
+  app.get('/', (req, res) => {
+    const message = 'Hello World!';
+    res.render('index', { message });
+  });
+
+  app.listen(3000, () => {
+    console.log('> Ready on http://localhost:3000');
+  });
+})();
 ```
 
 **`./views/index.jsx`**
@@ -65,7 +80,7 @@ export default function Index({ message }) {
 }
 ```
 
-and then just run `npm start` and go to `http://localhost:3000`.
+Then just run `npm start` and go to `http://localhost:3000`.
 
 You'll see `Hello World!`.
 
@@ -81,7 +96,7 @@ $ npm install --save @nestjs/core @nestjs/common @nestjs/platform-express
 $ npm install --save @react-ssr/nestjs-express react react-dom
 ```
 
-and add a script to your package.json like this:
+And add a script to your package.json like this:
 
 ```json
 {
@@ -148,7 +163,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // enable `.tsx` view template engine
+  // register `.tsx` as a view template engine
   await register(app);
 
   app.listen(3000, async () => {
@@ -207,7 +222,14 @@ const Index = ({ user }: IndexProps) => {
 export default Index;
 ```
 
-and then just run `npm start` and go to `http://localhost:3000`, you'll see `Hello NestJS!`.
+Then just run `npm start` and go to `http://localhost:3000`, you'll see `Hello NestJS!`.
+
+## Rules
+
+- The each view must be a single entry point
+  - Don't create other components in the views directory
+- The each view's extension must be either `.jsx` or `.tsx`
+  - We can decide freely with other components' extension
 
 ## Examples
 
@@ -220,25 +242,10 @@ and then just run `npm start` and go to `http://localhost:3000`, you'll see `Hel
 - [examples/custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-babelrc)
 - [examples/custom-layout](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-layout)
 - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
+- [examples/dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/dynamic-head)
 - [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
 - [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
 - [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
-
-## Features
-
-- Blazing fast SSR (Server Side Rendering)
-- Passing the server data to the client `props`
-- Dynamic `props` without caring about SSR
-  - Suitable for dynamic routes like blogging
-- Hot relaoding when `process.env.NODE_ENV !== 'production'`
-- TypeScript support
-
-## Rules
-
-- The each view must be a single entry point
-  - Don't create other components in the views directory
-- The each view's extension must be either `.jsx` or `.tsx`
-  - We can decide freely with other components' extension
 
 ## Starters
 

@@ -1,12 +1,17 @@
-import express, { Request, Response } from '@react-ssr/express';
+import express, { Request, Response } from 'express';
+import register from '@react-ssr/express/register';
 
 const app = express();
 
-app.get('/', (_req: Request, res: Response) => {
-  const user = { name: 'World' };
-  res.render('index', { user });
-});
+(async () => {
+  await register(app);
 
-app.listen(3000, () => {
-  console.log('> Ready on http://localhost:3000');
-});
+  app.get('/', (_req: Request, res: Response) => {
+    const user = { name: 'World' };
+    res.render('index', { user });
+  });
+  
+  app.listen(3000, () => {
+    console.log('> Ready on http://localhost:3000');
+  });
+})();
