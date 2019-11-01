@@ -9,7 +9,7 @@ const getHtmlElement = child => {
     return undefined;
   }
   if (typeof child.type === 'function') {
-    return getHtmlElement(React.createElement(child.type, child.props));
+    return getHtmlElement(child.type(child.props));
   }
   if (child.type === 'html') {
     return child;
