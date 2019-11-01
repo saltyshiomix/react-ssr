@@ -21,23 +21,9 @@ export default function Ssr(props: SsrProps) {
     MetaDescription,
   } = extractHeadElements(children);
 
-  // const headElement = getHeadElement(children as React.ReactElement);
-  // let elements = headElement ? headElement.type.elements : [];
-
-  // // clear the cache, but use the same instance
-  // elements.length = 0;
-
   const sheet = new ServerStyleSheet();
   const html = ReactDOMServer.renderToString(children);
   const withHtml = 0 <= html.toLowerCase().indexOf('html');
-
-  // // these must be called after ReactDOMServer.renderToString()
-  // let Title = undefined;
-  // let MetaDescription = undefined;
-  // if (0 < elements.length) {
-  //   Title = createTitleComponent(elements);
-  //   MetaDescription = createMetaDescriptionComponent(elements);
-  // }
 
   if (withHtml) {
     let html;
