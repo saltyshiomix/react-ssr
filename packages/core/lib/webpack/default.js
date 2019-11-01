@@ -5,20 +5,15 @@ import { hasHtml } from '__REACT_SSR_HELPERS__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-const Clone = React.cloneElement(Page, Object.assign(props, {
-  ref: node => {
-    // this._input = node;
-    const { ref } = Page;
-    console.log(ref);
-    console.log(Page);
-    if (typeof ref === 'function') ref(node);
-    else if (ref) ref.current = node;
-  }
-}));
+const pageRef = React.createRef();
 
-const container = hasHtml(Clone) ? document : document.getElementById('react-ssr-root');
+const App = (props) => {
+  return <Page ref={pageRef} {...props} />;
+};
 
-ReactDOM.hydrate(<Page {...props} />, container);
+const container = hasHtml(<App {...props} />) ? document : document.getElementById('react-ssr-root');
+
+ReactDOM.hydrate(<App {...props} />, container);
 
 if (module.hot) {
   module.hot.accept();
