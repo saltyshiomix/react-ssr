@@ -80,6 +80,8 @@ export default async (app: express.Application): Promise<void> => {
     logLevel: 'error',
   });
 
+  app.set('etag', false);
+
   app.use('/sockjs-node*', proxyMiddleware);
 
   for (let i = 0; i < entryPages.length; i++) {
