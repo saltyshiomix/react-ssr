@@ -25,10 +25,10 @@ export default function Ssr(props: SsrProps) {
   elements.length = 0;
 
   const sheet = new ServerStyleSheet();
-  const html = ReactDOMServer.renderToStaticMarkup(children);
+  const html = ReactDOMServer.renderToString(children);
   const withHtml = 0 <= html.toLowerCase().indexOf('html');
 
-  // these must be called after ReactDOMServer.renderToStaticMarkup()
+  // these must be called after ReactDOMServer.renderToString()
   let Title = undefined;
   let MetaDescription = undefined;
   if (0 < elements.length) {
@@ -40,7 +40,7 @@ export default function Ssr(props: SsrProps) {
     let html;
     let styleElement;
     try {
-      html = ReactDOMServer.renderToStaticMarkup(
+      html = ReactDOMServer.renderToString(
         <StyleSheetManager sheet={sheet.instance}>
           {children}
         </StyleSheetManager>
@@ -75,7 +75,7 @@ export default function Ssr(props: SsrProps) {
     let html;
     let styleElement;
     try {
-      html = ReactDOMServer.renderToStaticMarkup(
+      html = ReactDOMServer.renderToString(
         <StyleSheetManager sheet={sheet.instance}>
           {children}
         </StyleSheetManager>
