@@ -22,7 +22,7 @@ export default function Ssr(props: SsrProps) {
   // clear the cache, but use the same instance
   elements.length = 0;
 
-  const html = ReactDOMServer.renderToStaticMarkup(children);
+  const html = ReactDOMServer.renderToString(children);
   const withHtml = 0 <= html.toLowerCase().indexOf('html');
 
   // these must be called after ReactDOMServer.renderToStaticMarkup()
