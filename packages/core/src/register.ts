@@ -1,6 +1,7 @@
 import path from 'path';
 import render from './render';
 import {
+  getCacheablePages,
   getSsrConfig,
   getEngine,
   Config,
@@ -13,7 +14,8 @@ let moduleDetectRegEx: RegExp;
 const register = async (app: any): Promise<void> => {
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
-      const pattern = [].concat(options.settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');
+      const cacheablePages = await getCacheablePages();
+      const pattern = ([] as string[]).concat(cacheablePages).map(page => '^' + escaperegexp(page)).join('|');
       moduleDetectRegEx = new RegExp(pattern);
     }
 
