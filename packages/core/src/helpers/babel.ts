@@ -52,8 +52,5 @@ export const getBabelConfig = () => {
       useESModules: false,
     }],
   ];
-  if (process.env.NODE_ENV !== 'production') {
-    plugins.push('react-hot-loader/babel');
-  }
   return { presets, plugins };
 };
