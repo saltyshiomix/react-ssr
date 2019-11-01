@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import cheerio from 'cheerio';
 import ReactHtmlParser from 'react-html-parser';
+import cheerio from 'cheerio';
 import {
   extractHeadElements,
   convertAttrToJsxStyle,
