@@ -5,7 +5,7 @@ import { hasHtml } from '__REACT_SSR_HELPERS__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-class ExtendedComponent extends Component {
+class ExtendedComponent extends Page {
   render() {
     return this.props.children;
   }
