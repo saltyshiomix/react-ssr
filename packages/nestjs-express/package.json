@@ -34,9 +34,7 @@
     "register.js",
     "register.d.ts",
     "head.js",
-    "head.d.ts",
-    "script.js",
-    "script.d.ts"
+    "head.d.ts"
   ],
   "dependencies": {
     "@react-ssr/core": "^0.9.14"

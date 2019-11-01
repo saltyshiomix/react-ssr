@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import cheerio from 'cheerio';
 import ReactHtmlParser from 'react-html-parser';
+import cheerio from 'cheerio';
 import {
-  getHeadElement,
-  createTitleComponent,
-  createMetaDescriptionComponent,
+  extractHeadElements,
   convertAttrToJsxStyle,
 } from '../helpers/head';
 import { SsrProps } from './interfaces';
@@ -16,22 +14,13 @@ export default function Ssr(props: SsrProps) {
     script,
   } = props;
 
-  const headElement = getHeadElement(children as React.ReactElement);
-  let elements = headElement ? headElement.type.elements : [];
-
-  // clear the cache, but use the same instance
-  elements.length = 0;
+  const {
+    Title,
+    MetaDescription,
+  } = extractHeadElements(children);
 
   const html = ReactDOMServer.renderToString(children);
   const withHtml = 0 <= html.toLowerCase().indexOf('html');
-
-  // these must be called after ReactDOMServer.renderToString()
-  let Title = undefined;
-  let MetaDescription = undefined;
-  if (0 < elements.length) {
-    Title = createTitleComponent(elements);
-    MetaDescription = createMetaDescriptionComponent(elements);
-  }
 
   if (withHtml) {
     const $ = cheerio.load(html);
@@ -49,7 +38,7 @@ export default function Ssr(props: SsrProps) {
         </head>
         <body {...convertAttrToJsxStyle($('body').attr())}>
           {body ? ReactHtmlParser(body) : null}
-          <script id="react-ssr-script" src={script}></script>
+          <script src={script}></script>
         </body>
       </html>
     );
@@ -64,7 +53,7 @@ export default function Ssr(props: SsrProps) {
           <div id="react-ssr-root">
             {children}
           </div>
-          <script id="react-ssr-script" src={script}></script>
+          <script src={script}></script>
         </body>
       </html>
     );

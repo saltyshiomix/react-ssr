@@ -1,12 +1,6 @@
-import ReactSsrScript from '@react-ssr/express/script';
 import { css, Global } from '@emotion/core';
 
 export const Layout = (props) => {
-  const {
-    children,
-    script,
-  } = props;
-
   return (
     <html lang="en">
       <head>
@@ -30,8 +24,7 @@ export const Layout = (props) => {
         `}
       />
       <body>
-        {children}
-        <ReactSsrScript script={script} />
+        {props.children}
       </body>
     </html>
   );

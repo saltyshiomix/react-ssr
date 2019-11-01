@@ -27,6 +27,7 @@ const coreConfig = {
   ],
   external: [
     'react-dom/server',
+    'http-proxy-middleware',
   ],
 };
 
@@ -51,5 +52,4 @@ const fileConfig = (src, dist) => ({
 export default [
   dirConfig('src/register.ts'),
   fileConfig('src/components/head.tsx', 'dist/head.js'),
-  fileConfig('src/components/script.tsx', 'dist/script.js'),
 ];

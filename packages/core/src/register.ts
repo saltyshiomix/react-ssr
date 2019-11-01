@@ -1,9 +1,9 @@
 import path from 'path';
 import render from './render';
 import {
+  getCacheablePages,
   getSsrConfig,
   getEngine,
-  Config,
 } from './helpers/core';
 
 const escaperegexp = require('lodash.escaperegexp');
@@ -13,7 +13,8 @@ let moduleDetectRegEx: RegExp;
 const register = async (app: any): Promise<void> => {
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
-      const pattern = [].concat(options.settings.views).map(viewPath => '^' + escaperegexp(viewPath)).join('|');
+      const cacheablePages = await getCacheablePages();
+      const pattern = cacheablePages.map(page => '^' + escaperegexp(page)).join('|');
       moduleDetectRegEx = new RegExp(pattern);
     }
 
@@ -33,7 +34,7 @@ const register = async (app: any): Promise<void> => {
     }
   };
 
-  const config: Config = getSsrConfig();
+  const config = getSsrConfig();
   const engine: 'jsx' | 'tsx' = getEngine();
   app.engine(engine, renderFile);
   app.set('views', path.join(process.cwd(), config.viewsDir));
