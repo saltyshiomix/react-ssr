@@ -32,5 +32,7 @@ const getHtmlElement = child => {
 };
 
 export const hasHtml = (element, props) => {
+  console.log(element);
+
   return typeof getHtmlElement(React.createElement(element.type, props)) !== 'undefined';
 };
