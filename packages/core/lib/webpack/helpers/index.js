@@ -3,6 +3,8 @@ import React from 'react';
 let _htmlElement;
 
 const getHtmlElement = child => {
+  console.log(child);
+
   if (typeof child === 'string' || child.type === 'script') {
     return undefined;
   }
@@ -29,6 +31,6 @@ const getHtmlElement = child => {
   return _htmlElement;
 };
 
-export const hasHtml = (child) => {
-  return typeof getHtmlElement(child) !== 'undefined';
+export const hasHtml = (element, props) => {
+  return typeof getHtmlElement(React.createElement(element.type, props)) !== 'undefined';
 };
