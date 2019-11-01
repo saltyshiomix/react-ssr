@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
-// import PageEnhancer from './enhancer';
 import Page from '__REACT_SSR_PAGE__';
 // import ReactHtmlParser from 'react-html-parser';
 // import cheerio from 'cheerio';
@@ -11,11 +10,7 @@ const html = ReactDOMServer.renderToStaticMarkup(<Page {...props} />);
 const withHtml = 0 <= html.indexOf('html');
 const container = withHtml ? document : document.getElementById('react-ssr-root');
 
-const Lazy = React.lazy((props) => {
-  return <Page {...props} />;
-});
-
-ReactDOM.hydrate(<React.Suspense fallback={null}><Lazy {...props} /></React.Suspense>, container);
+ReactDOM.hydrate(<Page {...props} />, container);
 
 // const convertAttrToJsxStyle = attr => {
 //   const jsxAttr = {};
