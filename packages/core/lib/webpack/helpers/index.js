@@ -3,8 +3,6 @@ import React from 'react';
 let _htmlElement;
 
 const getHtmlElement = child => {
-  console.log(child);
-
   if (typeof child === 'string' || child.type === 'script') {
     return undefined;
   }
