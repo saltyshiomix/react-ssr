@@ -20,7 +20,7 @@ const props = JSON.parse('__REACT_SSR_PROPS__');
 
 // const enhanced = new EnhancedComponent(props);
 
-const PageComponent = new Page(props);
+const PageComponent = React.createElement(Page, props);
 
 const container = hasHtml(PageComponent) ? document : document.getElementById('react-ssr-root');
 
