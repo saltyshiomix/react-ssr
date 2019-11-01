@@ -10,6 +10,8 @@ import {
 } from '../helpers/head';
 import { SsrProps } from './interfaces';
 
+React.useLayoutEffect = React.useEffect;
+
 const { ServerStyleSheets } = require('@material-ui/core/styles');
 
 export default function Ssr(props: SsrProps) {
