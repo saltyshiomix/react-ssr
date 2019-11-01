@@ -9,8 +9,7 @@ const getHtmlElement = child => {
     return undefined;
   }
   if (typeof child.type === 'function') {
-    const newChild = {...child};
-    return getHtmlElement(newChild.type(newChild.props));
+    return getHtmlElement(React.createElement(child.type, child.props));
   }
   if (child.type === 'html') {
     return child;
