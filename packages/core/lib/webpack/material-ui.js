@@ -8,23 +8,15 @@ const html = ReactDOMServer.renderToString(<Page {...props} />);
 const withHtml = 0 <= html.indexOf('html');
 const container = withHtml ? document : document.getElementById('react-ssr-root');
 
+// FIXME: "useLayoutEffect does nothing on the server"
+// this may be the bug of `material-ui@~4.5.2`
 function MuiApp(props) {
-  // const [showChild, setShowChild] = React.useState(false);
-
   React.useEffect(() => {
-    // setShowChild(true);
-
     const jssStyles = document.getElementById('jss-server-side');
     if (jssStyles) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
   }, []);
-
-  // if (!showChild) {
-  //   // You can show some kind of placeholder UI here
-  //   return null;
-  // }
-
   return <Page {...props} />;
 }
 
