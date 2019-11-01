@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import ReactHtmlParser, { convertNodeToElement } from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 import cheerio from 'cheerio';
 import {
   extractHeadElements,
@@ -31,11 +31,8 @@ export default function Ssr(props: SsrProps) {
     return (
       <html {...convertAttrToJsxStyle($('html').attr())}>
         <head>
-          {Title ? <Title /> : ReactHtmlParser($.html($('title')), { transform: (node, index, transform: any) => {
-            node.attribs!['suppressHydrationWarning'] = 'suppressHydrationWarning';
-            return convertNodeToElement(node, index, transform);
-          } })}
-          {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
+          {Title ? <Title suppressHydrationWarning /> : ReactHtmlParser($.html($('title')))}
+          {MetaDescription ? <MetaDescription suppressHydrationWarning /> : ReactHtmlParser($.html($('meta[name=description]')))}
           {ReactHtmlParser(meta)}
           {ReactHtmlParser(styles)}
         </head>
