@@ -8,7 +8,10 @@ const html = ReactDOMServer.renderToStaticMarkup(<Page {...props} />);
 const withHtml = 0 <= html.indexOf('html');
 const container = withHtml ? document : document.getElementById('react-ssr-root');
 
-ReactDOM.hydrate(<Page {...props} />, container);
+console.log(props);
+
+ReactDOM.render(<Page {...props} />, container);
+// ReactDOM.hydrate(<Page {...props} />, container);
 
 if (module.hot) {
   module.hot.accept();
