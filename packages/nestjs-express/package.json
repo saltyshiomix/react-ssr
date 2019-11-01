@@ -1,6 +1,6 @@
 {
   "name": "@react-ssr/nestjs-express",
-  "version": "0.9.12",
+  "version": "0.9.13",
   "description": "React SSR as a view template engine",
   "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
@@ -39,7 +39,7 @@
     "script.d.ts"
   ],
   "dependencies": {
-    "@react-ssr/core": "^0.9.12"
+    "@react-ssr/core": "^0.9.13"
   },
   "devDependencies": {
     "@nestjs/common": "^6.8.5",
