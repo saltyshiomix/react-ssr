@@ -7,15 +7,18 @@ const props = JSON.parse('__REACT_SSR_PROPS__');
 
 function WithComponent(Component) {
   return class extends React.Component {
+    constructor(props) {
+      super(props);
+    }
     render() {
-      return <Component {...(this.props)} />;
+      return <Component {...this.props} />;
     }
   }
 }
 
-const Extended = WithComponent(Page);
+const EnhancedComponent = WithComponent(Page);
 
-const container = hasHtml(<Extended {...props} />) ? document : document.getElementById('react-ssr-root');
+const container = hasHtml(<EnhancedComponent {...props} />) ? document : document.getElementById('react-ssr-root');
 
 ReactDOM.hydrate(<Page {...props} />, container);
 
