@@ -5,9 +5,9 @@ import { hasHtml } from '__REACT_SSR_HELPERS__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-class ExtendedComponent extends Page {
+class ExtendedComponent extends React.Component {
   render() {
-    return this.props.children;
+    return React.cloneElement(Page, this.props);
   }
 }
 
