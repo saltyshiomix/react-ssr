@@ -9,7 +9,7 @@ const getHtmlElement = child => {
     return undefined;
   }
   if (typeof child.ref === 'function') {
-    return getHtmlElement(child.ref(child));
+    return getHtmlElement(child.ref(child._self));
   }
   if (typeof child.type === 'function') {
     return getHtmlElement(child.type(child.props));
