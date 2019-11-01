@@ -5,13 +5,25 @@ import { hasHtml } from '__REACT_SSR_HELPERS__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-const App = React.forwardRef((props, ref) => <Page ref={ref} {...props} />);
+const PageComponent = React.forwardRef((props, ref) => <Page innerRef={ref} {...props} />);
+
+class App extends React.Component {
+  render() {
+    const { innerRef, ...rest } = this.props;
+    return (
+      <PageComponent
+        ref={innerRef}
+        {...rest}
+      />
+    )
+  }
+}
 
 const ref = React.createRef();
 
-const container = hasHtml(<App ref={ref} {...props} />) ? document : document.getElementById('react-ssr-root');
+const container = hasHtml(<App innerRef={ref} {...props} />) ? document : document.getElementById('react-ssr-root');
 
-ReactDOM.hydrate(<App ref={ref} {...props} />, container);
+ReactDOM.hydrate(<App innerRef={ref} {...props} />, container);
 
 if (module.hot) {
   module.hot.accept();
