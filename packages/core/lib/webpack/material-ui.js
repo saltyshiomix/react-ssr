@@ -9,13 +9,22 @@ const withHtml = 0 <= html.indexOf('html');
 const container = withHtml ? document : document.getElementById('react-ssr-root');
 
 function MuiApp(props) {
-  // FIXME: it may be the bug of material-ui@4.5.1
-  // React.useEffect(() => {
-  //   const jssStyles = document.getElementById('jss-server-side');
-  //   if (jssStyles) {
-  //     jssStyles.parentNode.removeChild(jssStyles);
-  //   }
-  // }, []);
+  const [showChild, setShowChild] = useState(false);
+
+  React.useEffect(() => {
+    setShowChild(true);
+
+    // const jssStyles = document.getElementById('jss-server-side');
+    // if (jssStyles) {
+    //   jssStyles.parentNode.removeChild(jssStyles);
+    // }
+  }, []);
+
+  if (!showChild) {
+    // You can show some kind of placeholder UI here
+    return null;
+  }
+
   return <Page {...props} />;
 }
 

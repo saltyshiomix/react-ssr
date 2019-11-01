@@ -10,22 +10,6 @@ import {
 } from '../helpers/head';
 import { SsrProps } from './interfaces';
 
-function FixUseLayoutEffectWrapper(children) {
-  const [showChild, setShowChild] = React.useState(false);
-
-  // Wait until after client-side hydration to show
-  React.useEffect(() => {
-    setShowChild(true);
-  }, []);
-
-  if (!showChild) {
-    // You can show some kind of placeholder UI here
-    return null;
-  }
-
-  return {children};
-}
-
 const { ServerStyleSheets } = require('@material-ui/core/styles');
 
 export default function Ssr(props: SsrProps) {
@@ -41,7 +25,7 @@ export default function Ssr(props: SsrProps) {
   elements.length = 0;
 
   const sheets = new ServerStyleSheets();
-  const html = ReactDOMServer.renderToString(sheets.collect(FixUseLayoutEffectWrapper(children)));
+  const html = ReactDOMServer.renderToString(sheets.collect(children));
   const withHtml = 0 <= html.toLowerCase().indexOf('html');
 
   // these must be called after ReactDOMServer.renderToString()
