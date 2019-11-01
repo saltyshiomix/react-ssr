@@ -3,6 +3,8 @@ const register = require('@react-ssr/express/register');
 
 const app = express();
 
+app.use(express.static('public'));
+
 (async () => {
   await register(app);
 
