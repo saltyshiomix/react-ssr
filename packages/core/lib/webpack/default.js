@@ -10,7 +10,8 @@ const html = ReactDOMServer.renderToStaticMarkup(<Page {...props} />);
 const withHtml = 0 <= html.indexOf('html');
 const container = withHtml ? document : document.getElementById('react-ssr-root');
 
-ReactDOM.hydrate(<Page {...props} />, container);
+ReactDOM.createBlockingRoot(container, { hydrate: true }).render(<Page {...props} />);
+// ReactDOM.hydrate(<Page {...props} />, container);
 
 // const convertAttrToJsxStyle = attr => {
 //   const jsxAttr = {};

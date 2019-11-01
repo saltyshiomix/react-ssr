@@ -31,8 +31,8 @@ export default function Ssr(props: SsrProps) {
     return (
       <html {...convertAttrToJsxStyle($('html').attr())}>
         <head>
-          {Title ? <Title suppressHydrationWarning /> : ReactHtmlParser($.html($('title')))}
-          {MetaDescription ? <MetaDescription suppressHydrationWarning /> : ReactHtmlParser($.html($('meta[name=description]')))}
+          {Title ? <Title /> : ReactHtmlParser($.html($('title')))}
+          {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
           {ReactHtmlParser(meta)}
           {ReactHtmlParser(styles)}
         </head>
