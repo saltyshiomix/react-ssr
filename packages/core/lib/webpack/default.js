@@ -11,7 +11,11 @@ const html = ReactDOMServer.renderToStaticMarkup(<Page {...props} />);
 const withHtml = 0 <= html.indexOf('html');
 const container = withHtml ? document : document.getElementById('react-ssr-root');
 
-ReactDOM.hydrate(<React.Suspense fallback={null}><Page {...props} /></React.Suspense>, container);
+const Lazy = React.lazy((props) => {
+  return <Page {...props} />;
+});
+
+ReactDOM.hydrate(<React.Suspense fallback={null}><Lazy {...props} /></React.Suspense>, container);
 
 // const convertAttrToJsxStyle = attr => {
 //   const jsxAttr = {};
