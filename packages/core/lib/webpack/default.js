@@ -5,30 +5,13 @@ import { hasHtml } from '__REACT_SSR_HELPERS__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-// function WithComponent(Component) {
-//   return class extends React.Component {
-//     constructor(props) {
-//       super(props);
-//     }
-//     render() {
-//       return <Component {...this.props} />;
-//     }
-//   }
-// }
+const App = React.forwardRef((props, ref) => <Page ref={ref} {...props} />);
 
-// const EnhancedComponent = WithComponent(Page);
+const ref = React.createRef();
 
-// const enhanced = new EnhancedComponent(props);
+const container = hasHtml(<App ref={ref} {...props} />) ? document : document.getElementById('react-ssr-root');
 
-// const PageComponent = React.cloneElement(Page, props);
-
-function App(props) {
-  return <Page {...props} />;
-}
-
-const container = hasHtml(<Page {...props} />) ? document : document.getElementById('react-ssr-root');
-
-ReactDOM.hydrate(<App {...props} />, container);
+ReactDOM.hydrate(<App ref={ref} {...props} />, container);
 
 if (module.hot) {
   module.hot.accept();
