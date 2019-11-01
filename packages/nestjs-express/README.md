@@ -9,14 +9,13 @@
   <img src="https://img.shields.io/npm/l/@react-ssr/nestjs-express.svg" alt="Package License (MIT)">
 </p>
 
-## Features
+## Overview
 
 - Blazing fast SSR (Server Side Rendering)
 - Passing the server data to the client `props`
 - Dynamic `props` without caring about SSR
   - Suitable for dynamic routes like blogging
-- Hot relaoding when `process.env.NODE_ENV !== 'production'`
-- TypeScript support
+- HMR when `process.env.NODE_ENV !== 'production'`
 
 ## Usage
 
@@ -30,7 +29,7 @@ $ npm install --save @nestjs/core @nestjs/common @nestjs/platform-express
 $ npm install --save @react-ssr/nestjs-express react react-dom
 ```
 
-and add a script to your package.json like this:
+And add a script to your package.json like this:
 
 ```json
 {
@@ -97,7 +96,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // enable `.tsx` view template engine
+  // register `.tsx` as a view template engine
   await register(app);
 
   app.listen(3000, async () => {
@@ -156,7 +155,7 @@ const Index = ({ user }: IndexProps) => {
 export default Index;
 ```
 
-and then just run `npm start` and go to `http://localhost:3000`, you'll see `Hello NestJS!`.
+Then just run `npm start` and go to `http://localhost:3000`, you'll see `Hello NestJS!`.
 
 ## Rules
 
@@ -164,13 +163,68 @@ and then just run `npm start` and go to `http://localhost:3000`, you'll see `Hel
   - Don't create other components in the views directory
 - The each view's extension must be `.tsx`
 
-## Configuration: `ssr.config.js`
+## Configuration (`ssr.config.js`)
+
+Here is the default `ssr.config.js`, which is used by `react-ssr` when there are no valid values:
 
 ```js
-// default config
 module.exports = {
+  id: 'default',
   viewsDir: 'views',
-  distDir: '.ssr', // we should ignore this by .gitignore
+  distDir: '.ssr',
+  webpack: (config /* webpack.Configuration */, env /* 'development' | 'production' */) => {
+    return config;
+  },
+};
+```
+
+### `ssr.config.js#id`
+
+The id of **UI framework**. (default: `default`)
+
+It can be ignored only when the project does not use any UI frameworks.
+
+Supported UI frameworks are:
+
+- [x] [emotion](https://emotion.sh)
+- [x] [styled-components](https://www.styled-components.com)
+- [x] [material-ui](https://material-ui.com)
+- [ ] [antd](https://ant.design)
+- [ ] and more...
+
+For example, if we want to use `emotion`, `ssr.config.js` is like this:
+
+```js
+module.exports = {
+  id: 'emotion',
+};
+```
+
+### `ssr.config.js#viewsDir`
+
+The place where we put views. (default: `views`)
+
+A function `res.render('xxx')` will render `views/xxx.jsx` or `views/xxx.tsx`.
+
+A working example is here: [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
+
+### `ssr.config.js#distDir`
+
+The place where `react-ssr` outputs production results. (default: `.ssr`)
+
+If we use TypeScript or any other library which must be compiled, the config below may be useful:
+
+```js
+module.exports = {
+  // dist folder is ignored by `.gitignore`
+  distDir: 'dist/.ssr',
+};
+```
+
+### `ssr.config.js#webpack()`
+
+```js
+module.exports = {
   webpack: (config /* webpack.Configuration */, env /* 'development' | 'production' */) => {
     // we can override default webpack config here
     return config;
@@ -419,6 +473,7 @@ WIP
 - [examples/custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-babelrc)
 - [examples/custom-layout](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-layout)
 - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
+- [examples/dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/dynamic-head)
 - [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
 - [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
 - [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
@@ -434,10 +489,6 @@ WIP
 [The React View Template Engine for Express](https://dev.to/saltyshiomix/the-react-view-template-engine-for-express-42f0)
 
 [[Express] React as a View Template Engine?](https://dev.to/saltyshiomix/express-react-as-a-view-template-engine-h37)
-
-## How it works
-
-WIP
 
 ## Related
 
