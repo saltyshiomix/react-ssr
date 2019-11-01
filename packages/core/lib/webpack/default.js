@@ -18,7 +18,9 @@ function WithComponent(Component) {
 
 const EnhancedComponent = WithComponent(Page);
 
-const container = hasHtml(<EnhancedComponent {...props} />) ? document : document.getElementById('react-ssr-root');
+const enhanced = new EnhancedComponent(props);
+
+const container = hasHtml(enhanced) ? document : document.getElementById('react-ssr-root');
 
 ReactDOM.hydrate(<Page {...props} />, container);
 
