@@ -15,7 +15,9 @@ const props = JSON.parse('__REACT_SSR_PROPS__');
 
 // ReactDOM.hydrate(<Page {...props} />, container);
 
-ReactDOM.hydrate(<Page {...props} />, document);
+const container = document.getElementById('react-ssr-root') || document;
+
+ReactDOM.hydrate(<Page {...props} />, container);
 
 if (module.hot) {
   module.hot.accept();
