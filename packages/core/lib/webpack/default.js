@@ -7,7 +7,8 @@ const props = JSON.parse('__REACT_SSR_PROPS__');
 
 const Clone = React.cloneElement(Page, Object.assign(props, {
   ref: node => {
-    Page._self = node;
+    console.log(node);
+    node._self = node;
     const { ref } = Page;
     if (typeof ref === 'function') ref(node);
     else if (ref) ref.current = node;
