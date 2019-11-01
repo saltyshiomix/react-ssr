@@ -15,7 +15,7 @@ const register = async (app: any): Promise<void> => {
   const renderFile = async (file: string, options: any, cb: (err: any, html?: any) => void) => {
     if (!moduleDetectRegEx) {
       const cacheablePages = await getCacheablePages();
-      const pattern = ([] as string[]).concat(cacheablePages).map(page => '^' + escaperegexp(page)).join('|');
+      const pattern = cacheablePages.map(page => '^' + escaperegexp(page)).join('|');
       moduleDetectRegEx = new RegExp(pattern);
     }
 
