@@ -59,13 +59,13 @@ export const extractHeadElements = (element: React.ReactElement): any => {
     };
   }
   let Title = undefined;
-  let MetaDescription;
+  let MetaDescription = undefined;
   React.Children.forEach(headElement.props.children, (child: React.ReactElement) => {
     if (child.type === 'title') {
       Title = (props: any) => React.cloneElement(child, props);
     }
     if (child.type === 'meta' && child.props.name === 'description') {
-      MetaDescription = (props: any) => React.cloneElement(child, props);;
+      MetaDescription = (props: any) => React.cloneElement(child, props);
     }
   });
   return {
