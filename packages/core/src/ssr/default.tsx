@@ -25,6 +25,8 @@ export default function Ssr(props: SsrProps) {
   const html = ReactDOMServer.renderToString(children);
   const withHtml = 0 <= html.toLowerCase().indexOf('html');
 
+  console.log(elements);
+
   // these must be called after ReactDOMServer.renderToString()
   let Title = undefined;
   let MetaDescription = undefined;
