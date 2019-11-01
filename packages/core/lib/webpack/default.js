@@ -22,9 +22,13 @@ const props = JSON.parse('__REACT_SSR_PROPS__');
 
 // const PageComponent = React.cloneElement(Page, props);
 
+function App(props) {
+  return <Page {...props} />;
+}
+
 const container = hasHtml(<Page {...props} />) ? document : document.getElementById('react-ssr-root');
 
-ReactDOM.hydrate(<Page {...props} />, container);
+ReactDOM.hydrate(<App {...props} />, container);
 
 if (module.hot) {
   module.hot.accept();
