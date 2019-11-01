@@ -20,11 +20,11 @@ const props = JSON.parse('__REACT_SSR_PROPS__');
 
 // const enhanced = new EnhancedComponent(props);
 
-const PageComponent = React.createElement(Page, props);
+const PageComponent = React.cloneElement(Page, props);
 
 const container = hasHtml(PageComponent) ? document : document.getElementById('react-ssr-root');
 
-ReactDOM.hydrate(PageComponent, container);
+ReactDOM.hydrate(<Page {...props} />, container);
 
 if (module.hot) {
   module.hot.accept();
