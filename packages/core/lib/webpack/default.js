@@ -8,10 +8,9 @@ import Page from '__REACT_SSR_PAGE__';
 const props = JSON.parse('__REACT_SSR_PROPS__');
 const html = ReactDOMServer.renderToStaticMarkup(<Page {...props} />);
 const withHtml = 0 <= html.indexOf('html');
-const container = withHtml ? document : document.getElementById('react-ssr-root');
+const container = withHtml ? window.approot : document.getElementById('react-ssr-root');
 
-ReactDOM.createBlockingRoot(container, { hydrate: true }).render(<Page {...props} />);
-// ReactDOM.hydrate(<Page {...props} />, container);
+ReactDOM.hydrate(<Page {...props} />, container);
 
 // const convertAttrToJsxStyle = attr => {
 //   const jsxAttr = {};
