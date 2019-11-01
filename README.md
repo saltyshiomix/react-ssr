@@ -324,34 +324,26 @@ A working example is here: [examples/basic-css](https://github.com/saltyshiomix/
 
 ## Custom Layout
 
-In the layout, we must inject `@react-ssr/express/script` at the bottom of the body tag:
+We can create the layout component like this:
 
 **./components/layout.jsx**
 
 ```jsx
-import ReactSsrScript from '@react-ssr/express/script';
-
 export const Layout = (props) => {
-  const {
-    children,
-    script, // passed from the entry point (./views/index.jsx)
-  } = props;
-
   return (
     <html>
       <head>
-        <title>Hello Layout</title>
+        <title>Default App Title</title>
       </head>
       <body>
-        {children}
-        <ReactSsrScript script={script} />
+        {props.children}
       </body>
     </html>
   );
 };
 ```
 
-And then, just use it like before:
+And then, just use it as always:
 
 **./views/index.jsx**
 
@@ -359,12 +351,8 @@ And then, just use it like before:
 import { Layout } from '../components/layout';
 
 const Index = (props) => {
-  const { script } = props; // `props.script` is injected by @react-ssr/express automatically
-
   return (
-    <Layout
-      script={script} // pass it to the layout component for the dynamic SSR
-    >
+    <Layout>
       <p>Hello Layout!</p>
     </Layout>
   );
@@ -387,7 +375,7 @@ import { Layout } from '../components/layout';
 
 const Index = (props) => {
   return (
-    <Layout script={props.script}>
+    <Layout>
       <Head>
         <title>Dynamic Title</title>
         <meta name="description" content="Dynamic Description" />
@@ -437,28 +425,6 @@ And then, populate `.babelrc` in your project root:
 }
 ```
 
-Finally, with custom layout, inject `@react-ssr/express/script` at the bottom of the body tag:
-
-```tsx
-import ReactSsrScript from '@react-ssr/express/script';
-
-export const Layout = (props) => {
-  const { script } = props;
-
-  return (
-    <html>
-      <head>
-        <title>Hello Emotion</title>
-      </head>
-      <body>
-        {children}
-        <ReactSsrScript script={script} />
-      </body>
-    </html>
-  );
-};
-```
-
 A working example is here: [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
 
 ### With styled-components
@@ -476,28 +442,6 @@ And then, populate `.babelrc` in your project root:
     "styled-components"
   ]
 }
-```
-
-Finally, with custom layout, inject `@react-ssr/express/script` at the bottom of the body tag:
-
-```jsx
-import ReactSsrScript from '@react-ssr/express/script';
-
-export const Layout = (props) => {
-  const { script } = props;
-
-  return (
-    <html>
-      <head>
-        <title>Hello styled-components</title>
-      </head>
-      <body>
-        {children}
-        <ReactSsrScript script={script} />
-      </body>
-    </html>
-  );
-};
 ```
 
 A working example is here: [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
