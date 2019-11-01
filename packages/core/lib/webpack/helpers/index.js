@@ -9,7 +9,8 @@ const getHtmlElement = child => {
     return undefined;
   }
   if (typeof child.type === 'function') {
-    return getHtmlElement(child.type(child.props));
+    const newChild = {...child};
+    return getHtmlElement(newChild.type(newChild.props));
   }
   if (child.type === 'html') {
     return child;
