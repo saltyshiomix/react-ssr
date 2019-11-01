@@ -16,10 +16,7 @@ export const getEntry = async (memfs: any): Promise<[webpack.Entry, string[]]> =
   const entry: webpack.Entry = {};
   const entryPages = await getPages();
   const entryPath = path.resolve(__dirname, `../lib/webpack/${config.id}.js`);
-  let template = fse.readFileSync(entryPath).toString();
-  if (0 <= template.indexOf('__REACT_SSR_HELPERS__')) {
-    template = template.replace('__REACT_SSR_HELPERS__', path.resolve(__dirname, '../lib/webpack/helpers'));
-  }
+  const template = fse.readFileSync(entryPath).toString();
 
   memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
