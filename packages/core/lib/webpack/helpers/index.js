@@ -8,6 +8,9 @@ const getHtmlElement = child => {
   if (typeof child === 'string' || child.type === 'script') {
     return undefined;
   }
+  if (typeof child.ref === 'function') {
+    return getHtmlElement(child.ref(child));
+  }
   if (typeof child.type === 'function') {
     return getHtmlElement(child.type(child.props));
   }
