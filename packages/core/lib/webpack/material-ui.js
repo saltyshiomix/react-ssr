@@ -8,22 +8,26 @@ const html = ReactDOMServer.renderToString(<Page {...props} />);
 const withHtml = 0 <= html.indexOf('html');
 const container = withHtml ? document : document.getElementById('react-ssr-root');
 
+const useEnhancedEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+
 function MuiApp(props) {
-  const [showChild, setShowChild] = React.useState(false);
+  useEnhancedEffect(() => {});
 
-  React.useEffect(() => {
-    setShowChild(true);
+  // const [showChild, setShowChild] = React.useState(false);
 
-    // const jssStyles = document.getElementById('jss-server-side');
-    // if (jssStyles) {
-    //   jssStyles.parentNode.removeChild(jssStyles);
-    // }
-  }, []);
+  // React.useEffect(() => {
+  //   setShowChild(true);
 
-  if (!showChild) {
-    // You can show some kind of placeholder UI here
-    return null;
-  }
+  //   // const jssStyles = document.getElementById('jss-server-side');
+  //   // if (jssStyles) {
+  //   //   jssStyles.parentNode.removeChild(jssStyles);
+  //   // }
+  // }, []);
+
+  // if (!showChild) {
+  //   // You can show some kind of placeholder UI here
+  //   return null;
+  // }
 
   return <Page {...props} />;
 }
