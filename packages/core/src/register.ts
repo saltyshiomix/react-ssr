@@ -4,7 +4,6 @@ import {
   getCacheablePages,
   getSsrConfig,
   getEngine,
-  Config,
 } from './helpers/core';
 
 const escaperegexp = require('lodash.escaperegexp');
@@ -35,7 +34,7 @@ const register = async (app: any): Promise<void> => {
     }
   };
 
-  const config: Config = getSsrConfig();
+  const config = getSsrConfig();
   const engine: 'jsx' | 'tsx' = getEngine();
   app.engine(engine, renderFile);
   app.set('views', path.join(process.cwd(), config.viewsDir));
