@@ -32,7 +32,11 @@ const getHtmlElement = child => {
 };
 
 export const hasHtml = (element, props) => {
-  console.log(element);
+  // console.log(element);
 
-  return typeof getHtmlElement(React.createElement(element.type, props)) !== 'undefined';
+  const child = React.cloneElement(element, props, [...(props.children || [])]);
+
+  console.log(child);
+
+  return typeof getHtmlElement(child) !== 'undefined';
 };
