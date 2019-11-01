@@ -1,6 +1,6 @@
 {
   "name": "@react-ssr/express",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "React SSR as a view template engine",
   "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
@@ -38,7 +38,7 @@
     "script.d.ts"
   ],
   "dependencies": {
-    "@react-ssr/core": "^0.9.3"
+    "@react-ssr/core": "^0.9.4"
   },
   "devDependencies": {
     "@types/express": "^4.17.1",
