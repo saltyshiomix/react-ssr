@@ -36,8 +36,7 @@ export default async (app: express.Application): Promise<void> => {
 
   const devServerPort = 8888;
   const devServer = new WebpackDevServer(compiler, {
-    hotOnly: true,
-    liveReload: false,
+    hot: true,
     noInfo: true,
     stats: 'errors-only',
     overlay: true,
