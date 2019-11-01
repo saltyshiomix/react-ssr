@@ -27,6 +27,7 @@ const coreConfig = {
   ],
   external: [
     'react-dom/server',
+    'http-proxy-middleware',
   ],
 };
 
