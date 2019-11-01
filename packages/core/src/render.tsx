@@ -6,8 +6,6 @@ import {
 } from './helpers/core';
 import { getBabelConfig } from './helpers/babel';
 
-React.useLayoutEffect = React.useEffect;
-
 const codec = require('json-url')('lzw');
 
 require('@babel/register')({
