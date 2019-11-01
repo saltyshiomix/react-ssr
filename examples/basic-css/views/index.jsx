@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import '../styles/index.css';
 
 const Index = ({ user }) => {
-  const [message, setMessage] = useState('waiting...');
+  const [message, setMessage] = React.useState('waiting...');
 
   const onClick = () => setMessage('This is a react-ssr!');
 
