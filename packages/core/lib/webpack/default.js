@@ -128,7 +128,7 @@ const EnhancePage = element => props => {
           </head>
           <body>
             <div id="react-ssr-root">
-              {children}
+              {element}
             </div>
             {/* <script src={script}></script> */}
           </body>
