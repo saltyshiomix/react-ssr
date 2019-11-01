@@ -12,12 +12,12 @@ import { SsrProps } from './interfaces';
 
 function FixUseLayoutEffectWrapper(children) {
   const [showChild, setShowChild] = React.useState(false);
-  
+
   // Wait until after client-side hydration to show
-  useEffect(() => {
+  React.useEffect(() => {
     setShowChild(true);
   }, []);
-  
+
   if (!showChild) {
     // You can show some kind of placeholder UI here
     return null;
