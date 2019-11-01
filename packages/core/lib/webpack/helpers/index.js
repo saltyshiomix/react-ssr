@@ -31,12 +31,15 @@ const getHtmlElement = child => {
   return _htmlElement;
 };
 
-export const hasHtml = (element, props) => {
-  // console.log(element);
-
-  const child = React.cloneElement(element, props, [...(props.children || [])]);
-
-  console.log(child);
-
-  return typeof getHtmlElement(child) !== 'undefined';
+export const hasHtml = (Component, props) => {
+  class ExtendedComponent extends Component {
+    render() {
+      return (
+        <React.Fragment>
+          {this.props.children}
+        </React.Fragment>
+      );
+    }
+  }
+  return typeof getHtmlElement(<ExtendedComponent {...props} />) !== 'undefined';
 };
