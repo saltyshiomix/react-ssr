@@ -9,7 +9,7 @@ const withHtml = 0 <= html.indexOf('html');
 const container = withHtml ? document : document.getElementById('react-ssr-root');
 
 function MuiApp(props) {
-  const [showChild, setShowChild] = useState(false);
+  const [showChild, setShowChild] = React.useState(false);
 
   React.useEffect(() => {
     setShowChild(true);
