@@ -41,10 +41,6 @@ export default async (app: express.Application): Promise<void> => {
     overlay: true,
     compress: true,
     serveIndex: false,
-    headers: {
-      'Cache-Control': 'max-age=0',
-      get etag() { return Math.random() + ''; },
-    },
     after: (app: express.Application, server: WebpackDevServer, compiler: webpack.Compiler) => {
       for (let i = 0; i < entryPages.length; i++) {
         const page = entryPages[i];
