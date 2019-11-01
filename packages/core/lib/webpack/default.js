@@ -13,7 +13,7 @@ const App = (props) => {
 
 const container = hasHtml(<App {...props} />) ? document : document.getElementById('react-ssr-root');
 
-ReactDOM.hydrate(<App {...props} />, container);
+ReactDOM.hydrate(pageRef.current, container);
 
 if (module.hot) {
   module.hot.accept();
