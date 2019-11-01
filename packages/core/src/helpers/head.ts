@@ -52,7 +52,7 @@ const getHeadElement = (child: any): any => {
 
 export const extractHeadElements = (element: React.ReactElement): any => {
   const headElement = getHeadElement(element);
-  if (!headElement.props.children) {
+  if (!headElement || !headElement.props || !headElement.props.children) {
     return {
       Title: undefined,
       MetaDescription: undefined,
