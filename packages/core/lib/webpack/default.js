@@ -4,7 +4,14 @@ import Page from '__REACT_SSR_PAGE__';
 import { hasHtml } from '__REACT_SSR_HELPERS__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
-const container = hasHtml(Page, props) ? document : document.getElementById('react-ssr-root');
+
+class ExtendedComponent extends Component {
+  render() {
+    return this.props.children;
+  }
+}
+
+const container = hasHtml(<ExtendedComponent {...props} />) ? document : document.getElementById('react-ssr-root');
 
 ReactDOM.hydrate(<Page {...props} />, container);
 

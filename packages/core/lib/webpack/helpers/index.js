@@ -31,11 +31,6 @@ const getHtmlElement = child => {
   return _htmlElement;
 };
 
-export const hasHtml = (Component, props) => {
-  class ExtendedComponent extends Component {
-    render() {
-      return this.props.children;
-    }
-  }
-  return typeof getHtmlElement(<ExtendedComponent {...props} />) !== 'undefined';
+export const hasHtml = (element) => {
+  return typeof getHtmlElement(element) !== 'undefined';
 };
