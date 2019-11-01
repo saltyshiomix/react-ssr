@@ -13,11 +13,10 @@ import {
   getPageId,
   readFileWithProps,
   sleep,
-  Config,
 } from '../helpers/core';
 
 const cwd = process.cwd();
-const config: Config = getSsrConfig();
+const config = getSsrConfig();
 const codec = require('json-url')('lzw');
 
 const ufs = require('unionfs').ufs;
