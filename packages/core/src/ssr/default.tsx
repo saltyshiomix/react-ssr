@@ -16,14 +16,17 @@ export default function Ssr(props: SsrProps) {
     script,
   } = props;
 
-  const headElement = getHeadElement(children as React.ReactElement);
-  let elements = headElement ? headElement.type.elements : [];
+  // const headElement = getHeadElement(children as React.ReactElement);
+  // let elements = headElement ? headElement.type.elements : [];
 
   // clear the cache, but use the same instance
-  elements.length = 0;
+  // elements.length = 0;
 
   const html = ReactDOMServer.renderToString(children);
   const withHtml = 0 <= html.toLowerCase().indexOf('html');
+
+  const headElement = getHeadElement(children as React.ReactElement);
+  let elements = headElement ? headElement.type.elements : [];
 
   console.log(elements);
 
