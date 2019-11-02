@@ -5,29 +5,27 @@ import { getCurrentMarkupComponent } from './helpers';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-// function App(props) {
-//   const [hydrate, setHydrate] = React.useState(false);
+function App(props) {
+  // const [hydrate, setHydrate] = React.useState(false);
 
-//   React.useEffect(() => {
-//     setHydrate(true);
+  React.useEffect(() => {
+    // setHydrate(true);
 
-//     const jssStyles = document.getElementById('jss-server-side');
-//     if (jssStyles) {
-//       jssStyles.parentNode.removeChild(jssStyles);
-//     }
-//   }, []);
+    const jssStyles = document.getElementById('jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentNode.removeChild(jssStyles);
+    }
+  }, []);
 
-//   // wait untill hooks called so that the dynamic `Head` can work correctly
-//   if (!hydrate) {
-//     return getCurrentMarkupComponent();
-//   }
+  // // wait untill hooks called so that the dynamic `Head` can work correctly
+  // if (!hydrate) {
+  //   return getCurrentMarkupComponent();
+  // }
 
-//   return <Page {...props} />;
-// }
+  return <Page {...props} />;
+}
 
-// ReactDOM.hydrate(<App {...props} />, document.getElementById('react-ssr-root') || document);
-
-ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root') || document);
+ReactDOM.hydrate(<App {...props} />, document.getElementById('react-ssr-root') || document);
 
 if (module.hot) {
   module.hot.accept();
