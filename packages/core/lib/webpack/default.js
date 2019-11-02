@@ -5,7 +5,9 @@ import Page from '__REACT_SSR_PAGE__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-const markup = document.documentElement.outerHTML;
+const root = document.getElementById('react-ssr-root');
+const markup = root ? root.innerHTML : document.documentElement.outerHTML;
+const container = root || document;
 
 function App(props) {
   const [hydrate, setHydrate] = React.useState(false);
@@ -22,7 +24,7 @@ function App(props) {
   return <Page {...props} />;
 }
 
-ReactDOM.hydrate(<App {...props} />, document.getElementById('react-ssr-root') || document);
+ReactDOM.hydrate(<App {...props} />, container);
 
 if (module.hot) {
   module.hot.accept();
