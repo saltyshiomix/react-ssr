@@ -17,7 +17,7 @@ function App(props) {
     // }
   }, []);
 
-  // wait untill hooks called so that dynamic `Head` can work correctly
+  // wait untill hooks called so that the dynamic `Head` can work correctly
   if (!hydrate) {
     return getCurrentMarkupComponent();
   }
