@@ -79,7 +79,7 @@ const InjectScript = (props) => {
 
   if (!scriptCache[script]) {
     const incrementalId = Object.keys(scriptCache).length;
-    scriptCache[script] = 'react-ssr-style-' + incrementalId;
+    scriptCache[script] = 'react-ssr-script-' + incrementalId;
   }
 
   if (isDOMReady()) {
