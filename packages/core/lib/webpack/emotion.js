@@ -1,13 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import parse from 'html-react-parser';
 import Page from '__REACT_SSR_PAGE__';
+import { getCurrentMarkupComponent } from '__REACT_SSR_HELPERS__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
-
-const root = document.getElementById('react-ssr-root');
-const markup = root ? root.innerHTML : document.documentElement.outerHTML;
-const container = root || document;
 
 function App(props) {
   const [hydrate, setHydrate] = React.useState(false);
@@ -18,13 +14,13 @@ function App(props) {
 
   // wait untill hooks called so that dynamic `Head` can work correctly
   if (!hydrate) {
-    return parse(markup);
+    return getCurrentMarkupComponent();
   }
 
   return <Page {...props} />;
 }
 
-ReactDOM.hydrate(<App {...props} />, container);
+ReactDOM.hydrate(<App {...props} />, document.getElementById('react-ssr-root') || document);
 
 if (module.hot) {
   module.hot.accept();
