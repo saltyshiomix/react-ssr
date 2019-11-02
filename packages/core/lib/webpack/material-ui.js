@@ -9,6 +9,8 @@ const root = document.getElementById('react-ssr-root');
 const markup = root ? root.innerHTML : document.documentElement.outerHTML;
 const container = root || document;
 
+console.log(markup);
+
 function App(props) {
   const [hydrate, setHydrate] = React.useState(false);
 
