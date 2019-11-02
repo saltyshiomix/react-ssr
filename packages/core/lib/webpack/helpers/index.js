@@ -99,7 +99,7 @@ export const getCurrentMarkupComponent = () => {
           return (
             <style
               key={i}
-              {...convertAttrToJsxStyle(style.attr)}
+              // {...convertAttrToJsxStyle(style.attr)}
             >
               {style.html}
             </style>
