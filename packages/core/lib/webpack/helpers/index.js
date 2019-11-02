@@ -79,6 +79,8 @@ if (!root) {
   });
 }
 
+console.log(scriptsInBody);
+
 export const getCurrentMarkupComponent = () => {
   if (root) {
     return parse(markup);
