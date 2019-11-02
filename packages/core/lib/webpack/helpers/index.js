@@ -102,14 +102,18 @@ export const getCurrentMarkupComponent = () => {
             {style.html}
           </style>
         ))}
-        {scriptsInHead.map((script, i) => (
-          <script
-            key={i}
-            {...convertAttrToJsxStyle(script.attr)}
-          >
-            {script.html}
-          </script>
-        ))}
+        {scriptsInHead.map((script, i) => {
+          console.log(script.html);
+          console.log(script.attr);
+          return (
+            <script
+              key={i}
+              {...convertAttrToJsxStyle(script.attr)}
+            >
+              {script.html}
+            </script>
+          );
+        })}
       </head>
       <body {...convertAttrToJsxStyle(body.attr)}>
         {body.html ? parse(body.html) : null}
