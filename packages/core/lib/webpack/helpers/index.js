@@ -6,6 +6,7 @@ const convertAttrToJsxStyle = attr => {
   const keys = Object.keys(attr);
   for (let i = 0; i < keys.length; i++) {
     let key = keys[i];
+    console.log(key);
     if (key === 'class') {
       key = 'className';
     }
@@ -45,10 +46,6 @@ export const getCurrentMarkupComponent = () => {
     });
   });
   const body = $('body').html();
-
-  console.log(title);
-  console.log(metas);
-  console.log(styles);
 
   return (
     <html {...convertAttrToJsxStyle($('html').attr())}>
