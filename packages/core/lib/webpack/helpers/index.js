@@ -16,14 +16,18 @@ const appendStyle = (props) => {
       const key = keys[i];
       node.setAttribute(key, rest[key]);
     }
-    try {
-      node.appendChild(document.createTextNode(css));
-      document.head.appendChild(node);
-    } catch (e) {
-      node.text = css;
-      document.head.appendChild(node);
-    }
+    // try {
+    //   node.appendChild(document.createTextNode(css));
+    //   document.head.appendChild(node);
+    // } catch (e) {
+    //   node.text = css;
+    //   document.head.appendChild(node);
+    // }
+
     // document.head.appendChild(node);
+
+    node.text = css;
+    document.head.appendChild(node).parentNode.removeChild(node);
   }
 }
 

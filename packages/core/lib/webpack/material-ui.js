@@ -20,8 +20,7 @@ function App(props) {
 
   // wait untill hooks called so that the dynamic `Head` can work correctly
   if (!hydrate) {
-    return parse(document.documentElement.outerHTML);
-    // return getCurrentMarkupComponent();
+    return getCurrentMarkupComponent();
   }
 
   return <Page {...props} />;
