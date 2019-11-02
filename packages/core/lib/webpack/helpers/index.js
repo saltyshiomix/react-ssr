@@ -4,7 +4,9 @@ import parse from 'html-react-parser';
 
 const appendStyle = (props) => {
   const { id, css, ...rest } = props;
-  if (!document.head.querySelector('#' + id)) {
+  if (!document.getElementById('#' + id)) {
+    console.log(css);
+
     const node = document.createElement('style');
     node.id = id;
     node.type = 'text/css';
@@ -20,7 +22,7 @@ const appendStyle = (props) => {
 
 const appendScript = (props) => {
   const { id, script, isHead, ...rest } = props;
-  if (!document.head.querySelector('#' + id)) {
+  if (!document.getElementById('#' + id)) {
     const node = document.createElement('script');
     node.id = id;
     node.type = 'text/javascript';
