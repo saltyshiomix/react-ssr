@@ -9,9 +9,6 @@ const convertAttrToJsxStyle = attr => {
     if (key === 'class') {
       key = 'className';
     }
-    if (key === 'charset') {
-      key = 'charSet';
-    }
     if (0 <= key.indexOf('-')) {
       if (!key.startsWith('data-')) {
         key = key.replace(/-([a-z])/g, g => g[1].toUpperCase());
@@ -34,11 +31,18 @@ export const getCurrentMarkupComponent = () => {
   const title = $('head > title').html();
   const metas = [];
   $('head meta').each((i, el) => {
-    metas.push($(el).attr());
+    const $el = $(el);
+    metas.push({
+      attr: $el.attr(),
+    });
   });
   const styles = [];
   $('head style').each((i, el) => {
-    styles.push($(el).html());
+    const $el = $(el);
+    styles.push({
+      html: $el.html(),
+      attr: $el.attr(),
+    });
   });
   const body = $('body').html();
 
@@ -50,8 +54,19 @@ export const getCurrentMarkupComponent = () => {
     <html {...convertAttrToJsxStyle($('html').attr())}>
       <head>
         {title ? <title>{title}</title> : null}
-        {metas.map((attr, i) => <meta key={i} {...attr} />)}
-        {styles.map((style, i) => <style key={i} dangerouslySetInnerHTML={{ __html: style }}></style>)}
+        {metas.map((meta, i) => (
+          <meta
+            key={i}
+            {...convertAttrToJsxStyle(meta.attr)}
+          />
+        ))}
+        {styles.map((style, i) => (
+          <style
+            key={i}
+            dangerouslySetInnerHTML={{ __html: style.html }}
+            {...convertAttrToJsxStyle(style.attr)}
+          ></style>
+        ))}
       </head>
       <body {...convertAttrToJsxStyle($('body').attr())}>
         {body ? parse(body) : null}
