@@ -35,7 +35,7 @@ export default async function render(file: string, props: object): Promise<strin
   Page = Page.default || Page;
 
   let html = '<!DOCTYPE html>';
-  html += ReactDOMServer.renderToString(
+  html += ReactDOMServer.renderToStaticMarkup(
     <SsrWrapper script={`/_react-ssr/${getPageId(file, '/')}.js?props=${await codec.compress(props)}`}>
       <Page {...props} />
     </SsrWrapper>
