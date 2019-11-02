@@ -302,13 +302,22 @@ export const getCurrentMarkupComponent = () => {
           />
         ))}
         {styles.map((style, i) => {
+          console.log(style.attr);
           return (
-            <InjectStyle
+            <style
               key={i}
-              css={style.html}
-              {...style.attr}
-            />
+              {...(style.attr)}
+            >
+              {style.html}
+            </style>
           );
+          // return (
+          //   <InjectStyle
+          //     key={i}
+          //     css={style.html}
+          //     {...style.attr}
+          //   />
+          // );
         })}
         {/* {scriptsInHead.map((script, i) => (
           <InjectScript
