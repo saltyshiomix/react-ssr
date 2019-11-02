@@ -6,9 +6,11 @@ const convertAttrToJsxStyle = attr => {
   const keys = Object.keys(attr);
   for (let i = 0; i < keys.length; i++) {
     let key = keys[i];
-    console.log(key);
     if (key === 'class') {
       key = 'className';
+    }
+    if (key === 'charset') {
+      key = 'charSet';
     }
     if (0 <= key.indexOf('-')) {
       if (!key.startsWith('data-')) {
