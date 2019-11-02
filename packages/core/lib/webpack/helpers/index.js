@@ -19,10 +19,10 @@ const convertAttrToJsxStyle = attr => {
   return jsxAttr;
 }
 
-export const getCurrentMarkupComponent = () => {
-  const root = document.getElementById('react-ssr-root');
-  const markup = root ? root.innerHTML : document.documentElement.outerHTML;
+const root = document.getElementById('react-ssr-root');
+const markup = root ? root.innerHTML : document.documentElement.outerHTML;
 
+export const getCurrentMarkupComponent = () => {
   if (root) {
     return parse(markup);
   }
