@@ -1,5 +1,110 @@
+import React from 'react';
 import cheerio from 'cheerio';
 import parse from 'html-react-parser';
+
+const appendStyle = (props) => {
+  const { id, css, ...rest } = props;
+  if (!document.head.querySelector('#' + id)) {
+    const node = document.createElement('style');
+    node.id = id;
+    node.type = 'text/css';
+    node.textContent = css;
+    const keys = Object.keys(rest);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      node.setAttribute(key, rest[key]);
+    }
+    document.head.appendChild(node);
+  }
+}
+
+const appendScript = (props) => {
+  const { id, script, isHead, ...rest } = props;
+  if (!document.head.querySelector('#' + id)) {
+    const node = document.createElement('script');
+    node.id = id;
+    node.type = 'text/javascript';
+    node.textContent = script;
+    const keys = Object.keys(rest);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      node.setAttribute(key, rest[key]);
+    }
+    if (isHead) {
+      document.head.appendChild(node);
+    } else {
+      document.body.appendChild(node);
+    }
+  }
+}
+
+const isDOMReady = typeof window !== 'undefined' && typeof document !== 'undefined';
+const styleCache = {};
+const scriptCache = {};
+
+const InjectStyle = (props) => {
+  const { css, ...rest } = props;
+  const [ready, setReady] = React.useState(false);
+
+  if (!styleCache[css]) {
+    const incrementalId = Object.keys(styleCache).length;
+    styleCache[css] = 'react-ssr-style-' + incrementalId;
+  }
+
+  if (isDOMReady()) {
+    appendStyle({
+      id: styleCache[css],
+      css,
+      ...rest,
+    });
+    setReady(true);
+  }
+
+  React.useEffect(() => {
+    if (!ready && isDOMReady()) {
+      appendStyle({
+        id: styleCache[css],
+        css,
+        ...rest,
+      });
+    }
+  }, []);
+
+  return null;
+};
+
+const InjectScript = (props) => {
+  const { script, isHead, ...rest } = props;
+  const [ready, setReady] = React.useState(false);
+
+  if (!scriptCache[script]) {
+    const incrementalId = Object.keys(scriptCache).length;
+    scriptCache[script] = 'react-ssr-style-' + incrementalId;
+  }
+
+  if (isDOMReady()) {
+    appendScript({
+      id: scriptCache[script],
+      script,
+      isHead,
+      ...rest,
+    });
+    setReady(true);
+  }
+
+  React.useEffect(() => {
+    if (!ready && isDOMReady()) {
+      appendScript({
+        id: scriptCache[script],
+        script,
+        isHead,
+        ...rest,
+      });
+    }
+  }, []);
+
+  return null;
+};
 
 const convertAttrToJsxStyle = attr => {
   const jsxAttr = {};
@@ -97,32 +202,31 @@ export const getCurrentMarkupComponent = () => {
         {styles.map((style, i) => {
           console.log(style);
           return (
-            <style
+            <InjectStyle
               key={i}
-              // {...convertAttrToJsxStyle(style.attr)}
-            >
-              {style.html}
-            </style>
+              css={style.html}
+              {...style.attr}
+            />
           );
         })}
         {scriptsInHead.map((script, i) => (
-          <script
+          <InjectScript
             key={i}
-            {...convertAttrToJsxStyle(script.attr)}
-          >
-            {script.html}
-          </script>
+            script={script.html}
+            isHead={true}
+            {...script.attr}
+          />
         ))}
       </head>
       <body {...convertAttrToJsxStyle(body.attr)}>
         {body.html ? parse(body.html) : null}
         {scriptsInBody.map((script, i) => (
-          <script
+          <InjectScript
             key={i}
-            {...convertAttrToJsxStyle(script.attr)}
-          >
-            {script.html}
-          </script>
+            script={script.html}
+            isHead={false}
+            {...script.attr}
+          />
         ))}
       </body>
     </html>
