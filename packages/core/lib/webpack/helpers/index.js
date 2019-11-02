@@ -4,6 +4,7 @@ import parse from 'html-react-parser';
 
 const appendStyle = (props) => {
   console.log('append style');
+  console.log(isDOMReady());
 
   const { id, css, ...rest } = props;
   if (!document.getElementById('#' + id)) {
@@ -300,7 +301,7 @@ export const getCurrentMarkupComponent = () => {
             {...convertAttrToJsxStyle(meta.attr)}
           />
         ))}
-        {/* {styles.map((style, i) => {
+        {styles.map((style, i) => {
           return (
             <InjectStyle
               key={i}
@@ -308,7 +309,7 @@ export const getCurrentMarkupComponent = () => {
               {...style.attr}
             />
           );
-        })} */}
+        })}
         {/* {scriptsInHead.map((script, i) => (
           <InjectScript
             key={i}
