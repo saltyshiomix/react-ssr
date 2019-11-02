@@ -102,21 +102,21 @@ export const getCurrentMarkupComponent = () => {
           ></style>
         ))}
         {scriptsInHead.map((script, i) => (
-          <style
+          <script
             key={i}
             dangerouslySetInnerHTML={{ __html: script.html }}
             {...convertAttrToJsxStyle(script.attr)}
-          ></style>
+          ></script>
         ))}
       </head>
       <body {...convertAttrToJsxStyle(body.attr)}>
         {body.html ? parse(body.html) : null}
         {scriptsInBody.map((script, i) => (
-          <style
+          <script
             key={i}
             dangerouslySetInnerHTML={{ __html: script.html }}
             {...convertAttrToJsxStyle(script.attr)}
-          ></style>
+          ></script>
         ))}
       </body>
     </html>
