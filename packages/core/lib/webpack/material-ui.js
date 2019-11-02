@@ -4,7 +4,7 @@ import Page from '__REACT_SSR_PAGE__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-function MuiApp(props) {
+function App(props) {
   React.useEffect(() => {
     const jssStyles = document.getElementById('jss-server-side');
     if (jssStyles) {
@@ -14,7 +14,7 @@ function MuiApp(props) {
   return <Page {...props} />;
 }
 
-ReactDOM.hydrate(<MuiApp {...props} />, document.getElementById('react-ssr-root') || document);
+ReactDOM.hydrate(<App {...props} />, document.getElementById('react-ssr-root') || document);
 
 if (module.hot) {
   module.hot.accept();
