@@ -4,7 +4,7 @@ import Page from '__REACT_SSR_PAGE__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-const markup = document.documentElement.innerHTML;
+const markup = document.getElementById('react-ssr-root') || document;
 
 function App(props) {
   const [hydrate, setHydrate] = React.useState(false);
