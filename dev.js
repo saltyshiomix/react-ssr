@@ -17,7 +17,7 @@ fse.removeSync('workspace');
 
 fse.copySync(`examples/${example}`, 'workspace');
 execSync('cd workspace');
-execSync('yarn && yarn start', {
+execSync('npm install && npm start', {
   cwd: path.join(__dirname, 'workspace'),
   stdio: 'inherit'
 });
