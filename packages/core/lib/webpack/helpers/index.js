@@ -302,14 +302,14 @@ export const getCurrentMarkupComponent = () => {
           />
         ))}
         {styles.map((style, i) => {
-          return (
-            <style
-              key={i}
-              dangerouslySetInnerHTML={{
-                __html: style.html,
-              }}
-            ></style>
-          );
+          // return (
+          //   <style
+          //     key={i}
+          //     dangerouslySetInnerHTML={{
+          //       __html: style.html,
+          //     }}
+          //   ></style>
+          // );
           // console.log(style.attr);
           // return (
           //   <style
@@ -319,13 +319,13 @@ export const getCurrentMarkupComponent = () => {
           //     {style.html}
           //   </style>
           // );
-          // return (
-          //   <InjectStyle
-          //     key={i}
-          //     css={style.html}
-          //     {...style.attr}
-          //   />
-          // );
+          return (
+            <InjectStyle
+              key={i}
+              css={style.html}
+              {...style.attr}
+            />
+          );
         })}
         {/* {scriptsInHead.map((script, i) => (
           <InjectScript
