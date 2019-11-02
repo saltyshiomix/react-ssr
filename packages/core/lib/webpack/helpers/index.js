@@ -25,32 +25,65 @@ const convertAttrToJsxStyle = attr => {
 const root = document.getElementById('react-ssr-root');
 const markup = root ? root.innerHTML : document.documentElement.outerHTML;
 
-export const getCurrentMarkupComponent = () => {
-  if (root) {
-    return parse(markup);
-  }
+let html;
+let title;
+const metas = [];
+const styles = [];
+let body;
+const scriptsInHead = [];
+const scriptsInBody = [];
 
-  const $ = cheerio.load(markup);
-  const title = $('head > title').html();
-  const metas = [];
-  $('head meta').each((i, el) => {
+if (!root) {
+  const $html = cheerio.load(markup)('html');
+  html = {
+    attr: $html.attr(),
+  }
+  title = $html.find('head > title').html();
+  const $metas = $html.find('head > meta');
+  $metas.each((i, el) => {
     const $el = $(el);
     metas.push({
       attr: $el.attr(),
     });
   });
-  const styles = [];
-  $('head style').each((i, el) => {
+  const $styles = $html.find('head > style');
+  $styles.each((i, el) => {
     const $el = $(el);
     styles.push({
       html: $el.html(),
       attr: $el.attr(),
     });
   });
-  const body = $('body').html();
+  const $body = $html.find('body')
+  body = {
+    html: $body.html(),
+    attr: $body.attr(),
+  }
+  const $scriptsInHead = $html.find('head > script');
+  $scriptsInHead.each((i, el) => {
+    const $el = $(el);
+    scriptsInHead.push({
+      html: $el.html(),
+      attr: $el.attr(),
+    });
+  });
+  const $scriptsInBody = $html.find('body > script');
+  $scriptsInBody.each((i, el) => {
+    const $el = $(el);
+    scriptsInBody.push({
+      html: $el.html(),
+      attr: $el.attr(),
+    });
+  });
+}
+
+export const getCurrentMarkupComponent = () => {
+  if (root) {
+    return parse(markup);
+  }
 
   return (
-    <html {...convertAttrToJsxStyle($('html').attr())}>
+    <html {...convertAttrToJsxStyle(html.attr)}>
       <head>
         {title ? <title>{title}</title> : null}
         {metas.map((meta, i) => (
@@ -66,9 +99,23 @@ export const getCurrentMarkupComponent = () => {
             {...convertAttrToJsxStyle(style.attr)}
           ></style>
         ))}
+        {scriptsInHead.map((script, i) => (
+          <style
+            key={i}
+            dangerouslySetInnerHTML={{ __html: script.html }}
+            {...convertAttrToJsxStyle(script.attr)}
+          ></style>
+        ))}
       </head>
-      <body {...convertAttrToJsxStyle($('body').attr())}>
-        {body ? parse(body) : null}
+      <body {...convertAttrToJsxStyle(body.attr)}>
+        {body.html ? parse(body.html) : null}
+        {scriptsInBody.map((script, i) => (
+          <style
+            key={i}
+            dangerouslySetInnerHTML={{ __html: script.html }}
+            {...convertAttrToJsxStyle(script.attr)}
+          ></style>
+        ))}
       </body>
     </html>
   );
