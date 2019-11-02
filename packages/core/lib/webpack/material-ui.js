@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Page from '__REACT_SSR_PAGE__';
 import { getCurrentMarkupComponent } from './helpers';
+import parse from 'html-react-parser';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
@@ -19,7 +20,7 @@ function App(props) {
 
   // wait untill hooks called so that the dynamic `Head` can work correctly
   if (!hydrate) {
-    return document.documentElement.outerHTML;
+    return parse(document.documentElement.outerHTML);
     // return getCurrentMarkupComponent();
   }
 
