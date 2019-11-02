@@ -5,18 +5,23 @@ import parse from 'html-react-parser';
 const appendStyle = (props) => {
   const { id, css, ...rest } = props;
   if (!document.getElementById('#' + id)) {
-    console.log(css);
-
     const node = document.createElement('style');
     node.id = id;
     node.type = 'text/css';
-    node.textContent = css;
+    // node.textContent = css;
     const keys = Object.keys(rest);
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       node.setAttribute(key, rest[key]);
     }
-    document.head.appendChild(node);
+    try {
+      node.appendChild(document.createTextNode(css));
+      document.head.appendChild(s);
+    } catch (e) {
+      node.text = css;
+      document.head.appendChild(s);
+    }
+    // document.head.appendChild(node);
   }
 }
 
