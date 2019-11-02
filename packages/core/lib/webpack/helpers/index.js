@@ -297,25 +297,25 @@ export const getCurrentMarkupComponent = () => {
             />
           );
         })}
-        {scriptsInHead.map((script, i) => (
+        {/* {scriptsInHead.map((script, i) => (
           <InjectScript
             key={i}
             script={script.html}
             isHead={true}
             {...script.attr}
           />
-        ))}
+        ))} */}
       </head>
       <body {...convertAttrToJsxStyle(body.attr)}>
         {body.html ? parse(body.html) : null}
-        {scriptsInBody.map((script, i) => (
+        {/* {scriptsInBody.map((script, i) => (
           <InjectScript
             key={i}
             script={script.html}
             isHead={false}
             {...script.attr}
           />
-        ))}
+        ))} */}
       </body>
     </html>
   );
