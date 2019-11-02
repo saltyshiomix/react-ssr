@@ -38,7 +38,7 @@ const appendScript = (props) => {
   }
 }
 
-const isDOMReady = typeof window !== 'undefined' && typeof document !== 'undefined';
+const isDOMReady = () => typeof window !== 'undefined' && typeof document !== 'undefined';
 const styleCache = {};
 const scriptCache = {};
 
