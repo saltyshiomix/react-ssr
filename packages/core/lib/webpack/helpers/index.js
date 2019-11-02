@@ -296,7 +296,7 @@ export const getCurrentMarkupComponent = () => {
             {...convertAttrToJsxStyle(meta.attr)}
           />
         ))}
-        {styles.map((style, i) => {
+        {/* {styles.map((style, i) => {
           return (
             <InjectStyle
               key={i}
@@ -304,7 +304,7 @@ export const getCurrentMarkupComponent = () => {
               {...style.attr}
             />
           );
-        })}
+        })} */}
         {/* {scriptsInHead.map((script, i) => (
           <InjectScript
             key={i}
