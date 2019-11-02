@@ -25,6 +25,7 @@ const convertAttrToJsxStyle = attr => {
 const root = document.getElementById('react-ssr-root');
 const markup = root ? root.innerHTML : document.documentElement.outerHTML;
 
+let $;
 let html;
 let title;
 const metas = [];
@@ -34,7 +35,8 @@ const scriptsInHead = [];
 const scriptsInBody = [];
 
 if (!root) {
-  const $html = cheerio.load(markup)('html');
+  $ = cheerio.load(markup);
+  const $html = $('html');
   html = {
     attr: $html.attr(),
   }
