@@ -1,21 +1,9 @@
 import React from 'react';
 
-const isDOMReady = () => typeof window !== 'undefined' && typeof document !== 'undefined';
-
 const useTitle = (title: string) => {
-  if (isDOMReady()) {
-    const node = document.createElement('title');
-    try {
-      node.appendChild(document.createTextNode(title));
-      document.head.appendChild(node);
-    } catch (e) {
-      node.text = title;
-      document.head.appendChild(node);
-    }
-  }
-  // React.useEffect(() => {
-  //   document.title = title;
-  // }, []);
+  React.useEffect(() => {
+    document.title = title;
+  }, []);
 };
 
 const useMeta = (attr: any) => {

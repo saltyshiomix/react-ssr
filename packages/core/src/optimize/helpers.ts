@@ -32,10 +32,6 @@ export const getEntry = async (memfs: any): Promise<[webpack.Entry, string[]]> =
       path.join(cwd, 'react-ssr-src', path.join(dir, `entry-${name}${ext}`)),
       template.replace('__REACT_SSR_PAGE__', page),
     );
-    memfs.writeFileSync(
-      path.join(cwd, 'react-ssr-src', path.join(dir, 'helpers.js')),
-      fse.readFileSync(path.resolve(__dirname, '../lib/webpack/helpers/index.js')).toString(),
-    );
     entry[getPageId(page, '_')] = `./${path.join(dir, `entry-${name}${ext}`)}`;
   }
 
