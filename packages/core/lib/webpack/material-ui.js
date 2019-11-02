@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Page from '__REACT_SSR_PAGE__';
-import { getCurrentMarkupComponent } from '__REACT_SSR_HELPERS__';
+import { getCurrentMarkupComponent } from './helpers';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 

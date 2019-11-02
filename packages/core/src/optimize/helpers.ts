@@ -16,7 +16,7 @@ export const getEntry = async (memfs: any): Promise<[webpack.Entry, string[]]> =
   const entry: webpack.Entry = {};
   const entryPages = await getPages();
   const entryPath = path.resolve(__dirname, `../lib/webpack/${config.id}.js`);
-  const template = fse.readFileSync(entryPath).toString().replace('__REACT_SSR_HELPERS__', path.resolve(__dirname, '../lib/webpack/helpers'));
+  const template = fse.readFileSync(entryPath).toString();
 
   memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));
 
@@ -31,6 +31,10 @@ export const getEntry = async (memfs: any): Promise<[webpack.Entry, string[]]> =
     memfs.writeFileSync(
       path.join(cwd, 'react-ssr-src', path.join(dir, `entry-${name}${ext}`)),
       template.replace('__REACT_SSR_PAGE__', page),
+    );
+    memfs.writeFileSync(
+      path.join(cwd, 'react-ssr-src', path.join(dir, 'helpers.js')),
+      fse.readFileSync(path.resolve(__dirname, '../lib/webpack/helpers/index.js')).toString(),
     );
     entry[getPageId(page, '_')] = `./${path.join(dir, `entry-${name}${ext}`)}`;
   }
