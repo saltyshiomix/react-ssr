@@ -16,10 +16,10 @@ const appendStyle = (props) => {
     }
     try {
       node.appendChild(document.createTextNode(css));
-      document.head.appendChild(s);
+      document.head.appendChild(node);
     } catch (e) {
       node.text = css;
-      document.head.appendChild(s);
+      document.head.appendChild(node);
     }
     // document.head.appendChild(node);
   }
