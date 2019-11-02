@@ -31,17 +31,27 @@ export const getCurrentMarkupComponent = () => {
 
   const $ = cheerio.load(markup);
   const title = $('head > title').html();
-  const style = $('head > style').html();
+  const metas = [];
+  $('head meta').each((i, el) => {
+    metas.push($.html($(el)));
+  });
+  const styles = [];
+  $('head style').each((i, el) => {
+    styles.push($(el).html());
+  });
   const body = $('body').html();
 
   console.log(title);
+  console.log(metas);
+  console.log(styles);
 
   return (
     <html {...convertAttrToJsxStyle($('html').attr())}>
       <head>
         {parse($.html($('head meta')))}
         {title ? <title>{title}</title> : null}
-        {style ? <style dangerouslySetInnerHTML={{ __html: style }}></style> : null}
+        {metas.map((meta, i) => parse(meta))}
+        {styles.map((style, i) => <style key={i} dangerouslySetInnerHTML={{ __html: style }}></style>)}
       </head>
       <body {...convertAttrToJsxStyle($('body').attr())}>
         {body ? parse(body) : null}
