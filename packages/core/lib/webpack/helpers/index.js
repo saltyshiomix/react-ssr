@@ -79,8 +79,6 @@ if (!root) {
   });
 }
 
-console.log(scriptsInBody);
-
 export const getCurrentMarkupComponent = () => {
   if (root) {
     return parse(markup);
@@ -113,13 +111,23 @@ export const getCurrentMarkupComponent = () => {
       </head>
       <body {...convertAttrToJsxStyle(body.attr)}>
         {body.html ? parse(body.html) : null}
-        {scriptsInBody.map((script, i) => (
-          <script
-            key={i}
-            dangerouslySetInnerHTML={{ __html: script.html }}
-            {...convertAttrToJsxStyle(script.attr)}
-          ></script>
-        ))}
+        {scriptsInBody.map((script, i) => {
+          if (script.html === '') {
+            return (
+              <script
+                key={i}
+                {...convertAttrToJsxStyle(script.attr)}
+              ></script>
+            );
+          }
+          return (
+            <script
+              key={i}
+              dangerouslySetInnerHTML={{ __html: script.html }}
+              {...convertAttrToJsxStyle(script.attr)}
+            ></script>
+          );
+        })}
       </body>
     </html>
   );
