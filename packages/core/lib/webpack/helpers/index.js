@@ -32,6 +32,8 @@ export const getCurrentMarkupComponent = () => {
   const style = $('head > style').html();
   const body = $('body').html();
 
+  console.log(title);
+
   return (
     <html {...convertAttrToJsxStyle($('html').attr())}>
       <head>
