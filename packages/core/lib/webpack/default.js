@@ -7,6 +7,8 @@ const props = JSON.parse('__REACT_SSR_PROPS__');
 
 const markup = document.documentElement.innerHTML;
 
+alert(markup);
+
 function App(props) {
   const [hydrate, setHydrate] = React.useState(false);
 
