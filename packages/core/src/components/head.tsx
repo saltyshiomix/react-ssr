@@ -4,7 +4,14 @@ const isDOMReady = () => typeof window !== 'undefined' && typeof document !== 'u
 
 const useTitle = (title: string) => {
   if (isDOMReady()) {
-    document.title = title;
+    const node = document.createElement('title');
+    try {
+      node.appendChild(document.createTextNode(title));
+      document.head.appendChild(node);
+    } catch (e) {
+      node.text = title;
+      document.head.appendChild(node);
+    }
   }
   // React.useEffect(() => {
   //   document.title = title;
