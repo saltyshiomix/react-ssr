@@ -42,58 +42,70 @@ const isDOMReady = () => typeof window !== 'undefined' && typeof document !== 'u
 const styleCache = {};
 const scriptCache = {};
 
-const InjectStyle = (props) => {
-  const { css, ...rest } = props;
-  const [ready, setReady] = React.useState(false);
+class InjectStyle extends React.Component {
+  constructor(props) {
+    super(props);
 
-  if (!styleCache[css]) {
-    const incrementalId = Object.keys(styleCache).length;
-    styleCache[css] = 'react-ssr-style-' + incrementalId;
+    const { css, ...rest } = props;
+
+    if (!styleCache[css]) {
+      const incrementalId = Object.keys(styleCache).length;
+      styleCache[css] = 'react-ssr-style-' + incrementalId;
+    }
+
+    if (isDOMReady()) {
+      appendStyle({
+        id: styleCache[css],
+        css,
+        ...rest,
+      });
+      this.ready = true;
+    }
   }
 
-  if (isDOMReady()) {
-    appendStyle({
-      id: styleCache[css],
-      css,
-      ...rest,
-    });
-    setReady(true);
-  }
+  componentDidMount() {
+    const { css, ...rest } = this.props;
 
-  React.useEffect(() => {
-    if (!ready && isDOMReady()) {
+    if (!this.ready && isDOMReady()) {
       appendStyle({
         id: styleCache[css],
         css,
         ...rest,
       });
     }
-  }, []);
-
-  return null;
-};
-
-const InjectScript = (props) => {
-  const { script, isHead, ...rest } = props;
-  const [ready, setReady] = React.useState(false);
-
-  if (!scriptCache[script]) {
-    const incrementalId = Object.keys(scriptCache).length;
-    scriptCache[script] = 'react-ssr-script-' + incrementalId;
   }
 
-  if (isDOMReady()) {
-    appendScript({
-      id: scriptCache[script],
-      script,
-      isHead,
-      ...rest,
-    });
-    setReady(true);
+  render() {
+    return null;
+  }
+}
+
+class InjectScript extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const { script, isHead, ...rest } = props;
+
+    if (!scriptCache[script]) {
+      const incrementalId = Object.keys(scriptCache).length;
+      scriptCache[script] = 'react-ssr-script-' + incrementalId;
+    }
+
+    if (isDOMReady()) {
+      appendScript({
+        id: scriptCache[script],
+        script,
+        isHead,
+        ...rest,
+      });
+      this.ready = true;
+    }
   }
 
-  React.useEffect(() => {
-    if (!ready && isDOMReady()) {
+  componentDidMount() {
+    const { script, isHead, ...rest } = this.props;
+
+    if (!this.ready && isDOMReady()) {
       appendScript({
         id: scriptCache[script],
         script,
@@ -101,10 +113,76 @@ const InjectScript = (props) => {
         ...rest,
       });
     }
-  }, []);
+  }
 
-  return null;
-};
+  render() {
+    return null;
+  }
+}
+
+// const InjectStyle = (props) => {
+//   const { css, ...rest } = props;
+//   const [ready, setReady] = React.useState(false);
+
+//   if (!styleCache[css]) {
+//     const incrementalId = Object.keys(styleCache).length;
+//     styleCache[css] = 'react-ssr-style-' + incrementalId;
+//   }
+
+//   if (isDOMReady()) {
+//     appendStyle({
+//       id: styleCache[css],
+//       css,
+//       ...rest,
+//     });
+//     setReady(true);
+//   }
+
+//   React.useEffect(() => {
+//     if (!ready && isDOMReady()) {
+//       appendStyle({
+//         id: styleCache[css],
+//         css,
+//         ...rest,
+//       });
+//     }
+//   }, []);
+
+//   return null;
+// };
+
+// const InjectScript = (props) => {
+//   const { script, isHead, ...rest } = props;
+//   const [ready, setReady] = React.useState(false);
+
+//   if (!scriptCache[script]) {
+//     const incrementalId = Object.keys(scriptCache).length;
+//     scriptCache[script] = 'react-ssr-script-' + incrementalId;
+//   }
+
+//   if (isDOMReady()) {
+//     appendScript({
+//       id: scriptCache[script],
+//       script,
+//       isHead,
+//       ...rest,
+//     });
+//     setReady(true);
+//   }
+
+//   React.useEffect(() => {
+//     if (!ready && isDOMReady()) {
+//       appendScript({
+//         id: scriptCache[script],
+//         script,
+//         isHead,
+//         ...rest,
+//       });
+//     }
+//   }, []);
+
+//   return null;
+// };
 
 const convertAttrToJsxStyle = attr => {
   const jsxAttr = {};
