@@ -9,6 +9,9 @@ const convertAttrToJsxStyle = attr => {
     if (key === 'class') {
       key = 'className';
     }
+    if (key === 'charset') {
+      key = 'charSet';
+    }
     if (0 <= key.indexOf('-')) {
       if (!key.startsWith('data-')) {
         key = key.replace(/-([a-z])/g, g => g[1].toUpperCase());
