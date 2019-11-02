@@ -11,10 +11,10 @@ function App(props) {
   React.useEffect(() => {
     setHydrate(true);
 
-    // const jssStyles = document.getElementById('jss-server-side');
-    // if (jssStyles) {
-    //   jssStyles.parentNode.removeChild(jssStyles);
-    // }
+    const jssStyles = document.getElementById('jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentNode.removeChild(jssStyles);
+    }
   }, []);
 
   // wait untill hooks called so that the dynamic `Head` can work correctly
