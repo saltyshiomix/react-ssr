@@ -46,11 +46,12 @@ class InjectStyle extends React.Component {
   constructor(props) {
     super(props);
 
-    const { css, ...rest } = props;
+    const { css, ...others } = props;
+    const { id, ...rest } = others;
 
     if (!styleCache[css]) {
       const incrementalId = Object.keys(styleCache).length;
-      styleCache[css] = 'react-ssr-style-' + incrementalId;
+      styleCache[css] = id || 'react-ssr-style-' + incrementalId;
     }
 
     if (isDOMReady()) {
@@ -64,7 +65,8 @@ class InjectStyle extends React.Component {
   }
 
   componentDidMount() {
-    const { css, ...rest } = this.props;
+    const { css, ...others } = this.props;
+    const { id, ...rest } = others;
 
     if (!this.ready && isDOMReady()) {
       appendStyle({
@@ -84,7 +86,8 @@ class InjectScript extends React.Component {
   constructor(props) {
     super(props);
 
-    const { script, isHead, ...rest } = props;
+    const { script, isHead, ...others } = props;
+    const { id, ...rest } = others;
 
     if (!scriptCache[script]) {
       const incrementalId = Object.keys(scriptCache).length;
@@ -103,7 +106,8 @@ class InjectScript extends React.Component {
   }
 
   componentDidMount() {
-    const { script, isHead, ...rest } = this.props;
+    const { script, isHead, ...others } = this.props;
+    const { id, ...rest } = others;
 
     if (!this.ready && isDOMReady()) {
       appendScript({
@@ -278,7 +282,6 @@ export const getCurrentMarkupComponent = () => {
           />
         ))}
         {styles.map((style, i) => {
-          console.log(style);
           return (
             <InjectStyle
               key={i}
