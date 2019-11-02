@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import ReactHtmlParser from 'react-html-parser';
+import parse from 'html-react-parser';
 import cheerio from 'cheerio';
 import {
   extractHeadElements,
@@ -31,13 +31,13 @@ export default function Ssr(props: SsrProps) {
     return (
       <html {...convertAttrToJsxStyle($('html').attr())}>
         <head>
-          {Title ? <Title /> : ReactHtmlParser($.html($('title')))}
-          {MetaDescription ? <MetaDescription /> : ReactHtmlParser($.html($('meta[name=description]')))}
-          {ReactHtmlParser(meta)}
-          {ReactHtmlParser(styles)}
+          {Title ? <Title /> : parse($.html($('title')))}
+          {MetaDescription ? <MetaDescription /> : parse($.html($('meta[name=description]')))}
+          {parse(meta)}
+          {parse(styles)}
         </head>
         <body {...convertAttrToJsxStyle($('body').attr())}>
-          {body ? ReactHtmlParser(body) : null}
+          {body ? parse(body) : null}
           <script src={script}></script>
         </body>
       </html>

@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactHtmlParser from 'react-html-parser';
 import parse from 'html-react-parser';
 import Page from '__REACT_SSR_PAGE__';
 
