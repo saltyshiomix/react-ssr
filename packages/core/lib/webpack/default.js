@@ -14,6 +14,7 @@ function App(props) {
     setHydrate(true);
   }, []);
 
+  // wait untill hooks called so that dynamic `Head` can work correctly
   if (!hydrate) {
     return ReactHtmlParser(markup);
   }
