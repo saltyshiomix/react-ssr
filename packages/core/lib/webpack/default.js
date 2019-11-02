@@ -4,6 +4,8 @@ import Page from '__REACT_SSR_PAGE__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
+const markup = document.documentElement.innerHTML;
+
 function App(props) {
   const [hydrate, setHydrate] = React.useState(false);
 
@@ -12,7 +14,7 @@ function App(props) {
   }, []);
 
   if (!hydrate) {
-    return null;
+    return markup;
   }
 
   return <Page {...props} />;
