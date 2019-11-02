@@ -302,15 +302,23 @@ export const getCurrentMarkupComponent = () => {
           />
         ))}
         {styles.map((style, i) => {
-          console.log(style.attr);
           return (
             <style
               key={i}
-              {...(style.attr)}
-            >
-              {style.html}
-            </style>
+              dangerouslySetInnerHTML={{
+                __html: style.html,
+              }}
+            ></style>
           );
+          // console.log(style.attr);
+          // return (
+          //   <style
+          //     key={i}
+          //     {...(style.attr)}
+          //   >
+          //     {style.html}
+          //   </style>
+          // );
           // return (
           //   <InjectStyle
           //     key={i}
