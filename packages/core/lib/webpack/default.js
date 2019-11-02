@@ -5,7 +5,7 @@ import Page from '__REACT_SSR_PAGE__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-const markup = document.documentElement.innerHTML;
+const markup = `<html>${document.documentElement.innerHTML}</html>`;
 
 alert(markup);
 
