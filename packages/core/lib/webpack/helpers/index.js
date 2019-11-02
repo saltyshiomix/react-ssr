@@ -31,6 +31,8 @@ let title;
 const metas = [];
 const styles = [];
 let body;
+const scriptsInHead = [];
+const scriptsInBody = [];
 
 if (!root) {
   $ = cheerio.load(markup);
@@ -59,6 +61,22 @@ if (!root) {
     html: $body.html(),
     attr: $body.attr(),
   }
+  const $scriptsInHead = $html.find('head > script');
+  $scriptsInHead.each((i, el) => {
+    const $el = $(el);
+    scriptsInHead.push({
+      html: $el.html(),
+      attr: $el.attr(),
+    });
+  });
+  const $scriptsInBody = $html.find('body > script');
+  $scriptsInBody.each((i, el) => {
+    const $el = $(el);
+    scriptsInBody.push({
+      html: $el.html(),
+      attr: $el.attr(),
+    });
+  });
 }
 
 export const getCurrentMarkupComponent = () => {
@@ -79,13 +97,30 @@ export const getCurrentMarkupComponent = () => {
         {styles.map((style, i) => (
           <style
             key={i}
-            dangerouslySetInnerHTML={{ __html: style.html }}
             {...convertAttrToJsxStyle(style.attr)}
-          ></style>
+          >
+            {style.html}
+          </style>
+        ))}
+        {scriptsInHead.map((script, i) => (
+          <script
+            key={i}
+            {...convertAttrToJsxStyle(script.attr)}
+          >
+            {script.html}
+          </script>
         ))}
       </head>
       <body {...convertAttrToJsxStyle(body.attr)}>
         {body.html ? parse(body.html) : null}
+        {scriptsInBody.map((script, i) => (
+          <script
+            key={i}
+            {...convertAttrToJsxStyle(script.attr)}
+          >
+            {script.html}
+          </script>
+        ))}
       </body>
     </html>
   );
