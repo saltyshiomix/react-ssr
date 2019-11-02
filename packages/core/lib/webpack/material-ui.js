@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactHtmlParser from 'react-html-parser';
+import parse from 'html-react-parser';
 import Page from '__REACT_SSR_PAGE__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
@@ -25,7 +26,7 @@ function App(props) {
 
   // wait untill hooks called so that dynamic `Head` can work correctly
   if (!hydrate) {
-    return ReactHtmlParser(markup);
+    return parse(markup);
   }
 
   return <Page {...props} />;
