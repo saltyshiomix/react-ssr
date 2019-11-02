@@ -3,6 +3,8 @@ import cheerio from 'cheerio';
 import parse from 'html-react-parser';
 
 const appendStyle = (props) => {
+  console.log('append style');
+
   const { id, css, ...rest } = props;
   if (!document.getElementById('#' + id)) {
     const node = document.createElement('style');
