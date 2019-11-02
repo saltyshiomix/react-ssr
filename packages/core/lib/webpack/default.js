@@ -5,9 +5,7 @@ import Page from '__REACT_SSR_PAGE__';
 
 const props = JSON.parse('__REACT_SSR_PROPS__');
 
-const markup = `<html>${document.documentElement.innerHTML}</html>`;
-
-alert(markup);
+const markup = `<html lang="en">${document.documentElement.innerHTML}</html>`;
 
 function App(props) {
   const [hydrate, setHydrate] = React.useState(false);
