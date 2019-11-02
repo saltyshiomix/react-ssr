@@ -63,27 +63,33 @@ class InjectStyle extends React.Component {
       styleCache[css] = id || 'react-ssr-style-' + incrementalId;
     }
 
-    if (isDOMReady()) {
-      appendStyle({
-        id: styleCache[css],
-        css,
-        ...rest,
-      });
-      this.ready = true;
-    }
+    // if (isDOMReady()) {
+    //   appendStyle({
+    //     id: styleCache[css],
+    //     css,
+    //     ...rest,
+    //   });
+    //   this.ready = true;
+    // }
   }
 
   componentDidMount() {
     const { css, ...others } = this.props;
     const { id, ...rest } = others;
 
-    if (!this.ready && isDOMReady()) {
-      appendStyle({
-        id: styleCache[css],
-        css,
-        ...rest,
-      });
-    }
+    appendStyle({
+      id: styleCache[css],
+      css,
+      ...rest,
+    });
+
+    // if (!this.ready && isDOMReady()) {
+    //   appendStyle({
+    //     id: styleCache[css],
+    //     css,
+    //     ...rest,
+    //   });
+    // }
   }
 
   render() {
