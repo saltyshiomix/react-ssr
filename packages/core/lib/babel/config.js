@@ -1,8 +1,19 @@
+const isProduction = process.env.NODE_ENV === 'production';
+
 const presets = [
-  require('@babel/preset-env'),
-  require('@babel/preset-react'),
-  require('@babel/preset-typescript'),
-];
+  [require('@babel/preset-env'), {
+    modules: 'auto',
+    exclude: [
+      'transform-typeof-symbol',
+    ],
+  }],
+  [require('@babel/preset-react'), {
+    development: !isProduction,
+  }],
+  [require('@babel/preset-typescript'), {
+    allowNamespaces: true,
+  }],
+].filter(Boolean);
 
 const plugins = [
   require('babel-plugin-react-require'),
@@ -19,9 +30,16 @@ const plugins = [
     regenerator: true,
     useESModules: false,
   }],
-];
+  isProduction && [
+    require('babel-plugin-transform-react-remove-prop-types'),
+    {
+      removeImport: true,
+    },
+  ],
+].filter(Boolean);
 
 module.exports = {
+  sourceType: 'unambiguous',
   presets,
   plugins,
 };
