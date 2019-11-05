@@ -224,13 +224,6 @@ export default Index;
 
 Then just run `npm start` and go to `http://localhost:3000`, you'll see `Hello NestJS!`.
 
-## Rules
-
-- The each view must be a single entry point
-  - Don't create other components in the views directory
-- The each view's extension must be either `.jsx` or `.tsx`
-  - We can decide freely with other components' extension
-
 ## Examples
 
 - [examples/basic-blogging](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-blogging)

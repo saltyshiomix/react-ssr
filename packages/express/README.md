@@ -72,13 +72,6 @@ Then just run `npm start` and go to `http://localhost:3000`.
 
 You'll see `Hello World!`.
 
-## Rules
-
-- The each view must be a single entry point
-  - Don't create other components in the views directory
-- The each view's extension must be either `.jsx` or `.tsx`
-  - We can decide freely with other components' extension
-
 ## Configuration (`ssr.config.js`)
 
 Here is the default `ssr.config.js`, which is used by `react-ssr` when there are no valid values:
