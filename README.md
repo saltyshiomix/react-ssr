@@ -259,7 +259,7 @@ If we use TypeScript or any other library which must be compiled, the config bel
 
 ```js
 module.exports = {
-  // dist folder is ignored by `.gitignore`
+  // dist folder should be ignored by `.gitignore`
   distDir: 'dist/.ssr',
 };
 ```
