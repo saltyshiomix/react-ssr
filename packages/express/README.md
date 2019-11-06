@@ -265,11 +265,7 @@ If you want to use more supports, please [issue up](https://github.com/saltyshio
 
 ### With Emotion
 
-In order to enable SSR, we must install these dependencies:
-
-- `babel-plugin-emotion` (devDependencies)
-- `emotion` (dependencies)
-- `emotion-server` (dependencies)
+In order to enable SSR, we must install `babel-plugin-emotion` as devDependencies.
 
 And then, populate `.babelrc` in your project root:
 
