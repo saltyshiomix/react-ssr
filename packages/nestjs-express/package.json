@@ -43,7 +43,6 @@
     "@nestjs/common": "^6.8.5",
     "@nestjs/core": "^6.8.5",
     "@nestjs/platform-express": "^6.8.5",
-    "@types/react": "^16.9.11",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "reflect-metadata": "^0.1.13",
