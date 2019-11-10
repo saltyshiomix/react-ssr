@@ -56,7 +56,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "cheerio": "^1.0.0-rc.3",
     "fs-extra": "^8.1.0",
-    "html-react-parser": "^0.9.1",
+    "html-react-parser": "^0.10.0",
     "json-url": "^2.5.0",
     "lodash.escaperegexp": "^4.1.2",
     "memory-fs": "^0.5.0",
