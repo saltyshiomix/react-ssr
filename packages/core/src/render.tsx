@@ -1,7 +1,11 @@
+import fs from 'fs';
+import path from 'path';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import Document from './components/Document';
 import {
   getSsrConfig,
+  getEngine,
   getPageId,
 } from './helpers/core';
 import { getBabelConfig } from './helpers/babel';
@@ -14,31 +18,30 @@ require('@babel/register')({
 });
 
 const config = getSsrConfig();
-
-const getSsrComponent = async (): Promise<any> => {
-  if (config.id === 'emotion') {
-    return (await import('./ssr/emotion')).default;
-  }
-  if (config.id === 'material-ui') {
-    return (await import('./ssr/material-ui')).default;
-  }
-  if (config.id === 'styled-components') {
-    return (await import('./ssr/styled-components')).default;
-  }
-  return (await import('./ssr/default')).default;
-};
+const ext = `.${getEngine()}`;
+const userDocumentPath = path.join(process.cwd(), config.viewsDir, `_document${ext}`);
+const DocumentContext = require('./document-context');
 
 export default async function render(file: string, props: object): Promise<string> {
-  const SsrWrapper = await getSsrComponent();
-
   let Page = require(file);
   Page = Page.default || Page;
 
+  let DocumentComponent;
+  if (fs.existsSync(userDocumentPath)) {
+    const UserDocument = require(userDocumentPath);
+    DocumentComponent = UserDocument.default || UserDocument;
+  } else {
+    DocumentComponent = Document;
+  }
+
   let html = '<!DOCTYPE html>';
-  html += ReactDOMServer.renderToStaticMarkup(
-    <SsrWrapper script={`/_react-ssr/${getPageId(file, '/')}.js?props=${await codec.compress(props)}`}>
-      <Page {...props} />
-    </SsrWrapper>
+  html += ReactDOMServer.renderToString(
+    <DocumentContext.Provider value={{
+      children: <Page {...props} />,
+      script: `/_react-ssr/${getPageId(file, '/')}.js?props=${await codec.compress(props)}`,
+    }}>
+      <DocumentComponent />
+    </DocumentContext.Provider>
   );
 
   return html;

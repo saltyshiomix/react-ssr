@@ -51,5 +51,9 @@ const fileConfig = (src, dist) => ({
 
 export default [
   dirConfig('src/register.ts'),
-  fileConfig('src/components/head.tsx', 'dist/head.js'),
+  fileConfig('src/components/Document/index.tsx', 'dist/document.js'),
+  fileConfig('src/components/Document/context.ts', 'dist/document-context.js'),
+  fileConfig('src/components/Head/index.tsx', 'dist/head.js'),
+  fileConfig('src/components/Main.tsx', 'dist/main.js'),
+  fileConfig('src/components/Script.tsx', 'dist/script.js'),
 ];

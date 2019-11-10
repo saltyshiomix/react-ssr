@@ -28,11 +28,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "index.js",
   "files": [
     "dist",
-    "lib",
-    "index.js"
+    "lib"
   ],
   "scripts": {
     "build": "rimraf dist && rollup -c",
@@ -54,9 +52,7 @@
     "babel-plugin-css-modules-transform": "^1.6.2",
     "babel-plugin-react-require": "^3.1.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "cheerio": "^1.0.0-rc.3",
     "fs-extra": "^8.1.0",
-    "html-react-parser": "^0.10.0",
     "json-url": "^2.5.0",
     "lodash.escaperegexp": "^4.1.2",
     "memory-fs": "^0.5.0",
@@ -68,7 +64,6 @@
     "webpack-merge": "^4.2.2"
   },
   "devDependencies": {
-    "@types/cheerio": "^0.22.13",
     "@types/express": "^4.17.1",
     "@types/fs-extra": "^8.0.1",
     "@types/memory-fs": "^0.3.2",

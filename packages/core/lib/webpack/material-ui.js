@@ -14,7 +14,7 @@ function App(props) {
   return <Page {...props} />;
 }
 
-ReactDOM.hydrate(<App {...props} />, document.getElementById('react-ssr-root') || document);
+ReactDOM.hydrate(<App {...props} />, document.getElementById('react-ssr-root'));
 
 if (module.hot) {
   module.hot.accept();

@@ -31,10 +31,10 @@
   "main": "index.js",
   "files": [
     "babel.js",
+    "index.js",
+    "index.d.ts",
     "register.js",
-    "register.d.ts",
-    "head.js",
-    "head.d.ts"
+    "register.d.ts"
   ],
   "dependencies": {
     "@react-ssr/core": "^0.10.9"
