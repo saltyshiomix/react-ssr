@@ -4,21 +4,11 @@ module.exports = (api) => {
   api.cache(() => isProduction);
 
   return {
-    sourceType: 'unambiguous',
     presets: [
-      [require('@babel/preset-env'), {
-        modules: 'auto',
-        exclude: [
-          'transform-typeof-symbol',
-        ],
-      }],
-      [require('@babel/preset-react'), {
-        development: !isProduction,
-      }],
-      [require('@babel/preset-typescript'), {
-        allowNamespaces: true,
-      }],
-    ].filter(Boolean),
+      require('@babel/preset-env'),
+      require('@babel/preset-react'),
+      require('@babel/preset-typescript'),
+    ],
     plugins: [
       require('babel-plugin-react-require'),
       require('babel-plugin-css-modules-transform'),
@@ -29,7 +19,7 @@ module.exports = (api) => {
       }],
       require('@babel/plugin-transform-react-jsx'),
       [require('@babel/plugin-transform-runtime'), {
-        corejs: 2,
+        corejs: 3,
         helpers: true,
         regenerator: true,
         useESModules: false,

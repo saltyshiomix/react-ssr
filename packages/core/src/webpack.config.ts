@@ -1,16 +1,19 @@
+import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import { smart as merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
-import { getSsrConfig } from './helpers/core';
-import {
-  hasUserBabelrc,
-  getBabelrc,
-  getBabelRule,
-} from './helpers/babel';
+import { getSsrConfig } from './helpers';
 
 const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+
+const getBabelrc = (): string | undefined => {
+  if (fs.existsSync(path.join(cwd, '.babelrc'))) return path.join(cwd, '.babelrc');
+  if (fs.existsSync(path.join(cwd, '.babelrc.js'))) return path.join(cwd, '.babelrc.js');
+  if (fs.existsSync(path.join(cwd, 'babel.config.js'))) return path.join(cwd, 'babel.config.js');
+  return undefined;
+};
 
 const prodConfig: webpack.Configuration = {
   performance: {
@@ -47,13 +50,12 @@ const prodConfig: webpack.Configuration = {
 };
 
 export const configureWebpack = (entry: webpack.Entry): webpack.Configuration => {
-  const ssrConfig = getSsrConfig();
-
-  if (env === 'development') {
-    if (hasUserBabelrc()) {
-      console.log(`[ info ] custom babelrc in: ${getBabelrc()}`);
-    }
+  const babelrc = getBabelrc();
+  if (!babelrc) {
+    throw new Error('Not found: .babelrc or .babelrc.js or babel.config.js');
   }
+
+  const ssrConfig = getSsrConfig();
 
   let config: webpack.Configuration = {
     mode: 'development',
@@ -69,7 +71,17 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     },
     module: {
       rules: [
-        getBabelRule(),
+        {
+          test: /\.(js|ts)x?$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+              extends: babelrc,
+            },
+          },
+        },
       ],
     },
   };

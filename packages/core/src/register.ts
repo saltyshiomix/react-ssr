@@ -4,7 +4,7 @@ import {
   getCacheablePages,
   getSsrConfig,
   getEngine,
-} from './helpers/core';
+} from './helpers';
 
 const escaperegexp = require('lodash.escaperegexp');
 

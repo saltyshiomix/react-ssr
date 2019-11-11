@@ -12,7 +12,6 @@
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "downlevelIteration": true,
     "declaration": true
   },
   "include": [

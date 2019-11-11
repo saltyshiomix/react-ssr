@@ -7,15 +7,17 @@ import {
   getSsrConfig,
   getEngine,
   getPageId,
-} from './helpers/core';
-import { getBabelConfig } from './helpers/babel';
-
+} from './helpers';
 
 const codec = require('json-url')('lzw');
 
 require('@babel/register')({
   extensions: ['.js', '.jsx', '.ts', '.tsx'],
-  ...(getBabelConfig()),
+  presets: [
+    '@babel/preset-env',
+    '@babel/preset-react',
+    '@babel/preset-typescript',
+  ],
 });
 
 const config = getSsrConfig();

@@ -6,7 +6,7 @@ import {
   getEngine,
   getPages,
   getPageId,
-} from '../helpers/core';
+} from '../helpers';
 
 const cwd = process.cwd();
 const ext = '.' + getEngine();

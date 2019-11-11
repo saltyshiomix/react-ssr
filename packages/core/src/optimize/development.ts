@@ -13,7 +13,7 @@ import {
   getPageId,
   readFileWithProps,
   sleep,
-} from '../helpers/core';
+} from '../helpers';
 
 const cwd = process.cwd();
 const config = getSsrConfig();
