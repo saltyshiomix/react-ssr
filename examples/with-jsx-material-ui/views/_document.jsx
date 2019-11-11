@@ -7,7 +7,7 @@ import {
 } from '@react-ssr/express';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { theme } from '../../lib/theme';
+import { theme } from '../lib/theme';
 
 export default class extends Document {
   render() {
