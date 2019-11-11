@@ -13,7 +13,7 @@ import { getBabelConfig } from './helpers/babel';
 const codec = require('json-url')('lzw');
 
 require('@babel/register')({
-  extensions: ['.js', '.jsx', '.ts', '.tsx',],
+  extensions: ['.js', '.jsx', '.ts', '.tsx'],
   ...(getBabelConfig()),
 });
 

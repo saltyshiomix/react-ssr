@@ -33,7 +33,17 @@ export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, 
 const config: Config = getSsrConfig();
 
 export const getPages = async (): Promise<string[]> => {
-  return readdir(path.join(cwd, config.viewsDir));
+  const possibles = await readdir(path.join(cwd, config.viewsDir));
+  const pages = [];
+  for (let i = 0; i < possibles.length; i++) {
+    const possible = possibles[i];
+    const name = path.basename(getPageId(possible, '/'));
+    if (name.toLowerCase().startsWith('_document')) {
+      continue;
+    }
+    pages.push(possible);
+  }
+  return pages;
 };
 
 export const getPageId = (page: string, separator: string = '_'): string => {

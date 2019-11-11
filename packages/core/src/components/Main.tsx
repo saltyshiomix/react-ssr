@@ -6,17 +6,11 @@ export default class Main extends React.Component {
   render() {
     return (
       <DocumentContext.Consumer>
-        {(value: any) => {
-          const {
-            children,
-            props,
-          } = value;
-          return (
-            <div id="react-ssr-root">
-              {React.cloneElement(children, props)}
-            </div>
-          );
-        }}
+        {(value: any) => (
+          <div id="react-ssr-root">
+            {value.children}
+          </div>
+        )}
       </DocumentContext.Consumer>
     );
   }

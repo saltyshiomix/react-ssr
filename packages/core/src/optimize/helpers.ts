@@ -25,15 +25,12 @@ export const getEntry = async (memfs: any): Promise<[webpack.Entry, string[]]> =
     const pageId = getPageId(page, '/');
     const dir = path.dirname(pageId);
     const name = path.basename(pageId);
-    if (name.toLowerCase().startsWith('_document')) {
-      continue;
-    }
     if (dir !== '.') {
       memfs.mkdirpSync(path.join(cwd, 'react-ssr-src', dir));
     }
     memfs.writeFileSync(
       path.join(cwd, 'react-ssr-src', path.join(dir, `entry-${name}${ext}`)),
-      template.replace('__REACT_SSR_PAGE__', path.join(cwd, config.viewsDir, `${pageId}${ext}`)),
+      template.replace('__REACT_SSR_PAGE__', page),
     );
     entry[getPageId(page, '_')] = `./${path.join(dir, `entry-${name}${ext}`)}`;
   }
