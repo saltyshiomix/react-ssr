@@ -10,6 +10,7 @@ import {
 } from './helpers/core';
 import { getBabelConfig } from './helpers/babel';
 
+
 const codec = require('json-url')('lzw');
 
 require('@babel/register')({
