@@ -15,6 +15,7 @@
 - Passing the server data to the client `props`
 - Dynamic `props` without caring about SSR
   - Suitable for dynamic routes like blogging
+- Dynamic `Head` component
 - HMR when `process.env.NODE_ENV !== 'production'`
 
 ## Usage
@@ -268,38 +269,43 @@ A working example is here: [examples/basic-css](https://github.com/saltyshiomix/
 
 ## Custom Layout
 
-We can create the layout component like this:
+Just put `_document.tsx` into the views root:
 
-**./components/layout.tsx**
+**./views/_document.tsx**
 
 ```tsx
-export const Layout = (props) => {
-  return (
-    <html>
-      <head>
-        <title>Default App Title</title>
-      </head>
-      <body>
-        {props.children}
-      </body>
-    </html>
-  );
+import React from 'react';
+import {
+  Document,
+  Head,
+  Main,
+  Script,
+} from '@react-ssr/nestjs-express';
+
+export default class extends Document {
+  render() {
+    return (
+      <html>
+        <Head>
+          <title>Default Title</title>
+        </Head>
+        <body>
+          <Main />
+          <Script />
+        </body>
+      </html>
+    );
+  }
 };
 ```
 
-And then, just use it as always:
+And then, use it as always:
 
 **./views/index.tsx**
 
 ```tsx
-import { Layout } from '../components/layout';
-
 const Index = (props) => {
-  return (
-    <Layout>
-      <p>Hello Layout!</p>
-    </Layout>
-  );
+  return <p>Hello Layout!</p>;
 };
 
 export default Index;
@@ -309,23 +315,23 @@ A working example is here: [examples/custom-layout](https://github.com/saltyshio
 
 ## Dynamic `Head`
 
-We can use the `@react-ssr/nestjs-express/head` component **anyware**:
+We can use the `Head` component **anyware**:
 
 **./views/index.tsx**
 
 ```tsx
-import Head from '@react-ssr/nestjs-express/head';
-import { Layout } from '../components/layout';
+import React from 'react';
+import { Head } from '@react-ssr/nestjs-express';
 
 const Index = (props) => {
   return (
-    <Layout>
+    <React.Fragment>
       <Head>
         <title>Dynamic Title</title>
         <meta name="description" content="Dynamic Description" />
       </Head>
       <p>Of course, SSR Ready!</p>
-    </Layout>
+    </React.Fragment>
   );
 };
 
@@ -333,12 +339,6 @@ export default Index;
 ```
 
 A working example is here: [examples/dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/dynamic-head)
-
-**Note:**
-
-Because this is an experimental feature, currently it supports only `<title>` and `<meta name="description">`.
-
-If you want to use more supports, please [issue up](https://github.com/saltyshiomix/react-ssr/issues).
 
 ## Supported UI Framework
 
