@@ -1,7 +1,6 @@
 import React from 'react';
-import Head from '@react-ssr/express/head';
+import { Head } from '@react-ssr/express';
 import styled from 'styled-components';
-import { Layout } from '../components/Layout';
 
 const Paragraph = styled.p`
   color: palevioletred;
@@ -22,14 +21,14 @@ const Index = (props) => {
   const onClick = () => setMessage('This is a react-ssr!');
 
   return (
-    <Layout>
+    <React.Fragment>
       <Head>
         <title>with-jsx-styled-components - @react-ssr/express</title>
       </Head>
       <Paragraph>Hello {props.user.name}!</Paragraph>
       <Button onClick={onClick}>Click Me</Button>
       <Paragraph>Message from state: {message}</Paragraph>
-    </Layout>
+    </React.Fragment>
   );
 };
 

@@ -1,7 +1,6 @@
 import React from 'react';
-import Head from '@react-ssr/express/head';
+import { Head } from '@react-ssr/express';
 import {
-  Layout,
   BasicCard,
   TitleCard,
   AnimatedCard,
@@ -12,7 +11,7 @@ const Home = (props) => {
   const { title } = props;
 
   return (
-    <Layout>
+    <React.Fragment>
       <Head>
         <title>{title}</title>
       </Head>
@@ -25,7 +24,7 @@ const Home = (props) => {
       <AnimatedCard animation={bounce}>
         Let's bounce.
       </AnimatedCard>
-    </Layout>
+    </React.Fragment>
   );
 };
 

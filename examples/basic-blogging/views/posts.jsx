@@ -1,5 +1,5 @@
 import React from 'react';
-import Head from '@react-ssr/express/head';
+import { Head } from '@react-ssr/express';
 
 const Post = ({ post }) => {
   return (

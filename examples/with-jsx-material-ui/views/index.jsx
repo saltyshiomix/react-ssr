@@ -4,7 +4,6 @@ import {
   Typography,
   Button,
 } from '@material-ui/core';
-import { Layout } from '../components/Layout';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -26,7 +25,7 @@ const Index = (props) => {
   const onClick = () => setMessage('@react-ssr/express');
 
   return (
-    <Layout>
+    <React.Fragment>
       <div className={classes.root}>
         <Typography variant="h4" gutterBottom>
           Material UI
@@ -52,7 +51,7 @@ const Index = (props) => {
           Hello {message}!
         </Typography>
       </div>
-    </Layout>
+    </React.Fragment>
   );
 };
 

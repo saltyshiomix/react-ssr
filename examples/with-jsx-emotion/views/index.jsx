@@ -1,7 +1,6 @@
 import React from 'react';
-import Head from '@react-ssr/express/head';
+import { Head } from '@react-ssr/express';
 import {
-  Layout,
   BasicCard,
   TitleCard,
   HoverableCard,
@@ -16,7 +15,7 @@ const Home = (props) => {
   const onMouseLeave = () => setMessage('With :hover.');
 
   return (
-    <Layout>
+    <React.Fragment>
       <Head>
         <title>{title}</title>
       </Head>
@@ -29,7 +28,7 @@ const Home = (props) => {
       <HoverableCard onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         {message}
       </HoverableCard>
-    </Layout>
+    </React.Fragment>
   );
 };
 
