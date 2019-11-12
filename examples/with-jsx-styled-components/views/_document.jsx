@@ -3,7 +3,6 @@ import {
   Document,
   Head,
   Main,
-  Script,
 } from '@react-ssr/express';
 import styled from 'styled-components';
 
@@ -29,7 +28,6 @@ export default class extends Document {
           <Wrapper>
             <Main />
           </Wrapper>
-          <Script />
         </Body>
       </html>
     );

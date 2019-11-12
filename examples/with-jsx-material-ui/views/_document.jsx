@@ -3,7 +3,6 @@ import {
   Document,
   Head,
   Main,
-  Script,
 } from '@react-ssr/express';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -22,7 +21,6 @@ export default class extends Document {
             <CssBaseline />
             <Main />
           </ThemeProvider>
-          <Script />
         </body>
       </html>
     );

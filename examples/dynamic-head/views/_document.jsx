@@ -3,7 +3,6 @@ import {
   Document,
   Head,
   Main,
-  Script,
 } from '@react-ssr/express';
 
 export default class extends Document {
@@ -15,7 +14,6 @@ export default class extends Document {
         </Head>
         <body>
           <Main />
-          <Script />
         </body>
       </html>
     );

@@ -3,7 +3,6 @@ import {
   Document,
   Head,
   Main,
-  Script,
 } from '@react-ssr/express';
 import { css, Global } from '@emotion/core';
 
@@ -33,7 +32,6 @@ export default class extends Document {
         />
         <body>
           <Main />
-          <Script />
         </body>
       </html>
     );
