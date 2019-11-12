@@ -6,7 +6,7 @@ import express from 'express';
 import proxy from 'http-proxy-middleware';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import { configureWebpack } from '../webpack.config';
+import { configureWebpack } from './webpack.config';
 import { getEntry } from './helpers';
 import {
   getSsrConfig,

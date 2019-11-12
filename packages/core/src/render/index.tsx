@@ -1,14 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import Document from './components/Document';
+import Document from '../components/Document';
 import {
   getSsrConfig,
   getEngine,
   getPageId,
-} from './helpers';
-
+} from '../helpers';
 
 const codec = require('json-url')('lzw');
 
@@ -26,6 +24,25 @@ const ext = `.${getEngine()}`;
 const userDocumentPath = path.join(process.cwd(), config.viewsDir, `_document${ext}`);
 const DocumentContext = require('./document-context');
 
+const getRenderToStringMethod = async () => {
+  let method;
+  switch (config.id) {
+    case 'emotion':
+      method = (await import('./stringify/emotion')).default;
+      break;
+    case 'material-ui':
+      method = (await import('./stringify/material-ui')).default;
+      break;
+    case 'styled-components':
+      method = (await import('./stringify/styled-components')).default;
+      break;
+    default:
+      method = (await import('./stringify/default')).default;
+      break;
+  }
+  return method;
+};
+
 export default async function render(file: string, props: object): Promise<string> {
   let Page = require(file);
   Page = Page.default || Page;
@@ -38,14 +55,13 @@ export default async function render(file: string, props: object): Promise<strin
     DocumentComponent = Document;
   }
 
-  let html = '<!DOCTYPE html>';
-  html += ReactDOMServer.renderToString(
-    <DocumentContext.Provider value={{
-      children: <Page {...props} />,
-      script: `/_react-ssr/${getPageId(file, '/')}.js?props=${await codec.compress(props)}`,
-    }}>
+  const renderToString = await getRenderToStringMethod();
+
+  const html = renderToString(
+    <DocumentContext.Provider value={<Page {...props} />}>
       <DocumentComponent />
-    </DocumentContext.Provider>
+    </DocumentContext.Provider>,
+    `/_react-ssr/${getPageId(file, '/')}.js?props=${await codec.compress(props)}`
   );
 
   return html;

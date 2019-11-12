@@ -1,5 +1,4 @@
 import React from 'react';
-import HeadManager from './manager';
 import withSideEffect from './with-side-effect';
 
 const defaultHead = [
@@ -13,7 +12,7 @@ const defaultHead = [
 
 function onlyReactElement(list: Array<React.ReactElement<any>>, child: React.ReactChild): Array<React.ReactElement<any>> {
   if (typeof child === 'string' || typeof child === 'number') {
-    return list;
+    return list.concat(child as any);
   }
   if (child.type === React.Fragment) {
     return list.concat(
@@ -119,13 +118,13 @@ function reduceComponents(headElements: Array<React.ReactElement<any>>) {
 const Effect = withSideEffect();
 
 class Head extends React.Component {
-  render() {
-    console.log(this.props.children);
+  static rewind = Effect.rewind;
 
+  render() {
     return (
       <Effect
         reduceComponentsToState={reduceComponents}
-        handleStateChange={new HeadManager().updateHead}
+        handleStateChange={() => {}}
       >
         {this.props.children}
       </Effect>

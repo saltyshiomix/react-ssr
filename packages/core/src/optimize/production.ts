@@ -4,7 +4,7 @@ import MemoryFileSystem from 'memory-fs';
 import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
-import { configureWebpack } from '../webpack.config';
+import { configureWebpack } from './webpack.config';
 import { getEntry } from './helpers';
 import {
   getSsrConfig,

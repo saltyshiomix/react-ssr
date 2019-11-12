@@ -2,7 +2,6 @@ import React from 'react';
 
 const Head = require('./head');
 const Main = require('./main');
-const Script = require('./script');
 
 class Html extends React.Component {
   render() {
@@ -17,7 +16,6 @@ export default class Document extends React.Component {
         <Head />
         <body>
           <Main />
-          <Script />
         </body>
       </Html>
     );

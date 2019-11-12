@@ -55,5 +55,4 @@ export default [
   fileConfig('src/components/Document/context.ts', 'dist/document-context.js'),
   fileConfig('src/components/Head/index.tsx', 'dist/head.js'),
   fileConfig('src/components/Main.tsx', 'dist/main.js'),
-  fileConfig('src/components/Script.tsx', 'dist/script.js'),
 ];
