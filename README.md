@@ -32,6 +32,16 @@ And add a script to your package.json like this:
 
 Populate files below inside your project:
 
+**`./.babelrc`**
+
+```json
+{
+  "presets": [
+    "@react-ssr/express/babel"
+  ]
+}
+```
+
 **`./server.js`**
 
 ```js
@@ -90,6 +100,16 @@ And add a script to your package.json like this:
 ```
 
 Populate files below inside your project:
+
+**`./.babelrc`**
+
+```json
+{
+  "presets": [
+    "@react-ssr/nestjs-express/babel"
+  ]
+}
+```
 
 **`./tsconfig.json`**
 
@@ -512,7 +532,6 @@ export default function Index({ message }: IndexProps) {
 - [examples/basic-nestjs](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs)
 - [examples/basic-nestjs-nodemon](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs-nodemon)
 - [examples/basic-tsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx)
-- [examples/custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-babelrc)
 - [examples/custom-layout](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-layout)
 - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
 - [examples/dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/dynamic-head)
