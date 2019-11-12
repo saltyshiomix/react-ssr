@@ -13,7 +13,7 @@ This package is internally used by [@react-ssr/express](https://npm.im/@react-ss
 
 ## Overview
 
-- Blazing fast SSR (Server Side Rendering)
+- SSR (Server Side Rendering) as a view template engine
 - Passing the server data to the client `props`
 - Dynamic `props` without caring about SSR
   - Suitable for dynamic routes like blogging

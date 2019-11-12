@@ -11,7 +11,7 @@
 
 ## Overview
 
-- Blazing fast SSR (Server Side Rendering)
+- SSR (Server Side Rendering) as a view template engine
 - Passing the server data to the client `props`
 - Dynamic `props` without caring about SSR
   - Suitable for dynamic routes like blogging
@@ -204,7 +204,6 @@ import {
   Document,
   Head,
   Main,
-  Script,
 } from '@react-ssr/express';
 
 export default class extends Document {
@@ -216,7 +215,6 @@ export default class extends Document {
         </Head>
         <body>
           <Main />
-          <Script />
         </body>
       </html>
     );
