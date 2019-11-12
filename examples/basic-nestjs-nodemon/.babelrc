@@ -1,0 +1,5 @@
+{
+  "presets": [
+    "@react-ssr/nestjs-express/babel"
+  ]
+}
