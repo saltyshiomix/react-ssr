@@ -120,6 +120,8 @@ const Effect = withSideEffect();
 
 class Head extends React.Component {
   render() {
+    console.log(this.props.children);
+
     return (
       <Effect
         reduceComponentsToState={reduceComponents}
