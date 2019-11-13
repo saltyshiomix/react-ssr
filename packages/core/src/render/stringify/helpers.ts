@@ -18,6 +18,12 @@ export const getHeadHtml = (heads: any[]) => {
     if (h.type === 'title') {
       results.push(`<title>${h.props.children}</title>`);
     }
+    if (h.type === 'link') {
+      results.push(`<link${convertAttrToString(h.props)}>`);
+    }
+    if (h.type === 'script') {
+      results.push(`<script${convertAttrToString(h.props)}></script>`);
+    }
   }
   return results.join('');
 };
