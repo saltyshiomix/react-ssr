@@ -7,7 +7,7 @@ const app = express();
   await register(app);
 
   app.get('/', (req, res) => {
-    const user = { name: 'Custom Layout' };
+    const user = { name: 'Custom Document' };
     res.render('index', { user });
   });
   

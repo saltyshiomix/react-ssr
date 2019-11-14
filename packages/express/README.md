@@ -192,7 +192,7 @@ module.exports = {
 
 A working example is here: [examples/basic-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-css)
 
-## Custom Layout
+## Custom Document
 
 Just put `_document.jsx` or `_document.tsx` into the views root:
 
