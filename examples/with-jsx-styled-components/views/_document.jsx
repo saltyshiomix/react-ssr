@@ -11,12 +11,6 @@ const Body = styled.body`
   padding: 0;
 `;
 
-const Wrapper = styled.section`
-  padding: 4em;
-  background: papayawhip;
-  min-height: 100vh;
-`;
-
 export default class extends Document {
   render() {
     return (

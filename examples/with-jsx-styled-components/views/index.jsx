@@ -2,6 +2,12 @@ import React from 'react';
 import { Head } from '@react-ssr/express';
 import styled from 'styled-components';
 
+const Wrapper = styled.section`
+  padding: 4em;
+  background: papayawhip;
+  min-height: 100vh;
+`;
+
 const Paragraph = styled.p`
   color: palevioletred;
 `;
@@ -21,14 +27,14 @@ const Index = (props) => {
   const onClick = () => setMessage('This is a react-ssr!');
 
   return (
-    <React.Fragment>
+    <Wrapper>
       <Head>
         <title>with-jsx-styled-components - @react-ssr/express</title>
       </Head>
       <Paragraph>Hello {props.user.name}!</Paragraph>
       <Button onClick={onClick}>Click Me</Button>
       <Paragraph>Message from state: {message}</Paragraph>
-    </React.Fragment>
+    </Wrapper>
   );
 };
 
