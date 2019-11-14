@@ -417,7 +417,11 @@ A working example is here: [examples/dynamic-head](https://github.com/saltyshiom
 
 ### With Emotion
 
-In order to enable SSR, we must install `babel-plugin-emotion` as devDependencies.
+In order to enable SSR, we must install these packages:
+
+- [@emotion/cache](https://npm.im/@emotion/cache) as **dependencies**
+- [create-emotion-server](https://npm.im/create-emotion-server) as **dependencies**
+- [babel-plugin-emotion](https://npm.im/babel-plugin-emotion) as devDependencies
 
 And then, populate `.babelrc` in your project root:
 
