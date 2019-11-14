@@ -222,6 +222,8 @@ export default class extends Document {
 };
 ```
 
+**Note**: **Please put `<Main />` component directly under `<body>` tag AND don't wrap `<Main />` component with another components** because this is a hydration target for the client.
+
 And then, use it as always:
 
 **./views/index.jsx**
