@@ -6,7 +6,6 @@ const props = JSON.parse('__REACT_SSR_PROPS__');
 
 // function App(props) {
 //   React.useEffect(() => {
-//     setShow(true);
 //     const jssStyles = document.getElementById('jss-server-side');
 //     if (jssStyles) {
 //       jssStyles.parentNode.removeChild(jssStyles);
