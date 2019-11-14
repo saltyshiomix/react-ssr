@@ -19,9 +19,7 @@ export default class extends Document {
           <title>An example of @react-ssr/express</title>
         </Head>
         <Body>
-          <Wrapper>
-            <Main />
-          </Wrapper>
+          <Main />
         </Body>
       </html>
     );
