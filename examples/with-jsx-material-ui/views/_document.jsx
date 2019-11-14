@@ -4,9 +4,6 @@ import {
   Head,
   Main,
 } from '@react-ssr/express';
-import { ThemeProvider } from '@material-ui/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { theme } from '../lib/theme';
 
 export default class extends Document {
   render() {
@@ -17,10 +14,7 @@ export default class extends Document {
           <title>with-jsx-material-ui - @react-ssr/express</title>
         </Head>
         <body>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Main />
-          </ThemeProvider>
+          <Main />
         </body>
       </html>
     );
