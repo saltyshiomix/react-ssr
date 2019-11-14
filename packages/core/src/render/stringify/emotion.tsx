@@ -36,13 +36,11 @@ export default (app: React.ReactElement, script: string) => {
 <html${convertAttrToString($('html').attr())}>
   <head>
     ${getHeadHtml(Head.rewind())}
-    ${$.html($('style'))}
     <style data-emotion-css="${ids.join(' ')}">${css}</style>
   </head>
   <body${convertAttrToString($('body').attr())}>
     <div id="react-ssr-root">${$('body').html() || ''}</div>
     <script src="${script}"></script>
-    ${$.html($('script'))}
   </body>
 </html>
 `;

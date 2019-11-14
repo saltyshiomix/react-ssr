@@ -10,6 +10,7 @@ const Head = require('./head');
 
 export default (app: React.ReactElement, script: string) => {
   const html = ReactDOMServer.renderToString(app);
+
   const $ = cheerio.load(html);
 
   return `
