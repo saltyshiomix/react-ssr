@@ -15,7 +15,7 @@ export default (app: React.ReactElement, script: string) => {
   try {
     const html = ReactDOMServer.renderToString(sheet.collectStyles(app));
     const $ = cheerio.load(html);
-    const styleTags = sheet.getStyleTags() // or sheet.getStyleElement();
+    const styleTags = sheet.getStyleTags();
 
     return `
 <!DOCTYPE html>
@@ -30,9 +30,6 @@ export default (app: React.ReactElement, script: string) => {
   </body>
 </html>
 `;
-  } catch (error) {
-    console.error(error);
-    return `<!DOCTYPE html><html><body>${error}</body></html>`;
   } finally {
     sheet.seal();
   }
