@@ -8,7 +8,6 @@ import {
   getPageId,
 } from '../helpers';
 
-
 const codec = require('json-url')('lzw');
 
 require('@babel/register')({
