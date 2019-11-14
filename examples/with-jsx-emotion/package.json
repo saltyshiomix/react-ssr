@@ -5,14 +5,16 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@emotion/cache": "^10.0.19",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
     "@react-ssr/express": "latest",
+    "create-emotion-server": "10.0.14",
     "express": "^4.17.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0"
   },
   "devDependencies": {
-    "babel-plugin-emotion": "^10.0.21"
+    "babel-plugin-emotion": "^10.0.23"
   }
 }
