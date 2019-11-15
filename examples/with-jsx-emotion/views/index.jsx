@@ -6,7 +6,7 @@ import {
   HoverableCard,
 } from '../components';
 
-const Home = (props) => {
+const HomePage = (props) => {
   const { title } = props;
 
   const [message, setMessage] = React.useState('With :hover.');
@@ -32,4 +32,4 @@ const Home = (props) => {
   );
 };
 
-export default Home;
+export default HomePage;

@@ -7,7 +7,7 @@ import {
   bounce,
 } from '../components';
 
-const Home = (props) => {
+const NextPage = (props) => {
   const { title } = props;
 
   return (
@@ -28,4 +28,4 @@ const Home = (props) => {
   );
 };
 
-export default Home;
+export default NextPage;
