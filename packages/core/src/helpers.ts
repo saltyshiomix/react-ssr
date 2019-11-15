@@ -54,7 +54,12 @@ export const getPageId = (page: string, separator: string = '_'): string => {
 };
 
 export const readFileWithProps = (file: string, props: any, memfs?: any) => {
-  return (memfs || fs).readFileSync(file).toString().replace('__REACT_SSR_PROPS__', JSON.stringify(props).replace(/"/g, '\\"'));
+  return (memfs || fs)
+    .readFileSync(file).toString()
+    .replace(
+      '__REACT_SSR_PROPS__',
+      JSON.stringify(props).replace(/"/g, '\\"'),
+    );
 };
 
 const ignores = [
