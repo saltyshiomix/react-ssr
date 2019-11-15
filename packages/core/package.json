@@ -91,7 +91,7 @@
     "typescript": "^3.7.2"
   },
   "peerDependencies": {
-    "react": "^16.8",
-    "react-dom": "^16.8"
+    "react": "^16",
+    "react-dom": "^16"
   }
 }
