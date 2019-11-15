@@ -12,8 +12,11 @@ const { ServerStyleSheets } = require('@material-ui/core/styles');
 export default (app: React.ReactElement, script: string) => {
   const sheets = new ServerStyleSheets();
   const html = ReactDOMServer.renderToString(sheets.collect(app));
-  const $ = cheerio.load(html);
   const css = sheets.toString();
+
+  const $ = cheerio.load(html);
+  const scriptTags = $.html($('body script'));
+  const bodyWithoutScriptTags = ($('body').html() || '').replace(scriptTags, '');
 
   return `
 <!DOCTYPE html>
@@ -23,8 +26,9 @@ export default (app: React.ReactElement, script: string) => {
     <style id="jss-server-side">${css}</style>
   </head>
   <body${convertAttrToString($('body').attr())}>
-    <div id="react-ssr-root">${$('body').html() || ''}</div>
+    <div id="react-ssr-root">${bodyWithoutScriptTags}</div>
     <script src="${script}"></script>
+    ${scriptTags}
   </body>
 </html>
 `;
