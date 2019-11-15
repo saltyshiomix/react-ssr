@@ -27,6 +27,9 @@ const DocumentContext = require('./document-context');
 const getRenderToStringMethod = async () => {
   let method;
   switch (config.id) {
+    case 'antd':
+      method = (await import('./stringify/antd')).default;
+      break;
     case 'emotion':
       method = (await import('./stringify/emotion')).default;
       break;
