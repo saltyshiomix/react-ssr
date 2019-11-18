@@ -44,13 +44,21 @@ export default async (app: express.Application): Promise<void> => {
     after: (app: express.Application, server: WebpackDevServer, compiler: webpack.Compiler) => {
       for (let i = 0; i < entryPages.length; i++) {
         const page = entryPages[i];
-        const pageId = getPageId(page, '/');
-        const route = `/_react-ssr/${pageId}.js`;
-        app.get(route, async (req, res) => {
+        const pageId = getPageId(page, '_');
+
+        const cssRoute = `/_react-ssr/${pageId}.css`;
+        app.get(cssRoute, async (req, res) => {
+          const filename = path.join(cwd, config.distDir, `${pageId}.js`);
+          const style = (compiler.outputFileSystem as any).readFileSync(filename).toString()
+          res.status(200).type('.css').send(style);
+        });
+
+        const jsRoute = `/_react-ssr/${pageId}.js`;
+        app.get(jsRoute, async (req, res) => {
           const props = await codec.decompress(req.query.props);
           console.log('[ info ] the props below is rendered from the server side');
           console.log(props);
-          const filename = path.join(cwd, config.distDir, `${getPageId(page, '_')}.js`);
+          const filename = path.join(cwd, config.distDir, `${pageId}.js`);
           const script = readFileWithProps(filename, props, compiler.outputFileSystem);
           res.status(200).type('.js').send(script);
         });

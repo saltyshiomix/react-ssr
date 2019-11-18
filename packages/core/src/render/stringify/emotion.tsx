@@ -16,7 +16,7 @@ const createEmotionServer = emotionServer.default || emotionServer;
 const cache = createCache();
 const { extractCritical } = createEmotionServer(cache);
 
-export default (app: React.ReactElement, script: string) => {
+export default (app: React.ReactElement, script: string, style: string) => {
   const {
     html,
     css,
@@ -38,6 +38,7 @@ export default (app: React.ReactElement, script: string) => {
 <html${convertAttrToString($('html').attr())}>
   <head>
     ${getHeadHtml(Head.rewind())}
+    <link rel="stylesheet" href="${style}">
     <style data-emotion-css="${ids.join(' ')}">${css}</style>
   </head>
   <body${convertAttrToString($('body').attr())}>

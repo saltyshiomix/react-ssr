@@ -10,7 +10,7 @@ const Head = require('./head');
 
 const { ServerStyleSheet } = require('styled-components');
 
-export default (app: React.ReactElement, script: string) => {
+export default (app: React.ReactElement, script: string, style: string) => {
   const sheet = new ServerStyleSheet();
   try {
     const html = ReactDOMServer.renderToString(sheet.collectStyles(app));
@@ -25,6 +25,7 @@ export default (app: React.ReactElement, script: string) => {
 <html${convertAttrToString($('html').attr())}>
   <head>
     ${getHeadHtml(Head.rewind())}
+    <link rel="stylesheet" href="${style}">
     ${styleTags}
   </head>
   <body${convertAttrToString($('body').attr())}>

@@ -8,7 +8,7 @@ import {
 
 const Head = require('./head');
 
-export default (app: React.ReactElement, script: string) => {
+export default (app: React.ReactElement, script: string, style: string) => {
   const html = ReactDOMServer.renderToString(app);
 
   const $ = cheerio.load(html);
@@ -20,6 +20,7 @@ export default (app: React.ReactElement, script: string) => {
 <html${convertAttrToString($('html').attr())}>
   <head>
     ${getHeadHtml(Head.rewind())}
+    <link rel="stylesheet" href="${style}">
   </head>
   <body${convertAttrToString($('body').attr())}>
     <div id="react-ssr-root">${bodyWithoutScriptTags}</div>

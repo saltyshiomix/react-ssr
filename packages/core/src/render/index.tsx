@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 import React from 'react';
 import Document from '../components/Document';
@@ -21,8 +21,17 @@ require('@babel/register')({
 
 const config = getSsrConfig();
 const ext = `.${getEngine()}`;
+const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const userDocumentPath = path.join(process.cwd(), config.viewsDir, `_document${ext}`);
 const DocumentContext = require('./document-context');
+
+let DocumentComponent: any;
+if (fs.existsSync(userDocumentPath)) {
+  const UserDocument = require(userDocumentPath);
+  DocumentComponent = UserDocument.default || UserDocument;
+} else {
+  DocumentComponent = Document;
+}
 
 const getRenderToStringMethod = async () => {
   let method;
@@ -47,25 +56,28 @@ const getRenderToStringMethod = async () => {
 };
 
 export default async function render(file: string, props: object): Promise<string> {
+  const pageId = getPageId(file, '_');
+  const htmlPath = path.join(process.cwd(), config.distDir, `${pageId}.html`);
+  if (env === 'production' && fs.existsSync(htmlPath)) {
+    return fs.readFileSync(htmlPath).toString();
+  }
+
   let Page = require(file);
   Page = Page.default || Page;
 
-  let DocumentComponent;
-  if (fs.existsSync(userDocumentPath)) {
-    const UserDocument = require(userDocumentPath);
-    DocumentComponent = UserDocument.default || UserDocument;
-  } else {
-    DocumentComponent = Document;
+  let html = 'Error when rendering HTML';
+  try {
+    html = (await getRenderToStringMethod())(
+      <DocumentContext.Provider value={<Page {...props} />}>
+        <DocumentComponent />
+      </DocumentContext.Provider>,
+      `/_react-ssr/${pageId}.js?props=${await codec.compress(props)}`,
+      `/_react-ssr/${pageId}.css}`,
+    );
+    return html;
+  } finally {
+    if (env === 'production') {
+      fs.outputFileSync(htmlPath, html);
+    }
   }
-
-  const renderToString = await getRenderToStringMethod();
-
-  const html = renderToString(
-    <DocumentContext.Provider value={<Page {...props} />}>
-      <DocumentComponent />
-    </DocumentContext.Provider>,
-    `/_react-ssr/${getPageId(file, '/')}.js?props=${await codec.compress(props)}`
-  );
-
-  return html;
 };

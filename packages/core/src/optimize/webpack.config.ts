@@ -2,11 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import { smart as merge } from 'webpack-merge';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { getSsrConfig } from '../helpers';
 
 const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+const ssrConfig = getSsrConfig();
 
 const getBabelrc = (): string | undefined => {
   if (fs.existsSync(path.join(cwd, '.babelrc'))) return path.join(cwd, '.babelrc');
@@ -38,6 +41,7 @@ const prodConfig: webpack.Configuration = {
     },
     minimize: true,
     minimizer: [
+      new OptimizeCSSAssetsPlugin(),
       new TerserPlugin(),
     ],
   },
@@ -55,8 +59,6 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     throw new Error('Not found: .babelrc or .babelrc.js or babel.config.js');
   }
 
-  const ssrConfig = getSsrConfig();
-
   let config: webpack.Configuration = {
     mode: 'development',
     context: path.join(cwd, 'react-ssr-src'),
@@ -64,13 +66,26 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     output: {
       path: path.join(cwd, ssrConfig.distDir),
       filename: '[name].js',
-      publicPath: '/',
     },
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
     module: {
       rules: [
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                publicPath: path.join(cwd, ssrConfig.distDir),
+                hmr: process.env.NODE_ENV === 'development',
+                reloadAll: true,
+              },
+            },
+            'css-loader',
+          ],
+        },
         {
           test: /\.(js|ts)x?$/,
           exclude: /node_modules/,
@@ -84,6 +99,13 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
         },
       ],
     },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+        chunkFilename: '[id].css',
+        ignoreOrder: true,
+      }),
+    ],
   };
 
   if (env === 'production') {
