@@ -1,0 +1,14 @@
+{
+  "presets": [
+    "@react-ssr/express/babel"
+  ],
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": "css"
+      }
+    ]
+  ]
+}

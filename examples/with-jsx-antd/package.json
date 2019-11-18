@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "with-jsx-antd",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@react-ssr/express": "latest",
+    "antd": "^3.25.2",
+    "express": "^4.17.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.12.2"
+  }
+}
