@@ -43,7 +43,10 @@ export default async (app: express.Application): Promise<void> => {
       const cssRoute = `/_react-ssr/${pageId}.css`;
       app.get(cssRoute, async (req, res) => {
         const filename = path.join(cwd, config.distDir, `${pageId}.css`);
-        const style = fs.readFileSync(filename).toString();
+        let style = '';
+        if (fs.existsSync(filename)) {
+          style = fs.readFileSync(filename).toString();
+        }
         res.writeHead(200, { 'Content-Type': 'text/css' });
         res.end(style, 'utf-8');
       });
