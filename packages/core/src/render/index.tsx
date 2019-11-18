@@ -72,7 +72,7 @@ export default async function render(file: string, props: object): Promise<strin
         <DocumentComponent />
       </DocumentContext.Provider>,
       `/_react-ssr/${pageId}.js?props=${await codec.compress(props)}`,
-      `/_react-ssr/${pageId}.css}`,
+      `/_react-ssr/${pageId}.css`,
     );
     return html;
   } finally {
