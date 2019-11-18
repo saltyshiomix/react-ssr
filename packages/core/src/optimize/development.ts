@@ -49,7 +49,9 @@ export default async (app: express.Application): Promise<void> => {
         const cssRoute = `/_react-ssr/${pageId}.css`;
         app.get(cssRoute, async (req, res) => {
           const filename = path.join(cwd, config.distDir, `${pageId}.css`);
-          res.status(200).sendFile(filename);
+          const style = (compiler.outputFileSystem as any).readFileSync(filename).toString();
+          res.writeHead(200, { 'Content-Type': 'text/css' });
+          res.end(style, 'utf-8');
         });
 
         const jsRoute = `/_react-ssr/${pageId}.js`;
@@ -84,6 +86,13 @@ export default async (app: express.Application): Promise<void> => {
   });
 
   app.use('/sockjs-node*', proxyMiddleware);
+
+  for (let i = 0; i < entryPages.length; i++) {
+    const page = entryPages[i];
+    const pageId = getPageId(page, '/');
+    const route = `/_react-ssr/${pageId}.css`;
+    app.use(route, proxyMiddleware);
+  }
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];

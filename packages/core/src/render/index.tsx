@@ -56,28 +56,17 @@ const getRenderToStringMethod = async () => {
 };
 
 export default async function render(file: string, props: object): Promise<string> {
-  const pageId = getPageId(file, '_');
-  const htmlPath = path.join(process.cwd(), config.distDir, `${pageId}.html`);
-  if (env === 'production' && fs.existsSync(htmlPath)) {
-    return fs.readFileSync(htmlPath).toString();
-  }
-
   let Page = require(file);
   Page = Page.default || Page;
 
-  let html = 'Error when rendering HTML';
-  try {
-    html = (await getRenderToStringMethod())(
-      <DocumentContext.Provider value={<Page {...props} />}>
-        <DocumentComponent />
-      </DocumentContext.Provider>,
-      `/_react-ssr/${pageId}.js?props=${await codec.compress(props)}`,
-      `/_react-ssr/${pageId}.css`,
-    );
-    return html;
-  } finally {
-    if (env === 'production') {
-      fs.outputFileSync(htmlPath, html);
-    }
-  }
+  const pageId = getPageId(file, '_');
+  const html = (await getRenderToStringMethod())(
+    <DocumentContext.Provider value={<Page {...props} />}>
+      <DocumentComponent />
+    </DocumentContext.Provider>,
+    `/_react-ssr/${pageId}.js?props=${await codec.compress(props)}`,
+    `/_react-ssr/${pageId}.css`,
+  );
+
+  return html;
 };
