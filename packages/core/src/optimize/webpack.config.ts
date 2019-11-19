@@ -73,7 +73,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     module: {
       rules: [
         {
-          test: /\.css$/,
+          test: /\.css$/i,
           use: [
             {
               loader: MiniCssExtractPlugin.loader,
@@ -87,7 +87,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
           ],
         },
         {
-          test: /\.(js|ts)x?$/,
+          test: /\.(js|ts)x?$/i,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
