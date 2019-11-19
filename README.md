@@ -253,7 +253,7 @@ Supported UI frameworks are:
 - [x] [emotion](https://emotion.sh)
 - [x] [styled-components](https://www.styled-components.com)
 - [x] [material-ui](https://material-ui.com)
-- [ ] [antd](https://ant.design)
+- [x] [antd](https://ant.design)
 - [ ] and more...
 
 For example, if we want to use `emotion`, `ssr.config.js` is like this:
@@ -295,46 +295,6 @@ module.exports = {
   },
 };
 ```
-
-For example, let's consider we want to import css files directly:
-
-**views/index.jsx**
-
-```jsx
-import '../styles/index.css';
-```
-
-**styles/index.css**
-
-```css
-body {
-  background-color: burlywood;
-}
-```
-
-Then, we must override the default webpack config like this:
-
-**ssr.config.js**
-
-```js
-module.exports = {
-  webpack: (config, env) => {
-    config.module.rules = [
-      ...(config.module.rules),
-      {
-        test: /\.css$/i,
-        use: [
-          'style-loader',
-          'css-loader',
-        ],
-      },
-    ];
-    return config;
-  },
-};
-```
-
-A working example is here: [examples/basic-css-import](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-css-import)
 
 ## Custom Document
 
@@ -414,7 +374,7 @@ A working example is here: [examples/basic-dynamic-head](https://github.com/salt
 - [x] [emotion](https://emotion.sh)
 - [x] [styled-components](https://www.styled-components.com)
 - [x] [material-ui](https://material-ui.com)
-- [ ] [antd](https://ant.design)
+- [x] [antd](https://ant.design)
 - [ ] and more...
 
 ### With Emotion
@@ -467,7 +427,28 @@ A working example is here: [examples/with-jsx-material-ui](https://github.com/sa
 
 ### With Ant Design
 
-WIP
+In order to enable SSR, we must install `babel-plugin-import` as devDependencies.
+
+And then, populate `.babelrc` in your project root:
+
+```json
+{
+  "presets": [
+    "@react-ssr/express/babel"
+  ],
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": "css"
+      }
+    ]
+  ]
+}
+```
+
+A working example is here: [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
 
 ## TypeScript Support
 
@@ -539,6 +520,7 @@ export default function Index({ message }: IndexProps) {
 - [examples/basic-tsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx)
 - [examples/custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-document)
 - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
+- [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
 - [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
 - [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
 - [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
