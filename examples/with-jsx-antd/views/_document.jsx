@@ -5,8 +5,6 @@ import {
   Main,
 } from '@react-ssr/express';
 
-import 'antd/dist/antd.css';
-
 export default class extends Document {
   render() {
     return (
