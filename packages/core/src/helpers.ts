@@ -7,16 +7,18 @@ const cwd: string = process.cwd();
 
 export interface Config {
   id: string;
-  viewsDir: string;
   distDir: string;
+  viewsDir: string;
+  dynamicViews: string[];
   webpack?: (defaultConfig: webpack.Configuration, env: 'development' | 'production') => webpack.Configuration;
 }
 
 export const getSsrConfig = (): Config => {
   const defaultConfig = {
     id: 'default',
-    viewsDir: 'views',
     distDir: '.ssr',
+    viewsDir: 'views',
+    dynamicViews: [],
   };
   const ssrConfigPath = path.join(cwd, 'ssr.config.js');
   if (fs.existsSync(ssrConfigPath)) {

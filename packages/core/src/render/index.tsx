@@ -20,9 +20,10 @@ require('@babel/register')({
 });
 
 const config = getSsrConfig();
+const cwd = process.cwd();
 const ext = `.${getEngine()}`;
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
-const userDocumentPath = path.join(process.cwd(), config.viewsDir, `_document${ext}`);
+const userDocumentPath = path.join(cwd, config.viewsDir, `_document${ext}`);
 const DocumentContext = require('./document-context');
 
 let DocumentComponent: any;
@@ -56,17 +57,33 @@ const getRenderToStringMethod = async () => {
 };
 
 export default async function render(file: string, props: object): Promise<string> {
+  const pageId = getPageId(file, '_');
+  const cachePath = path.join(cwd, config.distDir, `${pageId}.html`);
+  if (env === 'production' && fs.existsSync(cachePath)) {
+    return fs.readFileSync(cachePath).toString();
+  }
+
   let Page = require(file);
   Page = Page.default || Page;
 
-  const pageId = getPageId(file, '_');
-  const html = (await getRenderToStringMethod())(
-    <DocumentContext.Provider value={<Page {...props} />}>
-      <DocumentComponent />
-    </DocumentContext.Provider>,
-    `/_react-ssr/${pageId}.js?props=${await codec.compress(props)}`,
-    `/_react-ssr/${pageId}.css`,
-  );
-
-  return html;
+  let html;
+  try {
+    html = (await getRenderToStringMethod())(
+      <DocumentContext.Provider value={<Page {...props} />}>
+        <DocumentComponent />
+      </DocumentContext.Provider>,
+      `/_react-ssr/${pageId}.js?props=${await codec.compress(props)}`,
+      `/_react-ssr/${pageId}.css`,
+    );
+    return html;
+  } catch (err) {
+    console.error(err);
+    return 'Error';
+  } finally {
+    if (env === 'production' && !fs.existsSync(cachePath)) {
+      if (!config.dynamicViews.includes(path.basename(file, path.extname(file)))) {
+        fs.writeFileSync(cachePath, html);
+      }
+    }
+  }
 };
