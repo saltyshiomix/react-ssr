@@ -6,7 +6,6 @@
   <a href="https://npm.im/@react-ssr/express" alt="Downloads of @react-ssr/express">
     <img src="https://img.shields.io/npm/dt/@react-ssr/express.svg">
   </a>
-  <img src="https://img.shields.io/npm/l/@react-ssr/express.svg" alt="Package License (MIT)">
 </p>
 
 ## Overview

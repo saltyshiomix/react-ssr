@@ -6,7 +6,6 @@
   <a href="https://npm.im/@react-ssr/core" alt="Downloads of @react-ssr/core">
     <img src="https://img.shields.io/npm/dt/@react-ssr/core.svg">
   </a>
-  <img src="https://img.shields.io/npm/l/@react-ssr/core.svg" alt="Package License (MIT)">
 </p>
 
 This package is internally used by [@react-ssr/express](https://npm.im/@react-ssr/express) and [@react-ssr/nestjs-express](https://npm.im/@react-ssr/nestjs-express).
