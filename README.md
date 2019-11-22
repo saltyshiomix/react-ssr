@@ -250,6 +250,9 @@ It can be ignored only when the project does not use any UI frameworks.
 
 Supported UI frameworks are:
 
+- [x] default (the id `default` doesn't need to be specified in `ssr.config.js`)
+  - [x] [semantic-ui](https://react.semantic-ui.com)
+  - [x] Or any other non CSS-in-JS UI frameworks
 - [x] [emotion](https://emotion.sh)
 - [x] [styled-components](https://www.styled-components.com)
 - [x] [material-ui](https://material-ui.com)
@@ -323,7 +326,7 @@ export default class extends Document {
       </html>
     );
   }
-};
+}
 ```
 
 **Note**: **Please put `<Main />` component directly under `<body>` tag AND don't wrap `<Main />` component with another components** because this is a hydration target for the client.
@@ -371,11 +374,47 @@ A working example is here: [examples/basic-dynamic-head](https://github.com/salt
 
 ## Supported UI Framework
 
+- [x] default (the id `default` doesn't need to be specified in `ssr.config.js`)
+  - [x] [semantic-ui](https://react.semantic-ui.com)
+  - [x] Or any other non CSS-in-JS UI frameworks
 - [x] [emotion](https://emotion.sh)
 - [x] [styled-components](https://www.styled-components.com)
 - [x] [material-ui](https://material-ui.com)
 - [x] [antd](https://ant.design)
 - [ ] and more...
+
+### Non CSS-in-JS framework
+
+Like [semantic-ui](https://react.semantic-ui.com), non CSS-in-JS frameworks are supported without extra configuration.
+
+All we have to do is loading global CSS in `_document` or each page:
+
+**./views/_document.jsx**
+
+```jsx
+import React from 'react';
+import {
+  Document,
+  Head,
+  Main,
+} from '@react-ssr/express';
+
+export default class extends Document {
+  render() {
+    return (
+      <html>
+        <Head>
+          <title>A Sample of Semantic UI React</title>
+          <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
+        </Head>
+        <body>
+          <Main />
+        </body>
+      </html>
+    );
+  }
+}
+```
 
 ### With Emotion
 
@@ -523,6 +562,7 @@ export default function Index({ message }: IndexProps) {
 - [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
 - [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
 - [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
+- [examples/with-jsx-semantic-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-semantic-ui)
 - [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
 
 ## Starters
