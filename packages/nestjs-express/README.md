@@ -328,7 +328,7 @@ A working example is here: [examples/basic-dynamic-head](https://github.com/salt
 
 Like [semantic-ui](https://react.semantic-ui.com), non CSS-in-JS frameworks are supported without extra configuration.
 
-All we have to do is loading global CSS in `_document` or each page:
+All we have to do is to load global CSS in `_document` or each page:
 
 **./views/_document.tsx**
 
