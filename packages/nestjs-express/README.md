@@ -175,8 +175,9 @@ Here is the default `ssr.config.js`, which is used by `react-ssr` when there are
 ```js
 module.exports = {
   id: 'default',
-  viewsDir: 'views',
   distDir: '.ssr',
+  viewsDir: 'views',
+  dynamicViews: [],
   webpack: (config /* webpack.Configuration */, env /* 'development' | 'production' */) => {
     return config;
   },
@@ -208,17 +209,9 @@ module.exports = {
 };
 ```
 
-### `ssr.config.js#viewsDir`
-
-The place where we put views. (default: `views`)
-
-A function `res.render('xxx')` will render `views/xxx.jsx` or `views/xxx.tsx`.
-
-A working example is here: [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
-
 ### `ssr.config.js#distDir`
 
-The place where `react-ssr` outputs production results. (default: `.ssr`)
+The place where `react-ssr` generates **production** results. (default: `.ssr`)
 
 If we use TypeScript or any other library which must be compiled, the config below may be useful:
 
@@ -228,6 +221,31 @@ module.exports = {
   distDir: 'dist/.ssr',
 };
 ```
+
+### `ssr.config.js#viewsDir`
+
+The place where we put views. (default: `views`)
+
+A function `res.render('xxx')` will render `views/xxx.jsx` or `views/xxx.tsx`.
+
+A working example is here: [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
+
+### `ssr.config.js#dynamicViews`
+
+If specified, `react-ssr` won't generate html cache when production.
+
+This is suitable for search-engine-optimized dynamic routes like blogging:
+
+```js
+module.exports = {
+  dynamicViews: [
+    // this means `views/posts.jsx` is a dynamic view
+    'posts',
+  ],
+};
+```
+
+A working example is here: [examples/basic-blogging](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-blogging)
 
 ### `ssr.config.js#webpack()`
 
