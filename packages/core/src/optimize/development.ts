@@ -93,14 +93,14 @@ export default async (app: express.Application): Promise<void> => {
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
-    const pageId = getPageId(page, '/');
+    const pageId = getPageId(page, '_');
     const route = `/_react-ssr/${pageId}.css`;
     app.use(route, proxyMiddleware);
   }
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
-    const pageId = getPageId(page, '/');
+    const pageId = getPageId(page, '_');
     const route = `/_react-ssr/${pageId}.js`;
     app.use(route, proxyMiddleware);
   }
