@@ -7,12 +7,12 @@ import proxy from 'http-proxy-middleware';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import { configureWebpack } from './webpack.config';
+import LZString from '@react-ssr/lz-string';
 import { getEntry } from './helpers';
 import {
   getSsrConfig,
   getPageId,
   readFileWithProps,
-  decompressProps,
   sleep,
 } from '../helpers';
 
@@ -60,7 +60,7 @@ export default async (app: express.Application): Promise<void> => {
 
         const jsRoute = `/_react-ssr/${pageId}.js`;
         app.get(jsRoute, (req, res) => {
-          const props = decompressProps(req.query.props);
+          const props = LZString.decompress(req.query.props);
           console.log('[ info ] the props below is rendered from the server side');
           console.log(props);
           const filename = path.join(cwd, config.distDir, `${pageId}.js`);

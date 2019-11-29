@@ -2,11 +2,11 @@ import fs from 'fs-extra';
 import path from 'path';
 import React from 'react';
 import Document from '../components/Document';
+import LZString from '@react-ssr/lz-string';
 import {
   getSsrConfig,
   getEngine,
   getPageId,
-  compressProps,
 } from '../helpers';
 
 require('@babel/register')({
@@ -71,7 +71,7 @@ export default async function render(file: string, props: object): Promise<strin
       <DocumentContext.Provider value={<Page {...props} />}>
         <DocumentComponent />
       </DocumentContext.Provider>,
-      `/_react-ssr/${pageId}.js?props=${compressProps(props)}`,
+      `/_react-ssr/${pageId}.js?props=${LZString.compress(props)}`,
       `/_react-ssr/${pageId}.css`,
     );
     return html;
