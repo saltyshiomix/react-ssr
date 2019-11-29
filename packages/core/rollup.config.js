@@ -14,6 +14,7 @@ const coreConfig = {
     }),
     babel({
       extensions,
+      runtimeHelpers: true,
       exclude: /node_modules/,
     }),
     commonjs({
