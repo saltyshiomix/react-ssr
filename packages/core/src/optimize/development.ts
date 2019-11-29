@@ -12,12 +12,12 @@ import {
   getSsrConfig,
   getPageId,
   readFileWithProps,
+  decompressProps,
   sleep,
 } from '../helpers';
 
 const cwd = process.cwd();
 const config = getSsrConfig();
-const codec = require('json-url')('lzstring');
 
 const ufs = require('unionfs').ufs;
 const memfs = new MemoryFileSystem();
@@ -47,7 +47,7 @@ export default async (app: express.Application): Promise<void> => {
         const pageId = getPageId(page, '_');
 
         const cssRoute = `/_react-ssr/${pageId}.css`;
-        app.get(cssRoute, async (req, res) => {
+        app.get(cssRoute, (req, res) => {
           const filename = path.join(cwd, config.distDir, `${pageId}.css`);
           const memfs = compiler.outputFileSystem as any;
           let style = '';
@@ -59,8 +59,8 @@ export default async (app: express.Application): Promise<void> => {
         });
 
         const jsRoute = `/_react-ssr/${pageId}.js`;
-        app.get(jsRoute, async (req, res) => {
-          const props = await codec.decompress(req.query.props);
+        app.get(jsRoute, (req, res) => {
+          const props = decompressProps(req.query.props);
           console.log('[ info ] the props below is rendered from the server side');
           console.log(props);
           const filename = path.join(cwd, config.distDir, `${pageId}.js`);

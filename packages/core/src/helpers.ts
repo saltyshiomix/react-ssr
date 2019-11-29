@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import readdir from 'recursive-readdir';
+import LZString from 'lz-string';
+import URLSafeBase64 from 'urlsafe-base64';
 
 const cwd: string = process.cwd();
 
@@ -85,3 +87,17 @@ const ignoreNodeModules = (file: string, stats: fs.Stats) => {
 export const getCacheablePages = async (): Promise<string[]> => {
   return readdir(cwd, [ignoreNodeModules, ignoreDotDir, ...ignores]);
 };
+
+export const compressProps = (json: any) => {
+  const packed = JSON.stringify(json);
+  const compressed = Buffer.from(LZString.compressToUint8Array(packed));
+  const encoded = URLSafeBase64.encode(compressed);
+  return encoded;
+}
+
+export const decompressProps = (compressed: string) => {
+  const decoded = URLSafeBase64.decode(compressed);
+  const decompressed = LZString.decompressFromUint8Array(decoded);
+  const unpacked = JSON.parse(decompressed);
+  return unpacked;
+}

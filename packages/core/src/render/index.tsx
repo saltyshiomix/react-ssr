@@ -6,9 +6,8 @@ import {
   getSsrConfig,
   getEngine,
   getPageId,
+  compressProps,
 } from '../helpers';
-
-const codec = require('json-url')('lzstring');
 
 require('@babel/register')({
   extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -72,7 +71,7 @@ export default async function render(file: string, props: object): Promise<strin
       <DocumentContext.Provider value={<Page {...props} />}>
         <DocumentComponent />
       </DocumentContext.Provider>,
-      `/_react-ssr/${pageId}.js?props=${await codec.compress(props)}`,
+      `/_react-ssr/${pageId}.js?props=${compressProps(props)}`,
       `/_react-ssr/${pageId}.css`,
     );
     return html;

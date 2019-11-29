@@ -11,13 +11,13 @@ import {
   getEngine,
   getPageId,
   readFileWithProps,
+  decompressProps,
   sleep,
 } from '../helpers';
 
 const cwd = process.cwd();
 const ext = '.' + getEngine();
 const config = getSsrConfig();
-const codec = require('json-url')('lzstring');
 
 const ufs = require('unionfs').ufs;
 const memfs = new MemoryFileSystem();
@@ -32,7 +32,7 @@ export default async (app: express.Application): Promise<void> => {
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.hooks.afterCompile.tap('finish', () => { compiled = true });
   compiler.inputFileSystem = ufs;
-  compiler.run(async (err: Error, stats: webpack.Stats) => {
+  compiler.run((err: Error, stats: webpack.Stats) => {
     err && console.error(err.stack || err);
     stats.hasErrors() && console.error(stats.toString());
 
@@ -41,7 +41,7 @@ export default async (app: express.Application): Promise<void> => {
       const pageId = getPageId(page, '_');
 
       const cssRoute = `/_react-ssr/${pageId}.css`;
-      app.get(cssRoute, async (req, res) => {
+      app.get(cssRoute, (req, res) => {
         const filename = path.join(cwd, config.distDir, `${pageId}.css`);
         let style = '';
         if (fs.existsSync(filename)) {
@@ -52,8 +52,8 @@ export default async (app: express.Application): Promise<void> => {
       });
 
       const jsRoute = `/_react-ssr/${pageId}.js`;
-      app.get(jsRoute, async (req, res) => {
-        const props = await codec.decompress(req.query.props);
+      app.get(jsRoute, (req, res) => {
+        const props = decompressProps(req.query.props);
         const filename = path.join(cwd, config.distDir, `${pageId}.js`);
         const script = readFileWithProps(filename, props);
         res.status(200).type('.js').send(script);
