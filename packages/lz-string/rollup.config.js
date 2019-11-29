@@ -14,8 +14,8 @@ const coreConfig = {
     }),
     babel({
       extensions,
-      runtimeHelpers: true,
       exclude: /node_modules/,
+      runtimeHelpers: true,
     }),
     commonjs(),
     (process.env.NODE_ENV === 'production' && terser()),
