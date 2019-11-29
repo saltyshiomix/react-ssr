@@ -1,23 +1,4 @@
-<p align="center">😎 @react-ssr/lz-string 😎</p>
-<p align="center">
-  <a href="https://npm.im/@react-ssr/lz-string" alt="A version of @react-ssr/lz-string">
-    <img src="https://img.shields.io/npm/v/@react-ssr/lz-string.svg">
-  </a>
-  <a href="https://npm.im/@react-ssr/lz-string" alt="Downloads of @react-ssr/lz-string">
-    <img src="https://img.shields.io/npm/dt/@react-ssr/lz-string.svg">
-  </a>
-</p>
-
-This package is internally used by [@react-ssr/core](https://npm.im/@react-ssr/core).
-
-```ts
-const LZString = require('@react-ssr/lz-string');
-
-const compressed = LZString.compress({ message: 'hello' });
-const decompressed = LZString.decompress(compressed);
-
-console.log(decompressed); // { message: 'hello' }
-```
+This package is moved to [@react-ssr/core](https://npm.im/@react-ssr/core).
 
 ## About react-ssr
 
