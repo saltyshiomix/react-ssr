@@ -8,7 +8,7 @@ import {
   getPageId,
 } from '../helpers';
 
-const codec = require('json-url')('lzw');
+const codec = require('json-url')('lzstring');
 
 require('@babel/register')({
   extensions: ['.js', '.jsx', '.ts', '.tsx'],

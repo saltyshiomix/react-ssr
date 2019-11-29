@@ -17,7 +17,7 @@ import {
 
 const cwd = process.cwd();
 const config = getSsrConfig();
-const codec = require('json-url')('lzw');
+const codec = require('json-url')('lzstring');
 
 const ufs = require('unionfs').ufs;
 const memfs = new MemoryFileSystem();
