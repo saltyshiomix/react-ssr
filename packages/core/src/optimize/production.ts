@@ -5,13 +5,13 @@ import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
 import { configureWebpack } from './webpack.config';
-import LZString from '@react-ssr/lz-string';
 import { getEntry } from './helpers';
 import {
   getSsrConfig,
   getEngine,
   getPageId,
   readFileWithProps,
+  decompressProps,
   sleep,
 } from '../helpers';
 
@@ -53,7 +53,7 @@ export default async (app: express.Application): Promise<void> => {
 
       const jsRoute = `/_react-ssr/${pageId}.js`;
       app.get(jsRoute, (req, res) => {
-        const props = LZString.decompress(req.query.props);
+        const props = decompressProps(req.query.props);
         const filename = path.join(cwd, config.distDir, `${pageId}.js`);
         const script = readFileWithProps(filename, props);
         res.status(200).type('.js').send(script);
