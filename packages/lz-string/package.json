@@ -1,6 +1,6 @@
 {
   "name": "@react-ssr/lz-string",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "description": "React SSR as a view template engine",
   "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
