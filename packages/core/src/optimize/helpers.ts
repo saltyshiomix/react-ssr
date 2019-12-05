@@ -1,5 +1,6 @@
 import fse from 'fs-extra';
 import path from 'path';
+import slash from 'slash';
 import webpack from 'webpack';
 import {
   getSsrConfig,
@@ -30,9 +31,9 @@ export const getEntry = async (memfs: any): Promise<[webpack.Entry, string[]]> =
     }
     memfs.writeFileSync(
       path.join(cwd, 'react-ssr-src', dir, `entry-${name}${ext}`),
-      template.replace('__REACT_SSR_PAGE__', page),
+      template.replace('__REACT_SSR_PAGE__', slash(page)),
     );
-    entry[getPageId(page, '_')] = `./react-ssr-src/${dir}/entry-${name}${ext}`;
+    entry[getPageId(page, '_')] = `./react-ssr-src/${slash(dir)}/entry-${name}${ext}`;
   }
 
   return [entry, entryPages];
