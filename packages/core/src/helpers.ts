@@ -62,7 +62,13 @@ export const readFileWithProps = (file: string, props: any, memfs?: any) => {
     .readFileSync(file).toString()
     .replace(
       '__REACT_SSR_PROPS__',
-      JSON.stringify(props).replace(/"/g, '\\"'),
+      [
+        '`',
+        JSON.stringify(props)
+            .replace(/"/g, '\\"')
+            .replace(/\\\\"/g, '\\\\\\\\\\\\\\"'),
+        '`',
+      ].join(''),
     );
 };
 

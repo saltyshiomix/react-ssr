@@ -4,7 +4,7 @@ import { CacheProvider } from '@emotion/core';
 import createCache from '@emotion/cache';
 import Page from '__REACT_SSR_PAGE__';
 
-const props = JSON.parse('__REACT_SSR_PROPS__');
+const props = JSON.parse(__REACT_SSR_PROPS__);
 
 const cache = createCache();
 
