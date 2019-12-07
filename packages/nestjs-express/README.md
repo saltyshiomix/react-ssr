@@ -447,6 +447,49 @@ And then, populate `.babelrc` in your project root:
 
 A working example is here: [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
 
+## Handle Large Data
+
+We may come across the error ["431 Request Header Fields Too Large"](https://developer.mozilla.org/ja/docs/Web/HTTP/Status/431) because Node.js has a threshold of http request header size. (The default value is 8kB.)
+
+To overcome this, we must specify `--max-http-header-size` option to Node.js:
+
+### On Development with Nodemon in TypeScript
+
+**nodemon.json**
+
+```json
+{
+  "watch": [
+    "server"
+  ],
+  "execMap": {
+    "ts": "cross-env TS_NODE_PROJECT=tsconfig.server.json node --max-http-header-size 512000 -r ts-node/register"
+  }
+}
+```
+
+**package.json**
+
+```json
+{
+  "scripts": {
+    "start": "nodemon server/main.ts"
+  }
+}
+```
+
+### On Production
+
+**package.json**
+
+```json
+{
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node --max-http-header-size 512000 server/main.js"
+  }
+}
+```
+
 ## Examples
 
 - [examples/basic-blogging](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-blogging)

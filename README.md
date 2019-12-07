@@ -558,6 +558,61 @@ export default function Index({ message }: IndexProps) {
 }
 ```
 
+## Handle Large Data
+
+We may come across the error ["431 Request Header Fields Too Large"](https://developer.mozilla.org/ja/docs/Web/HTTP/Status/431) because Node.js has a threshold of http request header size. (The default value is 8kB.)
+
+To overcome this, we must specify `--max-http-header-size` option to Node.js:
+
+### Basic on Development
+
+**package.json**
+
+```json
+{
+  "scripts": {
+    "start": "node --max-http-header-size 512000 server.js"
+  }
+}
+```
+
+### Basic on Production
+
+**package.json**
+
+```json
+{
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node --max-http-header-size 512000 server.js"
+  }
+}
+```
+
+### On Development with Nodemon in TypeScript
+
+**nodemon.json**
+
+```json
+{
+  "watch": [
+    "server"
+  ],
+  "execMap": {
+    "ts": "cross-env TS_NODE_PROJECT=tsconfig.server.json node --max-http-header-size 512000 -r ts-node/register"
+  }
+}
+```
+
+**package.json**
+
+```json
+{
+  "scripts": {
+    "start": "nodemon server.ts"
+  }
+}
+```
+
 ## Packages
 
 | package | version |
