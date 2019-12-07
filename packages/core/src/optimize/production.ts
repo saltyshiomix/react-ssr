@@ -41,7 +41,7 @@ export default async (app: express.Application): Promise<void> => {
       const pageId = getPageId(page, '_');
 
       const cssRoute = `/_react-ssr/${pageId}.css`;
-      app.get(cssRoute, (req, res) => {
+      app.use(cssRoute, (req, res) => {
         const filename = path.join(cwd, config.distDir, `${pageId}.css`);
         let style = '';
         if (fs.existsSync(filename)) {
@@ -52,7 +52,7 @@ export default async (app: express.Application): Promise<void> => {
       });
 
       const jsRoute = `/_react-ssr/${pageId}.js`;
-      app.get(jsRoute, (req, res) => {
+      app.use(jsRoute, (req, res) => {
         const props = decompressProps(req.query.props);
         const filename = path.join(cwd, config.distDir, `${pageId}.js`);
         const script = readFileWithProps(filename, props);
@@ -68,4 +68,8 @@ export default async (app: express.Application): Promise<void> => {
     }
     await sleep(100);
   }
+
+  // TODO: use promise
+  // wait until completed
+  await sleep(1000);
 };

@@ -33,7 +33,7 @@ const prodConfig: webpack.Configuration = {
     occurrenceOrder: true,
     sideEffects: true,
     usedExports: true,
-    concatenateModules: true,
+    concatenateModules: false,
     splitChunks: {
       minSize: 30000,
       maxAsyncRequests: 5,
@@ -49,7 +49,6 @@ const prodConfig: webpack.Configuration = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
   ],
 };
 
