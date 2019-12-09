@@ -91,7 +91,7 @@ module.exports = {
   id: 'default',
   distDir: '.ssr',
   viewsDir: 'views',
-  dynamicViews: [],
+  staticViews: [],
   webpack: (config /* webpack.Configuration */, env /* 'development' | 'production' */) => {
     return config;
   },
@@ -144,22 +144,19 @@ A function `res.render('xxx')` will render `views/xxx.jsx` or `views/xxx.tsx`.
 
 A working example is here: [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
 
-### `ssr.config.js#dynamicViews`
+### `ssr.config.js#staticViews`
 
-If specified, `react-ssr` won't generate html cache when production.
-
-This is suitable for search-engine-optimized dynamic routes like blogging:
+If specified, `react-ssr` generates html cache when production:
 
 ```js
 module.exports = {
-  dynamicViews: [
-    // this means `views/posts.jsx` is a dynamic view
-    'posts',
+  staticViews: [
+    'auth/login',
+    'auth/register',
+    'about',
   ],
 };
 ```
-
-A working example is here: [examples/basic-blogging](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-blogging)
 
 ### `ssr.config.js#webpack()`
 
