@@ -66,7 +66,13 @@ export const readFileWithProps = (file: string, props: any, memfs?: any) => {
         '`',
         JSON.stringify(props)
             .replace(/"/g, '\\"')
-            .replace(/\\\\"/g, '\\\\\\\\\\\\\\"'),
+            .replace(/\\\\"/g, '\\\\\\\\\\\\\\"')
+            .replace(/\\&/g, '\\\\\\\\&')
+            .replace(/\\r/g, '\\\\\\\\r')
+            .replace(/\\n/g, '\\\\\\\\n')
+            .replace(/\\t/g, '\\\\\\\\t')
+            .replace(/\\b/g, '\\\\\\\\b')
+            .replace(/\\f/g, '\\\\\\\\f'),
         '`',
       ].join(''),
     );
