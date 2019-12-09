@@ -62,7 +62,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "recursive-readdir": "^2.2.2",
     "slash": "^3.0.0",
-    "terser-webpack-plugin": "^2.2.1",
+    "terser-webpack-plugin": "^2.2.2",
     "unionfs": "^4.2.0",
     "urlsafe-base64": "^1.0.0",
     "webpack": "^4.41.2",
