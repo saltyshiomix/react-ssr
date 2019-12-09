@@ -128,14 +128,11 @@ Populate files below inside your project:
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "esModuleInterop": true
   },
   "exclude": [
     "node_modules",
+    "ssr.config.js",
     ".ssr"
   ]
 }
