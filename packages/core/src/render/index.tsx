@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import React from 'react';
+import slash from 'slash';
 import Document from '../components/Document';
 import {
   getSsrConfig,
@@ -80,7 +81,8 @@ export default async function render(file: string, props: object): Promise<strin
     return 'Error';
   } finally {
     if (env === 'production' && !fs.existsSync(cachePath)) {
-      if (!config.dynamicViews.includes(path.basename(file, path.extname(file)))) {
+      const viewPath = slash(file.replace(path.join(cwd, config.viewsDir), '').replace(ext, '')).slice(1);
+      if (config.staticViews.includes(viewPath)) {
         fs.writeFileSync(cachePath, html);
       }
     }
