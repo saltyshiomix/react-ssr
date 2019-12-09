@@ -5,9 +5,16 @@ const Post = ({ post }) => {
   return (
     <React.Fragment>
       <Head>
-        <title>{post.body} - basic-blogging</title>
+        <title>
+          {post.title} - basic-blogging
+        </title>
       </Head>
-      <p>{post.body}</p>
+      <h1>
+        {post.title}
+      </h1>
+      <pre>
+        {post.body}
+      </pre>
     </React.Fragment>
   );
 };

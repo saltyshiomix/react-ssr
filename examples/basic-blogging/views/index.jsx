@@ -5,12 +5,14 @@ const Index = ({ posts }) => {
   return (
     <React.Fragment>
       <Head>
-        <title>basic-blogging</title>
+        <title>
+          basic-blogging
+        </title>
       </Head>
       {posts.map((post, index) => {
         return (
           <p key={index}>
-            <a href={'/posts/' + post.id}>{post.body}</a>
+            <a href={'/posts/' + post.id}>{post.title}</a>
           </p>
         );
       })}
