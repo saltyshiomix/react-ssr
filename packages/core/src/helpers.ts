@@ -97,13 +97,11 @@ export const getCacheablePages = async (): Promise<string[]> => {
 export const compressProps = (props: any) => {
   const packed = JSON.stringify(props);
   const compressed = Buffer.from(LZString.compressToUint8Array(packed));
-  const encoded = URLSafeBase64.encode(compressed);
-  return encoded;
+  return URLSafeBase64.encode(compressed);
 }
 
 export const decompressProps = (compressedProps: string) => {
   const decoded = URLSafeBase64.decode(compressedProps);
   const decompressed = LZString.decompressFromUint8Array(decoded);
-  const unpacked = JSON.parse(decompressed);
-  return unpacked;
+  return JSON.parse(decompressed);
 }
