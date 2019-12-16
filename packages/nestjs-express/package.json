@@ -31,10 +31,8 @@
     "register.js",
     "register.d.ts"
   ],
-  "dependencies": {
-    "@react-ssr/core": "^0.17.3"
-  },
   "devDependencies": {
+    "@react-ssr/core": "^0.17.3",
     "@nestjs/common": "^6.10.11",
     "@nestjs/core": "^6.10.11",
     "@nestjs/platform-express": "^6.10.11",
@@ -44,6 +42,7 @@
     "rxjs": "^6.5.3"
   },
   "peerDependencies": {
+    "@react-ssr/core": "^0.*",
     "@nestjs/platform-express": "^6"
   }
 }
