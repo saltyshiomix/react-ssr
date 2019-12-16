@@ -8,15 +8,11 @@ import { configureWebpack } from './webpack.config';
 import { getEntry } from './helpers';
 import {
   getSsrConfig,
-  getEngine,
   getPageId,
-  readFileWithProps,
-  decompressProps,
   sleep,
 } from '../helpers';
 
 const cwd = process.cwd();
-const ext = '.' + getEngine();
 const config = getSsrConfig();
 
 const ufs = require('unionfs').ufs;
@@ -40,25 +36,22 @@ export default async (app: express.Application): Promise<void> => {
       const page = entryPages[i];
       const pageId = getPageId(page, '_');
 
-      const cssRoute = `/_react-ssr/${pageId}.css`;
-      app.use(cssRoute, (req, res) => {
+      app.use(`/_react-ssr/${pageId}.css`, (req, res) => {
         const filename = path.join(cwd, config.distDir, `${pageId}.css`);
-        let style = '';
-        if (fs.existsSync(filename)) {
-          style = fs.readFileSync(filename).toString();
-        }
-        res.writeHead(200, { 'Content-Type': 'text/css' });
-        res.end(style, 'utf-8');
+        const style = fs.existsSync(filename) ? fs.readFileSync(filename).toString() : '';
+        res
+          .writeHead(200, { 'Content-Type': 'text/css' })
+          .end(style, 'utf-8');
       });
 
-      const jsRoute = `/_react-ssr/${pageId}.js`;
-      app.use(jsRoute, (req, res) => {
-        const props = decompressProps(req.query.props);
+      app.use(`/_react-ssr/${pageId}.js`, (req, res) => {
         const filename = path.join(cwd, config.distDir, `${pageId}.js`);
-        const script = readFileWithProps(filename, props);
-        res.status(200).type('.js').send(script);
+        const script = fs.readFileSync(filename).toString();
+        res
+          .status(200)
+          .type('.js')
+          .send(script);
       });
-      console.log(`[ info ] optimized "${config.viewsDir}/${getPageId(page, '/')}${ext}"`);
     }
   });
 

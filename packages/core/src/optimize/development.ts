@@ -11,8 +11,6 @@ import { getEntry } from './helpers';
 import {
   getSsrConfig,
   getPageId,
-  readFileWithProps,
-  decompressProps,
   sleep,
 } from '../helpers';
 
@@ -42,30 +40,27 @@ export default async (app: express.Application): Promise<void> => {
     compress: true,
     serveIndex: false,
     after: (app: express.Application, server: WebpackDevServer, compiler: webpack.Compiler) => {
+      const memfs = compiler.outputFileSystem as any;
+
       for (let i = 0; i < entryPages.length; i++) {
         const page = entryPages[i];
         const pageId = getPageId(page, '_');
 
-        const cssRoute = `/_react-ssr/${pageId}.css`;
-        app.get(cssRoute, (req, res) => {
+        app.get(`/_react-ssr/${pageId}.css`, (req, res) => {
           const filename = path.join(cwd, config.distDir, `${pageId}.css`);
-          const memfs = compiler.outputFileSystem as any;
-          let style = '';
-          if (memfs.existsSync(filename)) {
-            style = memfs.readFileSync(filename).toString();
-          }
-          res.writeHead(200, { 'Content-Type': 'text/css' });
-          res.end(style, 'utf-8');
+          const style = memfs.existsSync(filename) ? memfs.readFileSync(filename).toString() : '';
+          res
+            .writeHead(200, { 'Content-Type': 'text/css' })
+            .end(style, 'utf-8');
         });
 
-        const jsRoute = `/_react-ssr/${pageId}.js`;
-        app.get(jsRoute, (req, res) => {
-          const props = decompressProps(req.query.props);
-          console.log('[ info ] the props below is rendered from the server side');
-          console.log(props);
+        app.get(`/_react-ssr/${pageId}.js`, (req, res) => {
           const filename = path.join(cwd, config.distDir, `${pageId}.js`);
-          const script = readFileWithProps(filename, props, compiler.outputFileSystem);
-          res.status(200).type('.js').send(script);
+          const script = memfs.readFileSync(filename).toString();
+          res
+            .status(200)
+            .type('.js')
+            .send(script);
         });
       }
     },
@@ -94,14 +89,12 @@ export default async (app: express.Application): Promise<void> => {
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
     const pageId = getPageId(page, '_');
-    const route = `/_react-ssr/${pageId}.css`;
-    app.use(route, proxyMiddleware);
+    app.use(`/_react-ssr/${pageId}.css`, proxyMiddleware);
   }
 
   for (let i = 0; i < entryPages.length; i++) {
     const page = entryPages[i];
     const pageId = getPageId(page, '_');
-    const route = `/_react-ssr/${pageId}.js`;
-    app.use(route, proxyMiddleware);
+    app.use(`/_react-ssr/${pageId}.js`, proxyMiddleware);
   }
 };

@@ -2,8 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import readdir from 'recursive-readdir';
-import LZString from 'lz-string';
-import URLSafeBase64 from 'urlsafe-base64';
 
 const cwd: string = process.cwd();
 
@@ -57,27 +55,6 @@ export const getPageId = (page: string, separator: string = '_'): string => {
   return rest.join(separator);
 };
 
-export const readFileWithProps = (file: string, props: any, memfs?: any) => {
-  return (memfs || fs)
-    .readFileSync(file).toString()
-    .replace(
-      '__REACT_SSR_PROPS__',
-      [
-        '`',
-        JSON.stringify(props)
-            .replace(/"/g, '\\"')
-            .replace(/\\\\"/g, '\\\\\\\\\\\\\\"')
-            .replace(/\\&/g, '\\\\\\\\&')
-            .replace(/\\r/g, '\\\\\\\\r')
-            .replace(/\\n/g, '\\\\\\\\n')
-            .replace(/\\t/g, '\\\\\\\\t')
-            .replace(/\\b/g, '\\\\\\\\b')
-            .replace(/\\f/g, '\\\\\\\\f'),
-        '`',
-      ].join(''),
-    );
-};
-
 const ignores = [
   '.*',
   '*.json',
@@ -99,15 +76,3 @@ const ignoreNodeModules = (file: string, stats: fs.Stats) => {
 export const getCacheablePages = async (): Promise<string[]> => {
   return readdir(cwd, [ignoreNodeModules, ignoreDotDir, ...ignores]);
 };
-
-export const compressProps = (props: any) => {
-  const packed = JSON.stringify(props);
-  const compressed = Buffer.from(LZString.compressToUint8Array(packed));
-  return URLSafeBase64.encode(compressed);
-}
-
-export const decompressProps = (compressedProps: string) => {
-  const decoded = URLSafeBase64.decode(compressedProps);
-  const decompressed = LZString.decompressFromUint8Array(decoded);
-  return JSON.parse(decompressed);
-}

@@ -1,10 +1,20 @@
+import LZString from 'lz-string';
+import URLSafeBase64 from 'urlsafe-base64';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Page from '__REACT_SSR_PAGE__';
 
-const props = JSON.parse(__REACT_SSR_PROPS__);
+const getProps = () => {
+  const compressedProps = document.getElementById('').dataset.props;
+  const decoded = URLSafeBase64.decode(compressedProps);
+  const decompressed = LZString.decompressFromUint8Array(decoded);
+  return JSON.parse(decompressed);
+}
 
-ReactDOM.hydrate(<Page {...props} />, document.getElementById('react-ssr-root'));
+ReactDOM.hydrate(
+  <Page {...getProps()} />,
+  document.getElementById('react-ssr-root'),
+);
 
 if (module.hot) {
   module.hot.accept();

@@ -2,12 +2,13 @@ import fs from 'fs-extra';
 import path from 'path';
 import React from 'react';
 import slash from 'slash';
+import LZString from 'lz-string';
+import URLSafeBase64 from 'urlsafe-base64';
 import Document from '../components/Document';
 import {
   getSsrConfig,
   getEngine,
   getPageId,
-  compressProps,
 } from '../helpers';
 
 require('@babel/register')({
@@ -55,6 +56,12 @@ const getRenderToStringMethod = async () => {
   }
   return method;
 };
+
+const compressProps = (props: any) => {
+  const packed = JSON.stringify(props);
+  const compressed = Buffer.from(LZString.compressToUint8Array(packed));
+  return URLSafeBase64.encode(compressed);
+}
 
 export default async function render(file: string, props: object): Promise<string> {
   const pageId = getPageId(file, '_');
