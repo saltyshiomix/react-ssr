@@ -43,8 +43,7 @@ export default (app: React.ReactElement, pageId: string, props: string) => {
   </head>
   <body${convertAttrToString($('body').attr())}>
     <div id="react-ssr-root">${bodyWithoutScriptTags}</div>
-    <div id="react-ssr-script" data-props=${props} style="display: none;"></div>
-    <script src="/_react-ssr/${pageId}.js"></script>
+    <script id="react-ssr-script" src="/_react-ssr/${pageId}.js" data-props=${props}></script>
     ${scriptTags}
   </body>
 </html>`;
