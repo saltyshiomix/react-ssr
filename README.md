@@ -1,6 +1,3 @@
-<p align="center">😎 React SSR 😎</p>
-<p align="center">React SSR as a view template engine</p>
-
 ## Overview
 
 - SSR (Server Side Rendering) as a view template engine
