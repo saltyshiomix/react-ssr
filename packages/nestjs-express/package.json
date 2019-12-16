@@ -8,18 +8,13 @@
   "homepage": "https://github.com/saltyshiomix/react-ssr/tree/master/packages/nestjs-express/README.md",
   "keywords": [
     "react",
-    "reactjs",
-    "react.js",
-    "express",
-    "expressjs",
-    "nestjs",
     "nest",
-    "view",
-    "view-engine",
-    "template-engine",
-    "view-template-engine",
+    "nestjs",
+    "express",
+    "server-side-rendering",
     "ssr",
-    "server-side-rendering"
+    "view-engine",
+    "view-template-engine"
   ],
   "bugs": {
     "url": "https://github.com/saltyshiomix/react-ssr/issues",
