@@ -7,7 +7,7 @@ import createCache from '@emotion/cache';
 import Page from '__REACT_SSR_PAGE__';
 
 const getProps = () => {
-  const compressedProps = document.getElementById('').dataset.props;
+  const compressedProps = document.getElementById('react-ssr-script').dataset.props;
   const decoded = URLSafeBase64.decode(compressedProps);
   const decompressed = LZString.decompressFromUint8Array(decoded);
   return JSON.parse(decompressed);
