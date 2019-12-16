@@ -35,7 +35,7 @@ This package is internally used by [@react-ssr/express](https://npm.im/@react-ss
 Install it:
 
 ```bash
-$ npm install --save @react-ssr/express express react react-dom
+$ npm install --save @react-ssr/core @react-ssr/express express react react-dom
 ```
 
 And add a script to your package.json like this:
@@ -104,7 +104,7 @@ Install it:
 $ npm install --save @nestjs/core @nestjs/common @nestjs/platform-express
 
 # install @react-ssr/nestjs-express
-$ npm install --save @react-ssr/nestjs-express react react-dom
+$ npm install --save @react-ssr/core @react-ssr/nestjs-express react react-dom
 ```
 
 And add a script to your package.json like this:

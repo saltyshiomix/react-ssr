@@ -23,7 +23,7 @@
 Install it:
 
 ```bash
-$ npm install --save @react-ssr/express express react react-dom
+$ npm install --save @react-ssr/core @react-ssr/express express react react-dom
 ```
 
 And add a script to your package.json like this:
@@ -109,7 +109,7 @@ Supported UI frameworks are:
 
 - [x] default (the id `default` doesn't need to be specified in `ssr.config.js`)
   - [x] [semantic-ui](https://react.semantic-ui.com)
-  - [x] Or any other non CSS-in-JS UI frameworks
+  - [x] Or any other **non** CSS-in-JS UI frameworks
 - [x] [emotion](https://emotion.sh)
 - [x] [styled-components](https://www.styled-components.com)
 - [x] [material-ui](https://material-ui.com)
@@ -247,7 +247,7 @@ A working example is here: [examples/basic-dynamic-head](https://github.com/salt
 
 - [x] default (the id `default` doesn't need to be specified in `ssr.config.js`)
   - [x] [semantic-ui](https://react.semantic-ui.com)
-  - [x] Or any other non CSS-in-JS UI frameworks
+  - [x] Or any other **non** CSS-in-JS UI frameworks
 - [x] [emotion](https://emotion.sh)
 - [x] [styled-components](https://www.styled-components.com)
 - [x] [material-ui](https://material-ui.com)
