@@ -1,13 +1,3 @@
-<p align="center">😎 @react-ssr/nestjs-express 😎</p>
-<p align="center">
-  <a href="https://npm.im/@react-ssr/nestjs-express" alt="A version of @react-ssr/nestjs-express">
-    <img src="https://img.shields.io/npm/v/@react-ssr/nestjs-express.svg">
-  </a>
-  <a href="https://npm.im/@react-ssr/nestjs-express" alt="Downloads of @react-ssr/nestjs-express">
-    <img src="https://img.shields.io/npm/dt/@react-ssr/nestjs-express.svg">
-  </a>
-</p>
-
 ## Overview
 
 - SSR (Server Side Rendering) as a view template engine

@@ -1,13 +1,3 @@
-<p align="center">😎 @react-ssr/core 😎</p>
-<p align="center">
-  <a href="https://npm.im/@react-ssr/core" alt="A version of @react-ssr/core">
-    <img src="https://img.shields.io/npm/v/@react-ssr/core.svg">
-  </a>
-  <a href="https://npm.im/@react-ssr/core" alt="Downloads of @react-ssr/core">
-    <img src="https://img.shields.io/npm/dt/@react-ssr/core.svg">
-  </a>
-</p>
-
 This package is internally used by [@react-ssr/express](https://npm.im/@react-ssr/express) and [@react-ssr/nestjs-express](https://npm.im/@react-ssr/nestjs-express).
 
 ## Overview
