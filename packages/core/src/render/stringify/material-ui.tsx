@@ -9,7 +9,7 @@ import {
 const Head = require('./head');
 const { ServerStyleSheets } = require('@material-ui/core/styles');
 
-export default (app: React.ReactElement, script: string, style: string) => {
+export default (app: React.ReactElement, pageId: string, props: string) => {
   const sheets = new ServerStyleSheets();
   const html = ReactDOMServer.renderToString(sheets.collect(app));
   const css = sheets.toString();
@@ -23,14 +23,13 @@ export default (app: React.ReactElement, script: string, style: string) => {
 <html${convertAttrToString($('html').attr())}>
   <head>
     ${getHeadHtml(Head.rewind())}
-    <link rel="stylesheet" href="${style}">
+    <link rel="stylesheet" href="/_react-ssr/${pageId}.css">
     <style id="jss-server-side">${css}</style>
   </head>
   <body${convertAttrToString($('body').attr())}>
     <div id="react-ssr-root">${bodyWithoutScriptTags}</div>
-    <script src="${script}"></script>
+    <script src="/_react-ssr/${pageId}.js?props=${props}"></script>
     ${scriptTags}
   </body>
-</html>
-`;
+</html>`;
 };

@@ -10,7 +10,7 @@ const Head = require('./head');
 
 const { ServerStyleSheet } = require('styled-components');
 
-export default (app: React.ReactElement, script: string, style: string) => {
+export default (app: React.ReactElement, pageId: string, props: string) => {
   const sheet = new ServerStyleSheet();
   try {
     const html = ReactDOMServer.renderToString(sheet.collectStyles(app));
@@ -25,16 +25,15 @@ export default (app: React.ReactElement, script: string, style: string) => {
 <html${convertAttrToString($('html').attr())}>
   <head>
     ${getHeadHtml(Head.rewind())}
-    <link rel="stylesheet" href="${style}">
+    <link rel="stylesheet" href="/_react-ssr/${pageId}.css">
     ${styleTags}
   </head>
   <body${convertAttrToString($('body').attr())}>
     <div id="react-ssr-root">${bodyWithoutScriptTags}</div>
-    <script src="${script}"></script>
+    <script src="/_react-ssr/${pageId}.js?props=${props}"></script>
     ${scriptTags}
   </body>
-</html>
-`;
+</html>`;
   } finally {
     sheet.seal();
   }

@@ -72,8 +72,8 @@ export default async function render(file: string, props: object): Promise<strin
       <DocumentContext.Provider value={<Page {...props} />}>
         <DocumentComponent />
       </DocumentContext.Provider>,
-      `/_react-ssr/${pageId}.js?props=${compressProps(props)}`,
-      `/_react-ssr/${pageId}.css`,
+      pageId,
+      compressProps(props),
     );
     return html;
   } catch (err) {

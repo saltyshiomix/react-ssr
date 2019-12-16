@@ -16,7 +16,7 @@ const createEmotionServer = emotionServer.default || emotionServer;
 const cache = createCache();
 const { extractCritical } = createEmotionServer(cache);
 
-export default (app: React.ReactElement, script: string, style: string) => {
+export default (app: React.ReactElement, pageId: string, props: string) => {
   const {
     html,
     css,
@@ -38,14 +38,13 @@ export default (app: React.ReactElement, script: string, style: string) => {
 <html${convertAttrToString($('html').attr())}>
   <head>
     ${getHeadHtml(Head.rewind())}
-    <link rel="stylesheet" href="${style}">
+    <link rel="stylesheet" href="/_react-ssr/${pageId}.css">
     <style data-emotion-css="${ids.join(' ')}">${css}</style>
   </head>
   <body${convertAttrToString($('body').attr())}>
     <div id="react-ssr-root">${bodyWithoutScriptTags}</div>
-    <script src="${script}"></script>
+    <script src="/_react-ssr/${pageId}.js?props=${props}"></script>
     ${scriptTags}
   </body>
-</html>
-`;
+</html>`;
 };
