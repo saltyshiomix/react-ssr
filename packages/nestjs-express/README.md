@@ -30,7 +30,7 @@ And add a script to your package.json like this:
 }
 ```
 
-Populate files below inside your project:
+Then, populate files below inside your project:
 
 **`./.babelrc`**
 
@@ -91,7 +91,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import register from '@react-ssr/nestjs-express/register';
 import { AppModule } from './app.module';
 
-async function bootstrap() {
+(async () => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // register `.tsx` as a view template engine
@@ -100,9 +100,7 @@ async function bootstrap() {
   app.listen(3000, async () => {
     console.log(`> Ready on http://localhost:3000`);
   });
-}
-
-bootstrap();
+})();
 ```
 
 **`./server/app.module.ts`**
@@ -153,7 +151,7 @@ const Index = ({ user }: IndexProps) => {
 export default Index;
 ```
 
-Then just run `npm start` and go to `http://localhost:3000`, you'll see `Hello NestJS!`.
+Finally, just run `npm start` and go to `http://localhost:3000`, and you'll see `Hello NestJS!`.
 
 ## Configuration (`ssr.config.js`)
 
@@ -328,6 +326,8 @@ A working example is here: [examples/basic-dynamic-head](https://github.com/salt
 
 ### Non CSS-in-JS framework
 
+<p align="center"><img src="https://i.imgur.com/0PwlfVk.png"></p>
+
 Like [semantic-ui](https://react.semantic-ui.com), non CSS-in-JS frameworks are supported without extra configuration.
 
 All we have to do is to load global CSS in `_document` or each page:
@@ -359,7 +359,36 @@ export default class extends Document {
 }
 ```
 
+### With Ant Design
+
+<p align="center"><img src="https://i.imgur.com/yWGxseM.png"></p>
+
+In order to enable SSR, we must install `babel-plugin-import` as devDependencies.
+
+And then, populate `.babelrc` in your project root:
+
+```json
+{
+  "presets": [
+    "@react-ssr/express/babel"
+  ],
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": "css"
+      }
+    ]
+  ]
+}
+```
+
+A working example is here: [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
+
 ### With Emotion
+
+<p align="center"><img src="https://i.imgur.com/XN8evEM.png"></p>
 
 In order to enable SSR, we must install these packages:
 
@@ -382,7 +411,17 @@ And then, populate `.babelrc` in your project root:
 
 A working example is here: [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
 
+### With Material UI
+
+<p align="center"><img src="https://i.imgur.com/o1AWdyd.png"></p>
+
+We can use [material-ui](https://material-ui.com) without extra configuration.
+
+A working example is here: [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
+
 ### With styled-components
+
+<p align="center"><img src="https://i.imgur.com/RtuijYA.png"></p>
 
 In order to enable SSR, we must install `babel-plugin-styled-components` as devDependencies.
 
@@ -391,7 +430,7 @@ And then, populate `.babelrc` in your project root:
 ```json
 {
   "presets": [
-    "@react-ssr/nestjs-express/babel"
+    "@react-ssr/express/babel"
   ],
   "plugins": [
     "styled-components"
@@ -400,37 +439,6 @@ And then, populate `.babelrc` in your project root:
 ```
 
 A working example is here: [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
-
-### With Material UI
-
-We can use [material-ui](https://material-ui.com) without extra configuration.
-
-A working example is here: [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
-
-### With Ant Design
-
-In order to enable SSR, we must install `babel-plugin-import` as devDependencies.
-
-And then, populate `.babelrc` in your project root:
-
-```json
-{
-  "presets": [
-    "@react-ssr/nestjs-express/babel"
-  ],
-  "plugins": [
-    [
-      "import",
-      {
-        "libraryName": "antd",
-        "style": "css"
-      }
-    ]
-  ]
-}
-```
-
-A working example is here: [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
 
 ## Examples
 
@@ -456,6 +464,8 @@ A working example is here: [examples/with-jsx-antd](https://github.com/saltyshio
 - [react-ssr-nestjs-starter](https://github.com/saltyshiomix/react-ssr-nestjs-starter)
 
 ## Articles
+
+[Introducing an Alternative to NEXT.js](https://dev.to/saltyshiomix/introducing-an-alternative-to-next-js-12ph)
 
 [[Express] React as a View Template Engine?](https://dev.to/saltyshiomix/express-react-as-a-view-template-engine-h37)
 

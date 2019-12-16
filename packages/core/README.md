@@ -5,7 +5,7 @@ This package is internally used by [@react-ssr/express](https://npm.im/@react-ss
 - SSR (Server Side Rendering) as a view template engine
 - Dynamic
   - `props`
-    - Passing the server data to the client `props`
+    - Passing the server data to the React client `props`
     - Suitable for dynamic routes like blogging
   - `Head` component
 - HMR when `process.env.NODE_ENV !== 'production'`
@@ -38,7 +38,7 @@ And add a script to your package.json like this:
 }
 ```
 
-Populate files below inside your project:
+Then, populate files below inside your project:
 
 **`./.babelrc`**
 
@@ -81,9 +81,7 @@ export default function Index({ message }) {
 }
 ```
 
-Then just run `npm start` and go to `http://localhost:3000`.
-
-You'll see `Hello World!`.
+Finally, just run `npm start` and go to `http://localhost:3000`, and you'll see `Hello World!`.
 
 ### With @react-ssr/nestjs-express
 
@@ -107,7 +105,7 @@ And add a script to your package.json like this:
 }
 ```
 
-Populate files below inside your project:
+Then, populate files below inside your project:
 
 **`./.babelrc`**
 
@@ -168,7 +166,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import register from '@react-ssr/nestjs-express/register';
 import { AppModule } from './app.module';
 
-async function bootstrap() {
+(async () => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // register `.tsx` as a view template engine
@@ -177,9 +175,7 @@ async function bootstrap() {
   app.listen(3000, async () => {
     console.log(`> Ready on http://localhost:3000`);
   });
-}
-
-bootstrap();
+})();
 ```
 
 **`./server/app.module.ts`**
@@ -256,5 +252,7 @@ Then just run `npm start` and go to `http://localhost:3000`, you'll see `Hello N
 - [react-ssr-nestjs-starter](https://github.com/saltyshiomix/react-ssr-nestjs-starter)
 
 ## Articles
+
+[Introducing an Alternative to NEXT.js](https://dev.to/saltyshiomix/introducing-an-alternative-to-next-js-12ph)
 
 [[Express] React as a View Template Engine?](https://dev.to/saltyshiomix/express-react-as-a-view-template-engine-h37)
