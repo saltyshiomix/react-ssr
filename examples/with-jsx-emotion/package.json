@@ -8,6 +8,7 @@
     "@emotion/cache": "^10.0.19",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
+    "@react-ssr/core": "latest",
     "@react-ssr/express": "latest",
     "create-emotion-server": "10.0.14",
     "express": "^4.17.1",

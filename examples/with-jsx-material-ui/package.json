@@ -5,7 +5,8 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@material-ui/core": "^4.7.0",
+    "@material-ui/core": "^4.8.0",
+    "@react-ssr/core": "latest",
     "@react-ssr/express": "latest",
     "express": "^4.17.1",
     "react": "^16.12.0",
