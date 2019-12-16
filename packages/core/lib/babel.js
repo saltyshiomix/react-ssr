@@ -2,7 +2,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = (api) => {
   api.cache(() => isProduction);
-
   return {
     presets: [
       require('@babel/preset-env'),
