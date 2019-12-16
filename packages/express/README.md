@@ -11,10 +11,11 @@
 ## Overview
 
 - SSR (Server Side Rendering) as a view template engine
-- Passing the server data to the client `props`
-- Dynamic `props` without caring about SSR
-  - Suitable for dynamic routes like blogging
-- Dynamic `Head` component
+- Dynamic
+  - `props`
+    - Passing the server data to the client `props`
+    - Suitable for dynamic routes like blogging
+  - `Head` component
 - HMR when `process.env.NODE_ENV !== 'production'`
 
 ## Usage
