@@ -595,8 +595,6 @@ $ yarn dev <example-folder-name>
 
 ## Articles
 
-[The React View Template Engine for Express](https://dev.to/saltyshiomix/the-react-view-template-engine-for-express-42f0)
-
 [[Express] React as a View Template Engine?](https://dev.to/saltyshiomix/express-react-as-a-view-template-engine-h37)
 
 ## Related
