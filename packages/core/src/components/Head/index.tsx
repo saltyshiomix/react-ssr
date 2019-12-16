@@ -2,7 +2,10 @@ import React from 'react';
 import withSideEffect from './with-side-effect';
 
 const defaultHead = [
-  <meta key="charSet" charSet="utf-8" />,
+  <meta
+    key="charSet"
+    charSet="utf-8"
+  />,
   <meta
     key="viewport"
     name="viewport"
@@ -119,7 +122,6 @@ const Effect = withSideEffect();
 
 class Head extends React.Component {
   static rewind = Effect.rewind;
-
   render() {
     return (
       <Effect
