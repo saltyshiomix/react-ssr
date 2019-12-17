@@ -10,11 +10,11 @@ const Index = () => {
     <React.Fragment>
       <Head>
         <title>
-          with-tsx-static - @react-ssr/static
+          basic-tsx-static - @react-ssr/static
         </title>
       </Head>
-      <button onClick={onClick}>Click Me</button>
       <p>Message from state: {message}</p>
+      <button onClick={onClick}>Click Me</button>
     </React.Fragment>
   );
 };
