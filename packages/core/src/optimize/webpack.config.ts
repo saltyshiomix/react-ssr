@@ -79,7 +79,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
               loader: MiniCssExtractPlugin.loader,
               options: {
                 publicPath: path.join(cwd, ssrConfig.distDir),
-                hmr: process.env.NODE_ENV !== 'production',
+                hmr: env === 'development',
                 reloadAll: true,
               },
             },
@@ -95,7 +95,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
               loader: MiniCssExtractPlugin.loader,
               options: {
                 publicPath: path.join(cwd, ssrConfig.distDir),
-                hmr: process.env.NODE_ENV !== 'production',
+                hmr: env === 'development',
                 reloadAll: true,
               },
             },
@@ -105,7 +105,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
             {
               loader: 'sass-loader',
               options: {
-                sourceMap: process.env.NODE_ENV !== 'production',
+                sourceMap: env === 'development',
               },
             },
           ],
