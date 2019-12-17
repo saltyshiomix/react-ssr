@@ -11,6 +11,7 @@ export interface StaticConfig {
   viewsDir: string;
   port: number;
   routes: { [key: string]: string };
+  publicPaths: string[];
   webpack?: (defaultConfig: webpack.Configuration, env: 'development' | 'production') => webpack.Configuration;
 }
 
@@ -21,6 +22,7 @@ export const getStaticConfig = (): StaticConfig => {
     viewsDir: 'views',
     port: 3000,
     routes: {},
+    publicPaths: [],
   };
   const staticConfigPath = path.join(cwd, 'static.config.js');
   if (fs.existsSync(staticConfigPath)) {

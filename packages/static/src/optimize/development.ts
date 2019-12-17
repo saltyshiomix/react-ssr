@@ -96,4 +96,9 @@ export default async (app: express.Application): Promise<void> => {
     const pageId = getPageId(page, '_');
     app.use(`/_react-ssr/${pageId}.js`, proxyMiddleware);
   }
+
+  for (let i = 0; i < staticConfig.publicPaths.length; i++) {
+    const publicPath = staticConfig.publicPaths[i];
+    app.use(express.static(publicPath));
+  }
 };

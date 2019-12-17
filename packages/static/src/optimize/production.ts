@@ -52,6 +52,11 @@ export default async (app: express.Application): Promise<void> => {
           .send(script);
       });
     }
+
+    for (let i = 0; i < staticConfig.publicPaths.length; i++) {
+      const publicPath = staticConfig.publicPaths[i];
+      app.use(express.static(publicPath));
+    }
   });
 
   while (true) {

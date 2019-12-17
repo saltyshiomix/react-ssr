@@ -87,6 +87,11 @@ const app = express();
 
       fs.removeSync(tmpPath);
 
+      for (let i = 0; i < staticConfig.publicPaths.length; i++) {
+        const publicPath = staticConfig.publicPaths[i];
+        fs.copySync(path.join(cwd, publicPath), path.join(cwd, staticConfig.distDir));
+      }
+
       console.log(`[react-ssr] Generated static files in "${staticConfig.distDir}"`);
 
       process.exit(0);
