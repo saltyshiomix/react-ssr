@@ -32,7 +32,7 @@ And add a script to your package.json like this:
 
 Then, populate files below inside your project:
 
-**`./.babelrc`**
+**`.babelrc`**:
 
 ```json
 {
@@ -42,7 +42,7 @@ Then, populate files below inside your project:
 }
 ```
 
-**`./tsconfig.json`**
+**`tsconfig.json`**:
 
 ```json
 {
@@ -69,7 +69,7 @@ Then, populate files below inside your project:
 }
 ```
 
-**`./tsconfig.server.json`**
+**`tsconfig.server.json`**:
 
 ```json
 {
@@ -83,7 +83,7 @@ Then, populate files below inside your project:
 }
 ```
 
-**`./server/main.ts`**
+**`server/main.ts`**:
 
 ```ts
 import { NestFactory } from '@nestjs/core';
@@ -103,7 +103,7 @@ import { AppModule } from './app.module';
 })();
 ```
 
-**`./server/app.module.ts`**
+**`server/app.module.ts`**:
 
 ```ts
 import { Module } from '@nestjs/common';
@@ -117,7 +117,7 @@ import { AppController } from './app.controller';
 export class AppModule {}
 ```
 
-**`./server/app.controller.ts`**
+**`server/app.controller.ts`**:
 
 ```ts
 import {
@@ -137,7 +137,7 @@ export class AppController {
 }
 ```
 
-**`./views/index.tsx`**
+**`views/index.tsx`**:
 
 ```tsx
 interface IndexProps {
@@ -334,7 +334,7 @@ Like [semantic-ui](https://react.semantic-ui.com), non CSS-in-JS frameworks are 
 
 All we have to do is to load global CSS in `_document` or each page:
 
-**./views/_document.tsx**
+**`views/_document.tsx`**:
 
 ```tsx
 import React from 'react';
@@ -449,9 +449,11 @@ A working example is here: [examples/with-jsx-styled-components](https://github.
 - [examples/basic-hmr-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-css)
 - [examples/basic-hmr-scss](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-scss)
 - [examples/basic-jsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx)
+- [examples/basic-jsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx-static)
 - [examples/basic-nestjs](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs)
 - [examples/basic-nestjs-nodemon](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs-nodemon)
 - [examples/basic-tsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx)
+- [examples/basic-tsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx-static)
 - [examples/custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-document)
 - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
 - [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)

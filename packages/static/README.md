@@ -1,19 +1,9 @@
-## Overview
-
-- SSR (Server Side Rendering) as a view template engine
-- Dynamic
-  - `props`
-    - Passing the server data to the client `props`
-    - Suitable for dynamic routes like blogging
-  - `Head` component
-- HMR when `process.env.NODE_ENV !== 'production'`
-
 ## Usage
 
 Install it:
 
 ```bash
-$ npm install --save @react-ssr/core @react-ssr/express express react react-dom
+$ npm install --save @react-ssr/static react react-dom
 ```
 
 And add a script to your package.json like this:
@@ -21,73 +11,65 @@ And add a script to your package.json like this:
 ```json
 {
   "scripts": {
-    "start": "node server.js"
+    "dev": "static",
+    "build": "static build"
   }
 }
 ```
 
 Then, populate files below inside your project:
 
-**`./.babelrc`**
+**`.babelrc`**:
 
 ```json
 {
   "presets": [
-    "@react-ssr/express/babel"
+    "@react-ssr/static/babel"
   ]
 }
 ```
 
-**`./server.js`**
+**`static.config.js`**:
 
 ```js
-const express = require('express');
-const register = require('@react-ssr/express/register');
-
-const app = express();
-
-(async () => {
-  // register `.jsx` or `.tsx` as a view template engine
-  await register(app);
-
-  app.get('/', (req, res) => {
-    const message = 'Hello World!';
-    res.render('index', { message });
-  });
-
-  app.listen(3000, () => {
-    console.log('> Ready on http://localhost:3000');
-  });
-})();
+module.exports = {
+  routes: {
+    '/': 'index',
+  },
+};
 ```
 
-**`./views/index.jsx`**
+**`views/index.jsx`**:
 
 ```jsx
-export default function Index({ message }) {
-  return <p>{message}</p>;
+export default function Index() {
+  return <p>Hello Static Site</p>;
 }
 ```
 
-Finally, just run `npm start` and go to `http://localhost:3000`, and you'll see `Hello World!`.
+Finally,
 
-## Configuration (`ssr.config.js`)
+- run `npm run dev` and you'll see `Hello Static Site` in your browser.
+- run `npm run build` and you'll see the static files in the dist directory.
 
-Here is the default `ssr.config.js`, which is used by `react-ssr` when there are no valid values:
+## Configuration (`static.config.js`)
+
+Here is the default `static.config.js`, which is used by `react-ssr` when there are no valid values:
 
 ```js
 module.exports = {
   id: 'default',
-  distDir: '.ssr',
+  distDir: 'dist',
   viewsDir: 'views',
-  staticViews: [],
+  port: 3000,
+  routes: {},
   webpack: (config /* webpack.Configuration */, env /* 'development' | 'production' */) => {
     return config;
   },
 };
 ```
 
-### `ssr.config.js#id`
+### `static.config.js#id`
 
 The id of **UI framework**. (default: `default`)
 
@@ -95,7 +77,7 @@ It can be ignored only when the project does not use any UI frameworks.
 
 Supported UI frameworks are:
 
-- [x] default (the id `default` doesn't need to be specified in `ssr.config.js`)
+- [x] default (the id `default` doesn't need to be specified in `static.config.js`)
   - [x] [bulma](https://bulma.io)
   - [x] [semantic-ui](https://react.semantic-ui.com)
   - [x] Or any other **non** CSS-in-JS UI frameworks
@@ -105,7 +87,7 @@ Supported UI frameworks are:
 - [x] [antd](https://ant.design)
 - [ ] and more...
 
-For example, if we want to use `emotion`, `ssr.config.js` is like this:
+For example, if we want to use `emotion`, `static.config.js` is like this:
 
 ```js
 module.exports = {
@@ -113,42 +95,33 @@ module.exports = {
 };
 ```
 
-### `ssr.config.js#distDir`
+### `static.config.js#distDir`
 
-The place where `react-ssr` generates **production** results. (default: `.ssr`)
+The place where `react-ssr` generates static files. (default: `dist`)
 
-If we use TypeScript or any other library which must be compiled, the config below may be useful:
-
-```js
-module.exports = {
-  // dist folder should be ignored by `.gitignore`
-  distDir: 'dist/.ssr',
-};
-```
-
-### `ssr.config.js#viewsDir`
+### `static.config.js#viewsDir`
 
 The place where we put views. (default: `views`)
 
-A function `res.render('xxx')` will render `views/xxx.jsx` or `views/xxx.tsx`.
+### `static.config.js#port`
 
-A working example is here: [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
+The port of the development server.
 
-### `ssr.config.js#staticViews`
+### `static.config.js#routes`
 
-If specified, `react-ssr` generates html cache when production:
+The key is the route, and the value is the path from the views directory.
 
 ```js
 module.exports = {
-  staticViews: [
-    'auth/login',
-    'auth/register',
-    'about',
-  ],
+  routes: {
+    '/': 'index',
+    '/profile': 'profile',
+    '/login': 'auth/login',
+  },
 };
 ```
 
-### `ssr.config.js#webpack()`
+### `static.config.js#webpack()`
 
 ```js
 module.exports = {
@@ -163,7 +136,7 @@ module.exports = {
 
 Just put `_document.jsx` or `_document.tsx` into the views root:
 
-**./views/_document.jsx**
+**`views/_document.jsx`**:
 
 ```jsx
 import React from 'react';
@@ -171,7 +144,7 @@ import {
   Document,
   Head,
   Main,
-} from '@react-ssr/express';
+} from '@react-ssr/static';
 
 export default class extends Document {
   render() {
@@ -193,10 +166,10 @@ export default class extends Document {
 
 And then, use it as always:
 
-**./views/index.jsx**
+**`views/index.jsx`**:
 
 ```jsx
-const Index = (props) => {
+const Index = () => {
   return <p>Hello Layout!</p>;
 };
 
@@ -209,11 +182,11 @@ A working example is here: [examples/custom-document](https://github.com/saltysh
 
 We can use the `Head` component **anyware**:
 
-**./views/index.jsx**
+**`views/index.jsx`**:
 
 ```jsx
 import React from 'react';
-import { Head } from '@react-ssr/express';
+import { Head } from '@react-ssr/static';
 
 const Index = (props) => {
   return (
@@ -234,7 +207,7 @@ A working example is here: [examples/basic-dynamic-head](https://github.com/salt
 
 ## Supported UI Framework
 
-- [x] default (the id `default` doesn't need to be specified in `ssr.config.js`)
+- [x] default (the id `default` doesn't need to be specified in `static.config.js`)
   - [x] [bulma](https://bulma.io)
   - [x] [semantic-ui](https://react.semantic-ui.com)
   - [x] Or any other **non** CSS-in-JS UI frameworks
@@ -252,7 +225,7 @@ Like [semantic-ui](https://react.semantic-ui.com), non CSS-in-JS frameworks are 
 
 All we have to do is to load global CSS in `_document` or each page:
 
-**./views/_document.jsx**
+**`views/_document.jsx`**:
 
 ```jsx
 import React from 'react';
@@ -260,7 +233,7 @@ import {
   Document,
   Head,
   Main,
-} from '@react-ssr/express';
+} from '@react-ssr/static';
 
 export default class extends Document {
   render() {
@@ -290,7 +263,7 @@ And then, populate `.babelrc` in your project root:
 ```json
 {
   "presets": [
-    "@react-ssr/express/babel"
+    "@react-ssr/static/babel"
   ],
   "plugins": [
     [
@@ -321,7 +294,7 @@ And then, populate `.babelrc` in your project root:
 ```json
 {
   "presets": [
-    "@react-ssr/express/babel"
+    "@react-ssr/static/babel"
   ],
   "plugins": [
     "emotion"
@@ -350,7 +323,7 @@ And then, populate `.babelrc` in your project root:
 ```json
 {
   "presets": [
-    "@react-ssr/express/babel"
+    "@react-ssr/static/babel"
   ],
   "plugins": [
     "styled-components"
@@ -364,47 +337,6 @@ A working example is here: [examples/with-jsx-styled-components](https://github.
 
 To enable TypeScript engine (`.tsx`), just put `tsconfig.json` in your project root directory.
 
-The code of TypeScript will be like this:
-
-**`./package.json`**
-
-```json
-{
-  "scripts": {
-    "start": "ts-node server.ts"
-  }
-}
-```
-
-**`./server.ts`**
-
-```ts
-import express, { Request, Response } from '@react-ssr/express';
-
-const app = express();
-
-app.get('/', (req: Request, res: Response) => {
-  const message = 'Hello World!';
-  res.render('index', { message });
-});
-
-app.listen(3000, () => {
-  console.log('> Ready on http://localhost:3000');
-});
-```
-
-**`./views/index.tsx`**
-
-```tsx
-interface IndexProps {
-  message: string;
-}
-
-export default function Index({ message }: IndexProps) {
-  return <p>{message}</p>;
-}
-```
-
 ## Examples
 
 - [examples/basic-blogging](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-blogging)
@@ -412,9 +344,11 @@ export default function Index({ message }: IndexProps) {
 - [examples/basic-hmr-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-css)
 - [examples/basic-hmr-scss](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-scss)
 - [examples/basic-jsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx)
+- [examples/basic-jsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx-static)
 - [examples/basic-nestjs](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs)
 - [examples/basic-nestjs-nodemon](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs-nodemon)
 - [examples/basic-tsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx)
+- [examples/basic-tsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx-static)
 - [examples/custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-document)
 - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
 - [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)

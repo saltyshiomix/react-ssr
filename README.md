@@ -30,7 +30,7 @@ And add a script to your package.json like this:
 
 Then, populate files below inside your project:
 
-**`./.babelrc`**
+**`.babelrc`**:
 
 ```json
 {
@@ -40,7 +40,7 @@ Then, populate files below inside your project:
 }
 ```
 
-**`./server.js`**
+**`server.js`**:
 
 ```js
 const express = require('express');
@@ -63,7 +63,7 @@ const app = express();
 })();
 ```
 
-**`./views/index.jsx`**
+**`views/index.jsx`**:
 
 ```jsx
 export default function Index({ message }) {
@@ -97,7 +97,7 @@ And add a script to your package.json like this:
 
 Then, populate files below inside your project:
 
-**`./.babelrc`**
+**`.babelrc`**:
 
 ```json
 {
@@ -107,7 +107,7 @@ Then, populate files below inside your project:
 }
 ```
 
-**`./tsconfig.json`**
+**`tsconfig.json`**:
 
 ```json
 {
@@ -134,7 +134,7 @@ Then, populate files below inside your project:
 }
 ```
 
-**`./tsconfig.server.json`**
+**`tsconfig.server.json`**:
 
 ```json
 {
@@ -148,7 +148,7 @@ Then, populate files below inside your project:
 }
 ```
 
-**`./server/main.ts`**
+**`server/main.ts`**:
 
 ```ts
 import { NestFactory } from '@nestjs/core';
@@ -168,7 +168,7 @@ import { AppModule } from './app.module';
 })();
 ```
 
-**`./server/app.module.ts`**
+**`server/app.module.ts`**:
 
 ```ts
 import { Module } from '@nestjs/common';
@@ -182,7 +182,7 @@ import { AppController } from './app.controller';
 export class AppModule {}
 ```
 
-**`./server/app.controller.ts`**
+**`server/app.controller.ts`**:
 
 ```ts
 import {
@@ -202,7 +202,7 @@ export class AppController {
 }
 ```
 
-**`./views/index.tsx`**
+**`views/index.tsx`**:
 
 ```tsx
 interface IndexProps {
@@ -217,6 +217,59 @@ export default Index;
 ```
 
 Finally, just run `npm start` and go to `http://localhost:3000`, and you'll see `Hello NestJS!`.
+
+### With @react-ssr/static
+
+Install it:
+
+```bash
+$ npm install --save @react-ssr/static react react-dom
+```
+
+And add a script to your package.json like this:
+
+```json
+{
+  "scripts": {
+    "dev": "static",
+    "build": "static build"
+  }
+}
+```
+
+Then, populate files below inside your project:
+
+**`.babelrc`**:
+
+```json
+{
+  "presets": [
+    "@react-ssr/static/babel"
+  ]
+}
+```
+
+**`static.config.js`**:
+
+```js
+module.exports = {
+  routes: {
+    '/': 'index',
+  },
+};
+```
+
+**`views/index.jsx`**:
+
+```jsx
+export default function Index() {
+  return <p>Hello Static Site</p>;
+}
+```
+
+Finally, just run `npm run build` and you'll see the static files in the dist directory.
+
+For more information, please see [packages/static](https://github.com/saltyshiomix/react-ssr/tree/master/packages/static).
 
 ## Configuration (`ssr.config.js`)
 
@@ -565,6 +618,7 @@ export default function Index({ message }: IndexProps) {
 | [@react-ssr/core](https://github.com/saltyshiomix/react-ssr/blob/master/packages/core/README.md) | ![@react-ssr/core](https://img.shields.io/npm/v/@react-ssr/core.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/core.svg) |
 | [@react-ssr/express](https://github.com/saltyshiomix/react-ssr/blob/master/packages/express/README.md) | ![@react-ssr/express](https://img.shields.io/npm/v/@react-ssr/express.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/express.svg) |
 | [@react-ssr/nestjs-express](https://github.com/saltyshiomix/react-ssr/blob/master/packages/nestjs-express/README.md) | ![@react-ssr/nestjs-express](https://img.shields.io/npm/v/@react-ssr/nestjs-express.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/nestjs-express.svg) |
+| [@react-ssr/static](https://github.com/saltyshiomix/react-ssr/blob/master/packages/static/README.md) | ![@react-ssr/static](https://img.shields.io/npm/v/@react-ssr/static.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/static.svg) |
 
 ## Examples
 
@@ -573,9 +627,11 @@ export default function Index({ message }: IndexProps) {
 - [examples/basic-hmr-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-css)
 - [examples/basic-hmr-scss](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-scss)
 - [examples/basic-jsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx)
+- [examples/basic-jsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx-static)
 - [examples/basic-nestjs](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs)
 - [examples/basic-nestjs-nodemon](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs-nodemon)
 - [examples/basic-tsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx)
+- [examples/basic-tsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx-static)
 - [examples/custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-document)
 - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
 - [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
