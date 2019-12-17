@@ -1,25 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "node",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "jsx": "react",
-    "sourceMap": true,
-    "stripInternal": true,
+    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "strict": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noEmitOnError": true,
-    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
     "skipLibCheck": true,
+    "esModuleInterop": true
   },
-  "include": [
-    "views",
-    "server.ts"
-  ],
+  "exclude": [
+    "node_modules",
+    ".ssr",
+    "ssr.config.js"
+  ]
 }

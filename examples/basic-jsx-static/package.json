@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "basic-jsx-static",
+  "scripts": {
+    "dev": "static",
+    "build": "static build",
+    "start": "serve dist"
+  },
+  "dependencies": {
+    "@react-ssr/static": "latest",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "serve": "^11.2.0"
+  }
+}

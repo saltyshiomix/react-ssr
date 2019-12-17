@@ -9,7 +9,7 @@ const Index = (props) => {
   return (
     <React.Fragment>
       <Head>
-        <title>custom-layout - @react-ssr/express</title>
+        <title>custom-document - @react-ssr/express</title>
       </Head>
       <p>Hello {props.user.name}!</p>
       <button onClick={onClick}>Click Me</button>

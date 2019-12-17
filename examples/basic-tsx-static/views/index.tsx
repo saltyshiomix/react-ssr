@@ -1,11 +1,7 @@
 import React from 'react';
-import { Head } from '@react-ssr/express';
+import { Head } from '@react-ssr/static';
 
-interface IndexProps {
-  user: any;
-}
-
-const Index = ({ user }: IndexProps) => {
+const Index = ({ user }) => {
   const [message, setMessage] = React.useState('waiting...');
 
   const onClick = () => setMessage('This is a react-ssr!');
@@ -14,7 +10,7 @@ const Index = ({ user }: IndexProps) => {
     <React.Fragment>
       <Head>
         <title>
-          basic-tsx - @react-ssr/express
+          with-tsx-static - @react-ssr/static
         </title>
       </Head>
       <p>Hello {user.name}!</p>

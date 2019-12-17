@@ -12,13 +12,11 @@
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "esModuleInterop": true
   },
   "exclude": [
     "node_modules",
     "dist",
-    "ssr.config.js"
+    "static.config.js"
   ]
 }

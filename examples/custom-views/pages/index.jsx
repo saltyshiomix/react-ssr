@@ -1,4 +1,5 @@
 import React from 'react';
+import { Head } from '@react-ssr/express';
 
 const Index = ({ user }) => {
   const [message, setMessage] = React.useState('waiting...');
@@ -7,6 +8,11 @@ const Index = ({ user }) => {
 
   return (
     <React.Fragment>
+      <Head>
+        <title>
+          custom-views - @react-ssr/express
+        </title>
+      </Head>
       <p>Hello {user.name}!</p>
       <button onClick={onClick}>Click Me</button>
       <p>Message from state: {message}</p>
