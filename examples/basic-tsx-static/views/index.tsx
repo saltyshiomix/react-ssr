@@ -1,7 +1,7 @@
 import React from 'react';
 import { Head } from '@react-ssr/static';
 
-const Index = ({ user }) => {
+const Index = () => {
   const [message, setMessage] = React.useState('waiting...');
 
   const onClick = () => setMessage('This is a react-ssr!');
@@ -13,7 +13,6 @@ const Index = ({ user }) => {
           with-tsx-static - @react-ssr/static
         </title>
       </Head>
-      <p>Hello {user.name}!</p>
       <button onClick={onClick}>Click Me</button>
       <p>Message from state: {message}</p>
     </React.Fragment>
