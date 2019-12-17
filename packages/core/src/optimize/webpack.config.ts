@@ -74,6 +74,17 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     module: {
       rules: [
         {
+          test: /\.(js|ts)x?$/i,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+              extends: babelrc,
+            },
+          },
+        },
+        {
           test: /\.css$/i,
           use: [
             {
@@ -110,17 +121,6 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
               },
             },
           ],
-        },
-        {
-          test: /\.(js|ts)x?$/i,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: true,
-              extends: babelrc,
-            },
-          },
         },
       ],
     },
