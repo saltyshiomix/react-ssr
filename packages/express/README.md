@@ -3,10 +3,12 @@
 - SSR (Server Side Rendering) as a view template engine
 - Dynamic
   - `props`
-    - Passing the server data to the client `props`
+    - Passing the server data to the React client `props`
     - Suitable for dynamic routes like blogging
-  - `Head` component
-- HMR when `process.env.NODE_ENV !== 'production'`
+  - `Head` component for better SEO
+- Developer Experience
+  - HMR (Hot Module Replacement) when `process.env.NODE_ENV !== 'production'`
+  - Automatically reflect to the browser as soon as you save the scripts and even if styles
 
 ## Usage
 
@@ -163,7 +165,7 @@ module.exports = {
 
 Just put `_document.jsx` or `_document.tsx` into the views root:
 
-**./views/_document.jsx**
+**`views/_document.jsx`**:
 
 ```jsx
 import React from 'react';
@@ -176,9 +178,12 @@ import {
 export default class extends Document {
   render() {
     return (
-      <html>
+      <html lang="en">
         <Head>
           <title>Default Title</title>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+          <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
         <body>
           <Main />
@@ -189,11 +194,13 @@ export default class extends Document {
 };
 ```
 
-**Note**: **Please put `<Main />` component directly under `<body>` tag AND don't wrap `<Main />` component with another components** because this is a hydration target for the client.
+**Note**:
+
+- **Please put `<Main />` component directly under `<body>` tag and don't wrap `<Main />` component with another components**, because this is a hydration target for the client.
 
 And then, use it as always:
 
-**./views/index.jsx**
+**`views/index.jsx`**:
 
 ```jsx
 const Index = (props) => {
@@ -207,9 +214,9 @@ A working example is here: [examples/custom-document](https://github.com/saltysh
 
 ## Dynamic `Head`
 
-We can use the `Head` component **anyware**:
+We can use the `Head` component in any pages:
 
-**./views/index.jsx**
+**`views/index.jsx`**:
 
 ```jsx
 import React from 'react';
@@ -252,7 +259,7 @@ Like [semantic-ui](https://react.semantic-ui.com), non CSS-in-JS frameworks are 
 
 All we have to do is to load global CSS in `_document` or each page:
 
-**./views/_document.jsx**
+**`views/_document.jsx`**:
 
 ```jsx
 import React from 'react';
@@ -265,7 +272,7 @@ import {
 export default class extends Document {
   render() {
     return (
-      <html>
+      <html lang="en">
         <Head>
           <title>A Sample of Semantic UI React</title>
           <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
@@ -366,7 +373,7 @@ To enable TypeScript engine (`.tsx`), just put `tsconfig.json` in your project r
 
 The code of TypeScript will be like this:
 
-**`./package.json`**
+**`package.json`**:
 
 ```json
 {
@@ -376,7 +383,7 @@ The code of TypeScript will be like this:
 }
 ```
 
-**`./server.ts`**
+**`server.ts`**:
 
 ```ts
 import express, { Request, Response } from '@react-ssr/express';
@@ -393,7 +400,7 @@ app.listen(3000, () => {
 });
 ```
 
-**`./views/index.tsx`**
+**`views/index.tsx`**:
 
 ```tsx
 interface IndexProps {

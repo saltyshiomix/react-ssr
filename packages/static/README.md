@@ -1,3 +1,11 @@
+## Overview
+
+- Static site generator by using React SSR (Server Side Rendering)
+- Developer Experience
+  - Dynamic `Head` component for better SEO
+  - HMR (Hot Module Replacement) when `process.env.NODE_ENV !== 'production'`
+  - Automatically reflect to the browser as soon as you save the scripts and even if styles
+
 ## Usage
 
 Install it:
@@ -63,6 +71,7 @@ module.exports = {
   viewsDir: 'views',
   port: 3000,
   routes: {},
+  publicPaths: [],
   webpack: (config /* webpack.Configuration */, env /* 'development' | 'production' */) => {
     return config;
   },
@@ -121,6 +130,18 @@ module.exports = {
 };
 ```
 
+### `static.config.js#publicPaths`
+
+The place where we put static files like images.
+
+```js
+module.exports = {
+  publicPaths: [
+    'public',
+  ],
+};
+```
+
 ### `static.config.js#webpack()`
 
 ```js
@@ -149,9 +170,12 @@ import {
 export default class extends Document {
   render() {
     return (
-      <html>
+      <html lang="en">
         <Head>
           <title>Default Title</title>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+          <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
         <body>
           <Main />
@@ -162,7 +186,9 @@ export default class extends Document {
 };
 ```
 
-**Note**: **Please put `<Main />` component directly under `<body>` tag AND don't wrap `<Main />` component with another components** because this is a hydration target for the client.
+**Note**:
+
+- **Please put `<Main />` component directly under `<body>` tag and don't wrap `<Main />` component with another components**, because this is a hydration target for the client.
 
 And then, use it as always:
 
@@ -180,7 +206,7 @@ A working example is here: [examples/custom-document](https://github.com/saltysh
 
 ## Dynamic `Head`
 
-We can use the `Head` component **anyware**:
+We can use the `Head` component in any pages:
 
 **`views/index.jsx`**:
 

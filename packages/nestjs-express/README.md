@@ -3,10 +3,12 @@
 - SSR (Server Side Rendering) as a view template engine
 - Dynamic
   - `props`
-    - Passing the server data to the client `props`
+    - Passing the server data to the React client `props`
     - Suitable for dynamic routes like blogging
-  - `Head` component
-- HMR when `process.env.NODE_ENV !== 'production'`
+  - `Head` component for better SEO
+- Developer Experience
+  - HMR (Hot Module Replacement) when `process.env.NODE_ENV !== 'production'`
+  - Automatically reflect to the browser as soon as you save the scripts and even if styles
 
 ## Usage
 
@@ -245,7 +247,7 @@ module.exports = {
 
 Just put `_document.tsx` into the views root:
 
-**./views/_document.tsx**
+**`views/_document.tsx`**:
 
 ```tsx
 import React from 'react';
@@ -258,9 +260,12 @@ import {
 export default class extends Document {
   render() {
     return (
-      <html>
+      <html lang="en">
         <Head>
           <title>Default Title</title>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+          <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
         <body>
           <Main />
@@ -271,11 +276,13 @@ export default class extends Document {
 };
 ```
 
-**Note**: **Please put `<Main />` component directly under `<body>` tag AND don't wrap `<Main />` component with another components** because this is a hydration target for the client.
+**Note**:
+
+- **Please put `<Main />` component directly under `<body>` tag and don't wrap `<Main />` component with another components**, because this is a hydration target for the client.
 
 And then, use it as always:
 
-**./views/index.tsx**
+**`views/index.tsx`**:
 
 ```tsx
 const Index = (props) => {
@@ -289,9 +296,9 @@ A working example is here: [examples/custom-document](https://github.com/saltysh
 
 ## Dynamic `Head`
 
-We can use the `Head` component **anyware**:
+We can use the `Head` component in any pages:
 
-**./views/index.tsx**
+**`views/index.tsx`**:
 
 ```tsx
 import React from 'react';

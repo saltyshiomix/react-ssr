@@ -7,8 +7,10 @@ This package is internally used by [@react-ssr/express](https://npm.im/@react-ss
   - `props`
     - Passing the server data to the React client `props`
     - Suitable for dynamic routes like blogging
-  - `Head` component
-- HMR when `process.env.NODE_ENV !== 'production'`
+  - `Head` component for better SEO
+- Developer Experience
+  - HMR (Hot Module Replacement) when `process.env.NODE_ENV !== 'production'`
+  - Automatically reflect to the browser as soon as you save the scripts and even if styles
 
 ## Packages
 
