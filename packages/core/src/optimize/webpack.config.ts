@@ -83,7 +83,9 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
                 reloadAll: true,
               },
             },
-            'css-loader',
+            {
+              loader: 'css-loader',
+            },
           ],
         },
         {
@@ -97,7 +99,9 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
                 reloadAll: true,
               },
             },
-            'css-loader',
+            {
+              loader: 'css-loader',
+            },
             {
               loader: 'sass-loader',
               options: {
