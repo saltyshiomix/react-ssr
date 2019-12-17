@@ -58,6 +58,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     throw new Error('Not found: .babelrc or .babelrc.js or babel.config.js');
   }
 
+  // fix import .scss files
   require.extensions['.scss'] = () => {};
 
   let config: webpack.Configuration = {
