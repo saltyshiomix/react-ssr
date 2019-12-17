@@ -58,6 +58,8 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     throw new Error('Not found: .babelrc or .babelrc.js or babel.config.js');
   }
 
+  require.extensions['.scss'] = () => {};
+
   let config: webpack.Configuration = {
     mode: 'development',
     entry,
@@ -77,11 +79,31 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
               loader: MiniCssExtractPlugin.loader,
               options: {
                 publicPath: path.join(cwd, ssrConfig.distDir),
-                hmr: process.env.NODE_ENV === 'development',
+                hmr: process.env.NODE_ENV !== 'production',
                 reloadAll: true,
               },
             },
             'css-loader',
+          ],
+        },
+        {
+          test: /\.scss$/i,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                publicPath: path.join(cwd, ssrConfig.distDir),
+                hmr: process.env.NODE_ENV !== 'production',
+                reloadAll: true,
+              },
+            },
+            'css-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: process.env.NODE_ENV !== 'production',
+              },
+            },
           ],
         },
         {
