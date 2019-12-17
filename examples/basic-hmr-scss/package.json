@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "basic-hmr-scss",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@react-ssr/core": "latest",
+    "@react-ssr/express": "latest",
+    "express": "^4.17.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}
