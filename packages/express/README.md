@@ -96,6 +96,7 @@ It can be ignored only when the project does not use any UI frameworks.
 Supported UI frameworks are:
 
 - [x] default (the id `default` doesn't need to be specified in `ssr.config.js`)
+  - [x] [bulma](https://bulma.io)
   - [x] [semantic-ui](https://react.semantic-ui.com)
   - [x] Or any other **non** CSS-in-JS UI frameworks
 - [x] [emotion](https://emotion.sh)
@@ -234,6 +235,7 @@ A working example is here: [examples/basic-dynamic-head](https://github.com/salt
 ## Supported UI Framework
 
 - [x] default (the id `default` doesn't need to be specified in `ssr.config.js`)
+  - [x] [bulma](https://bulma.io)
   - [x] [semantic-ui](https://react.semantic-ui.com)
   - [x] Or any other **non** CSS-in-JS UI frameworks
 - [x] [emotion](https://emotion.sh)
@@ -416,6 +418,7 @@ export default function Index({ message }: IndexProps) {
 - [examples/custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-document)
 - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
 - [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
+- [examples/with-jsx-bulma](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-bulma)
 - [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
 - [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
 - [examples/with-jsx-semantic-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-semantic-ui)

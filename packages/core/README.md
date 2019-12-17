@@ -241,6 +241,7 @@ Then just run `npm start` and go to `http://localhost:3000`, you'll see `Hello N
 - [examples/custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-document)
 - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
 - [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
+- [examples/with-jsx-bulma](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-bulma)
 - [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
 - [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
 - [examples/with-jsx-semantic-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-semantic-ui)
