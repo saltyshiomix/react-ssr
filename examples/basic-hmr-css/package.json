@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "basic-css",
+  "name": "basic-hmr-css",
   "scripts": {
     "start": "node server.js"
   },
