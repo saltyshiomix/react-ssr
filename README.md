@@ -271,6 +271,11 @@ export default function Index() {
 
 Finally, just run `npm run build` and you'll see the static files in the dist directory.
 
+A working examples are here:
+
+- [examples/basic-jsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx-static)
+- [examples/basic-tsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx-static)
+
 For more information, please see [packages/static](https://github.com/saltyshiomix/react-ssr/tree/master/packages/static).
 
 ## Configuration (`ssr.config.js`)

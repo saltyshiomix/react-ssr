@@ -60,6 +60,11 @@ Finally,
 - run `npm run dev` and you'll see `Hello Static Site` in your browser.
 - run `npm run build` and you'll see the static files in the dist directory.
 
+A working examples are here:
+
+- [examples/basic-jsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx-static)
+- [examples/basic-tsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx-static)
+
 ## Configuration (`static.config.js`)
 
 Here is the default `static.config.js`, which is used by `react-ssr` when there are no valid values:
