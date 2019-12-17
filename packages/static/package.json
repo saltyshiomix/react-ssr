@@ -55,7 +55,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "cheerio": "^1.0.0-rc.3",
     "cross-spawn": "^7.0.1",
-    "css-loader": "^3.3.2",
+    "css-loader": "^3.4.0",
     "express": "^4.17.1",
     "fs-extra": "^8.1.0",
     "got": "^10.0.4",
