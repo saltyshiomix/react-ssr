@@ -1,6 +1,6 @@
 {
   "name": "@react-ssr/static",
-  "version": "0.19.1",
+  "version": "0.19.2",
   "description": "Yet another React static site generator",
   "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
