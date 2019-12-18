@@ -114,13 +114,31 @@ module.exports = {
 
 The place where `react-ssr` generates static files. (default: `dist`)
 
+```js
+module.exports = {
+  distDir: 'out',
+};
+```
+
 ### `static.config.js#viewsDir`
 
 The place where we put views. (default: `views`)
 
+```js
+module.exports = {
+  viewsDir: 'pages',
+};
+```
+
 ### `static.config.js#port`
 
-The port of the development server.
+The port of the development server. (default: `3000`)
+
+```js
+module.exports = {
+  port: 4000,
+};
+```
 
 ### `static.config.js#routes`
 
@@ -130,7 +148,6 @@ The key is the route, and the value is the path from the views directory.
 module.exports = {
   routes: {
     '/': 'index',
-    '/profile': 'profile',
     '/login': 'auth/login',
   },
 };
@@ -202,13 +219,13 @@ And then, use it as always:
 
 ```jsx
 const Index = () => {
-  return <p>Hello Layout!</p>;
+  return <p>Hello World!</p>;
 };
 
 export default Index;
 ```
 
-A working example is here: [examples/custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-document)
+A working example is here: [examples/basic-custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-document)
 
 ## Dynamic `Head`
 
@@ -374,8 +391,8 @@ To enable TypeScript engine (`.tsx`), just put `tsconfig.json` in your project r
 - **@react-ssr/express**
   - `.jsx`
     - [examples/basic-jsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx)
-    - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
-    - [examples/custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-document)
+    - [examples/basic-custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-views)
+    - [examples/basic-custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-document)
     - [examples/basic-dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-dynamic-head)
     - [examples/basic-hmr-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-css)
     - [examples/basic-hmr-scss](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-scss)

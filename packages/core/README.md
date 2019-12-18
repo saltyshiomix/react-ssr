@@ -289,8 +289,8 @@ For more information, please see [packages/static](https://github.com/saltyshiom
 - **@react-ssr/express**
   - `.jsx`
     - [examples/basic-jsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx)
-    - [examples/custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-views)
-    - [examples/custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/custom-document)
+    - [examples/basic-custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-views)
+    - [examples/basic-custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-document)
     - [examples/basic-dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-dynamic-head)
     - [examples/basic-hmr-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-css)
     - [examples/basic-hmr-scss](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-scss)

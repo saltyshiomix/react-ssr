@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "custom-layout",
+  "name": "basic-custom-views",
   "scripts": {
     "start": "node server.js"
   },
