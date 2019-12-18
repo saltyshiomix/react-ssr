@@ -3,10 +3,7 @@ import path from 'path';
 import got from 'got';
 import express from 'express';
 import register from './register';
-import {
-  staticConfig,
-  sleep,
-} from './helpers';
+import { staticConfig } from './helpers';
 
 process.env.NODE_ENV = 'production';
 
