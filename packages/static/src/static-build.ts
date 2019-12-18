@@ -31,14 +31,14 @@ const app = express();
   }
 
   app.listen(staticConfig.port, async () => {
-    const tmpPath = path.join(cwd, 'tmp');
+    const tmp = path.join(cwd, 'tmp');
 
     try {
       for (let i = 0; i < routes.length; i++) {
         await got(`http://localhost:${staticConfig.port}${routes[i]}`);
       }
 
-      fs.moveSync(path.join(cwd, staticConfig.distDir), tmpPath);
+      fs.moveSync(path.join(cwd, staticConfig.distDir), tmp);
 
       for (let i = 0; i < routes.length; i++) {
         const route = routes[i];
@@ -83,7 +83,7 @@ const app = express();
         console.log(`[react-ssr] Created "${route}"`);
       }
 
-      fs.removeSync(tmpPath);
+      fs.removeSync(tmp);
 
       for (let i = 0; i < staticConfig.publicPaths.length; i++) {
         const publicPath = staticConfig.publicPaths[i];
