@@ -49,18 +49,18 @@ const app = express();
         const newPageId = _newPageId === '' ? 'index' : _newPageId;
         const newBasename = path.basename(newPageId);
 
-        const oldStylePath = path.join(cwd, `tmp/${oldPageId}.css`);
+        const oldStylePath = path.join(tmp, `${oldPageId}.css`);
         const newStylePath = path.join(dist, `${newPageId}.css`);
         const hasStyle = fs.existsSync(oldStylePath);
         if (hasStyle) {
           fs.outputFileSync(newStylePath, fs.readFileSync(oldStylePath));
         }
 
-        const oldScriptPath = path.join(cwd, `tmp/${oldPageId}.js`);
+        const oldScriptPath = path.join(tmp, `${oldPageId}.js`);
         const newScriptPath = path.join(dist, `${newPageId}.js`);
         fs.outputFileSync(newScriptPath, fs.readFileSync(oldScriptPath));
 
-        const oldHtmlPath = path.join(cwd, `tmp/${oldPageId}.html`);
+        const oldHtmlPath = path.join(tmp, `${oldPageId}.html`);
         const newHtmlPath = path.join(dist, `${newPageId}.html`);
         if (hasStyle) {
           fs.outputFileSync(
