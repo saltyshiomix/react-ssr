@@ -16,11 +16,13 @@ const app = express();
 (async () => {
   console.log('[react-ssr] Preparing...');
 
-  fs.removeSync(path.join(cwd, staticConfig.distDir));
+  const tmp = path.join(cwd, 'tmp');
+  const dist = path.join(cwd, staticConfig.distDir);
+  const routes = Object.keys(staticConfig.routes);
+
+  fs.removeSync(path.join(dist));
 
   await register(app);
-
-  const routes = Object.keys(staticConfig.routes);
 
   for (let i = 0; i < routes.length; i++) {
     const route = routes[i];
@@ -31,14 +33,12 @@ const app = express();
   }
 
   app.listen(staticConfig.port, async () => {
-    const tmp = path.join(cwd, 'tmp');
-
     try {
       for (let i = 0; i < routes.length; i++) {
         await got(`http://localhost:${staticConfig.port}${routes[i]}`);
       }
 
-      fs.moveSync(path.join(cwd, staticConfig.distDir), tmp);
+      fs.moveSync(dist, tmp);
 
       for (let i = 0; i < routes.length; i++) {
         const route = routes[i];
@@ -50,18 +50,18 @@ const app = express();
         const newBasename = path.basename(newPageId);
 
         const oldStylePath = path.join(cwd, `tmp/${oldPageId}.css`);
-        const newStylePath = path.join(cwd, staticConfig.distDir, `${newPageId}.css`);
+        const newStylePath = path.join(dist, `${newPageId}.css`);
         const hasStyle = fs.existsSync(oldStylePath);
         if (hasStyle) {
           fs.outputFileSync(newStylePath, fs.readFileSync(oldStylePath));
         }
 
         const oldScriptPath = path.join(cwd, `tmp/${oldPageId}.js`);
-        const newScriptPath = path.join(cwd, staticConfig.distDir, `${newPageId}.js`);
+        const newScriptPath = path.join(dist, `${newPageId}.js`);
         fs.outputFileSync(newScriptPath, fs.readFileSync(oldScriptPath));
 
         const oldHtmlPath = path.join(cwd, `tmp/${oldPageId}.html`);
-        const newHtmlPath = path.join(cwd, staticConfig.distDir, `${newPageId}.html`);
+        const newHtmlPath = path.join(dist, `${newPageId}.html`);
         if (hasStyle) {
           fs.outputFileSync(
             newHtmlPath,
@@ -87,7 +87,7 @@ const app = express();
 
       for (let i = 0; i < staticConfig.publicPaths.length; i++) {
         const publicPath = staticConfig.publicPaths[i];
-        fs.copySync(path.join(cwd, publicPath), path.join(cwd, staticConfig.distDir));
+        fs.copySync(path.join(cwd, publicPath), dist);
       }
 
       console.log(`[react-ssr] Generated static files in "${staticConfig.distDir}"`);
