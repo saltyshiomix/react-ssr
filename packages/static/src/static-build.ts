@@ -3,7 +3,10 @@ import path from 'path';
 import got from 'got';
 import express from 'express';
 import register from './register';
-import { staticConfig } from './helpers';
+import {
+  staticConfig,
+  sleep,
+} from './helpers';
 
 process.env.NODE_ENV = 'production';
 
@@ -34,6 +37,9 @@ const app = express();
       for (let i = 0; i < routes.length; i++) {
         await got(`http://localhost:${staticConfig.port}${routes[i]}`);
       }
+
+      // wait until all files are ready
+      await sleep(800);
 
       fs.moveSync(dist, tmp);
       fs.ensureDirSync(dist);
@@ -84,8 +90,7 @@ const app = express();
       fs.removeSync(tmp);
 
       for (let i = 0; i < staticConfig.publicPaths.length; i++) {
-        const publicPath = staticConfig.publicPaths[i];
-        fs.copySync(path.join(cwd, publicPath), dist);
+        fs.copySync(path.join(cwd, staticConfig.publicPaths[i]), dist);
       }
 
       console.log(`[react-ssr] Generated static files in "${staticConfig.distDir}"`);
