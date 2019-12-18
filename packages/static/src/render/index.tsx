@@ -82,7 +82,7 @@ export default async function render(file: string, props: object): Promise<strin
     return 'Error';
   } finally {
     if (env === 'production') {
-      fs.writeFileSync(path.join(cwd, staticConfig.distDir, `${pageId}.html`), html);
+      fs.outputFileSync(path.join(cwd, staticConfig.distDir, `${pageId}.html`), html);
     }
   }
 };

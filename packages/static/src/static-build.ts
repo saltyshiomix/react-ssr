@@ -3,10 +3,7 @@ import path from 'path';
 import got from 'got';
 import express from 'express';
 import register from './register';
-import {
-  staticConfig,
-  sleep,
-} from './helpers';
+import { staticConfig } from './helpers';
 
 process.env.NODE_ENV = 'production';
 
@@ -38,11 +35,7 @@ const app = express();
         await got(`http://localhost:${staticConfig.port}${routes[i]}`);
       }
 
-      // wait until all files are ready
-      await sleep(800);
-
       fs.moveSync(dist, tmp);
-      fs.ensureDirSync(dist);
 
       for (let i = 0; i < routes.length; i++) {
         const route = routes[i];

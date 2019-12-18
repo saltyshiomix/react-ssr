@@ -90,7 +90,7 @@ export default async function render(file: string, props: object): Promise<strin
     if (env === 'production' && !fs.existsSync(cachePath)) {
       const viewPath = slash(file.replace(path.join(cwd, config.viewsDir), '').replace(ext, '')).slice(1);
       if (config.staticViews.includes(viewPath)) {
-        fs.writeFileSync(cachePath, html);
+        fs.outputFileSync(cachePath, html);
       }
     }
   }
