@@ -38,7 +38,8 @@ const app = express();
         await got(`http://localhost:${staticConfig.port}${routes[i]}`);
       }
 
-      await sleep(300);
+      // wait until static files are ready
+      await sleep(500);
 
       fs.moveSync(path.join(cwd, staticConfig.distDir), tmpPath);
 
