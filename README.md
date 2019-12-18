@@ -275,6 +275,7 @@ A working examples are here:
 
 - [examples/basic-jsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx-static)
 - [examples/basic-tsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx-static)
+- [examples/with-jsx-static-bulma](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-static-bulma)
 
 For more information, please see [packages/static](https://github.com/saltyshiomix/react-ssr/tree/master/packages/static).
 
