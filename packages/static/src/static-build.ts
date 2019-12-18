@@ -39,6 +39,7 @@ const app = express();
       }
 
       fs.moveSync(dist, tmp);
+      fs.ensureDirSync(dist);
 
       for (let i = 0; i < routes.length; i++) {
         const route = routes[i];
