@@ -21,7 +21,7 @@ const app = express();
   const routes = Object.keys(staticConfig.routes);
 
   fs.removeSync(tmp);
-  fs.removeSync(path.join(dist));
+  fs.removeSync(dist);
 
   await register(app);
 
