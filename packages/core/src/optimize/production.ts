@@ -39,7 +39,7 @@ export default async (app: express.Application): Promise<void> => {
       app.use(`/_react-ssr/${pageId}.css`, (req, res) => {
         const filename = path.join(cwd, config.distDir, `${pageId}.css`);
         const style = fs.existsSync(filename) ? fs.readFileSync(filename).toString() : '';
-        res.writeHead(200, { 'Content-Type': 'text/css' })
+        res.writeHead(200, { 'Content-Type': 'text/css' });
         res.end(style, 'utf-8');
       });
 
