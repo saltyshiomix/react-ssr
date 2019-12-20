@@ -16,7 +16,7 @@ const app = express();
 (async () => {
   console.log('[react-ssr] Preparing...');
 
-  const tmp = path.join(cwd, 'tmp');
+  const tmp = path.join(cwd, '.tmp');
   const dist = path.join(cwd, staticConfig.distDir);
   const routes = Object.keys(staticConfig.routes);
 
