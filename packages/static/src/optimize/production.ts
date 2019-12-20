@@ -45,10 +45,7 @@ export default async (app: express.Application): Promise<void> => {
       app.use(`/_react-ssr/${pageId}.js`, (req, res) => {
         const filename = path.join(cwd, staticConfig.distDir, `${pageId}.js`);
         const script = fs.readFileSync(filename).toString();
-        res
-          .status(200)
-          .type('.js')
-          .send(script);
+        res.status(200).type('.js').send(script);
       });
     }
 
