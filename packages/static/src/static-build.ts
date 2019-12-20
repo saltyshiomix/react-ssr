@@ -20,6 +20,7 @@ const app = express();
   const dist = path.join(cwd, staticConfig.distDir);
   const routes = Object.keys(staticConfig.routes);
 
+  fs.removeSync(tmp);
   fs.removeSync(path.join(dist));
 
   await register(app);
