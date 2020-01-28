@@ -2,7 +2,7 @@
   "private": true,
   "name": "basic-tsx",
   "scripts": {
-    "start": "ts-node server.ts"
+    "start": "ts-node --project tsconfig.server.json server/main.ts"
   },
   "dependencies": {
     "@react-ssr/core": "latest",
