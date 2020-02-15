@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import readdir from 'recursive-readdir';
+import httpProxy from 'http-proxy-middleware'
 
 const cwd: string = process.cwd();
 
@@ -11,6 +12,7 @@ export interface Config {
   viewsDir: string;
   staticViews: string[];
   webpack?: (defaultConfig: webpack.Configuration, env: 'development' | 'production') => webpack.Configuration;
+  proxyMiddleware?: (config: httpProxy.Config) => httpProxy.Config
 }
 
 export const getSsrConfig = (): Config => {
@@ -20,6 +22,7 @@ export const getSsrConfig = (): Config => {
     viewsDir: 'views',
     staticViews: [],
   };
+
   const ssrConfigPath = path.join(cwd, 'ssr.config.js');
   if (fs.existsSync(ssrConfigPath)) {
     return Object.assign(defaultConfig, require(ssrConfigPath));
@@ -50,8 +53,8 @@ export const getPages = async (): Promise<string[]> => {
 
 export const getPageId = (page: string, separator: string = '_'): string => {
   const [, ...rest] = page.replace(path.join(cwd, config.viewsDir), '')
-                          .replace(path.extname(page), '')
-                          .split(path.sep);
+    .replace(path.extname(page), '')
+    .split(path.sep);
   return rest.join(separator);
 };
 

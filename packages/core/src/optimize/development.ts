@@ -73,12 +73,18 @@ export default async (app: express.Application): Promise<void> => {
     await sleep(100);
   }
 
-  const proxyMiddleware = proxy({
+  const defaultProxyConfig = {
     target: `http://localhost:${devServerPort}`,
     ws: true,
     changeOrigin: true,
     logLevel: 'error',
-  });
+  } as proxy.Config
+
+  const proxyConfig = config.proxyMiddleware
+    ? config.proxyMiddleware(defaultProxyConfig)
+    : defaultProxyConfig
+
+  const proxyMiddleware = proxy(proxyConfig);
 
   app.use('/sockjs-node*', proxyMiddleware);
 
