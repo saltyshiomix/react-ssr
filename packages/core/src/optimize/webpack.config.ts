@@ -15,7 +15,7 @@ const getBabelrc = (): string | undefined => {
   if (fs.existsSync(path.join(cwd, '.babelrc'))) return path.join(cwd, '.babelrc');
   if (fs.existsSync(path.join(cwd, '.babelrc.js'))) return path.join(cwd, '.babelrc.js');
   if (fs.existsSync(path.join(cwd, 'babel.config.js'))) return path.join(cwd, 'babel.config.js');
-  return undefined;
+  return path.join(__dirname, '../../lib/babel.js');
 };
 
 const prodConfig: webpack.Configuration = {
@@ -53,11 +53,6 @@ const prodConfig: webpack.Configuration = {
 };
 
 export const configureWebpack = (entry: webpack.Entry): webpack.Configuration => {
-  const babelrc = getBabelrc();
-  if (!babelrc) {
-    throw new Error('Not found: .babelrc or .babelrc.js or babel.config.js');
-  }
-
   // fix import .scss files
   require.extensions['.scss'] = () => {};
 
@@ -80,7 +75,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
-              extends: babelrc,
+              extends: getBabelrc(),
             },
           },
         },
