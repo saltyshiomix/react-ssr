@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "basic-custom-document",
+  "name": "basic-custom-babelrc",
   "scripts": {
     "start": "node server.js"
   },
