@@ -5,6 +5,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 
 const isProd = process.env.NODE_ENV === 'production';
+const distDir = isProd ? 'dist/production' : 'dist/development';
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
 const coreConfig = {
@@ -33,10 +34,10 @@ const coreConfig = {
   ],
 };
 
-const dirConfig = (src, dist) => ({
+const dirConfig = (src) => ({
   input: src,
   output: {
-    dir: 'dist',
+    dir: distDir,
     format: 'cjs',
   },
   ...coreConfig,
@@ -53,8 +54,8 @@ const fileConfig = (src, dist) => ({
 
 export default [
   dirConfig('src/register.ts'),
-  fileConfig('src/components/Document/index.tsx', 'dist/document.js'),
-  fileConfig('src/components/Document/context.ts', 'dist/document-context.js'),
-  fileConfig('src/components/Head/index.tsx', 'dist/head.js'),
-  fileConfig('src/components/Main.tsx', 'dist/main.js'),
+  fileConfig('src/components/Document/index.tsx', `${distDir}/document.js`),
+  fileConfig('src/components/Document/context.ts', `${distDir}/document-context.js`),
+  fileConfig('src/components/Head/index.tsx', `${distDir}/head.js`),
+  fileConfig('src/components/Main.tsx', `${distDir}/main.js`),
 ];
