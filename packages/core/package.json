@@ -89,7 +89,7 @@
     "express": "^4.17.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "rimraf": "^3.0.0",
+    "rimraf": "^3.0.2",
     "rollup": "^1.29.0",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-babel": "^4.3.3",
