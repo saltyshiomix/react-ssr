@@ -392,6 +392,7 @@ To enable TypeScript engine (`.tsx`), just put `tsconfig.json` in your project r
   - `.jsx`
     - [examples/basic-jsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx)
     - [examples/basic-custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-views)
+    - [examples/basic-custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-babelrc)
     - [examples/basic-custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-document)
     - [examples/basic-dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-dynamic-head)
     - [examples/basic-hmr-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-css)

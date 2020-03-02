@@ -7,8 +7,8 @@
     - Suitable for dynamic routes like blogging
   - `Head` component for better SEO
 - Developer Experience
-  - HMR (Hot Module Replacement) when `process.env.NODE_ENV !== 'production'`
-  - Automatically reflect to the browser as soon as you save the scripts and even if styles
+  - Zero config of webpack and babel
+  - HMR (Hot Module Replacement) both scripts and even if styles when `process.env.NODE_ENV !== 'production'`
 
 ## Usage
 
@@ -31,16 +31,6 @@ And add a script to your package.json like this:
 ```
 
 Then, populate files below inside your project:
-
-**`.babelrc`**:
-
-```json
-{
-  "presets": [
-    "@react-ssr/express/babel"
-  ]
-}
-```
 
 **`server.js`**:
 
@@ -98,16 +88,6 @@ And add a script to your package.json like this:
 ```
 
 Then, populate files below inside your project:
-
-**`.babelrc`**:
-
-```json
-{
-  "presets": [
-    "@react-ssr/nestjs-express/babel"
-  ]
-}
-```
 
 **`tsconfig.json`**:
 
@@ -366,6 +346,22 @@ module.exports = {
   },
 };
 ```
+
+## Custom Babel Config
+
+We can extends its default `.babelrc` like this:
+
+**`.babelrc`**:
+
+```json
+{
+  "presets": [
+    "@react-ssr/express/babel"
+  ]
+}
+```
+
+A working example is here: [examples/basic-custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-babelrc)
 
 ## Custom Document
 
@@ -639,6 +635,7 @@ export default function Index({ message }: IndexProps) {
   - `.jsx`
     - [examples/basic-jsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx)
     - [examples/basic-custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-views)
+    - [examples/basic-custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-babelrc)
     - [examples/basic-custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-document)
     - [examples/basic-dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-dynamic-head)
     - [examples/basic-hmr-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-css)
