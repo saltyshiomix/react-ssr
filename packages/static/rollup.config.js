@@ -53,8 +53,6 @@ const fileConfig = (src, dist) => ({
 
 export default [
   cliConfig('src/static.ts'),
-  cliConfig('src/static-dev.ts'),
-  cliConfig('src/static-build.ts'),
   fileConfig('src/components/Document/index.tsx', 'dist/document.js'),
   fileConfig('src/components/Document/context.ts', 'dist/document-context.js'),
   fileConfig('src/components/Head/index.tsx', 'dist/head.js'),

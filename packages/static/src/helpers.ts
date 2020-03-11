@@ -32,7 +32,7 @@ export const getStaticConfig = (): StaticConfig => {
   }
 };
 
-export const staticConfig = getStaticConfig();
+const staticConfig = getStaticConfig();
 
 export const getEngine = (): 'jsx' | 'tsx' => fs.existsSync(path.join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
 

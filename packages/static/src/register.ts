@@ -6,6 +6,8 @@ import {
   getEngine,
 } from './helpers';
 
+console.log(getStaticConfig);
+
 const escaperegexp = require('lodash.escaperegexp');
 
 let moduleDetectRegEx: RegExp;

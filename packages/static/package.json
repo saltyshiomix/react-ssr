@@ -1,6 +1,6 @@
 {
   "name": "@react-ssr/static",
-  "version": "0.20.1",
+  "version": "0.20.2-alpha.29+8157863",
   "description": "Yet another React static site generator",
   "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
@@ -108,5 +108,6 @@
   "peerDependencies": {
     "react": "^16",
     "react-dom": "^16"
-  }
+  },
+  "gitHead": "81578638d65ed4cfae72d834b76296107191b0cf"
 }

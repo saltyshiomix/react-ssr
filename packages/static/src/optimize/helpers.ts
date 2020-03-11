@@ -6,16 +6,19 @@ import {
   getEngine,
   getPages,
   getPageId,
-  staticConfig,
+  getStaticConfig,
 } from '../helpers';
+
+console.log('helpers');
 
 const cwd = process.cwd();
 const ext = '.' + getEngine();
+const config = getStaticConfig();
 
 export const getEntry = async (memfs: any): Promise<[webpack.Entry, string[]]> => {
   const entry: webpack.Entry = {};
   const entryPages = await getPages();
-  const entryPath = path.resolve(__dirname, `../lib/webpack/${staticConfig.id}.js`);
+  const entryPath = path.resolve(__dirname, `../lib/webpack/${config.id}.js`);
   let template = fse.readFileSync(entryPath).toString();
 
   memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));

@@ -4,7 +4,7 @@ import got from 'got';
 import express from 'express';
 import register from './register';
 import {
-  staticConfig,
+  getStaticConfig,
   sleep,
 } from './helpers';
 
@@ -12,13 +12,14 @@ process.env.NODE_ENV = 'production';
 
 const cwd = process.cwd();
 const app = express();
+const config = getStaticConfig();
 
 (async () => {
   console.log('[react-ssr] Preparing...');
 
   const tmp = path.join(cwd, '.tmp');
-  const dist = path.join(cwd, staticConfig.distDir);
-  const routes = Object.keys(staticConfig.routes);
+  const dist = path.join(cwd, config.distDir);
+  const routes = Object.keys(config.routes);
 
   fs.removeSync(tmp);
   fs.removeSync(dist);
@@ -27,16 +28,16 @@ const app = express();
 
   for (let i = 0; i < routes.length; i++) {
     const route = routes[i];
-    const view = staticConfig.routes[route];
+    const view = config.routes[route];
     app.get(route, (_req: express.Request, res: express.Response) => {
       res.render(view);
     });
   }
 
-  app.listen(staticConfig.port, async () => {
+  app.listen(config.port, async () => {
     try {
       for (let i = 0; i < routes.length; i++) {
-        await got(`http://localhost:${staticConfig.port}${routes[i]}`);
+        await got(`http://localhost:${config.port}${routes[i]}`);
       }
 
       await sleep(500);
@@ -45,7 +46,7 @@ const app = express();
 
       for (let i = 0; i < routes.length; i++) {
         const route = routes[i];
-        const view = staticConfig.routes[route];
+        const view = config.routes[route];
 
         const oldPageId = view.split('/').join('_');
         const _newPageId = route.indexOf('/') === 0 ? route.slice(1) : route;
@@ -88,11 +89,11 @@ const app = express();
 
       fs.removeSync(tmp);
 
-      for (let i = 0; i < staticConfig.publicPaths.length; i++) {
-        fs.copySync(path.join(cwd, staticConfig.publicPaths[i]), dist);
+      for (let i = 0; i < config.publicPaths.length; i++) {
+        fs.copySync(path.join(cwd, config.publicPaths[i]), dist);
       }
 
-      console.log(`[react-ssr] Generated static files in "${staticConfig.distDir}"`);
+      console.log(`[react-ssr] Generated static files in "${config.distDir}"`);
 
       process.exit(0);
     } catch (err) {

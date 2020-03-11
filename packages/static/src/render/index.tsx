@@ -7,7 +7,7 @@ import Document from '../components/Document';
 import {
   getEngine,
   getPageId,
-  staticConfig,
+  getStaticConfig,
 } from '../helpers';
 
 require('@babel/register')({
@@ -17,12 +17,35 @@ require('@babel/register')({
     '@babel/preset-react',
     '@babel/preset-typescript',
   ],
+  plugins: [
+    'babel-plugin-react-require',
+    'babel-plugin-css-modules-transform',
+    '@babel/plugin-syntax-dynamic-import',
+    '@babel/plugin-proposal-class-properties',
+    ['@babel/plugin-proposal-object-rest-spread', {
+      useBuiltIns: true,
+    }],
+    '@babel/plugin-transform-react-jsx',
+    ['@babel/plugin-transform-runtime', {
+      corejs: 3,
+      helpers: true,
+      regenerator: true,
+      useESModules: false,
+    }],
+    process.env.NODE_ENV === 'production' && [
+      'babel-plugin-transform-react-remove-prop-types',
+      {
+        removeImport: true,
+      },
+    ],
+  ].filter(Boolean),
 });
 
 const cwd = process.cwd();
 const ext = `.${getEngine()}`;
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
-const userDocumentPath = path.join(cwd, staticConfig.viewsDir, `_document${ext}`);
+const config = getStaticConfig();
+const userDocumentPath = path.join(cwd, config.viewsDir, `_document${ext}`);
 const DocumentContext = require('./document-context');
 
 let DocumentComponent: any;
@@ -35,7 +58,7 @@ if (fs.existsSync(userDocumentPath)) {
 
 const getRenderToStringMethod = async () => {
   let method;
-  switch (staticConfig.id) {
+  switch (config.id) {
     case 'antd':
       method = (await import('./stringify/antd')).default;
       break;
@@ -82,7 +105,7 @@ export default async function render(file: string, props: object): Promise<strin
     return 'Error';
   } finally {
     if (env === 'production') {
-      fs.outputFileSync(path.join(cwd, staticConfig.distDir, `${pageId}.html`), html);
+      fs.outputFileSync(path.join(cwd, config.distDir, `${pageId}.html`), html);
     }
   }
 };

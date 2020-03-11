@@ -7,9 +7,15 @@ import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { getStaticConfig } from '../helpers';
 
+console.log('webpack');
+
+console.log(getStaticConfig);
+
 const cwd = process.cwd();
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const staticConfig = getStaticConfig();
+
+console.log('a');
 
 const getBabelrc = (): string | undefined => {
   if (fs.existsSync(path.join(cwd, '.babelrc'))) return path.join(cwd, '.babelrc');
@@ -17,6 +23,8 @@ const getBabelrc = (): string | undefined => {
   if (fs.existsSync(path.join(cwd, 'babel.config.js'))) return path.join(cwd, 'babel.config.js');
   return undefined;
 };
+
+console.log('b');
 
 const prodConfig: webpack.Configuration = {
   performance: {
@@ -51,6 +59,8 @@ const prodConfig: webpack.Configuration = {
     }),
   ],
 };
+
+console.log('c');
 
 export const configureWebpack = (entry: webpack.Entry): webpack.Configuration => {
   const babelrc = getBabelrc();

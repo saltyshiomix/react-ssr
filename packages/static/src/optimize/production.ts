@@ -5,21 +5,30 @@ import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
 import { configureWebpack } from './webpack.config';
+
+console.log('webpack loaded');
+
 import { getEntry } from './helpers';
+
+console.log('helper1 loaded');
+
 import {
   getPageId,
-  staticConfig,
+  getStaticConfig,
   sleep,
 } from '../helpers';
 
+console.log('helper2 loaded');
+
 const cwd = process.cwd();
+const config = getStaticConfig();
 
 const ufs = require('unionfs').ufs;
 const memfs = new MemoryFileSystem();
 ufs.use(fs).use(memfs);
 
 export default async (app: express.Application): Promise<void> => {
-  fse.removeSync(path.join(cwd, staticConfig.distDir));
+  fse.removeSync(path.join(cwd, config.distDir));
 
   let compiled = false;
   const [entry, entryPages] = await getEntry(memfs);
@@ -36,21 +45,21 @@ export default async (app: express.Application): Promise<void> => {
       const pageId = getPageId(page, '_');
 
       app.use(`/_react-ssr/${pageId}.css`, (req, res) => {
-        const filename = path.join(cwd, staticConfig.distDir, `${pageId}.css`);
+        const filename = path.join(cwd, config.distDir, `${pageId}.css`);
         const style = fs.existsSync(filename) ? fs.readFileSync(filename).toString() : '';
         res.writeHead(200, { 'Content-Type': 'text/css' });
         res.end(style, 'utf-8');
       });
 
       app.use(`/_react-ssr/${pageId}.js`, (req, res) => {
-        const filename = path.join(cwd, staticConfig.distDir, `${pageId}.js`);
+        const filename = path.join(cwd, config.distDir, `${pageId}.js`);
         const script = fs.readFileSync(filename).toString();
         res.status(200).type('.js').send(script);
       });
     }
 
-    for (let i = 0; i < staticConfig.publicPaths.length; i++) {
-      const publicPath = staticConfig.publicPaths[i];
+    for (let i = 0; i < config.publicPaths.length; i++) {
+      const publicPath = config.publicPaths[i];
       app.use(express.static(publicPath));
     }
   });
