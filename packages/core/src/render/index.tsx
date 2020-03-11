@@ -18,6 +18,28 @@ require('@babel/register')({
     '@babel/preset-react',
     '@babel/preset-typescript',
   ],
+  plugins: [
+    'babel-plugin-react-require',
+    'babel-plugin-css-modules-transform',
+    '@babel/plugin-syntax-dynamic-import',
+    '@babel/plugin-proposal-class-properties',
+    ['@babel/plugin-proposal-object-rest-spread', {
+      useBuiltIns: true,
+    }],
+    '@babel/plugin-transform-react-jsx',
+    ['@babel/plugin-transform-runtime', {
+      corejs: 3,
+      helpers: true,
+      regenerator: true,
+      useESModules: false,
+    }],
+    process.env.NODE_ENV === 'production' && [
+      'babel-plugin-transform-react-remove-prop-types',
+      {
+        removeImport: true,
+      },
+    ],
+  ].filter(Boolean),
 });
 
 const config = getSsrConfig();
