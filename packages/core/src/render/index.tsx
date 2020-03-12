@@ -4,6 +4,7 @@ import React from 'react';
 import slash from 'slash';
 import LZString from 'lz-string';
 import URLSafeBase64 from 'urlsafe-base64';
+import App from '../components/App';
 import Document from '../components/Document';
 import {
   getSsrConfig,
@@ -46,15 +47,24 @@ const config = getSsrConfig();
 const cwd = process.cwd();
 const ext = `.${getEngine()}`;
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
-const userDocumentPath = path.join(cwd, config.viewsDir, `_document${ext}`);
-const DocumentContext = require('./document-context');
 
+const DocumentContext = require('./document-context');
+const userDocumentPath = path.join(cwd, config.viewsDir, `_document${ext}`);
 let DocumentComponent: any;
 if (fs.existsSync(userDocumentPath)) {
   const UserDocument = require(userDocumentPath);
   DocumentComponent = UserDocument.default || UserDocument;
 } else {
   DocumentComponent = Document;
+}
+
+const userAppPath = path.join(cwd, config.viewsDir, `_app${ext}`);
+let AppComponent: any;
+if (fs.existsSync(userAppPath)) {
+  const UserAppComponent = require(userAppPath);
+  AppComponent = UserAppComponent.default || UserAppComponent;
+} else {
+  AppComponent = App;
 }
 
 const getRenderToStringMethod = async () => {
@@ -98,7 +108,11 @@ export default async function render(file: string, props: object): Promise<strin
   let html;
   try {
     html = (await getRenderToStringMethod())(
-      <DocumentContext.Provider value={<Page {...props} />}>
+      <DocumentContext.Provider value={(
+        <AppComponent>
+          <Page {...props} />
+        </AppComponent>
+      )}>
         <DocumentComponent />
       </DocumentContext.Provider>,
       pageId,

@@ -40,7 +40,7 @@ export const getPages = async (): Promise<string[]> => {
   for (let i = 0; i < possibles.length; i++) {
     const possible = possibles[i];
     const name = path.basename(getPageId(possible, '/'));
-    if (name.toLowerCase().startsWith('_document')) {
+    if (name.toLowerCase().startsWith('_app') || name.toLowerCase().startsWith('_document')) {
       continue;
     }
     pages.push(possible);

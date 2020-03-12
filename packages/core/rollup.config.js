@@ -58,4 +58,5 @@ export default [
   fileConfig('src/components/Document/context.ts', `${distDir}/document-context.js`),
   fileConfig('src/components/Head/index.tsx', `${distDir}/head.js`),
   fileConfig('src/components/Main.tsx', `${distDir}/main.js`),
+  fileConfig('src/components/App.tsx', `${distDir}/app.js`),
 ];
