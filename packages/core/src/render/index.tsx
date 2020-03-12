@@ -109,12 +109,11 @@ export default async function render(file: string, props: any): Promise<string> 
 
   let Page = require(file);
   Page = Page.default || Page;
-  props.children = Page;
 
   let html;
   try {
     html = (await getRenderToStringMethod())(
-      <DocumentContext.Provider value={<AppComponent {...props} />}>
+      <DocumentContext.Provider value={<AppComponent children={Page} {...props} />}>
         <DocumentComponent />
       </DocumentContext.Provider>,
       pageId,
