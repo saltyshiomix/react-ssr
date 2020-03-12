@@ -1,7 +1,9 @@
 import React from 'react';
 
-const App = ({ children }: { children: React.ReactNode }) => {
-  return children;
+const App = (props: React.PropsWithChildren<any>) => {
+  const { children, ...rest } = props;
+  const PageComponent = children;
+  return <PageComponent {...rest} />;
 };
 
 export default App;

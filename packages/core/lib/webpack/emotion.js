@@ -4,6 +4,7 @@ import { CacheProvider } from '@emotion/core';
 import createCache from '@emotion/cache';
 import LZString from 'lz-string';
 import URLSafeBase64 from 'urlsafe-base64';
+import App from '__REACT_SSR_APP__';
 import Page from '__REACT_SSR_PAGE__';
 
 const getProps = () => {
@@ -17,7 +18,7 @@ const cache = createCache();
 
 ReactDOM.render(
   <CacheProvider value={cache}>
-    <Page {...getProps()} />
+    <App children={Page} {...getProps()} />,
   </CacheProvider>,
   document.getElementById('react-ssr-root'),
 );

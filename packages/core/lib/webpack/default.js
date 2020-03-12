@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import LZString from 'lz-string';
 import URLSafeBase64 from 'urlsafe-base64';
+import App from '__REACT_SSR_APP__';
 import Page from '__REACT_SSR_PAGE__';
 
 const getProps = () => {
@@ -12,7 +13,7 @@ const getProps = () => {
 }
 
 ReactDOM.hydrate(
-  <Page {...getProps()} />,
+  <App children={Page} {...getProps()} />,
   document.getElementById('react-ssr-root'),
 );
 

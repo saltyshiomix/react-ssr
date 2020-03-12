@@ -95,7 +95,7 @@ const compressProps = (props: any) => {
   return URLSafeBase64.encode(compressed);
 }
 
-export default async function render(file: string, props: object): Promise<string> {
+export default async function render(file: string, props: any): Promise<string> {
   const pageId = getPageId(file, '_');
   const cachePath = path.join(cwd, config.distDir, `${pageId}.html`);
   if (env === 'production' && fs.existsSync(cachePath)) {
@@ -104,15 +104,12 @@ export default async function render(file: string, props: object): Promise<strin
 
   let Page = require(file);
   Page = Page.default || Page;
+  props.children = Page;
 
   let html;
   try {
     html = (await getRenderToStringMethod())(
-      <DocumentContext.Provider value={(
-        <AppComponent>
-          <Page {...props} />
-        </AppComponent>
-      )}>
+      <DocumentContext.Provider value={<AppComponent {...props} />}>
         <DocumentComponent />
       </DocumentContext.Provider>,
       pageId,
