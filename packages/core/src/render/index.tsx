@@ -106,8 +106,7 @@ export default async function render(file: string, props: object): Promise<strin
     );
     return html;
   } catch (err) {
-    console.error(err);
-    return 'Error';
+    return env === 'production' ? '' : err;
   } finally {
     if (env === 'production' && !fs.existsSync(cachePath)) {
       const viewPath = slash(file.replace(path.join(cwd, config.viewsDir), '').replace(ext, '')).slice(1);
