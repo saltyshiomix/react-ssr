@@ -21,7 +21,12 @@ require('@babel/register')({
   ],
   plugins: [
     'babel-plugin-react-require',
-    'babel-plugin-css-modules-transform',
+    ['babel-plugin-css-modules-transform', {
+      'extensions': [
+        '.css',
+        '.scss',
+      ],
+    }],
     '@babel/plugin-syntax-dynamic-import',
     '@babel/plugin-proposal-class-properties',
     ['@babel/plugin-proposal-object-rest-spread', {

@@ -54,7 +54,13 @@ const prodConfig: webpack.Configuration = {
 
 export const configureWebpack = (entry: webpack.Entry): webpack.Configuration => {
   // fix import .scss files
-  require.extensions['.scss'] = () => {};
+  // require.extensions['.scss'] = () => {};
+  // require.extensions['.scss'] = () => {
+  //   return;
+  // };
+  // require.extensions['.css'] = () => {
+  //   return;
+  // };
 
   let config: webpack.Configuration = {
     mode: 'development',

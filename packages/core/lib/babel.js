@@ -10,7 +10,12 @@ module.exports = (api) => {
     ],
     plugins: [
       require('babel-plugin-react-require'),
-      require('babel-plugin-css-modules-transform'),
+      [require('babel-plugin-css-modules-transform'), {
+        'extensions': [
+          '.css',
+          '.scss',
+        ],
+      }],
       require('@babel/plugin-syntax-dynamic-import'),
       require('@babel/plugin-proposal-class-properties'),
       [require('@babel/plugin-proposal-object-rest-spread'), {
