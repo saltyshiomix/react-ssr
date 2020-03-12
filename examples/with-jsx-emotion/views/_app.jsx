@@ -2,6 +2,9 @@ import React from 'react';
 import { css, Global } from '@emotion/core';
 
 const App = (props) => {
+  const { children, ...rest } = props;
+  const PageComponent = children;
+
   return (
     <React.Fragment>
       <Global
@@ -19,7 +22,7 @@ const App = (props) => {
           }
         `}
       />
-      {props.children}
+      <PageComponent {...rest} />
     </React.Fragment>
   );
 };
