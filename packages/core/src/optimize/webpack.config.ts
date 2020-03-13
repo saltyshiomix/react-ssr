@@ -55,6 +55,7 @@ const prodConfig: webpack.Configuration = {
 export const configureWebpack = (entry: webpack.Entry): webpack.Configuration => {
   let config: webpack.Configuration = {
     mode: 'development',
+    devtool: env === 'development' ? 'eval-source-map' : false,
     entry,
     output: {
       path: path.join(cwd, ssrConfig.distDir),
