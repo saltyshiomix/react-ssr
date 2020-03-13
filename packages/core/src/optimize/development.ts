@@ -33,11 +33,11 @@ export default async (app: express.Application): Promise<void> => {
 
   const devServerPort = 8888;
   const devServer = new WebpackDevServer(compiler, {
-    hot: true,
+    hotOnly: true,
     noInfo: true,
     stats: 'errors-only',
-    overlay: true,
-    compress: true,
+    overlay: false,
+    compress: false,
     serveIndex: false,
     after: (app: express.Application, server: WebpackDevServer, compiler: webpack.Compiler) => {
       const memfs = compiler.outputFileSystem as any;
@@ -75,22 +75,13 @@ export default async (app: express.Application): Promise<void> => {
 
   const proxyMiddleware = proxy({
     target: `http://localhost:${devServerPort}`,
-    ws: true,
     changeOrigin: true,
+    ws: true,
     logLevel: 'error',
   });
 
+  app.use('/*.css', proxyMiddleware);
+  app.use('/*.js', proxyMiddleware);
+  app.use('/*.json', proxyMiddleware);
   app.use('/sockjs-node*', proxyMiddleware);
-
-  for (let i = 0; i < entryPages.length; i++) {
-    const page = entryPages[i];
-    const pageId = getPageId(page, '_');
-    app.use(`/_react-ssr/${pageId}.css`, proxyMiddleware);
-  }
-
-  for (let i = 0; i < entryPages.length; i++) {
-    const page = entryPages[i];
-    const pageId = getPageId(page, '_');
-    app.use(`/_react-ssr/${pageId}.js`, proxyMiddleware);
-  }
 };
