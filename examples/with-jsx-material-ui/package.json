@@ -11,8 +11,5 @@
     "express": "^4.17.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
-  },
-  "devDependencies": {
-    "babel-plugin-transform-imports": "^2.0.0"
   }
 }
