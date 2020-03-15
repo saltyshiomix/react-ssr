@@ -1,6 +1,6 @@
 {
   "name": "@react-ssr/core",
-  "version": "0.21.5",
+  "version": "0.21.7",
   "description": "React SSR as a view template engine",
   "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
