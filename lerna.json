@@ -3,6 +3,7 @@
     "packages/*"
   ],
   "version": "0.21.6",
+  "concurrency": 1,
   "command": {
     "bootstrap": {
       "npmClientArgs": [
