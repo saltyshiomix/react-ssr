@@ -43,7 +43,9 @@ export const getPages = async (): Promise<string[]> => {
     if (name.toLowerCase().startsWith('_app') || name.toLowerCase().startsWith('_document')) {
       continue;
     }
-    pages.push(possible);
+    if (possible.endsWith('.jsx') || possible.endsWith('.tsx')) {
+      pages.push(possible);
+    }
   }
   return pages;
 };
