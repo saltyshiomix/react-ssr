@@ -2,28 +2,21 @@ import React from 'react';
 import withSideEffect from './with-side-effect';
 
 const defaultHead = [
-  <meta
-    key="charSet"
-    charSet="utf-8"
-  />,
-  <meta
-    key="viewport"
-    name="viewport"
-    content="width=device-width,minimum-scale=1,initial-scale=1"
-  />,
+  <meta charSet="utf-8" />,
+  <meta name="viewport" content="width=device-width" />,
 ];
 
-function onlyReactElement(list: Array<React.ReactElement<any>>, child: React.ReactChild): Array<React.ReactElement<any>> {
+function onlyReactElement(list: React.ReactElement<any>[], child: React.ReactChild): React.ReactElement<any>[] {
   if (typeof child === 'string' || typeof child === 'number') {
-    return list.concat(child as any);
+    return list;
   }
   if (child.type === React.Fragment) {
     return list.concat(
-      React.Children.toArray(child.props.children).reduce(
+      (React.Children.toArray(child.props.children) as React.ReactChild[]).reduce(
         (
-          fragmentList: Array<React.ReactElement<any>>,
-          fragmentChild: React.ReactChild
-        ): Array<React.ReactElement<any>> => {
+          fragmentList: React.ReactElement<any>[],
+          fragmentChild: React.ReactChild,
+        ): React.ReactElement<any>[] => {
           if (typeof fragmentChild === 'string' || typeof fragmentChild === 'number') {
             return fragmentList;
           }
@@ -36,12 +29,7 @@ function onlyReactElement(list: Array<React.ReactElement<any>>, child: React.Rea
   return list.concat(child);
 }
 
-const METATYPES = [
-  'name',
-  'httpEquiv',
-  'charSet',
-  'itemProp',
-];
+const METATYPES = ['name', 'httpEquiv', 'charSet', 'itemProp'];
 
 function unique() {
   const keys = new Set();
@@ -50,51 +38,53 @@ function unique() {
   const metaCategories: { [metatype: string]: Set<string> } = {};
 
   return (h: React.ReactElement<any>) => {
-    if (h.key && typeof h.key !== 'number' && h.key.indexOf('.$') === 0) {
-      if (keys.has(h.key)) {
-        return false;
-      }
-      keys.add(h.key);
-      return true;
-    }
+    let unique = true;
 
-    if (keys.has(`.$${h.key}`)) {
-      return false;
+    if (h.key && typeof h.key !== 'number' && h.key.indexOf('$') > 0) {
+      const key = h.key.slice(h.key.indexOf('$') + 1);
+      if (keys.has(key)) {
+        unique = false;
+      } else {
+        keys.add(key);
+      }
     }
 
     switch (h.type) {
       case 'title':
       case 'base':
         if (tags.has(h.type)) {
-          return false;
+          unique = false;
+        } else {
+          tags.add(h.type);
         }
-        tags.add(h.type);
         break;
 
       case 'meta':
         for (let i = 0, len = METATYPES.length; i < len; i++) {
           const metatype = METATYPES[i];
-          if (!h.props.hasOwnProperty(metatype)) {
-            continue;
-          }
+          if (!h.props.hasOwnProperty(metatype)) continue;
+
           if (metatype === 'charSet') {
             if (metaTypes.has(metatype)) {
-              return false;
+              unique = false;
+            } else {
+              metaTypes.add(metatype);
             }
-            metaTypes.add(metatype);
           } else {
             const category = h.props[metatype];
             const categories = metaCategories[metatype] || new Set();
             if (categories.has(category)) {
-              return false;
+              unique = false;
+            } else {
+              categories.add(category);
+              metaCategories[metatype] = categories;
             }
-            categories.add(category);
-            metaCategories[metatype] = categories;
           }
         }
         break;
     }
-    return true;
+
+    return unique;
   }
 }
 
@@ -102,8 +92,8 @@ function reduceComponents(headElements: Array<React.ReactElement<any>>) {
   return headElements
     .reduce(
       (list: React.ReactChild[], headElement: React.ReactElement<any>) => {
-        const headElementChildren = React.Children.toArray(headElement.props.children)
-        return list.concat(headElementChildren);
+        const headElementChildren = React.Children.toArray(headElement.props.children) as React.ReactChild[];
+        return list.concat(headElementChildren)
       },
       [],
     )
@@ -120,18 +110,14 @@ function reduceComponents(headElements: Array<React.ReactElement<any>>) {
 
 const Effect = withSideEffect();
 
-class Head extends React.Component {
-  static rewind = Effect.rewind;
-  render() {
-    return (
-      <Effect
-        reduceComponentsToState={reduceComponents}
-        handleStateChange={() => {}}
-      >
-        {this.props.children}
-      </Effect>
-    );
-  }
+function Head({ children }: { children: React.ReactNode }) {
+  return (
+    <Effect reduceComponentsToState={reduceComponents}>
+      {children}
+    </Effect>
+  );
 }
+
+Head.rewind = Effect.rewind;
 
 export default Head;

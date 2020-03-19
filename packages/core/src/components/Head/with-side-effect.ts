@@ -5,12 +5,14 @@ const isServer = typeof window === 'undefined';
 type State = Array<React.ReactElement<any>> | undefined;
 
 type SideEffectProps = {
-  reduceComponentsToState: <T>(components: Array<React.ReactElement<any>>, props: T) => State;
-  handleStateChange?: (state: State) => void;
-}
+  reduceComponentsToState: <T>(
+    components: Array<React.ReactElement<any>>,
+    props: T,
+  ) => State;
+};
 
-export default function withSideEffect() {
-  const mountedInstances = new Set<any>();
+export default () => {
+  const mountedInstances: Set<any> = new Set();
   let state: State;
 
   function emitChange(component: React.Component<SideEffectProps>) {
@@ -18,9 +20,6 @@ export default function withSideEffect() {
       [...mountedInstances],
       component.props,
     );
-    if (component.props.handleStateChange) {
-      component.props.handleStateChange(state);
-    }
   }
 
   return class extends React.Component<SideEffectProps> {
