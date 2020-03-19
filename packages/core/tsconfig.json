@@ -12,8 +12,7 @@
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "downlevelIteration": true,
-    "declaration": true
+    "downlevelIteration": true
   },
   "include": [
     "src"
