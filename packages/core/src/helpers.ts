@@ -30,8 +30,6 @@ export const getSsrConfig = (): Config => {
 
 export const getEngine = (): 'jsx' | 'tsx' => fs.existsSync(path.join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
 
-export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
 const config: Config = getSsrConfig();
 
 export const getPages = async (): Promise<string[]> => {

@@ -11,7 +11,6 @@ import { getEntry } from './helpers';
 import {
   getSsrConfig,
   getPageId,
-  sleep,
 } from '../helpers';
 
 const cwd = process.cwd();
@@ -24,11 +23,9 @@ ufs.use(fs).use(memfs);
 export default async (app: express.Application): Promise<void> => {
   fse.removeSync(path.join(cwd, config.distDir));
 
-  let compiled = false;
   const [entry, entryPages] = await getEntry(memfs);
   const webpackConfig: webpack.Configuration = configureWebpack(entry);
   const compiler: webpack.Compiler = webpack(webpackConfig);
-  compiler.hooks.afterCompile.tap('finish', () => { compiled = true });
   compiler.inputFileSystem = ufs;
 
   const devServerPort = 8888;
@@ -62,26 +59,19 @@ export default async (app: express.Application): Promise<void> => {
     },
   });
 
-  (async () => {
-    devServer.listen(devServerPort);
-  })();
+  devServer.listen(devServerPort, (err) => {
+    err && console.error(err);
 
-  while (true) {
-    if (compiled) {
-      break;
-    }
-    await sleep(100);
-  }
+    const proxyMiddleware = proxy({
+      target: `http://localhost:${devServerPort}`,
+      changeOrigin: true,
+      ws: true,
+      logLevel: 'error',
+    });
 
-  const proxyMiddleware = proxy({
-    target: `http://localhost:${devServerPort}`,
-    changeOrigin: true,
-    ws: true,
-    logLevel: 'error',
+    app.use('/*.css', proxyMiddleware);
+    app.use('/*.js', proxyMiddleware);
+    app.use('/*.json', proxyMiddleware);
+    app.use('/sockjs-node*', proxyMiddleware);
   });
-
-  app.use('/*.css', proxyMiddleware);
-  app.use('/*.js', proxyMiddleware);
-  app.use('/*.json', proxyMiddleware);
-  app.use('/sockjs-node*', proxyMiddleware);
 };
