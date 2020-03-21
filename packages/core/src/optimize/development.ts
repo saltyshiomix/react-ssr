@@ -29,38 +29,40 @@ export default async (app: express.Application): Promise<void> => {
   compiler.inputFileSystem = ufs;
 
   const devServerPort = 8888;
-  const devServer = new WebpackDevServer(compiler, {
-    hotOnly: true,
-    noInfo: true,
-    stats: 'errors-only',
-    overlay: false,
-    compress: false,
-    serveIndex: false,
-    after: (app: express.Application, server: WebpackDevServer, compiler: webpack.Compiler) => {
-      const memfs = compiler.outputFileSystem as any;
+  await new Promise((resolve, reject) => {
+    const devServer = new WebpackDevServer(compiler, {
+      hotOnly: true,
+      noInfo: true,
+      stats: 'errors-only',
+      overlay: false,
+      compress: false,
+      serveIndex: false,
+      after: (app: express.Application, server: WebpackDevServer, compiler: webpack.Compiler) => {
+        const memfs = compiler.outputFileSystem as any;
 
-      for (let i = 0; i < entryPages.length; i++) {
-        const page = entryPages[i];
-        const pageId = getPageId(page, '_');
+        for (let i = 0; i < entryPages.length; i++) {
+          const page = entryPages[i];
+          const pageId = getPageId(page, '_');
 
-        app.get(`/_react-ssr/${pageId}.css`, (req, res) => {
-          const filename = path.join(cwd, config.distDir, `${pageId}.css`);
-          const style = memfs.existsSync(filename) ? memfs.readFileSync(filename).toString() : '';
-          res.writeHead(200, { 'Content-Type': 'text/css' });
-          res.end(style, 'utf-8');
-        });
+          app.get(`/_react-ssr/${pageId}.css`, (req, res) => {
+            const filename = path.join(cwd, config.distDir, `${pageId}.css`);
+            const style = memfs.existsSync(filename) ? memfs.readFileSync(filename).toString() : '';
+            res.writeHead(200, { 'Content-Type': 'text/css' });
+            res.end(style, 'utf-8');
+          });
 
-        app.get(`/_react-ssr/${pageId}.js`, (req, res) => {
-          const filename = path.join(cwd, config.distDir, `${pageId}.js`);
-          const script = memfs.readFileSync(filename).toString();
-          res.status(200).type('.js').send(script);
-        });
-      }
-    },
-  });
+          app.get(`/_react-ssr/${pageId}.js`, (req, res) => {
+            const filename = path.join(cwd, config.distDir, `${pageId}.js`);
+            const script = memfs.readFileSync(filename).toString();
+            res.status(200).type('.js').send(script);
+          });
+        }
+      },
+    });
 
-  devServer.listen(devServerPort, (err) => {
-    err && console.error(err);
+    devServer.listen(devServerPort, (err) => {
+      reject(err);
+    });
 
     const proxyMiddleware = proxy({
       target: `http://localhost:${devServerPort}`,
@@ -73,5 +75,7 @@ export default async (app: express.Application): Promise<void> => {
     app.use('/*.js', proxyMiddleware);
     app.use('/*.json', proxyMiddleware);
     app.use('/sockjs-node*', proxyMiddleware);
+
+    resolve();
   });
 };
