@@ -1,14 +1,29 @@
 ## Overview
 
 - SSR (Server Side Rendering) as a view template engine
-- Dynamic
-  - `props`
-    - Passing the server data to the React client `props`
-    - Suitable for dynamic routes like blogging
-  - `Head` component for better SEO
+- Dynamic `props`
+  - Passing the server data to the React client `props`
+  - Suitable for:
+    - Admin Panels
+    - Blogging
 - Developer Experience
   - Zero config of webpack and babel
   - HMR (Hot Module Replacement) both scripts and even if styles when `process.env.NODE_ENV !== 'production'`
+  - Built-in Sass (SCSS) support
+
+## Pros and Cons
+
+### Pros
+
+- Because it is just a view template engine:
+  - It doesn't need to have any APIs, all we have to do is to pass the server data to the client
+  - It supports multiple engines like `.hbs`, `.ejs` and React `.(ts|js)x`
+  - We can use [passport](http://www.passportjs.org) authentication as it always is
+
+### Cons
+
+- It is not so performant, because it assembles the whole HTML on each request
+- It does not support **client side routing**
 
 ## Usage
 
@@ -166,6 +181,36 @@ We can extends its default `.babelrc` like this:
 ```
 
 A working example is here: [examples/basic-custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-babelrc)
+
+## Custom App
+
+Just put `_app.jsx` or `_app.tsx` into the views root:
+
+**`views/_app.jsx`**:
+
+```jsx
+// we can import global styles or use theming
+import '../styles/global.scss';
+
+const App = (props) => {
+  // yes, this `props` contains data passed from the server
+  // and also we can inject additional data into pages
+  const { children, ...rest } = props;
+
+  // we can wrap this PageComponent for persisting layout between page changes
+  const PageComponent = children;
+
+  return <PageComponent {...rest} />;
+};
+
+export default App;
+```
+
+A working example is here:
+
+- [examples/basic-custom-app](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-app)
+- [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
+- [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
 
 ## Custom Document
 

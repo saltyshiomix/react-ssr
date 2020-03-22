@@ -1,14 +1,29 @@
 ## Overview
 
 - SSR (Server Side Rendering) as a view template engine
-- Dynamic
-  - `props`
-    - Passing the server data to the React client `props`
-    - Suitable for dynamic routes like blogging
-  - `Head` component for better SEO
+- Dynamic `props`
+  - Passing the server data to the React client `props`
+  - Suitable for:
+    - Admin Panels
+    - Blogging
 - Developer Experience
   - Zero config of webpack and babel
   - HMR (Hot Module Replacement) both scripts and even if styles when `process.env.NODE_ENV !== 'production'`
+  - Built-in Sass (SCSS) support
+
+## Pros and Cons
+
+### Pros
+
+- Because it is just a view template engine:
+  - It doesn't need to have any APIs, all we have to do is to pass the server data to the client
+  - It supports multiple engines like `.hbs`, `.ejs` and React `.(ts|js)x`
+  - We can use [passport](http://www.passportjs.org) authentication as it always is
+
+### Cons
+
+- It is not so performant, because it assembles the whole HTML on each request
+- It does not support **client side routing**
 
 ## Usage
 
@@ -71,7 +86,7 @@ Install it:
 
 ```bash
 # install NestJS dependencies
-$ npm install --save @nestjs/core @nestjs/common @nestjs/platform-express
+$ npm install --save @nestjs/core @nestjs/common @nestjs/platform-express reflect-metadata rxjs
 
 # install @react-ssr/nestjs-express
 $ npm install --save @react-ssr/core @react-ssr/nestjs-express react react-dom
@@ -106,11 +121,14 @@ Then, populate files below inside your project:
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules",
     "ssr.config.js",
+    "dist",
     ".ssr"
   ]
 }
@@ -122,7 +140,8 @@ Then, populate files below inside your project:
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs"
+    "module": "commonjs",
+    "outDir": "dist"
   },
   "include": [
     "server"
@@ -199,65 +218,6 @@ export default Index;
 ```
 
 Finally, just run `npm start` and go to `http://localhost:3000`, and you'll see `Hello NestJS!`.
-
-### With @react-ssr/static
-
-Install it:
-
-```bash
-$ npm install --save @react-ssr/static react react-dom
-```
-
-And add a script to your package.json like this:
-
-```json
-{
-  "scripts": {
-    "dev": "static",
-    "build": "static build"
-  }
-}
-```
-
-Then, populate files below inside your project:
-
-**`.babelrc`**:
-
-```json
-{
-  "presets": [
-    "@react-ssr/static/babel"
-  ]
-}
-```
-
-**`static.config.js`**:
-
-```js
-module.exports = {
-  routes: {
-    '/': 'index',
-  },
-};
-```
-
-**`views/index.jsx`**:
-
-```jsx
-export default function Index() {
-  return <p>Hello Static Site</p>;
-}
-```
-
-Finally, just run `npm run build` and you'll see the static files in the dist directory.
-
-A working examples are here:
-
-- [examples/basic-jsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx-static)
-- [examples/basic-tsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx-static)
-- [examples/with-jsx-static-bulma](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-static-bulma)
-
-For more information, please see [packages/static](https://github.com/saltyshiomix/react-ssr/tree/master/packages/static).
 
 ## Configuration (`ssr.config.js`)
 
@@ -362,6 +322,36 @@ We can extends its default `.babelrc` like this:
 ```
 
 A working example is here: [examples/basic-custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-babelrc)
+
+## Custom App
+
+Just put `_app.jsx` or `_app.tsx` into the views root:
+
+**`views/_app.jsx`**:
+
+```jsx
+// we can import global styles or use theming
+import '../styles/global.scss';
+
+const App = (props) => {
+  // yes, this `props` contains data passed from the server
+  // and also we can inject additional data into pages
+  const { children, ...rest } = props;
+
+  // we can wrap this PageComponent for persisting layout between page changes
+  const PageComponent = children;
+
+  return <PageComponent {...rest} />;
+};
+
+export default App;
+```
+
+A working example is here:
+
+- [examples/basic-custom-app](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-app)
+- [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
+- [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
 
 ## Custom Document
 
@@ -671,6 +661,7 @@ export default function Index({ message }: IndexProps) {
 ```bash
 $ git clone https://github.com/saltyshiomix/react-ssr.git
 $ cd react-ssr
+$ lerna bootstrap
 $ yarn
 $ yarn dev <example-folder-name>
 ```
