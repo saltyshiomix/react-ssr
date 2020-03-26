@@ -232,7 +232,6 @@ module.exports = {
   webpack: (config /* webpack.Configuration */, env /* 'development' | 'production' */) => {
     return config;
   },
-  webpackMode: 'inherit',
 };
 ```
 
@@ -307,22 +306,6 @@ module.exports = {
   },
 };
 ```
-
-### `ssr.config.js#webpackMode`
-
-By default, `process.env.NODE_ENV` is inherited to `ssr.config.js#webpackMode`.
-
-But if you want to change it forcely, we can specify `development` or `production` like this:
-
-```js
-module.exports = {
-  webpackMode: 'production', // force 'production' mode of react-ssr's build output
-};
-```
-
-**Note**:
-
-Do not use webpack's `config.mode === 'production'`, because react-ssr optimizes configuration strictly like [this](https://github.com/saltyshiomix/react-ssr/blob/master/packages/core/src/optimize/webpack.config.ts#L21-L53).
 
 ## Custom `process.env.NODE_ENV`
 
