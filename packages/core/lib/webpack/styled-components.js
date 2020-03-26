@@ -12,7 +12,7 @@ const getProps = () => {
   return JSON.parse(decompressed);
 }
 
-ReactDOM.hydrate(
+ReactDOM.render(
   <App children={Page} {...getProps()} />,
   document.getElementById('react-ssr-root'),
 );
