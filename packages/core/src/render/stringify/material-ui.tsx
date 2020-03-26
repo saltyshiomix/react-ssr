@@ -7,6 +7,7 @@ import {
 } from './helpers';
 
 const Head = require('./head');
+
 const { ServerStyleSheets } = require('@material-ui/core/styles');
 
 export default (app: React.ReactElement, pageId: string, props: string) => {

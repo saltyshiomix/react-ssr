@@ -1,5 +1,3 @@
-'use strict';
-
 const register = async app => {
   await require('@react-ssr/core/lib/register')(app);
 };

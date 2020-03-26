@@ -9,19 +9,18 @@ import WebpackDevServer from 'webpack-dev-server';
 import { configureWebpack } from './webpack.config';
 import { getEntry } from './helpers';
 import {
-  getSsrConfig,
+  ssrConfig,
   getPageId,
 } from '../helpers';
 
 const cwd = process.cwd();
-const config = getSsrConfig();
 
 const ufs = require('unionfs').ufs;
 const memfs = new MemoryFileSystem();
 ufs.use(fs).use(memfs);
 
 export default async (app: express.Application): Promise<void> => {
-  fse.removeSync(path.join(cwd, config.distDir));
+  fse.removeSync(path.join(cwd, ssrConfig.distDir));
 
   const [entry, entryPages] = await getEntry(memfs);
   const webpackConfig: webpack.Configuration = configureWebpack(entry);
@@ -45,14 +44,14 @@ export default async (app: express.Application): Promise<void> => {
           const pageId = getPageId(page, '_');
 
           app.get(`/_react-ssr/${pageId}.css`, (req, res) => {
-            const filename = path.join(cwd, config.distDir, `${pageId}.css`);
+            const filename = path.join(cwd, ssrConfig.distDir, `${pageId}.css`);
             const style = memfs.existsSync(filename) ? memfs.readFileSync(filename).toString() : '';
             res.writeHead(200, { 'Content-Type': 'text/css' });
             res.end(style, 'utf-8');
           });
 
           app.get(`/_react-ssr/${pageId}.js`, (req, res) => {
-            const filename = path.join(cwd, config.distDir, `${pageId}.js`);
+            const filename = path.join(cwd, ssrConfig.distDir, `${pageId}.js`);
             const script = memfs.readFileSync(filename).toString();
             res.status(200).type('.js').send(script);
           });

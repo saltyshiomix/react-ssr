@@ -252,6 +252,20 @@ module.exports = {
 };
 ```
 
+## Custom `process.env.NODE_ENV`
+
+If you set `process.env.REACT_SSR_ENV`, you can separate `process.env.NODE_ENV` from react-ssr:
+
+**package.json**
+
+```json
+{
+  "scripts": {
+    "start": "cross-env NODE_ENV=k8s REACT_SSR_ENV=production node dist/main.js"
+  }
+}
+```
+
 ## Custom Babel Config
 
 We can extends its default `.babelrc` like this:

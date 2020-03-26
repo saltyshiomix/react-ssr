@@ -1,5 +1,3 @@
-'use strict';
-
 const register = async app => {
   const expressApp = app.getHttpAdapter().getInstance();
   await require('@react-ssr/core/lib/register')(expressApp);

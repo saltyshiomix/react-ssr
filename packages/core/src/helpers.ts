@@ -5,6 +5,14 @@ import readdir from 'recursive-readdir';
 
 const cwd: string = process.cwd();
 
+export const isProd = () => {
+  let env = process.env.NODE_ENV || 'development';
+  if (process.env.REACT_SSR_ENV) {
+    env = process.env.REACT_SSR_ENV;
+  }
+  return env === 'production';
+};
+
 export interface Config {
   id: string;
   distDir: string;
@@ -13,8 +21,8 @@ export interface Config {
   webpack?: (defaultConfig: webpack.Configuration, env: 'development' | 'production') => webpack.Configuration;
 }
 
-export const getSsrConfig = (): Config => {
-  const defaultConfig = {
+const getSsrConfig = (): Config => {
+  const defaultConfig: Config = {
     id: 'default',
     distDir: '.ssr',
     viewsDir: 'views',
@@ -30,10 +38,10 @@ export const getSsrConfig = (): Config => {
 
 export const getEngine = (): 'jsx' | 'tsx' => fs.existsSync(path.join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
 
-const config: Config = getSsrConfig();
+export const ssrConfig: Config = getSsrConfig();
 
 export const getPages = async (): Promise<string[]> => {
-  const possibles = await readdir(path.join(cwd, config.viewsDir));
+  const possibles = await readdir(path.join(cwd, ssrConfig.viewsDir));
   const pages = [];
   for (let i = 0; i < possibles.length; i++) {
     const possible = possibles[i];
@@ -49,7 +57,7 @@ export const getPages = async (): Promise<string[]> => {
 };
 
 export const getPageId = (page: string, separator: string = '_'): string => {
-  const [, ...rest] = page.replace(path.join(cwd, config.viewsDir), '')
+  const [, ...rest] = page.replace(path.join(cwd, ssrConfig.viewsDir), '')
                           .replace(path.extname(page), '')
                           .split(path.sep);
   return rest.join(separator);

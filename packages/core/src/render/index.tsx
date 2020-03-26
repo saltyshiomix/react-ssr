@@ -7,7 +7,8 @@ import URLSafeBase64 from 'urlsafe-base64';
 import App from '../components/App';
 import Document from '../components/Document';
 import {
-  getSsrConfig,
+  isProd,
+  ssrConfig,
   getEngine,
   getPageId,
 } from '../helpers';
@@ -39,7 +40,7 @@ require('@babel/register')({
       regenerator: true,
       useESModules: false,
     }],
-    process.env.NODE_ENV === 'production' && [
+    isProd && [
       'babel-plugin-transform-react-remove-prop-types',
       {
         removeImport: true,
@@ -48,13 +49,11 @@ require('@babel/register')({
   ].filter(Boolean),
 });
 
-const config = getSsrConfig();
 const cwd = process.cwd();
 const ext = `.${getEngine()}`;
-const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 const DocumentContext = require('./document-context');
-const userDocumentPath = path.join(cwd, config.viewsDir, `_document${ext}`);
+const userDocumentPath = path.join(cwd, ssrConfig.viewsDir, `_document${ext}`);
 let DocumentComponent: any;
 if (fs.existsSync(userDocumentPath)) {
   const UserDocument = require(userDocumentPath);
@@ -63,7 +62,7 @@ if (fs.existsSync(userDocumentPath)) {
   DocumentComponent = Document;
 }
 
-const userAppPath = path.join(cwd, config.viewsDir, `_app${ext}`);
+const userAppPath = path.join(cwd, ssrConfig.viewsDir, `_app${ext}`);
 let AppComponent: any;
 if (fs.existsSync(userAppPath)) {
   const UserAppComponent = require(userAppPath);
@@ -74,7 +73,7 @@ if (fs.existsSync(userAppPath)) {
 
 const getRenderToStringMethod = async () => {
   let method;
-  switch (config.id) {
+  switch (ssrConfig.id) {
     case 'antd':
       method = (await import('./stringify/antd')).default;
       break;
@@ -102,8 +101,8 @@ const compressProps = (props: any) => {
 
 export default async function render(file: string, props: any): Promise<string> {
   const pageId = getPageId(file, '_');
-  const cachePath = path.join(cwd, config.distDir, `${pageId}.html`);
-  if (env === 'production' && fs.existsSync(cachePath)) {
+  const cachePath = path.join(cwd, ssrConfig.distDir, `${pageId}.html`);
+  if (isProd && fs.existsSync(cachePath)) {
     return fs.readFileSync(cachePath).toString();
   }
 
@@ -121,11 +120,14 @@ export default async function render(file: string, props: any): Promise<string> 
     );
     return html;
   } catch (err) {
-    return env === 'production' ? '' : err;
+    if (!isProd) {
+      console.log(err.stack || err);
+    }
+    return isProd ? '' : (err.stack || err);
   } finally {
-    if (env === 'production' && !fs.existsSync(cachePath)) {
-      const viewPath = slash(file.replace(path.join(cwd, config.viewsDir), '').replace(ext, '')).slice(1);
-      if (config.staticViews.includes(viewPath)) {
+    if (isProd && !fs.existsSync(cachePath)) {
+      const viewPath = slash(file.replace(path.join(cwd, ssrConfig.viewsDir), '').replace(ext, '')).slice(1);
+      if (ssrConfig.staticViews.includes(viewPath)) {
         fs.outputFileSync(cachePath, html);
       }
     }

@@ -5,11 +5,12 @@ import { smart as merge } from 'webpack-merge';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import { getSsrConfig } from '../helpers';
+import {
+  ssrConfig,
+  isProd,
+} from '../helpers';
 
 const cwd = process.cwd();
-const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
-const ssrConfig = getSsrConfig();
 
 const getBabelrc = (): string | undefined => {
   if (fs.existsSync(path.join(cwd, '.babelrc'))) return path.join(cwd, '.babelrc');
@@ -55,7 +56,7 @@ const prodConfig: webpack.Configuration = {
 export const configureWebpack = (entry: webpack.Entry): webpack.Configuration => {
   let config: webpack.Configuration = {
     mode: 'development',
-    devtool: env === 'development' ? 'eval-source-map' : false,
+    devtool: isProd() ? false : 'eval-source-map',
     entry,
     output: {
       path: path.join(cwd, ssrConfig.distDir),
@@ -84,7 +85,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
               loader: MiniCssExtractPlugin.loader,
               options: {
                 publicPath: path.join(cwd, ssrConfig.distDir),
-                hmr: env === 'development',
+                hmr: !isProd(),
                 reloadAll: true,
               },
             },
@@ -100,7 +101,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
               loader: MiniCssExtractPlugin.loader,
               options: {
                 publicPath: path.join(cwd, ssrConfig.distDir),
-                hmr: env === 'development',
+                hmr: !isProd(),
                 reloadAll: true,
               },
             },
@@ -110,7 +111,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
             {
               loader: 'sass-loader',
               options: {
-                sourceMap: env === 'development',
+                sourceMap: !isProd(),
               },
             },
           ],
@@ -126,13 +127,13 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
     ],
   };
 
-  if (env === 'production') {
+  if (isProd()) {
     config = merge(config, prodConfig);
   }
 
   if (ssrConfig.webpack) {
     if (typeof ssrConfig.webpack === 'function') {
-      config = ssrConfig.webpack(config, env);
+      config = ssrConfig.webpack(config, isProd() ? 'production' : 'development');
     } else {
       console.warn('[ warn ] ssr.config.js#webpack must be a function');
     }

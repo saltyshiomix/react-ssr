@@ -3,7 +3,7 @@ import path from 'path';
 import slash from 'slash';
 import webpack from 'webpack';
 import {
-  getSsrConfig,
+  ssrConfig,
   getEngine,
   getPages,
   getPageId,
@@ -11,17 +11,16 @@ import {
 
 const cwd = process.cwd();
 const ext = '.' + getEngine();
-const config = getSsrConfig();
 
 export const getEntry = async (memfs: any): Promise<[webpack.Entry, string[]]> => {
   const entry: webpack.Entry = {};
   const entryPages = await getPages();
-  const entryPath = path.resolve(__dirname, `../../lib/webpack/${config.id}.js`);
+  const entryPath = path.resolve(__dirname, `../../lib/webpack/${ssrConfig.id}.js`);
   let template = fse.readFileSync(entryPath).toString();
 
   let appPath = path.join(__dirname, 'app.js');
-  if (fse.existsSync(path.join(cwd, config.viewsDir, `_app${ext}`))) {
-    appPath = path.join(cwd, config.viewsDir, `_app${ext}`);
+  if (fse.existsSync(path.join(cwd, ssrConfig.viewsDir, `_app${ext}`))) {
+    appPath = path.join(cwd, ssrConfig.viewsDir, `_app${ext}`);
   }
 
   memfs.mkdirpSync(path.join(cwd, 'react-ssr-src'));

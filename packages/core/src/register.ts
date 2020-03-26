@@ -1,9 +1,10 @@
 import path from 'path';
 import render from './render';
 import {
-  getCacheablePages,
-  getSsrConfig,
+  isProd,
+  ssrConfig,
   getEngine,
+  getCacheablePages,
 } from './helpers';
 
 const escaperegexp = require('lodash.escaperegexp');
@@ -34,13 +35,12 @@ const register = async (app: any): Promise<void> => {
     }
   };
 
-  const config = getSsrConfig();
   const engine: 'jsx' | 'tsx' = getEngine();
   app.engine(engine, renderFile);
-  app.set('views', path.join(process.cwd(), config.viewsDir));
+  app.set('views', path.join(process.cwd(), ssrConfig.viewsDir));
   app.set('view engine', engine);
 
-  if (process.env.NODE_ENV === 'production') {
+  if (isProd()) {
     await (await import('./optimize/production')).default(app);
   } else {
     await (await import('./optimize/development')).default(app);

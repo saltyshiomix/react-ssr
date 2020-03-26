@@ -1,7 +1,7 @@
-const isProduction = process.env.NODE_ENV === 'production';
+const { isProd } = require('./helpers');
 
 module.exports = (api) => {
-  api.cache(() => isProduction);
+  api.cache(() => isProd());
   return {
     presets: [
       require('@babel/preset-env'),
@@ -28,7 +28,7 @@ module.exports = (api) => {
         regenerator: true,
         useESModules: false,
       }],
-      isProduction && [
+      isProd() && [
         require('babel-plugin-transform-react-remove-prop-types'),
         {
           removeImport: true,
