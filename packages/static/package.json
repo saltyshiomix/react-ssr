@@ -71,7 +71,7 @@
     "terser-webpack-plugin": "^2.3.5",
     "unionfs": "^4.4.0",
     "urlsafe-base64": "^1.0.0",
-    "webpack": "^4.42.0",
+    "webpack": "^4.42.1",
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2"
   },
