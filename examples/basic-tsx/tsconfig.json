@@ -16,7 +16,7 @@
   },
   "exclude": [
     "node_modules",
-    ".ssr",
+    "dist",
     "ssr.config.js"
   ]
 }

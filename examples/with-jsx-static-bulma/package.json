@@ -8,11 +8,11 @@
   },
   "dependencies": {
     "@react-ssr/static": "latest",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "bulma": "^0.8.0",
-    "serve": "^11.2.0"
+    "bulma": "^0.8.1",
+    "serve": "^11.3.0"
   }
 }

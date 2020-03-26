@@ -8,8 +8,8 @@
     "@react-ssr/core": "latest",
     "@react-ssr/express": "latest",
     "express": "^4.17.1",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "styled-components": "^5.0.1"
   },
   "devDependencies": {
