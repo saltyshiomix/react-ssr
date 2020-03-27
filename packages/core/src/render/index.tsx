@@ -40,7 +40,7 @@ require('@babel/register')({
       regenerator: true,
       useESModules: false,
     }],
-    isProd && [
+    isProd() && [
       'babel-plugin-transform-react-remove-prop-types',
       {
         removeImport: true,
@@ -102,7 +102,7 @@ const compressProps = (props: any) => {
 export default async function render(file: string, props: any): Promise<string> {
   const pageId = getPageId(file, '_');
   const cachePath = path.join(cwd, ssrConfig.distDir, `${pageId}.html`);
-  if (isProd && fs.existsSync(cachePath)) {
+  if (isProd() && fs.existsSync(cachePath)) {
     return fs.readFileSync(cachePath).toString();
   }
 
@@ -120,12 +120,12 @@ export default async function render(file: string, props: any): Promise<string> 
     );
     return html;
   } catch (err) {
-    if (!isProd) {
+    if (!isProd()) {
       console.log(err.stack || err);
     }
-    return isProd ? '' : (err.stack || err);
+    return isProd() ? '' : (err.stack || err);
   } finally {
-    if (isProd && !fs.existsSync(cachePath)) {
+    if (isProd() && !fs.existsSync(cachePath)) {
       const viewPath = slash(file.replace(path.join(cwd, ssrConfig.viewsDir), '').replace(ext, '')).slice(1);
       if (ssrConfig.staticViews.includes(viewPath)) {
         fs.outputFileSync(cachePath, html);
