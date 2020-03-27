@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "basic-multiple-view-engines",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@react-ssr/core": "latest",
+    "@react-ssr/express": "latest",
+    "express": "^4.17.1",
+    "hbs": "^4.1.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
