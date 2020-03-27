@@ -17,10 +17,11 @@ This package is internally used by [@react-ssr/express](https://npm.im/@react-ss
 
 ### Pros
 
-- Because it is just a view template engine:
-  - It doesn't need to have any APIs, all we have to do is to pass the server data to the client
-  - It supports multiple engines like `.hbs`, `.ejs` and React `.(ts|js)x`
-  - We can use [passport](http://www.passportjs.org) authentication as it always is
+Because it is just a view template engine:
+
+- It doesn't need to have any APIs, all we have to do is to pass the server data to the client
+- It supports multiple engines like `.hbs`, `.ejs` and React `.(ts|js)x`
+- We can use [passport](http://www.passportjs.org) authentication as it always is
 
 ### Cons
 
@@ -655,6 +656,7 @@ export default function Index({ message }: IndexProps) {
     - [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
   - `.tsx`
     - [examples/basic-tsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx)
+    - [examples/with-tsx-redux-todo](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-tsx-redux-todo)
 - **@react-ssr/nestjs-express**
   - [examples/basic-nestjs](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs)
   - [examples/basic-nestjs-nodemon](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs-nodemon)
@@ -664,7 +666,6 @@ export default function Index({ message }: IndexProps) {
     - [examples/with-jsx-static-bulma](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-static-bulma)
   - `.tsx`
     - [examples/basic-tsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx-static)
-    - [examples/with-tsx-redux-todo](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-tsx-redux-todo)
 
 ## Real World Examples
 
