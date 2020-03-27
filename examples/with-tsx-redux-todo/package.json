@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "name": "with-tsx-redux-todo",
+  "scripts": {
+    "start": "tsnd --project tsconfig.server.json server/main.ts"
+  },
+  "dependencies": {
+    "@react-ssr/core": "latest",
+    "@react-ssr/express": "latest",
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.3",
+    "@types/node": "^12.12.31",
+    "@types/react": "^16.9.26",
+    "@types/react-dom": "^16.9.5",
+    "@types/react-redux": "^7.1.7",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.8.3"
+  }
+}

@@ -548,12 +548,14 @@ A working example is here: [examples/with-jsx-styled-components](https://github.
     - [examples/with-jsx-static-bulma](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-static-bulma)
   - `.tsx`
     - [examples/basic-tsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx-static)
+    - [examples/with-tsx-redux-todo](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-tsx-redux-todo)
 
-## Starters
+## Real World Examples
 
 - [react-ssr-jsx-starter](https://github.com/saltyshiomix/react-ssr-jsx-starter)
 - [react-ssr-tsx-starter](https://github.com/saltyshiomix/react-ssr-tsx-starter)
 - [react-ssr-nestjs-starter](https://github.com/saltyshiomix/react-ssr-nestjs-starter)
+- [react-ssr-redux-todo-app](https://github.com/saltyshiomix/react-ssr-redux-todo-app)
 
 ## Articles
 

@@ -631,7 +631,6 @@ export default function Index({ message }: IndexProps) {
 | [@react-ssr/core](https://github.com/saltyshiomix/react-ssr/blob/master/packages/core/README.md) | ![@react-ssr/core](https://img.shields.io/npm/v/@react-ssr/core.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/core.svg) |
 | [@react-ssr/express](https://github.com/saltyshiomix/react-ssr/blob/master/packages/express/README.md) | ![@react-ssr/express](https://img.shields.io/npm/v/@react-ssr/express.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/express.svg) |
 | [@react-ssr/nestjs-express](https://github.com/saltyshiomix/react-ssr/blob/master/packages/nestjs-express/README.md) | ![@react-ssr/nestjs-express](https://img.shields.io/npm/v/@react-ssr/nestjs-express.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/nestjs-express.svg) |
-| [@react-ssr/static](https://github.com/saltyshiomix/react-ssr/blob/master/packages/static/README.md) | ![@react-ssr/static](https://img.shields.io/npm/v/@react-ssr/static.svg) ![downloads](https://img.shields.io/npm/dt/@react-ssr/static.svg) |
 
 ## Examples
 
@@ -663,12 +662,14 @@ export default function Index({ message }: IndexProps) {
     - [examples/with-jsx-static-bulma](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-static-bulma)
   - `.tsx`
     - [examples/basic-tsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx-static)
+    - [examples/with-tsx-redux-todo](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-tsx-redux-todo)
 
-## Starters
+## Real World Examples
 
 - [react-ssr-jsx-starter](https://github.com/saltyshiomix/react-ssr-jsx-starter)
 - [react-ssr-tsx-starter](https://github.com/saltyshiomix/react-ssr-tsx-starter)
 - [react-ssr-nestjs-starter](https://github.com/saltyshiomix/react-ssr-nestjs-starter)
+- [react-ssr-redux-todo-app](https://github.com/saltyshiomix/react-ssr-redux-todo-app)
 
 ## Develop `examples/<example-folder-name>`
 
