@@ -545,12 +545,6 @@ A working example is here: [examples/with-jsx-styled-components](https://github.
 - **@react-ssr/nestjs-express**
   - [examples/basic-nestjs](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs)
   - [examples/basic-nestjs-nodemon](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs-nodemon)
-- **@react-ssr/static**
-  - `.jsx`
-    - [examples/basic-jsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx-static)
-    - [examples/with-jsx-static-bulma](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-static-bulma)
-  - `.tsx`
-    - [examples/basic-tsx-static](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx-static)
 
 ## Real World Examples
 
