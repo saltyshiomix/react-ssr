@@ -2,7 +2,7 @@
   "private": true,
   "name": "basic-jsx",
   "scripts": {
-    "start": "node server.js"
+    "dev": "node server.js"
   },
   "dependencies": {
     "@react-ssr/core": "latest",

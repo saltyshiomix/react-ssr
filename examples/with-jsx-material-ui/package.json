@@ -2,7 +2,7 @@
   "private": true,
   "name": "with-jsx-material-ui",
   "scripts": {
-    "start": "node server.js"
+    "dev": "node server.js"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.7",

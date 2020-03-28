@@ -2,7 +2,7 @@
   "private": true,
   "name": "with-jsx-emotion",
   "scripts": {
-    "start": "node server.js"
+    "dev": "node server.js"
   },
   "dependencies": {
     "@emotion/cache": "^10.0.29",

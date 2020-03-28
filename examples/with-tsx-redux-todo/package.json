@@ -2,7 +2,7 @@
   "private": true,
   "name": "with-tsx-redux-todo",
   "scripts": {
-    "start": "tsnd --project tsconfig.server.json server/main.ts"
+    "dev": "tsnd --project tsconfig.server.json server/main.ts"
   },
   "dependencies": {
     "@react-ssr/core": "latest",

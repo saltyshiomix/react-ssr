@@ -2,7 +2,7 @@
   "private": true,
   "name": "basic-nestjs",
   "scripts": {
-    "start": "ts-node --project tsconfig.server.json server/main.ts"
+    "dev": "ts-node --project tsconfig.server.json server/main.ts"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.5",

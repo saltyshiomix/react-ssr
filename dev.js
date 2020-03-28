@@ -17,7 +17,7 @@ fse.removeSync('workspace');
 
 fse.copySync(`examples/${example}`, 'workspace');
 execSync('cd workspace');
-execSync('npm install && npm start', {
+execSync('npm install && npm run dev', {
   cwd: path.join(__dirname, 'workspace'),
-  stdio: 'inherit'
+  stdio: 'inherit',
 });
