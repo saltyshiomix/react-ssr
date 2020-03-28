@@ -521,30 +521,36 @@ A working example is here: [examples/with-jsx-styled-components](https://github.
 
 ## Examples
 
-- **@react-ssr/express**
-  - `.jsx`
-    - [examples/basic-jsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx)
-    - [examples/basic-custom-app](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-app)
-    - [examples/basic-custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-babelrc)
-    - [examples/basic-custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-document)
-    - [examples/basic-custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-views)
-    - [examples/basic-dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-dynamic-head)
-    - [examples/basic-hmr-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-css)
-    - [examples/basic-hmr-scss](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-scss)
-    - [examples/basic-blogging](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-blogging)
-    - [examples/basic-multiple-view-engines](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-multiple-view-engines)
-    - [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
-    - [examples/with-jsx-bulma](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-bulma)
-    - [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
-    - [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
-    - [examples/with-jsx-semantic-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-semantic-ui)
-    - [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
-  - `.tsx`
-    - [examples/basic-tsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx)
-    - [examples/with-tsx-redux-todo](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-tsx-redux-todo)
-- **@react-ssr/nestjs-express**
-  - [examples/basic-nestjs](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs)
-  - [examples/basic-nestjs-nodemon](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs-nodemon)
+### @react-ssr/express
+
+**.jsx**
+
+- [examples/basic-jsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-jsx)
+- [examples/basic-custom-app](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-app)
+- [examples/basic-custom-babelrc](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-babelrc)
+- [examples/basic-custom-document](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-document)
+- [examples/basic-custom-views](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-custom-views)
+- [examples/basic-dynamic-head](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-dynamic-head)
+- [examples/basic-hmr-css](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-css)
+- [examples/basic-hmr-scss](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-scss)
+- [examples/basic-blogging](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-blogging)
+- [examples/basic-multiple-view-engines](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-multiple-view-engines)
+- [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
+- [examples/with-jsx-bulma](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-bulma)
+- [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
+- [examples/with-jsx-material-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-material-ui)
+- [examples/with-jsx-semantic-ui](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-semantic-ui)
+- [examples/with-jsx-styled-components](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-styled-components)
+
+**.tsx**
+
+- [examples/basic-tsx](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-tsx)
+- [examples/with-tsx-redux-todo](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-tsx-redux-todo)
+
+### @react-ssr/nestjs-express
+
+- [examples/basic-nestjs](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs)
+- [examples/basic-nestjs-nodemon](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-nestjs-nodemon)
 
 ## Real World Examples
 
@@ -562,3 +568,8 @@ A working example is here: [examples/with-jsx-styled-components](https://github.
 ## Related
 
 [reactjs/express-react-views](https://github.com/reactjs/express-react-views)
+
+## Contact
+
+- via [GitHub Issues](https://github.com/saltyshiomix/react-ssr/issues)
+- via [Twitter](https://twitter.com/saltyshiomix)
