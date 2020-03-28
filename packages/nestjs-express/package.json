@@ -31,16 +31,6 @@
     "register.js",
     "register.d.ts"
   ],
-  "devDependencies": {
-    "@nestjs/common": "^6.10.11",
-    "@nestjs/core": "^6.10.11",
-    "@nestjs/platform-express": "^6.10.11",
-    "@react-ssr/core": "^0.21.17",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "reflect-metadata": "^0.1.13",
-    "rxjs": "^6.5.3"
-  },
   "peerDependencies": {
     "@nestjs/platform-express": "^6 || ^7",
     "@react-ssr/core": "^0.*"

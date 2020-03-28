@@ -29,12 +29,6 @@
     "register.js",
     "register.d.ts"
   ],
-  "devDependencies": {
-    "@react-ssr/core": "^0.21.17",
-    "express": "^4.17.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
-  },
   "peerDependencies": {
     "@react-ssr/core": "^0.*",
     "express": "^4"
