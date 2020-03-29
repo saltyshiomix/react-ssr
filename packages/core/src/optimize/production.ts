@@ -7,6 +7,7 @@ import webpack from 'webpack';
 import { configureWebpack } from './webpack.config';
 import { getEntry } from './helpers';
 import {
+  existsSync,
   ssrConfig,
   getPageId,
 } from '../helpers';
@@ -36,7 +37,7 @@ export default async (app: express.Application): Promise<void> => {
 
         app.use(`/_react-ssr/${pageId}.css`, (req, res) => {
           const filename = path.join(cwd, ssrConfig.distDir, `${pageId}.css`);
-          const style = fs.existsSync(filename) ? fs.readFileSync(filename).toString() : '';
+          const style = existsSync(filename) ? fs.readFileSync(filename).toString() : '';
           res.writeHead(200, { 'Content-Type': 'text/css' });
           res.end(style, 'utf-8');
         });

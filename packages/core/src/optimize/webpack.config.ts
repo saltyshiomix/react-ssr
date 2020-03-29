@@ -6,6 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import {
+  existsSync,
   ssrConfig,
   isProd,
 } from '../helpers';
@@ -13,9 +14,9 @@ import {
 const cwd = process.cwd();
 
 const getBabelrc = (): string | undefined => {
-  if (fs.existsSync(path.join(cwd, '.babelrc'))) return path.join(cwd, '.babelrc');
-  if (fs.existsSync(path.join(cwd, '.babelrc.js'))) return path.join(cwd, '.babelrc.js');
-  if (fs.existsSync(path.join(cwd, 'babel.config.js'))) return path.join(cwd, 'babel.config.js');
+  if (existsSync(path.join(cwd, '.babelrc'))) return path.join(cwd, '.babelrc');
+  if (existsSync(path.join(cwd, '.babelrc.js'))) return path.join(cwd, '.babelrc.js');
+  if (existsSync(path.join(cwd, 'babel.config.js'))) return path.join(cwd, 'babel.config.js');
   return path.join(__dirname, '../../lib/babel.js');
 };
 

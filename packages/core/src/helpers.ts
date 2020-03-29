@@ -5,6 +5,15 @@ import readdir from 'recursive-readdir';
 
 const cwd: string = process.cwd();
 
+export const existsSync = (f: string): boolean => {
+  try {
+    fs.accessSync(f, fs.constants.F_OK);
+    return true;
+  } catch (_) {
+    return false;
+  }
+};
+
 export const isProd = () => {
   let env = process.env.NODE_ENV || 'development';
   if (process.env.REACT_SSR_ENV) {
@@ -29,14 +38,14 @@ const getSsrConfig = (): Config => {
     staticViews: [],
   };
   const ssrConfigPath = path.join(cwd, 'ssr.config.js');
-  if (fs.existsSync(ssrConfigPath)) {
+  if (existsSync(ssrConfigPath)) {
     return Object.assign(defaultConfig, require(ssrConfigPath));
   } else {
     return defaultConfig;
   }
 };
 
-export const getEngine = (): 'jsx' | 'tsx' => fs.existsSync(path.join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
+export const getEngine = (): 'jsx' | 'tsx' => existsSync(path.join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
 
 export const ssrConfig: Config = getSsrConfig();
 
