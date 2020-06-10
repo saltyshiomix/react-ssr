@@ -63,7 +63,7 @@
     "unionfs": "^4.4.0",
     "urlsafe-base64": "^1.0.0",
     "webpack": "^4.43.0",
-    "webpack-dev-server": "^3.10.3",
+    "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2"
   },
   "devDependencies": {
