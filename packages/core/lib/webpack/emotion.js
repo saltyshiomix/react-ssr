@@ -18,7 +18,7 @@ const cache = createCache();
 
 ReactDOM.render(
   <CacheProvider value={cache}>
-    <App children={Page} {...getProps()} />,
+    <App children={Page} {...getProps()} />
   </CacheProvider>,
   document.getElementById('react-ssr-root'),
 );
