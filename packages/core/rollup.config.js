@@ -19,13 +19,7 @@ const coreConfig = {
       runtimeHelpers: true,
       exclude: /node_modules/,
     }),
-    commonjs({
-      namedExports: {
-        'node_modules/react-dom/server.js': [
-          'renderToString',
-        ],
-      },
-    }),
+    commonjs(),
     (isProd && terser()),
   ],
   external: [
