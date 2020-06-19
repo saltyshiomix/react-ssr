@@ -10,7 +10,7 @@ const Index = ({ user }) => {
     <React.Fragment>
       <Head>
         <title>
-          basic-jsx - @react-ssr/express
+          support-yarn2-pnp - @react-ssr/express
         </title>
       </Head>
       <p>Hello {user.name}!</p>
