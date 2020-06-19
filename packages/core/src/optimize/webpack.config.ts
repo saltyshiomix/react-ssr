@@ -1,4 +1,3 @@
-import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import { smart as merge } from 'webpack-merge';
