@@ -3,7 +3,7 @@ import fse from 'fs-extra';
 import MemoryFileSystem from 'memory-fs';
 import path from 'path';
 import express from 'express';
-import proxy from 'http-proxy-middleware';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import { configureWebpack } from './webpack.config';
@@ -63,7 +63,7 @@ export default async (app: express.Application): Promise<void> => {
       reject(err);
     });
 
-    const proxyMiddleware = proxy({
+    const proxyMiddleware = createProxyMiddleware({
       target: `http://localhost:${devServerPort}`,
       changeOrigin: true,
       ws: true,
