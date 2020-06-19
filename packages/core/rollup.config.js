@@ -22,10 +22,6 @@ const coreConfig = {
     commonjs(),
     (isProd && terser()),
   ],
-  external: [
-    'react-dom/server',
-    'http-proxy-middleware',
-  ],
 };
 
 const dirConfig = (src) => ({
