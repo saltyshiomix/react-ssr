@@ -72,7 +72,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
           test: /\.(js|ts)x?$/i,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader',
+            loader: require.resolve('babel-loader'),
             options: {
               cacheDirectory: true,
               extends: getBabelrc(),
@@ -91,7 +91,7 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
               },
             },
             {
-              loader: 'css-loader',
+              loader: require.resolve('css-loader'),
             },
           ],
         },
@@ -107,10 +107,10 @@ export const configureWebpack = (entry: webpack.Entry): webpack.Configuration =>
               },
             },
             {
-              loader: 'css-loader',
+              loader: require.resolve('css-loader'),
             },
             {
-              loader: 'sass-loader',
+              loader: require.resolve('sass-loader'),
               options: {
                 sourceMap: !isProd(),
               },
