@@ -1,0 +1,8 @@
+node_modules
+.pnp/*
+!.pnp/releases
+!.pnp/plugins
+!.pnp/sdks
+!.pnp/versions
+.pnp.*
+.ssr
