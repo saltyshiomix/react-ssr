@@ -494,6 +494,7 @@ export default function Index({ message }: IndexProps) {
 - [examples/basic-hmr-scss](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-hmr-scss)
 - [examples/basic-blogging](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-blogging)
 - [examples/basic-multiple-view-engines](https://github.com/saltyshiomix/react-ssr/tree/master/examples/basic-multiple-view-engines)
+- [examples/support-yarn2-pnp](https://github.com/saltyshiomix/react-ssr/tree/master/examples/support-yarn2-pnp)
 - [examples/with-jsx-antd](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-antd)
 - [examples/with-jsx-bulma](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-bulma)
 - [examples/with-jsx-emotion](https://github.com/saltyshiomix/react-ssr/tree/master/examples/with-jsx-emotion)
