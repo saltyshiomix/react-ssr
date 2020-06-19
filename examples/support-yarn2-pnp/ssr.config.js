@@ -7,6 +7,9 @@ module.exports = {
       PnpWebpackPlugin,
     ];
 
+    if (!config.resolveLoader) {
+      config.resolveLoader = {};
+    }
     config.resolveLoader.plugins = [
       ...(config.resolveLoader.plugins || []),
       PnpWebpackPlugin.moduleLoader(module),
