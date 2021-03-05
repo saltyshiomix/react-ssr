@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import readdir from 'recursive-readdir';
+
 export interface AppConfig {
   appDir: string;
 }

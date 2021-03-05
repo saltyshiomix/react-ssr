@@ -22,12 +22,12 @@ ufs.use(fs).use(memfs);
 
 export default async (app: express.Application, config: AppConfig): Promise<void> => {
   const { appDir } = config;
-  const ssrConfig: Config = getSsrConfig(config.appDir);
+  const ssrConfig: Config = getSsrConfig(appDir);
 
-  fse.removeSync(path.join(config.appDir, ssrConfig.distDir));
+  fse.removeSync(path.join(appDir, ssrConfig.distDir));
 
   const [entry, entryPages] = await getEntry(memfs, appDir);
-  const webpackConfig: webpack.Configuration = configureWebpack(entry);
+  const webpackConfig: webpack.Configuration = configureWebpack(entry, config);
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
 
@@ -48,14 +48,14 @@ export default async (app: express.Application, config: AppConfig): Promise<void
           const pageId = getPageId(appDir, page, '_');
 
           app.get(`/_react-ssr/${pageId}.css`, (req, res) => {
-            const filename = path.join(config.appDir, ssrConfig.distDir, `${pageId}.css`);
+            const filename = path.join(appDir, ssrConfig.distDir, `${pageId}.css`);
             const style = memfs.existsSync(filename) ? memfs.readFileSync(filename).toString() : '';
             res.writeHead(200, { 'Content-Type': 'text/css' });
             res.end(style, 'utf-8');
           });
 
           app.get(`/_react-ssr/${pageId}.js`, (req, res) => {
-            const filename = path.join(config.appDir, ssrConfig.distDir, `${pageId}.js`);
+            const filename = path.join(appDir, ssrConfig.distDir, `${pageId}.js`);
             const script = memfs.readFileSync(filename).toString();
             res.status(200).type('.js').send(script);
           });

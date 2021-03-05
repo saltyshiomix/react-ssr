@@ -1,4 +1,5 @@
 import { NestExpressApplication } from '@nestjs/platform-express';
+
 interface AppConfig {
   appDir: string;
 }
