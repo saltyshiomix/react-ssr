@@ -114,7 +114,7 @@ export default async function render(file: string, props: any): Promise<string> 
   try {
     html = (await getRenderToStringMethod())(
       <DocumentContext.Provider value={<AppComponent children={Page} {...props} />}>
-        <DocumentComponent />
+        <DocumentComponent {...props} />
       </DocumentContext.Provider>,
       pageId,
       compressProps(props),
