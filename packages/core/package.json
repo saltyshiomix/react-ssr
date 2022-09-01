@@ -53,7 +53,7 @@
     "css-minimizer-webpack-plugin": "4.0.0",
     "fs-extra": "10.1.0",
     "http-proxy-middleware": "2.0.6",
-    "lodash.escaperegexp": "^4.1.2",
+    "lodash.escaperegexp": "4.1.2",
     "lz-string": "^1.4.4",
     "memory-fs": "^0.5.0",
     "mini-css-extract-plugin": "2.6.1",
