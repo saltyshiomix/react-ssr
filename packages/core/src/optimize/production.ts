@@ -26,10 +26,10 @@ export default async (app: express.Application): Promise<void> => {
   const compiler: webpack.Compiler = webpack(webpackConfig);
   compiler.inputFileSystem = ufs;
 
-  await new Promise((resolve, reject) => {
-    compiler.run((err: Error, stats: webpack.Stats) => {
+  await new Promise<void>((resolve, reject) => {
+    compiler.run((err, stats) => {
       err && reject(err.stack || err);
-      stats.hasErrors() && reject(stats.toString());
+      stats?.hasErrors() && reject(stats.toString());
 
       for (let i = 0; i < entryPages.length; i++) {
         const page = entryPages[i];

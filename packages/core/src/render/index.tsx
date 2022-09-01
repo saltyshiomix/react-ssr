@@ -121,10 +121,13 @@ export default async function render(file: string, props: any): Promise<string> 
     );
     return html;
   } catch (err) {
+    if (!(err instanceof Error)) {
+      return isProd() ? '' : 'Error: html rendering failed';
+    }
     if (!isProd()) {
       console.log(err.stack || err);
     }
-    return isProd() ? '' : (err.stack || err);
+    return isProd() ? '' : (err.stack || String(err));
   } finally {
     if (isProd() && !existsSync(cachePath)) {
       const viewPath = slash(file.replace(path.join(cwd, ssrConfig.viewsDir), '').replace(ext, '')).slice(1);

@@ -1,8 +1,8 @@
 import path from 'path';
 import webpack from 'webpack';
-import { smart as merge } from 'webpack-merge';
+import { merge } from 'webpack-merge';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import {
   existsSync,
@@ -28,10 +28,10 @@ const prodConfig: webpack.Configuration = {
   },
   optimization: {
     nodeEnv: 'production',
-    namedModules: false,
-    namedChunks: false,
+    // namedModules: false,
+    // namedChunks: false,
     flagIncludedChunks: true,
-    occurrenceOrder: true,
+    // occurrenceOrder: true,
     sideEffects: true,
     usedExports: true,
     concatenateModules: false,
@@ -42,7 +42,7 @@ const prodConfig: webpack.Configuration = {
     },
     minimize: true,
     minimizer: [
-      new OptimizeCSSAssetsPlugin(),
+      new CssMinimizerPlugin(),
       new TerserPlugin(),
     ],
   },
