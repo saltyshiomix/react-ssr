@@ -1,6 +1,5 @@
 node_modules
-package-lock.json
-yarn.lock
+/examples/**/package-lock.json
+/examples/**/yarn.lock
 dist
-workspace
 .DS_Store
