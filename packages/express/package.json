@@ -30,7 +30,7 @@
     "register.d.ts"
   ],
   "peerDependencies": {
-    "@react-ssr/core": "^0.*",
+    "@react-ssr/core": "*",
     "express": "^4"
   }
 }
