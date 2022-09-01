@@ -31,6 +31,6 @@
   ],
   "peerDependencies": {
     "@react-ssr/core": "*",
-    "express": "^4"
+    "express": "4"
   }
 }
