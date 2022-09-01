@@ -63,7 +63,7 @@
     "slash": "4.0.0",
     "terser-webpack-plugin": "5.3.6",
     "unionfs": "4.4.0",
-    "urlsafe-base64": "^1.0.0",
+    "urlsafe-base64": "1.0.0",
     "webpack": "5.74.0",
     "webpack-dev-server": "4.10.1",
     "webpack-merge": "5.8.0"
