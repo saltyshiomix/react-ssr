@@ -53,7 +53,7 @@ importers:
       mini-css-extract-plugin: 2.6.1
       react: ^16.13.1
       react-dom: ^16.13.1
-      recursive-readdir: ^2.2.2
+      recursive-readdir: 2.2.2
       rimraf: ^3.0.2
       rollup: ^2.15.0
       rollup-plugin-auto-external: ^2.0.0
