@@ -1,6 +1,6 @@
 {
   "name": "@react-ssr/core",
-  "version": "0.24.0",
+  "version": "0.25.0-canary.0",
   "description": "React SSR as a view template engine",
   "repository": "git@github.com:saltyshiomix/react-ssr.git",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
@@ -60,7 +60,7 @@
     "recursive-readdir": "2.2.2",
     "sass": "1.54.8",
     "sass-loader": "13.0.2",
-    "slash": "4.0.0",
+    "slash": "3.0.0",
     "terser-webpack-plugin": "5.3.6",
     "unionfs": "4.4.0",
     "urlsafe-base64": "1.0.0",
