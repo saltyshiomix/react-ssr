@@ -63,7 +63,7 @@ importers:
       sass-loader: 13.0.2
       slash: 4.0.0
       terser-webpack-plugin: 5.3.6
-      typescript: ^3.9.5
+      typescript: ^4.8.2
       unionfs: 4.4.0
       urlsafe-base64: 1.0.0
       webpack: 5.74.0
@@ -132,7 +132,7 @@ importers:
       rollup-plugin-auto-external: 2.0.0_rollup@2.79.0
       rollup-plugin-babel: 4.4.0_qa5xd24o3tymwictiiptlhxtom
       rollup-plugin-terser: 7.0.2_rollup@2.79.0
-      typescript: 3.9.10
+      typescript: 4.8.2
 
   packages/express:
     specifiers: {}
@@ -4708,8 +4708,8 @@ packages:
       media-typer: 0.3.0
       mime-types: 2.1.35
 
-  /typescript/3.9.10:
-    resolution: {integrity: sha512-w6fIxVE/H1PkLKcCPsFqKE7Kv7QUwhU8qQY2MueZXWx5cPZdwFupLgKK3vntcK98BtNHZtAF4LA/yl2a7k8R6Q==}
+  /typescript/4.8.2:
+    resolution: {integrity: sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
