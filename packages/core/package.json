@@ -60,7 +60,7 @@
     "recursive-readdir": "2.2.2",
     "sass": "1.54.8",
     "sass-loader": "13.0.2",
-    "slash": "^3.0.0",
+    "slash": "4.0.0",
     "terser-webpack-plugin": "5.3.6",
     "unionfs": "^4.4.0",
     "urlsafe-base64": "^1.0.0",
