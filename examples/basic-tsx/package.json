@@ -5,8 +5,8 @@
     "dev": "tsnd --project tsconfig.server.json server/main.ts"
   },
   "dependencies": {
-    "@react-ssr/core": "0.25.0-canary.1",
-    "@react-ssr/express": "0.25.0-canary.1",
+    "@react-ssr/core": "0.25.0-canary.2",
+    "@react-ssr/express": "0.25.0-canary.2",
     "express": "^4.18.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
