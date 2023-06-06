@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { CacheProvider } from '@emotion/core';
+import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import LZString from 'lz-string';
 import URLSafeBase64 from 'urlsafe-base64';
@@ -14,7 +14,7 @@ const getProps = () => {
   return JSON.parse(decompressed);
 }
 
-const cache = createCache();
+const cache = createCache({ key: "react-ssr" });
 
 ReactDOM.render(
   <CacheProvider value={cache}>

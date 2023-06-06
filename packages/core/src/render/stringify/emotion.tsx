@@ -8,12 +8,12 @@ import {
 
 const Head = require('./head');
 
-const { CacheProvider } = require('@emotion/core');
+const { CacheProvider } = require('@emotion/react');
 const emotionCache = require('@emotion/cache');
-const emotionServer = require('create-emotion-server');
+const emotionServer = require('@emotion/server/create-instance');
 const createCache = emotionCache.default || emotionCache;
 const createEmotionServer = emotionServer.default || emotionServer;
-const cache = createCache();
+const cache = createCache({ key: "react-ssr" });
 const { extractCritical } = createEmotionServer(cache);
 
 export default (app: React.ReactElement, pageId: string, props: string) => {
