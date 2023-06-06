@@ -38,8 +38,11 @@ const getSsrConfig = (): Config => {
     staticViews: [],
   };
   const ssrConfigPath = path.join(cwd, 'ssr.config.js');
+  const ssrConfigCjsPath = path.join(cwd, 'ssr.config.cjs');
   if (existsSync(ssrConfigPath)) {
     return Object.assign(defaultConfig, require(ssrConfigPath));
+  } else if (existsSync(ssrConfigCjsPath)) {
+    return Object.assign(defaultConfig, require(ssrConfigCjsPath));
   } else {
     return defaultConfig;
   }
