@@ -3,14 +3,12 @@ import ReactDOM from 'react-dom';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import LZString from 'lz-string';
-import URLSafeBase64 from 'urlsafe-base64';
 import App from '__REACT_SSR_APP__';
 import Page from '__REACT_SSR_PAGE__';
 
 const getProps = () => {
   const compressedProps = document.getElementById('react-ssr-script').dataset.props;
-  const decoded = URLSafeBase64.decode(compressedProps);
-  const decompressed = LZString.decompressFromUint8Array(decoded);
+  const decompressed = LZString.decompressFromBase64(compressedProps);
   return JSON.parse(decompressed);
 }
 
