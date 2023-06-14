@@ -31,7 +31,6 @@ importers:
       '@types/react': ^18.0.18
       '@types/react-dom': ^18.0.6
       '@types/recursive-readdir': ^2.2.1
-      '@types/urlsafe-base64': ^1.0.28
       '@types/webpack': ^5.28.0
       babel-loader: 8.2.5
       babel-plugin-css-modules-transform: 1.6.2
@@ -61,7 +60,6 @@ importers:
       terser-webpack-plugin: 5.3.6
       typescript: ^4.8.2
       unionfs: 4.4.0
-      urlsafe-base64: 1.0.0
       webpack: 5.74.0
       webpack-dev-server: 4.10.1
       webpack-merge: 5.8.0
@@ -97,7 +95,6 @@ importers:
       slash: 3.0.0
       terser-webpack-plugin: 5.3.6_webpack@5.74.0
       unionfs: 4.4.0
-      urlsafe-base64: 1.0.0
       webpack: 5.74.0
       webpack-dev-server: 4.10.1_webpack@5.74.0
       webpack-merge: 5.8.0
@@ -114,7 +111,6 @@ importers:
       '@types/react': 18.0.18
       '@types/react-dom': 18.0.6
       '@types/recursive-readdir': 2.2.1
-      '@types/urlsafe-base64': 1.0.28
       '@types/webpack': 5.28.0
       cross-env: 7.0.3
       express: 4.18.1
@@ -1672,12 +1668,6 @@ packages:
     dependencies:
       '@types/node': 18.7.14
     dev: false
-
-  /@types/urlsafe-base64/1.0.28:
-    resolution: {integrity: sha512-TG5dKbqx75FUTXfiARIPvLvMCImVYJbKM+Fvy9HgpxkunHnMHNAn78xpvcZxIbPITyRzf0b2Gl8fnd1Ja3p1eQ==}
-    dependencies:
-      '@types/node': 18.7.14
-    dev: true
 
   /@types/webpack/5.28.0:
     resolution: {integrity: sha512-8cP0CzcxUiFuA9xGJkfeVpqmWTk9nx6CWwamRGCj95ph1SmlRRk9KlCZ6avhCbZd4L68LvYT6l1kpdEnQXrF8w==}
@@ -4781,10 +4771,6 @@ packages:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
       punycode: 2.1.1
-
-  /urlsafe-base64/1.0.0:
-    resolution: {integrity: sha512-RtuPeMy7c1UrHwproMZN9gN6kiZ0SvJwRaEzwZY0j9MypEkFqyBaKv176jvlPtg58Zh36bOkS0NFABXMHvvGCA==}
-    dev: false
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}

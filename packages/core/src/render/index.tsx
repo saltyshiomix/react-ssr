@@ -3,7 +3,6 @@ import path from 'path';
 import React from 'react';
 import slash from 'slash';
 import LZString from 'lz-string';
-import URLSafeBase64 from 'urlsafe-base64';
 import App from '../components/App';
 import Document from '../components/Document';
 import {
@@ -96,8 +95,7 @@ const getRenderToStringMethod = async () => {
 
 const compressProps = (props: any) => {
   const packed = JSON.stringify(props);
-  const compressed = Buffer.from(LZString.compressToUint8Array(packed));
-  return URLSafeBase64.encode(compressed);
+  return LZString.compressToBase64(packed);
 }
 
 export default async function render(file: string, props: any): Promise<string> {

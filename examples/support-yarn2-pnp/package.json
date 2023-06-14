@@ -23,8 +23,7 @@
     "lz-string": "^1.4.4",
     "pnp-webpack-plugin": "^1.6.4",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "urlsafe-base64": "^1.0.0"
+    "react-dom": "^16.13.1"
   },
   "installConfig": {
     "pnp": true
